@@ -1,0 +1,61 @@
+Using device: cpu
+================================================================================
+Data: F10.7
+Sequence Length: 30
+Predict Length : 1
+Loading model  : ./models/SINet_1_interval_F10.pth
+/home/user/envs/torch112/lib/python3.9/site-packages/sklearn/base.py:299: UserWarning: Trying to unpickle estimator MinMaxScaler from version 1.3.2 when using version 1.2.1. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+Day 1 result:
+RMSE: 3.8801
+MAE : 2.3794
+MAPE: 2.21%
+================================================================================
+Data: F10.7
+Sequence Length: 30
+Predict Length : 27
+Loading model  : ./models/SINet_27_interval_F10.pth
+/home/user/envs/torch112/lib/python3.9/site-packages/sklearn/base.py:299: UserWarning: Trying to unpickle estimator MinMaxScaler from version 1.3.2 when using version 1.2.1. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+Day 27 result:
+RMSE: 13.7411
+MAE : 8.7605
+MAPE: 8.06%
+================================================================================
+Data: F10.7
+Sequence Length: 30
+Predict Length : 45
+Loading model  : ./models/SINet_45_interval_F10.pth
+/home/user/envs/torch112/lib/python3.9/site-packages/sklearn/base.py:299: UserWarning: Trying to unpickle estimator MinMaxScaler from version 1.3.2 when using version 1.2.1. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+Day 45 result:
+RMSE: 15.0921
+MAE : 9.8211
+MAPE: 9.06%
+================================================================================
+Data: F10.7
+Sequence Length: 30
+Predict Length : 60
+Loading model  : ./models/SINet_60_interval_F10.pth
+/home/user/envs/torch112/lib/python3.9/site-packages/sklearn/base.py:299: UserWarning: Trying to unpickle estimator MinMaxScaler from version 1.3.2 when using version 1.2.1. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+Day 60 result:
+RMSE: 16.3241
+MAE : 10.9159
+MAPE: 10.20%
+
+================================================================================
+Final Results
+================================================================================
+Day 1 - RMSE: 3.8801, MAE: 2.3794, MAPE: 2.21%
+Day 27 - RMSE: 13.7411, MAE: 8.7605, MAPE: 8.06%
+Day 45 - RMSE: 15.0921, MAE: 9.8211, MAPE: 9.06%
+Day 60 - RMSE: 16.3241, MAE: 10.9159, MAPE: 10.20%
+
+real	10m39.327s
+user	10m25.269s
+sys	0m4.612s

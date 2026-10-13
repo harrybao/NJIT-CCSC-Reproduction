@@ -1,0 +1,49 @@
+weights: /home/user/work/DeepGeoCME/assets/dnet_best.pt
+tensors: /home/user/work/DeepGeoCME/assets/test_tensors
+device:  cpu
+
+running the model on the test set:
+  [ 1/33] 2011-03-03         label=0 p=0.051
+  [ 2/33] 2011-03-24         label=0 p=0.021
+  [ 3/33] 2011-05-25         label=1 p=0.901
+  [ 4/33] 2011-09-24         label=1 p=0.935
+  [ 5/33] 2012-02-23         label=1 p=0.930
+  [ 6/33] 2012-03-04         label=0 p=0.021
+  [ 7/33] 2012-09-01         label=1 p=0.023
+  [ 8/33] 2012-10-27         label=1 p=0.940
+  [ 9/33] 2012-11-23         label=0 p=0.021
+  [10/33] 2013-04-11         label=0 p=0.701
+  [11/33] 2013-08-21         label=0 p=0.020
+  [12/33] 2013-12-11         label=0 p=0.020
+  [13/33] 2014-02-12         label=0 p=0.021
+  [14/33] 2014-09-10         label=1 p=0.938
+  [15/33] 2014-12-17         label=1 p=0.936
+  [16/33] 2015-03-14         label=1 p=0.940
+  [17/33] 2015-04-06         label=0 p=0.023
+  [18/33] 2015-06-20         label=1 p=0.882
+  [19/33] 2015-07-09         label=1 p=0.940
+  [20/33] 2015-12-28         label=1 p=0.926
+  [21/33] 2019-05-07         label=1 p=0.324
+  [22/33] 2021-05-23_0748    label=0 p=0.021
+  [23/33] 2021-05-23_1324    label=0 p=0.033
+  [24/33] 2022-01-16         label=0 p=0.033
+  [25/33] 2022-03-08         label=1 p=0.917
+  [26/33] 2022-03-28         label=0 p=0.020
+  [27/33] 2022-04-09         label=0 p=0.050
+  [28/33] 2022-04-11         label=1 p=0.904
+  [29/33] 2022-12-30         label=1 p=0.927
+  [30/33] 2023-05-07         label=0 p=0.792
+  [31/33] 2023-08-02         label=1 p=0.932
+  [32/33] 2023-09-21         label=1 p=0.940
+  [33/33] 2023-12-11         label=0 p=0.020
+
+confusion matrix (threshold 0.6):
+             pred N   pred Y
+  true N        14        2
+  true Y         2       15
+  recall=0.882  precision=0.882  accuracy=0.879  F1=0.882  TSS=0.757  BS=0.080
+figure saved -> confusion_matrix.png
+
+real	17m18.141s
+user	13m35.801s
+sys	0m5.769s
