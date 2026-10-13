@@ -50,15 +50,14 @@ Status labels follow the five categories requested: **Successfully Reproduced**,
 | 12 | FibrilNet | Hα fibril tracing + uncertainty | Bayesian U-Net (MC dropout) | Jiang et al., ApJS 256:20 (2021) ✅ | ❌ downloaded at run time from web.njit.edu | ✅ (5 test, 242 train) | Training: yes | **Blocked** – model host unreachable |
 | 13 | SDNN | Stokes inversion (LOS velocity, Doppler width) GST/NIRIS | Stacked 1-D CNN/DNN | Jiang et al., ApJ 939:66 (2022) ✅ | ❌ (web.njit.edu) | ❌ input .fts also on web.njit.edu | No | **Blocked** – model and input data unreachable |
 | 14 | SolarCNN | Super-resolution of SOHO/MDI LOS magnetograms (HMI as truth) | Attention-aided CNN | Xu et al., Sol. Phys. 299:36 (2024) ✅ | ❌ (`variables.data` missing; Zenodo/Google Drive) | ✅ 3 samples | No | **Blocked** – weights missing; shipped outputs re-scored |
-| 15 | DeepHMI | Super-resolution of HMI Bz/Bt with GST/NIRIS as truth | Conditional diffusion model (U-Net denoiser) | Xu et al., A&A (2025), doi:10.1051/0004-6361/202453581 ✅ | ✅ | ✅ 1 sample | Strongly recommended | see report (CPU run of 1,000-step sampler) |
+| 15 | DeepHMI | Super-resolution of HMI Bz/Bt with GST/NIRIS as truth | Conditional diffusion model (U-Net denoiser) | Xu et al., A&A (2025), doi:10.1051/0004-6361/202453581 ✅ | ✅ | ✅ 1 sample | Strongly recommended | **Blocked (compute)** – ≈ 67 s per U-Net pass on CPU (≈ 37 h for 2×1,000 steps); shipped output re-scored: Bz improves on HMI input (SSIM 0.810 vs 0.733), Bt mixed |
 | 16 | MIST | ≥M flare in 24 h | Patch time-series transformer (MTST) | ❓ Chaudhary, Abduallah, Wang (2025; Zenodo 16780646 per LLMFlare README) | ✅ | ✅ test windows only (`X_train` absent) | No | **Successfully reproduced** reported TSS 0.906; **out-of-sample TSS 0.20** |
-| 17 | SINet | Daily F10.7 & F30 forecasts, 1–60 days | TimesNet-style (TimesBlock + Inception) | Wang Z. et al., JGR Space Physics (2026), doi:10.1029/2025JA034868 ✅ | ✅ | ✅ | No | **Successfully reproduced** (F10.7 notebook numbers exact; F30 see report) |
+| 17 | SINet | Daily F10.7 & F30 forecasts, 1–60 days | TimesNet-style (TimesBlock + Inception) | Wang Z. et al., JGR Space Physics (2026), doi:10.1029/2025JA034868 ✅ | ✅ | ✅ | No | **Successfully reproduced** (F10.7 notebook numbers exact; F30 within 2 %; beats persistence and 27-day recurrence) |
 | 18 | LLMFlare | Natural-language explanations of flare predictions | MIST + SHAP + Llama-3.1-8B LoRA (r=32), Gemini-2.5-Pro judge | ❓ (no citation in README) | ✅ LoRA adapter only | ✅ | Yes (A100 for fine-tuning) | **Not attempted / Blocked** – gated Llama weights, paid Gemini API, GPU |
-| 19 | DeepGeoCME | Is a CME geoeffective? (SOHO + SDO) | Fusion: ResNet-50 + EfficientNet-B0 + attention | Yan, Abduallah, Wang, arXiv:2605.24748 (2026) ✅ | ✅ (GitHub release, SHA-256 verified) | ✅ (33 test events) | No (inference) | see report |
+| 19 | DeepGeoCME | Is a CME geoeffective? (SOHO + SDO) | Fusion: ResNet-50 + EfficientNet-B0 + attention | Yan, Abduallah, Wang, arXiv:2605.24748 (2026) ✅ | ✅ (GitHub release, SHA-256 verified) | ✅ (33 test events) | No (inference) | **Successfully reproduced** – confusion matrix identical (TN 14, FP 2, FN 2, TP 15; TSS 0.757) |
 | – | MagNet (SolarDB, not in ccsc-tools) | Transverse field (Bx, By) for SOHO/MDI from LOS + Hα | CNN (see paper) | Jiang et al., Sol. Phys. 298:87 (2023), doi:10.1007/s11207-023-02180-z 🔎; out-of-sample validation arXiv:2601.15926 🔎 | ❓ on nature.njit.edu | ❓ on nature.njit.edu | ❓ | **Blocked** – distribution host unreachable |
 
-(The DeepGeoCME and DeepHMI cells are finalised in `reports/CCSC_Reproduction_Report.md`, which is the
-authoritative status document.)
+(`reports/CCSC_Reproduction_Report.md` is the authoritative status document.)
 
 ## 2. Per-tool records (16 fields)
 
@@ -108,7 +107,7 @@ Fields: 1 name · 2 research question · 3 paper title · 4 citation · 5 paper 
     * The released `flarepredict_test.py` treats softmax column 0 as "positive". For ≥M5.0 the LabelEncoder order is ['N','X'], so **≥M5.0 predictions are inverted**: TSS −0.671. Using column 1 gives TSS 0.686 and 98.9 % agreement with the authors' stored output.
     * The paper's Table 5 picks the decision threshold that maximises average TSS **on the test folds**.
     * The previous-timestep missing-value check tests `row` instead of `prev_row`, so incomplete history rows are never masked.
-16. **Partially reproduced.** Retraining on Table 2 (10 seeds): TSS 0.877 ± 0.035 (≥M5.0), 0.748 ± 0.021 (≥M), 0.589 ± 0.009 (≥C) with the test-optimised threshold; lower with a leak-free validation threshold. The Table 5 protocol was re-run (see report).
+16. **Partially reproduced.** Retraining on Table 2 (10 seeds): TSS 0.877 ± 0.035 (≥M5.0), 0.748 ± 0.021 (≥M), 0.589 ± 0.009 (≥C) with the test-optimised threshold; lower with a leak-free validation threshold. The Table 5 protocol (10×10 CV, 100 trainings) re-run under TF 2.10 gives TSS 0.581 ± 0.011, versus the authors' 0.612 ± 0.009.
 
 ### 2.3 RNN-CME-prediction
 1. **RNN-CME-prediction** ("CMEPredict").
@@ -348,8 +347,11 @@ Fields: 1 name · 2 research question · 3 paper title · 4 citation · 5 paper 
 12. Strongly recommended (1,000 denoising steps at 720×720).
 13. 134 MB.
 14. Paper: better than bicubic on 4 metrics ❓ (numbers not readable).
-15. The output is stochastic, so we compare metrics, not pixels.
-16. See report.
+15. A CPU re-run is infeasible: about 67 s per U-Net pass, so ≈ 37 h for 2 components × 1,000 steps. The authors' shipped output was re-scored against the GST/NIRIS truth:
+    * Bz: SSIM 0.810 vs 0.733 for the HMI input; RMSE 190 vs 220 G.
+    * Bt: SSIM 0.659 vs 0.683; RMSE 206 vs 223 G.
+    Only 1 test pair is available.
+16. **Blocked by missing data or compute resources** (compute).
 
 ### 2.16 MIST
 1. **MIST** (the model class is called `MTST`, a multi-patch time-series transformer).
@@ -419,9 +421,9 @@ Fields: 1 name · 2 research question · 3 paper title · 4 citation · 5 paper 
 11. Yes (Colab) ✅.
 12. No.
 13. ≈ 350 MB downloads.
-14. Shipped `confusion_matrix.png` ✅.
-15. See report.
-16. See report.
+14. Shipped `confusion_matrix.png`: TN 14, FP 2, FN 2, TP 15 ✅.
+15. The assets downloaded from the GitHub release, and their SHA-256 hashes match the manifest. Our run gives an identical confusion matrix (TSS 0.757, recall 0.882, precision 0.882, Brier score 0.080). The training split (`train.csv`) is not shipped, so the independence of the 33 test events could not be checked.
+16. **Successfully reproduced.**
 
 ### Related SolarDB tool: MagNet
 * Jiang H., Li Q., Liu N., Hu Z., Abduallah Y., Jing J., Xu Y., Wang J. T. L., Wang H. 2023, *Solar Physics* 298:87, doi:10.1007/s11207-023-02180-z; arXiv:2211.02278 🔎.
