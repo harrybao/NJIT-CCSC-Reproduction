@@ -1,0 +1,210 @@
+{
+ "LSTM_Table2_M_train": {
+  "path": "LSTM-flare-prediction/Table2_dataset/M/training.csv",
+  "rows": 84577,
+  "cols": 45,
+  "nan_cells_frac": 0.0,
+  "duplicate_rows": 0,
+  "exact_zero_frac_physical": 0.27205859749104366,
+  "rows_with_any_zero_physical_frac": 1.0,
+  "fill_value_cells_frac": 1.3892665854783215e-05,
+  "time_min": "2010-05-01T00:58:22.20Z",
+  "time_max": "2014-01-02T18:46:09.10Z",
+  "n_entities": 687,
+  "label_counts_first_char": {
+   "N": 81867,
+   "P": 2710
+  }
+ },
+ "LSTM_Table2_M_test": {
+  "path": "LSTM-flare-prediction/Table2_dataset/M/testing.csv",
+  "rows": 44689,
+  "cols": 45,
+  "nan_cells_frac": 0.0,
+  "duplicate_rows": 0,
+  "exact_zero_frac_physical": 0.26702040770659446,
+  "rows_with_any_zero_physical_frac": 0.9999776231287342,
+  "fill_value_cells_frac": 1.2866700977869275e-05,
+  "time_min": "2014-12-28T01:22:09.20Z",
+  "time_max": "2018-05-11T22:58:43.00Z",
+  "n_entities": 388,
+  "label_counts_first_char": {
+   "N": 43411,
+   "P": 1278
+  }
+ },
+ "LSTM_Table5_C_train_normalized": {
+  "path": "LSTM-flare-prediction/Table5_dataset_and_source_code/C/normalized_training.csv",
+  "rows": 127709,
+  "cols": 45,
+  "nan_cells_frac": 0.0,
+  "duplicate_rows": 0,
+  "exact_zero_frac_physical": 0.33006698823105657,
+  "rows_with_any_zero_physical_frac": 1.0,
+  "fill_value_cells_frac": 0.0,
+  "time_min": "2010-05-01T00:58:22.20Z",
+  "time_max": "2014-01-05T08:46:09.30Z",
+  "n_entities": 690,
+  "label_counts_first_char": {
+   "N": 107088,
+   "P": 20621
+  }
+ },
+ "SolarFlareNet_train_M_24": {
+  "path": "SolarFlareNet/data/training_data_M_24.csv",
+  "rows": 199641,
+  "cols": 34,
+  "nan_cells_frac": 0.0,
+  "duplicate_rows": 0,
+  "exact_zero_frac_physical": 0.028810853412910658,
+  "rows_with_any_zero_physical_frac": 0.8343125911010263,
+  "fill_value_cells_frac": 1.3817906590606e-06,
+  "time_min": "2010-05-05T13:10:22.70Z",
+  "time_max": "2022-09-18T17:22:40.30Z",
+  "n_entities": 535,
+  "label_counts_first_char": {
+   "N": 147167,
+   "p": 40961,
+   "P": 11513
+  }
+ },
+ "SolarFlareNet_test_M_24": {
+  "path": "SolarFlareNet/data/testing_data_M_24.csv",
+  "rows": 62560,
+  "cols": 34,
+  "nan_cells_frac": 0.0,
+  "duplicate_rows": 0,
+  "exact_zero_frac_physical": 0.1701511376664609,
+  "rows_with_any_zero_physical_frac": 0.986556905370844,
+  "fill_value_cells_frac": 1.6535849722197725e-06,
+  "time_min": "2022-01-01T00:10:29.60Z",
+  "time_max": "2022-09-18T17:22:40.30Z",
+  "n_entities": 100,
+  "label_counts_first_char": {
+   "N": 46407,
+   "p": 14785,
+   "P": 1368
+  }
+ },
+ "SEP_fc_train_24": {
+  "path": "SEP-prediction/SEP_Package/data/events_fc_training_24.csv",
+  "rows": 7002,
+  "cols": 34,
+  "nan_cells_frac": 0.0,
+  "duplicate_rows": 0,
+  "exact_zero_frac_physical": 0.05653557111761172,
+  "rows_with_any_zero_physical_frac": 0.9627249357326478,
+  "fill_value_cells_frac": 0.0,
+  "time_min": "2011-02-14T01:58:12.20Z",
+  "time_max": "2016-07-23T00:58:46.90Z",
+  "n_entities": 52,
+  "label_counts_first_char": {
+   "N": 5192,
+   "P": 1810
+  }
+ },
+ "SEP_fc_test_24": {
+  "path": "SEP-prediction/SEP_Package/data/events_fc_testing_24.csv",
+  "rows": 801,
+  "cols": 34,
+  "nan_cells_frac": 0.0,
+  "duplicate_rows": 0,
+  "exact_zero_frac_physical": 0.03586034698006802,
+  "rows_with_any_zero_physical_frac": 0.9862671660424469,
+  "fill_value_cells_frac": 0.0,
+  "time_min": "2017-03-31T21:58:37.50Z",
+  "time_max": "2017-09-08T06:10:41.80Z",
+  "n_entities": 3,
+  "label_counts_first_char": {
+   "N": 479,
+   "P": 322
+  }
+ },
+ "RNNCME_train_24": {
+  "path": "RNN-CME-prediction/CMEpredict/normalized_training_24.csv",
+  "rows": 75063,
+  "cols": 22,
+  "nan_cells_frac": 0.0,
+  "duplicate_rows": 0,
+  "exact_zero_frac_physical": 0.04225916896473629,
+  "rows_with_any_zero_physical_frac": 0.10805589971090951,
+  "fill_value_cells_frac": 0.0
+ },
+ "FlareML_original_845": {
+  "path": "FlareML/data/original_data/flaringar_original_data.csv",
+  "rows": 845,
+  "cols": 16,
+  "nan_cells_frac": 0.0,
+  "duplicate_rows": 0,
+  "exact_zero_frac_physical": 0.0,
+  "rows_with_any_zero_physical_frac": 0.0,
+  "fill_value_cells_frac": 0.0,
+  "time_min": "1/1/2011 1:34",
+  "time_max": "9/9/2012 0:10",
+  "n_entities": 472,
+  "label_counts_first_char": {
+   "C": 552,
+   "M": 142,
+   "B": 128,
+   "X": 23
+  }
+ },
+ "CMETNet_ICME_list": {
+  "path": "CMETNet/CMETNet_Package/data/ICME_list.csv",
+  "rows": 363,
+  "cols": 14,
+  "nan_cells_frac": 0.0,
+  "duplicate_rows": 0,
+  "exact_zero_frac_physical": 0.003602458147912693,
+  "rows_with_any_zero_physical_frac": 0.0440771349862259,
+  "fill_value_cells_frac": 0.0,
+  "time_min": "1996-08-14 19:30:00",
+  "time_max": "2021-01-02 11:24:00"
+ },
+ "Kp_1h_train": {
+  "path": "Kp-prediction/data/solar-wind-data/1h/solar_wind_parameters_data_1_hourly_train.csv",
+  "rows": 104186,
+  "cols": 17,
+  "nan_cells_frac": 0.0,
+  "duplicate_rows": 0,
+  "exact_zero_frac_physical": 0.020083903196797443,
+  "rows_with_any_zero_physical_frac": 0.1633904747278905,
+  "fill_value_cells_frac": 5.1682715380333104e-06,
+  "time_min": "2010-1-1-0",
+  "time_max": "2021-9-9-9"
+ },
+ "Dst_1h_train": {
+  "path": "Dst-prediction/DSTT_Package/data/solar-wind-data/1h/solar_wind_parameters_data_1_hourly_train.csv",
+  "rows": 96431,
+  "cols": 18,
+  "nan_cells_frac": 0.0,
+  "duplicate_rows": 0,
+  "exact_zero_frac_physical": 0.011770073938878576,
+  "rows_with_any_zero_physical_frac": 0.13278924827078428,
+  "fill_value_cells_frac": 0.0012895971508865703,
+  "time_min": "2010-1-1-0",
+  "time_max": "2020-9-9-9"
+ },
+ "SYMH_5min_train_storm28": {
+  "path": "SYMHnet/data/solar_wind_symh_5min/1h/28/training_data_1h.csv",
+  "rows": 71735,
+  "cols": 21,
+  "nan_cells_frac": 0.0,
+  "duplicate_rows": 0,
+  "exact_zero_frac_physical": 0.011342963685787969,
+  "rows_with_any_zero_physical_frac": 0.16549801352199067,
+  "fill_value_cells_frac": 7.841360563183941e-06,
+  "time_min": "1998-2-14-0-0",
+  "time_max": "2012-3-9-9-55"
+ },
+ "TSI_SORCE_train": {
+  "path": "TSInet-irradiance-reconstruction/train_data/SORCE_TSI.csv",
+  "rows": 6017,
+  "cols": 13,
+  "nan_cells_frac": 0.0,
+  "duplicate_rows": 0,
+  "exact_zero_frac_physical": 0.05001107971857515,
+  "rows_with_any_zero_physical_frac": 0.054678411168356325,
+  "fill_value_cells_frac": 0.0
+ }
+}

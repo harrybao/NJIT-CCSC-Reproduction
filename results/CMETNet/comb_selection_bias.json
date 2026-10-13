@@ -52,5 +52,32 @@
   "mean_over_rounds_MAE": 11.067757249417507,
   "std_over_rounds_MAE": 0.2733631091943991,
   "val_selected_MAE": 11.106410124501439
+ },
+ "2003": {
+  "n_test_events": 17,
+  "n_pool": 346,
+  "selected_on_test_MAE": 11.748079164240208,
+  "selected_on_test_r": 0.6329139466112671,
+  "mean_over_rounds_MAE": 13.384020315251414,
+  "std_over_rounds_MAE": 0.959232628840772,
+  "val_selected_MAE": 12.472990757118161
+ },
+ "2004": {
+  "n_test_events": 21,
+  "n_pool": 342,
+  "selected_on_test_MAE": 12.225401094516846,
+  "selected_on_test_r": 0.5237711276376177,
+  "mean_over_rounds_MAE": 12.674527690895934,
+  "std_over_rounds_MAE": 0.5369372180663213,
+  "val_selected_MAE": 12.999084486002763
+ },
+ "2005": {
+  "n_test_events": 24,
+  "n_pool": 339,
+  "selected_on_test_MAE": 14.256171798383283,
+  "selected_on_test_r": 0.7838794854355683,
+  "mean_over_rounds_MAE": 15.091281382298007,
+  "std_over_rounds_MAE": 0.6427624199137161,
+  "val_selected_MAE": 15.199706531285083
  }
 }
