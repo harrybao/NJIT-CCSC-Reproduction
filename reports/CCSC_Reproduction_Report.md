@@ -39,6 +39,12 @@ under `github.com/ccsc-tools`), plus the related SolarDB tool MagNet.
    * SolarFlareNet: bundled test rows also present in training, and a position-based feature selection shifted by one column.
    * CMETNet: best-of-10 model chosen on the test year.
    * FlareML: display-side metric adjustment and test-batch scaling.
+![Released vs independent evaluation](../results/figures/released_vs_independent.png)
+
+*Figure 1. The same model scored two ways. Light dots: the evaluation as shipped in the repository. Dark dots: an
+independent, leakage-aware re-evaluation of the same weights or code. Numbers are in §5; the script is
+`scripts/figures/released_vs_independent.py`.*
+
 4. **These are observations about the released software packages, not about the published papers**, whose full texts and original experimental code I could not access. I would value the authors' guidance on whether the papers' evaluations differ from the released tools.
 
 ---
