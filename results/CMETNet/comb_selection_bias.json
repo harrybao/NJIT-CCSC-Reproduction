@@ -96,5 +96,14 @@
   "selected_on_test_r": 0.9126285995201461,
   "mean_over_rounds_MAE": 15.749333401016463,
   "std_over_rounds_MAE": 0.760811420201225
+ },
+ "2011": {
+  "n_test_events": 14,
+  "n_pool": 349,
+  "selected_on_test_MAE": 12.223393006577437,
+  "selected_on_test_r": 0.4313700673919791,
+  "mean_over_rounds_MAE": 12.52052084106077,
+  "std_over_rounds_MAE": 0.46614270701538835,
+  "val_selected_MAE": 12.789861660616108
  }
 }

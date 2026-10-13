@@ -171,7 +171,7 @@ Full 16-field records are in `tool_inventory.md`; commit hashes are in `tools/up
 
 **SolarFlareNet.**
 * The 9 shipped checkpoints load completely (95/95 tensors each), and the released tests reproduce the authors' stored result CSVs (≥ 99.98 % prediction agreement for 8/9).
-* However, those **8 models have no skill** on the bundled 2022 test files (AUC 0.41–0.53; TSS −0.04 to 0.05), in both our run and the authors' stored files.
+* However, those **8 models have no skill** on the bundled 2022 test files (AUC 0.40–0.53; TSS −0.04 to 0.05), in both our run and the authors' stored files.
 * The ninth (C/24 h) was retrained after the stored results were produced (shipped log, 2023-11-05). It gives TSS 0.792 and AUC 0.969. However, 84 % of the 24 h test rows (same HARP and timestamp) are also in `training_data_*_24.csv`; on the 2,581 evaluated rows *not* in training, TSS = 0.697.
 * The loader selects features by position, using another dataset's column order, and its `start_feature=5` skips the first feature. The 9 features fed are TOTPOT, ABSNJZH, USFLUX, AREA_ACR, MEANPOT, R_VALUE, MEANGAM, MEANJZH, MEANJZD, rather than the 9 named in the code.
 * `results/SolarFlareNet/`.
@@ -222,6 +222,7 @@ Full 16-field records are in `tool_inventory.md`; commit hashes are in `tools/up
 * **SINet.**
   * F10.7: RMSE 3.8801 / 13.7411 / 15.0921 / 16.3241 (1 / 27 / 45 / 60 d), identical to the notebook to 4 decimals.
   * F30: 2.0466 / 7.7862 / 9.1215 / 10.1475, vs notebook 2.0586 / 7.6491 / 9.1584 / 9.9921 (within 2 %).
+  * *Extension: naive baselines on exactly the same windows* (the script scores day *d* only; `results/SINet/baselines.json`). The best of persistence and 27-day recurrence gives F10.7 RMSE 4.26 / 15.31 / 16.94 / 18.66 and F30 2.27 / 7.96 / 9.89 / 11.38. **SINet beats both baselines at every horizon**: by 9–13 % for F10.7 and 2–11 % for F30, with the smallest margin at F30 27 d.
 * **TSInet.**
   * `process_args()` lacks a `global` declaration, so `-n NRLTSI2/SATIRE-S` silently reconstructs TCTE; I used a three-line driver that sets the module globals.
   * 30-day default reconstructions: RMSE 0.71–0.79 W m⁻², vs 0.62–0.72 in the authors' stored files (stochastic periodic re-fitting).

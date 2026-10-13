@@ -143,7 +143,7 @@ Fields: 1 name · 2 research question · 3 paper title · 4 citation · 5 paper 
 12. Optional.
 13. ≈ 1.9 GB.
 14. Paper metrics ❓ (full text blocked). Shipped `result/` CSVs ✅.
-15. Re-run outputs agree ≥ 99.98 % with the stored result CSVs for 8/9 settings. **Those 8 shipped models have AUC 0.41–0.53 (no skill) on the bundled test files.**
+15. Re-run outputs agree ≥ 99.98 % with the stored result CSVs for 8/9 settings. **Those 8 shipped models have AUC 0.40–0.53 (no skill) on the bundled test files.**
     The C/24 h weights were retrained after the stored results were produced (see the shipped 2023-11-05 log) and give TSS 0.79. However, **84 % of the bundled 24 h test rows also occur (same HARP and timestamp) in the training file**; on the non-overlapping rows TSS is 0.697.
     The loader selects features by position using another dataset's column order (off by one: TOTUSJH is never used). The 9 features actually fed are TOTPOT, ABSNJZH, USFLUX, AREA_ACR, MEANPOT, R_VALUE, MEANGAM, MEANJZH, MEANJZD.
 16. **Partially reproduced** (stored outputs reproduced; paper-level skill not reproducible with the shipped artefacts).
