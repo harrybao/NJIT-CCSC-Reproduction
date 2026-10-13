@@ -1,0 +1,35 @@
+{
+ "mask_2_class_001.png": {
+  "shape": [
+   720,
+   720
+  ],
+  "identical": false,
+  "pixel_agreement(binarized@127)": 0.9998804012345679,
+  "foreground_IoU": 0.9998395283167815,
+  "max_abs_diff": 255,
+  "mean_abs_diff": 0.030497685185185187
+ },
+ "mask_2_class_002.png": {
+  "shape": [
+   720,
+   720
+  ],
+  "identical": false,
+  "pixel_agreement(binarized@127)": 0.9999729938271605,
+  "foreground_IoU": 0.9999636808899219,
+  "max_abs_diff": 255,
+  "mean_abs_diff": 0.0068865740740740745
+ },
+ "mask_2_class_003.png": {
+  "shape": [
+   720,
+   720
+  ],
+  "identical": false,
+  "pixel_agreement(binarized@127)": 0.9999556327160494,
+  "foreground_IoU": 0.9999406448549412,
+  "max_abs_diff": 255,
+  "mean_abs_diff": 0.011313657407407408
+ }
+}

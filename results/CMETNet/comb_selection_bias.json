@@ -1,0 +1,20 @@
+{
+ "1997": {
+  "n_test_events": 15,
+  "n_pool": 348,
+  "selected_on_test_MAE": 13.042735639123494,
+  "selected_on_test_r": 0.4806365961396422,
+  "mean_over_rounds_MAE": 14.233458545310986,
+  "std_over_rounds_MAE": 0.45553502133320456,
+  "val_selected_MAE": 15.126775755629465
+ },
+ "1998": {
+  "n_test_events": 20,
+  "n_pool": 343,
+  "selected_on_test_MAE": 12.143428348010133,
+  "selected_on_test_r": 0.7075997309494009,
+  "mean_over_rounds_MAE": 14.272439324625221,
+  "std_over_rounds_MAE": 0.9228127112750415,
+  "val_selected_MAE": 13.22606831244544
+ }
+}

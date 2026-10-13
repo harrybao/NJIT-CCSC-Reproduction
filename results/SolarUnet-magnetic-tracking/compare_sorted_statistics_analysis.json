@@ -1,0 +1,38 @@
+{
+ "feature-flux.png": {
+  "shape_mismatch": [
+   [
+    1465,
+    3181
+   ],
+   [
+    1443,
+    3181
+   ]
+  ]
+ },
+ "feature-lifetime.png": {
+  "shape_mismatch": [
+   [
+    1447,
+    3133
+   ],
+   [
+    1452,
+    3179
+   ]
+  ]
+ },
+ "feature-size.png": {
+  "shape_mismatch": [
+   [
+    1459,
+    3181
+   ],
+   [
+    1438,
+    3181
+   ]
+  ]
+ }
+}

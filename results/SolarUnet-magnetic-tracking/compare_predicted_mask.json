@@ -1,0 +1,35 @@
+{
+ "predicted_mask_000.png": {
+  "shape": [
+   720,
+   720
+  ],
+  "identical": true,
+  "pixel_agreement(binarized@127)": 1.0,
+  "foreground_IoU": 1.0,
+  "max_abs_diff": 0,
+  "mean_abs_diff": 0.0
+ },
+ "predicted_mask_001.png": {
+  "shape": [
+   720,
+   720
+  ],
+  "identical": false,
+  "pixel_agreement(binarized@127)": 0.9268942901234568,
+  "foreground_IoU": 0.8972912178001816,
+  "max_abs_diff": 255,
+  "mean_abs_diff": 18.641956018518517
+ },
+ "predicted_mask_002.png": {
+  "shape": [
+   720,
+   720
+  ],
+  "identical": false,
+  "pixel_agreement(binarized@127)": 0.9268942901234568,
+  "foreground_IoU": 0.8972912178001816,
+  "max_abs_diff": 255,
+  "mean_abs_diff": 18.641956018518517
+ }
+}

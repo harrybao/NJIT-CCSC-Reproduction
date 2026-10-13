@@ -1,0 +1,11 @@
+Loading testing data...
+Model loaded and ready for evaluation on cpu.
+Generating predictions on the test set...
+
+--- Final Model Performance Metrics ---
+Confusion Matrix (TN, FP, FN, TP): (16313, 56, 49, 493)
+True Skill Statistic (TSS): 0.9062
+
+real	0m13.063s
+user	0m7.052s
+sys	0m3.879s

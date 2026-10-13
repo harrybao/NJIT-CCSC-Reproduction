@@ -1,0 +1,35 @@
+{
+ "tracking_result_frame_1.png": {
+  "shape": [
+   720,
+   720
+  ],
+  "identical": false,
+  "pixel_agreement(binarized@127)": 0.9646566358024692,
+  "foreground_IoU": 0.9179735592097311,
+  "max_abs_diff": 202,
+  "mean_abs_diff": 4.712164351851852
+ },
+ "tracking_result_frame_2.png": {
+  "shape": [
+   720,
+   720
+  ],
+  "identical": false,
+  "pixel_agreement(binarized@127)": 0.8384047067901235,
+  "foreground_IoU": 0.6683203598267383,
+  "max_abs_diff": 227,
+  "mean_abs_diff": 10.714313271604938
+ },
+ "tracking_result_frame_3.png": {
+  "shape": [
+   720,
+   720
+  ],
+  "identical": false,
+  "pixel_agreement(binarized@127)": 0.8057098765432099,
+  "foreground_IoU": 0.6145161166861858,
+  "max_abs_diff": 243,
+  "mean_abs_diff": 13.94791087962963
+ }
+}

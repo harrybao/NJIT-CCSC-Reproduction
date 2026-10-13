@@ -1,0 +1,19 @@
+{
+ "csv_rows": 84577,
+ "possible_24row_windows": 84554,
+ "n_train_windows": 67642,
+ "n_test_windows": 16911,
+ "total": 84553,
+ "test_windows_located_in_csv": 16911,
+ "test_windows_with_an_adjacent(23-row-overlap)_window_outside_test": 16172,
+ "fraction": 0.9563006327242624,
+ "pos_rate_train": 0.03205109251648384,
+ "pos_rate_test": 0.03205014487611614,
+ "test_positions_min_max": [
+  2,
+  84548
+ ],
+ "label_rule_agreement(y_test == label[row p+22])": 0.9953284844184259,
+ "label_rule_agreement(y_test == label[row p+23])": 0.9975755425462717,
+ "label_rule_agreement(y_test == label[row p+24])": 1.0
+}
