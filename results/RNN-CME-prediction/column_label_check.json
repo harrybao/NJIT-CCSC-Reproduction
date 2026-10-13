@@ -1,0 +1,382 @@
+{
+ "permutation_CMEpredict_col_to_CME_data_samples_col": [
+  7,
+  9,
+  11,
+  1,
+  16,
+  5,
+  17,
+  3,
+  4,
+  2,
+  13,
+  14,
+  6,
+  10,
+  0,
+  8,
+  12,
+  15
+ ],
+ "corr_with_USFLUX": {
+  "TOTUSJH": {
+   "CME_data_samples_labelling": 0.92,
+   "CMEpredict_labelling": 0.344
+  },
+  "TOTPOT": {
+   "CME_data_samples_labelling": 0.89,
+   "CMEpredict_labelling": 0.062
+  },
+  "TOTUSJZ": {
+   "CME_data_samples_labelling": 0.932,
+   "CMEpredict_labelling": -0.116
+  },
+  "ABSNJZH": {
+   "CME_data_samples_labelling": 0.287,
+   "CMEpredict_labelling": 0.89
+  },
+  "SAVNCPP": {
+   "CME_data_samples_labelling": 0.322,
+   "CMEpredict_labelling": 0.053
+  },
+  "USFLUX": {
+   "CME_data_samples_labelling": 1.0,
+   "CMEpredict_labelling": 1.0
+  },
+  "AREA_ACR": {
+   "CME_data_samples_labelling": 0.917,
+   "CMEpredict_labelling": -0.109
+  },
+  "MEANPOT": {
+   "CME_data_samples_labelling": 0.344,
+   "CMEpredict_labelling": 0.287
+  },
+  "R_VALUE": {
+   "CME_data_samples_labelling": 0.626,
+   "CMEpredict_labelling": 0.322
+  },
+  "SHRGT45": {
+   "CME_data_samples_labelling": 0.062,
+   "CMEpredict_labelling": 0.932
+  },
+  "MEANGAM": {
+   "CME_data_samples_labelling": -0.047,
+   "CMEpredict_labelling": -0.352
+  },
+  "MEANJZH": {
+   "CME_data_samples_labelling": -0.116,
+   "CMEpredict_labelling": -0.1
+  },
+  "MEANGBT": {
+   "CME_data_samples_labelling": -0.419,
+   "CMEpredict_labelling": 0.917
+  },
+  "MEANGBZ": {
+   "CME_data_samples_labelling": -0.352,
+   "CMEpredict_labelling": -0.047
+  },
+  "MEANJZD": {
+   "CME_data_samples_labelling": -0.1,
+   "CMEpredict_labelling": 0.92
+  },
+  "MEANGBH": {
+   "CME_data_samples_labelling": -0.303,
+   "CMEpredict_labelling": 0.626
+  },
+  "MEANSHR": {
+   "CME_data_samples_labelling": 0.053,
+   "CMEpredict_labelling": -0.419
+  },
+  "MEANALP": {
+   "CME_data_samples_labelling": -0.109,
+   "CMEpredict_labelling": -0.303
+  }
+ },
+ "features_used_by_released_models": {
+  "gru-12": {
+   "names_as_in_code_and_paper_ranking": [
+    "MEANPOT",
+    "SHRGT45",
+    "ABSNJZH",
+    "SAVNCPP",
+    "MEANJZH",
+    "MEANJZD",
+    "MEANALP",
+    "TOTUSJZ",
+    "USFLUX",
+    "AREA_ACR",
+    "MEANGBZ",
+    "TOTPOT",
+    "MEANGBT",
+    "TOTUSJH",
+    "R_VALUE",
+    "MEANGBH"
+   ],
+   "values_actually_fed_if_CME_data_samples_header_is_right": [
+    "ABSNJZH",
+    "TOTUSJZ",
+    "TOTPOT",
+    "MEANSHR",
+    "MEANJZD",
+    "TOTUSJH",
+    "MEANGBH",
+    "MEANJZH",
+    "USFLUX",
+    "MEANALP",
+    "MEANGAM",
+    "SHRGT45",
+    "AREA_ACR",
+    "MEANPOT",
+    "SAVNCPP",
+    "R_VALUE"
+   ]
+  },
+  "gru-24": {
+   "names_as_in_code_and_paper_ranking": [
+    "MEANPOT",
+    "SHRGT45",
+    "MEANJZH",
+    "TOTPOT",
+    "MEANSHR",
+    "USFLUX",
+    "MEANALP",
+    "ABSNJZH",
+    "SAVNCPP",
+    "TOTUSJZ",
+    "MEANGBZ",
+    "MEANJZD"
+   ],
+   "values_actually_fed_if_CME_data_samples_header_is_right": [
+    "ABSNJZH",
+    "TOTUSJZ",
+    "MEANJZD",
+    "SHRGT45",
+    "MEANGBT",
+    "USFLUX",
+    "MEANGBH",
+    "TOTPOT",
+    "MEANSHR",
+    "MEANJZH",
+    "MEANGAM",
+    "TOTUSJH"
+   ]
+  },
+  "gru-36": {
+   "names_as_in_code_and_paper_ranking": [
+    "MEANPOT",
+    "TOTPOT",
+    "SHRGT45",
+    "MEANSHR",
+    "USFLUX",
+    "MEANALP",
+    "MEANJZH",
+    "SAVNCPP",
+    "ABSNJZH"
+   ],
+   "values_actually_fed_if_CME_data_samples_header_is_right": [
+    "ABSNJZH",
+    "SHRGT45",
+    "TOTUSJZ",
+    "MEANGBT",
+    "USFLUX",
+    "MEANGBH",
+    "MEANJZD",
+    "MEANSHR",
+    "TOTPOT"
+   ]
+  },
+  "gru-48": {
+   "names_as_in_code_and_paper_ranking": [
+    "MEANPOT",
+    "TOTPOT",
+    "SHRGT45",
+    "MEANSHR",
+    "USFLUX",
+    "MEANGAM",
+    "SAVNCPP",
+    "ABSNJZH",
+    "MEANALP",
+    "TOTUSJZ",
+    "TOTUSJH",
+    "MEANJZH",
+    "R_VALUE",
+    "MEANGBZ"
+   ],
+   "values_actually_fed_if_CME_data_samples_header_is_right": [
+    "ABSNJZH",
+    "SHRGT45",
+    "TOTUSJZ",
+    "MEANGBT",
+    "USFLUX",
+    "MEANGBZ",
+    "MEANSHR",
+    "TOTPOT",
+    "MEANGBH",
+    "MEANJZH",
+    "MEANPOT",
+    "MEANJZD",
+    "SAVNCPP",
+    "MEANGAM"
+   ]
+  },
+  "gru-60": {
+   "names_as_in_code_and_paper_ranking": [
+    "MEANPOT",
+    "TOTPOT",
+    "SHRGT45",
+    "MEANSHR",
+    "ABSNJZH"
+   ],
+   "values_actually_fed_if_CME_data_samples_header_is_right": [
+    "ABSNJZH",
+    "SHRGT45",
+    "TOTUSJZ",
+    "MEANGBT",
+    "TOTPOT"
+   ]
+  },
+  "lstm-12": {
+   "names_as_in_code_and_paper_ranking": [
+    "MEANPOT",
+    "SHRGT45",
+    "MEANSHR",
+    "ABSNJZH",
+    "MEANJZH",
+    "SAVNCPP",
+    "MEANALP",
+    "TOTUSJZ",
+    "MEANJZD",
+    "TOTPOT",
+    "AREA_ACR",
+    "USFLUX",
+    "MEANGBZ",
+    "MEANGBT",
+    "MEANGBH"
+   ],
+   "values_actually_fed_if_CME_data_samples_header_is_right": [
+    "ABSNJZH",
+    "TOTUSJZ",
+    "MEANGBT",
+    "TOTPOT",
+    "MEANJZD",
+    "MEANSHR",
+    "MEANGBH",
+    "MEANJZH",
+    "TOTUSJH",
+    "SHRGT45",
+    "MEANALP",
+    "USFLUX",
+    "MEANGAM",
+    "AREA_ACR",
+    "R_VALUE"
+   ]
+  },
+  "lstm-24": {
+   "names_as_in_code_and_paper_ranking": [
+    "MEANSHR",
+    "MEANPOT",
+    "SHRGT45",
+    "USFLUX",
+    "MEANJZH",
+    "MEANGAM",
+    "SAVNCPP",
+    "ABSNJZH",
+    "TOTPOT",
+    "MEANALP",
+    "TOTUSJZ",
+    "MEANGBZ"
+   ],
+   "values_actually_fed_if_CME_data_samples_header_is_right": [
+    "MEANGBT",
+    "ABSNJZH",
+    "TOTUSJZ",
+    "USFLUX",
+    "MEANJZD",
+    "MEANGBZ",
+    "MEANSHR",
+    "TOTPOT",
+    "SHRGT45",
+    "MEANGBH",
+    "MEANJZH",
+    "MEANGAM"
+   ]
+  },
+  "lstm-36": {
+   "names_as_in_code_and_paper_ranking": [
+    "MEANPOT",
+    "MEANSHR",
+    "SHRGT45",
+    "TOTPOT",
+    "MEANGAM",
+    "SAVNCPP",
+    "MEANJZH",
+    "ABSNJZH"
+   ],
+   "values_actually_fed_if_CME_data_samples_header_is_right": [
+    "ABSNJZH",
+    "MEANGBT",
+    "TOTUSJZ",
+    "SHRGT45",
+    "MEANGBZ",
+    "MEANSHR",
+    "MEANJZD",
+    "TOTPOT"
+   ]
+  },
+  "lstm-48": {
+   "names_as_in_code_and_paper_ranking": [
+    "MEANPOT",
+    "TOTPOT",
+    "MEANSHR",
+    "SHRGT45",
+    "USFLUX",
+    "MEANGAM",
+    "ABSNJZH",
+    "MEANJZH",
+    "SAVNCPP",
+    "TOTUSJZ",
+    "TOTUSJH",
+    "MEANALP",
+    "R_VALUE",
+    "MEANGBZ",
+    "MEANJZD"
+   ],
+   "values_actually_fed_if_CME_data_samples_header_is_right": [
+    "ABSNJZH",
+    "SHRGT45",
+    "MEANGBT",
+    "TOTUSJZ",
+    "USFLUX",
+    "MEANGBZ",
+    "TOTPOT",
+    "MEANJZD",
+    "MEANSHR",
+    "MEANJZH",
+    "MEANPOT",
+    "MEANGBH",
+    "SAVNCPP",
+    "MEANGAM",
+    "TOTUSJH"
+   ]
+  },
+  "lstm-60": {
+   "names_as_in_code_and_paper_ranking": [
+    "MEANPOT",
+    "TOTPOT",
+    "SHRGT45",
+    "MEANSHR",
+    "ABSNJZH",
+    "MEANJZH"
+   ],
+   "values_actually_fed_if_CME_data_samples_header_is_right": [
+    "ABSNJZH",
+    "SHRGT45",
+    "TOTUSJZ",
+    "MEANGBT",
+    "TOTPOT",
+    "MEANJZD"
+   ]
+  }
+ }
+}

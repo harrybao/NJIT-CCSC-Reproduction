@@ -1,0 +1,6 @@
+# Artefacts downloaded on 2026-10-13 from the authors' own links (not redistributed in this repository)
+# sha256  size_bytes  source_url
+5d461f91408099585628ef5f0094304e8a060e90936193e3fc9ecc5362e13807  264169312  https://web.njit.edu/~wangj/deepsuncode/FibrilNet/model.hdf5
+4e3203c31cf82dbdd4bfd206d2ecacada453af95acffd9e664972ed35605415a  149456128  https://web.njit.edu/~wangj/deepsuncode/SDNN/pretrained_model.h5
+30d677c6146ad11382511d815162da12e03131fde451dda901239e2c1fe08bf4  228101760  https://web.njit.edu/~wangj/deepsuncode/SDNN/cals_170713_162012.fts
+1b2fbfeb87ec328c4c6e82b924755c5c2a284a8f5886beeef47a1d5710b1d4aa  170469296  https://drive.google.com/file/d/18YJfFA0VbECbQWTTyr7q-8eOFAktBOOV (SolarCNN README link)

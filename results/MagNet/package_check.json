@@ -1,0 +1,51 @@
+{
+ "zip_n_entries": 192,
+ "zip_non_data_entries": {
+  "MagNet/magnet.py": 5052,
+  "MagNet/MagNet_model.py": 9781,
+  "MagNet/model/": 0,
+  "MagNet/model/model.h5": 1184808016,
+  "MagNet/utils.py": 3337
+ },
+ "zip_has_layers_attention": false,
+ "MagNet_model_imports": [
+  "from tensorflow.keras.models import Model",
+  "from tensorflow.keras.layers import Activation, Conv2D, Dropout",
+  "from tensorflow.keras.layers import MaxPooling2D, BatchNormalization",
+  "from tensorflow.keras.layers import UpSampling2D",
+  "from tensorflow.keras.layers import concatenate",
+  "from tensorflow.keras.initializers import Constant",
+  "from tensorflow.keras.layers import add",
+  "from tensorflow.keras.layers import PReLU",
+  "from layers.attention import PAM, CAM",
+  "from tensorflow.keras import Input"
+ ],
+ "model_h5": {
+  "keras_version": "2.6.0",
+  "backend": "tensorflow",
+  "has_model_config": false,
+  "n_layers": 809,
+  "attention_layer_weights": {
+   "pam": {
+    "pam/gamma:0": [
+     -0.007790414150804281
+    ]
+   },
+   "cam": {
+    "cam/gamma:0": [
+     0.43674415349960327
+    ]
+   },
+   "pam_1": {
+    "pam_1/gamma:0": [
+     0.004331408068537712
+    ]
+   },
+   "cam_1": {
+    "cam_1/gamma:0": [
+     -0.5857028961181641
+    ]
+   }
+  }
+ }
+}

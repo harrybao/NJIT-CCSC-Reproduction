@@ -1,0 +1,16 @@
+2026-10-13 16:42:22.041227: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI AVX512_BF16 AVX_VNNI AMX_TILE AMX_INT8 AMX_BF16 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2026-10-13 16:42:22.139275: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-10-13 16:42:24.471868: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI AVX512_BF16 AVX_VNNI AMX_TILE AMX_INT8 AMX_BF16 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Predict sample 1
+1/1 [==============================] - ETA: 0s1/1 [==============================] - 2s 2s/step
+Predict sample 2
+1/1 [==============================] - ETA: 0s1/1 [==============================] - 1s 1s/step
+Predict sample 3
+1/1 [==============================] - ETA: 0s1/1 [==============================] - 1s 1s/step
+Finished
+
+real	0m13.576s
+user	0m14.224s
+sys	0m0.722s
