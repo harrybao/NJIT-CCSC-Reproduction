@@ -1,0 +1,159 @@
+{
+ "contamination_check": {
+  "test_window_rows": 1103,
+  "rows_removed_by_isin_filter": 0,
+  "test_window_timestamps_present_in_training_frame": 1103,
+  "training_frame_rows": 104080,
+  "note": "train_data = all_data[:] in load_training_and_testing_data, i.e. the full frame is used for training"
+ },
+ "1h": {
+  "n_test": 1103,
+  "raw_mc50_shipped_6h_weights": {
+   "RMSE": 13.09202074705416,
+   "MAE": 9.522457765626399,
+   "R2": 0.37144495716613557,
+   "r": 0.6759767108044699,
+   "mc_std_mean": 0.4506400227546692
+  },
+  "raw_mc50_correct_weights": {
+   "RMSE": 15.981749654856117,
+   "MAE": 11.163605434075336,
+   "R2": 0.06334729405449802,
+   "r": 0.2658837705067005,
+   "mc_std_mean": 0.4206818640232086
+  },
+  "persistence_Dst(t)": {
+   "RMSE": 4.234619655467685,
+   "MAE": 2.7352674524025384,
+   "R2": 0.9342404604911839,
+   "r": 0.96711634222352,
+   "n": 1103
+  },
+  "persistence_note": "same Oct-Nov 2021 window, timestamp-aligned; label file pre-shifted by h hours"
+ },
+ "2h": {
+  "n_test": 1102,
+  "raw_mc50_shipped_6h_weights": {
+   "RMSE": 13.080808985782506,
+   "MAE": 9.52615976598648,
+   "R2": 0.3730759976331445,
+   "r": 0.676908390708725,
+   "mc_std_mean": 0.4127967059612274
+  },
+  "raw_mc50_correct_weights": {
+   "RMSE": 15.882214511613263,
+   "MAE": 11.085700677224382,
+   "R2": 0.07579608316121778,
+   "r": 0.281520706610744,
+   "mc_std_mean": 0.5260631442070007
+  },
+  "persistence_Dst(t)": {
+   "RMSE": 6.695137331216407,
+   "MAE": 4.463702359346643,
+   "R2": 0.8357653954024986,
+   "r": 0.9178665257578483,
+   "n": 1102
+  },
+  "persistence_note": "same Oct-Nov 2021 window, timestamp-aligned; label file pre-shifted by h hours"
+ },
+ "3h": {
+  "n_test": 1101,
+  "raw_mc50_shipped_6h_weights": {
+   "RMSE": 13.18317382645258,
+   "MAE": 9.5898232517407,
+   "R2": 0.3638026277498404,
+   "r": 0.6685066985931847,
+   "mc_std_mean": 0.42315223813056946
+  },
+  "raw_mc50_correct_weights": {
+   "RMSE": 13.432449040073793,
+   "MAE": 9.743750816090989,
+   "R2": 0.3395159760141305,
+   "r": 0.6432876132015464,
+   "mc_std_mean": 0.5602114796638489
+  },
+  "persistence_Dst(t)": {
+   "RMSE": 8.272274035062647,
+   "MAE": 5.649409627611263,
+   "R2": 0.7495034553204368,
+   "r": 0.8747229984068395,
+   "n": 1101
+  },
+  "persistence_note": "same Oct-Nov 2021 window, timestamp-aligned; label file pre-shifted by h hours"
+ },
+ "4h": {
+  "n_test": 1100,
+  "raw_mc50_shipped_6h_weights": {
+   "RMSE": 13.25220456139898,
+   "MAE": 9.660777575901964,
+   "R2": 0.3577022192572279,
+   "r": 0.6604282298392652,
+   "mc_std_mean": 0.4354206919670105
+  },
+  "raw_mc50_correct_weights": {
+   "RMSE": 13.01910281267318,
+   "MAE": 9.600673691142688,
+   "R2": 0.3800990917052529,
+   "r": 0.643584298124398,
+   "mc_std_mean": 0.4536539614200592
+  },
+  "persistence_Dst(t)": {
+   "RMSE": 9.44481579780916,
+   "MAE": 6.457272727272727,
+   "R2": 0.6737525363955097,
+   "r": 0.8367838837080068,
+   "n": 1100
+  },
+  "persistence_note": "same Oct-Nov 2021 window, timestamp-aligned; label file pre-shifted by h hours"
+ },
+ "5h": {
+  "n_test": 1099,
+  "raw_mc50_shipped_6h_weights": {
+   "RMSE": 13.344195012979018,
+   "MAE": 9.699614189392307,
+   "R2": 0.3493419438531422,
+   "r": 0.650775767458663,
+   "mc_std_mean": 0.407240092754364
+  },
+  "raw_mc50_correct_weights": {
+   "RMSE": 15.458687442626859,
+   "MAE": 11.259873982013845,
+   "R2": 0.1268008913173605,
+   "r": 0.38203095473594584,
+   "mc_std_mean": 0.4942514896392822
+  },
+  "persistence_Dst(t)": {
+   "RMSE": 10.471287489723872,
+   "MAE": 7.138307552320291,
+   "R2": 0.5993471671965229,
+   "r": 0.7994101983339498,
+   "n": 1099
+  },
+  "persistence_note": "same Oct-Nov 2021 window, timestamp-aligned; label file pre-shifted by h hours"
+ },
+ "6h": {
+  "n_test": 1098,
+  "raw_mc50_shipped_6h_weights": {
+   "RMSE": 13.47627421948318,
+   "MAE": 9.77501669777167,
+   "R2": 0.33699734485891664,
+   "r": 0.6371512139552509,
+   "mc_std_mean": 0.3450603783130646
+  },
+  "raw_mc50_correct_weights": {
+   "RMSE": 13.469501686544515,
+   "MAE": 9.769797501837893,
+   "R2": 0.3376635644631172,
+   "r": 0.6371453318274602,
+   "mc_std_mean": 0.35190966725349426
+  },
+  "persistence_Dst(t)": {
+   "RMSE": 11.406146682791803,
+   "MAE": 7.752276867030965,
+   "R2": 0.5250438745139301,
+   "r": 0.762078344225579,
+   "n": 1098
+  },
+  "persistence_note": "same Oct-Nov 2021 window, timestamp-aligned; label file pre-shifted by h hours"
+ }
+}

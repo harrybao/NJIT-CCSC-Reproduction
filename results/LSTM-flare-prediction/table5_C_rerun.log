@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/user/work/LSTM-flare-prediction/Table5_dataset_and_source_code/LSTMpredict_tf2.py", line 317, in <module>
+    thlist = np.linspace(0, 1, thlistsize)
+NameError: name 'np' is not defined
+
+real	0m2.651s
+user	0m2.562s
+sys	0m0.722s
