@@ -1,0 +1,119 @@
+# git diff --stat <cited tag> HEAD (notebooks *.ipynb excluded) for the 13 tools whose Citation button points to a GitHub release (generated 2026-10-13)
+
+== SolarUnet-magnetic-tracking  (cited tag v.1.2 = 3b6e037; HEAD = 551dcd4)
+ README.md | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
+
+== FlareML  (cited tag v1.5 = 2f08a45; HEAD = 44ffd7a)
+ README.md | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+== RNN-CME-prediction  (cited tag v1.3 = 4b7f4e4; HEAD = 04be43f)
+ README.md        |  8 ++++----
+ environment.yml  |  1 +
+ requirements.txt | 10 +++++-----
+ 3 files changed, 10 insertions(+), 9 deletions(-)
+
+== LSTM-flare-prediction  (cited tag v1.0.2 = 42ac6c9; HEAD = 12fc8b9)
+ LSTM_Flare.py                                                 |   4 +-
+ README.md                                                     |  17 ++--
+ __pycache__/LSTM_Flare.cpython-310.pyc                        | Bin 0 -> 4872 bytes
+ __pycache__/LSTM_Flare.cpython-39.pyc                         | Bin 0 -> 4799 bytes
+ __pycache__/flarepredict_test.cpython-310.pyc                 | Bin 0 -> 2560 bytes
+ __pycache__/flarepredict_test.cpython-39.pyc                  | Bin 0 -> 2544 bytes
+ __pycache__/flarepredict_utils.cpython-310.pyc                | Bin 0 -> 2586 bytes
+ __pycache__/flarepredict_utils.cpython-39.pyc                 | Bin 0 -> 2685 bytes
+ environment.yml                                               |  19 +++--
+ flarepredict_test.py                                          |  25 ++----
+ flarepredict_train.py                                         |  23 +++---
+ pretrained_model/LSTM_C_sample_run/custom_model_id.h5         | Bin 1315960 -> 1332440 bytes
+ pretrained_model/LSTM_C_sample_run/model.h5                   | Bin 1315960 -> 1332440 bytes
+ pretrained_model/LSTM_M5_sample_run/custom_model_id.h5        | Bin 1318912 -> 1335320 bytes
+ pretrained_model/LSTM_M5_sample_run/model.h5                  | Bin 1318840 -> 1335320 bytes
+ pretrained_model/LSTM_M_sample_run/custom_model_id.h5         | Bin 1319872 -> 1335912 bytes
+ pretrained_model/LSTM_M_sample_run/model.h5                   | Bin 1319800 -> 1336280 bytes
+ requirements.txt                                              |   9 +++
+ results/LSTM_C_sample_run/custom_model_id.csv                 | 186 +++++++++++++++++++++++++++++++++++++++++++
+ results/LSTM_M5_sample_run/custom_model_id.csv                | 190 ++++++++++++++++++++++++++++++++++++++++++++
+ results/LSTM_M_sample_run/custom_model_id.csv                 | 213 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ screenshots_02_22_23/Screenshot 2023-01-22 at 12.16.43 PM.png | Bin 0 -> 207086 bytes
+ screenshots_02_22_23/Screenshot 2023-01-22 at 12.17.05 PM.png | Bin 0 -> 242778 bytes
+ 23 files changed, 638 insertions(+), 48 deletions(-)
+
+== SEP-prediction  (cited tag v1.4 = bc61fbc; HEAD = 119ea98)
+ README.md                    | 30 +++++++++++-------------------
+ SEP_Package/LICENSE          | 21 +++++++++++++++++++++
+ SEP_Package/ReadME.txt       | 27 +++++++++++++++------------
+ SEP_Package/requirements.txt | 17 +++++++++--------
+ environment.yml              | 17 +++++++++--------
+ 5 files changed, 65 insertions(+), 47 deletions(-)
+
+== Dst-prediction  (cited tag v1.1 = cd8eb25; HEAD = e5ae919)
+ DSTT_Package/ReadME.txt       | 38 ++++++++++++++++++++------------------
+ DSTT_Package/requirements.txt | 29 ++++++++++++++---------------
+ README.md                     | 36 +++++++++++++-----------------------
+ environment.yml               | 31 +++++++++++++++----------------
+ 4 files changed, 62 insertions(+), 72 deletions(-)
+
+== TSInet-irradiance-reconstruction  (cited tag v1.6 = 3efd99f; HEAD = 8eb42cc)
+ README.md        | 31 +++++++++++--------------------
+ environment.yml  | 19 +++++++++----------
+ requirements.txt | 16 ++++++++--------
+ 3 files changed, 28 insertions(+), 38 deletions(-)
+
+== Kp-prediction  (cited tag v1.1 = 4b06c9d; HEAD = 8e473da)
+ LICENSE          |  2 +-
+ README.md        | 37 +++++++++++++------------------------
+ ReadME.txt       | 35 ++++++++++++++++++-----------------
+ environment.yml  | 26 +++++++++++++-------------
+ requirements.txt | 24 ++++++++++++------------
+ 5 files changed, 57 insertions(+), 67 deletions(-)
+
+== CMETNet  (cited tag v.1.1 = bcd70b1; HEAD = cfc7e0f)
+ CMETNet_Package/README.md        | 33 ++++++++++++++-------------------
+ CMETNet_Package/environment.yml  | 15 +++++++--------
+ CMETNet_Package/requirements.txt | 14 ++++++--------
+ README.md                        | 25 ++++++++-----------------
+ environment.yml                  | 14 +++++++-------
+ 5 files changed, 42 insertions(+), 59 deletions(-)
+
+== FibrilNet  (cited tag v1.6 = a8b6c0c; HEAD = ba1764b)
+ README.md | 17 +++--------------
+ 1 file changed, 3 insertions(+), 14 deletions(-)
+
+== SDNN  (cited tag v1.3 = 8197c36; HEAD = dc44cec)
+ README.md | 17 +++--------------
+ 1 file changed, 3 insertions(+), 14 deletions(-)
+
+== SolarFlareNet  (cited tag v1.3 = 4603eba; HEAD = 1bf04b8)
+ .ipynb_checkpoints/README-checkpoint.md | 4 ++--
+ README.md                               | 4 ++--
+ utils.py                                | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+== SYMHnet  (cited tag v1.0 = 4d68937; HEAD = f4583d9)
+ .../5h_symh/model_weights_full/variables/variables.data-00000-of-00001      |   Bin 2847900 -> 0 bytes
+ models_storms_5min/5h_symh/model_weights_full/variables/variables.index     |   Bin 1787 -> 0 bytes
+ models_storms_5min/6h_symh/model_weights_full/keras_metadata.pb             |    15 -
+ models_storms_5min/6h_symh/model_weights_full/saved_model.pb                |   Bin 1018731 -> 0 bytes
+ .../6h_symh/model_weights_full/variables/variables.data-00000-of-00001      |   Bin 2847905 -> 0 bytes
+ models_storms_5min/6h_symh/model_weights_full/variables/variables.index     |   Bin 1787 -> 0 bytes
+ results_datasets/storm_num_28/1min/1h_uq_training.csv                       | 18666 ++++++++++----------
+ results_datasets/storm_num_31/1min/1h_uq_training.csv                       | 28730 +++++++++++++++---------------
+ results_datasets/storm_num_33/1min/1h_uq_training.csv                       | 26338 ++++++++++++++--------------
+ results_datasets/storm_num_36/1min/1h_uq_training.csv                       | 24622 +++++++++++++-------------
+ results_datasets/storm_num_36/1min/3h_uq_training.csv                       | 12312 -------------
+ results_datasets/storm_num_36/1min/4h_uq_training.csv                       | 12312 -------------
+ results_datasets/storm_num_36/1min/5h_uq_training.csv                       | 12312 -------------
+ results_datasets/storm_num_36/1min/6h_uq_training.csv                       | 12312 -------------
+ results_datasets/storm_num_36/5min/3h_uq_training.csv                       |  2811 ---
+ results_datasets/storm_num_36/5min/4h_uq_training.csv                       |  2811 ---
+ results_datasets/storm_num_36/5min/5h_uq_training.csv                       |  2811 ---
+ results_datasets/storm_num_36/5min/6h_uq_training.csv                       |  2811 ---
+ results_datasets/storm_num_37/1min/1h_uq_training.csv                       | 27570 ++++++++++++++---------------
+ results_datasets/storm_num_37/1min/2h_uq_training.csv                       | 15778 ++++++++++++++---
+ results_datasets/storm_num_37/5min/1h_uq_training.csv                       |  3477 +++-
+ results_datasets/storm_num_37/5min/2h_uq_training.csv                       |  3049 ++++
+ results_datasets/storm_num_40/1min/1h_uq_training.csv                       | 21598 +++++++++++------------
+ results_datasets/storm_num_42/1min/1h_uq_training.csv                       | 31672 +++++++++++++++++-----------------
+ 120 files changed, 109547 insertions(+), 152685 deletions(-)
