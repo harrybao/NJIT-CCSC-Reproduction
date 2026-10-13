@@ -1,0 +1,62 @@
+{
+ "SEP_performance_metrics_BiLSTM_FC_S_12.csv": {
+  "identical_all_columns": true,
+  "TSS_author": 0.9182,
+  "TSS_ours": 0.9182
+ },
+ "SEP_performance_metrics_BiLSTM_FC_S_24.csv": {
+  "identical_all_columns": true,
+  "TSS_author": 0.9782,
+  "TSS_ours": 0.9782
+ },
+ "SEP_performance_metrics_BiLSTM_FC_S_36.csv": {
+  "identical_all_columns": true,
+  "TSS_author": 0.9824,
+  "TSS_ours": 0.9824
+ },
+ "SEP_performance_metrics_BiLSTM_FC_S_48.csv": {
+  "identical_all_columns": true,
+  "TSS_author": 0.98,
+  "TSS_ours": 0.98
+ },
+ "SEP_performance_metrics_BiLSTM_FC_S_60.csv": {
+  "identical_all_columns": true,
+  "TSS_author": 0.9925,
+  "TSS_ours": 0.9925
+ },
+ "SEP_performance_metrics_BiLSTM_FC_S_72.csv": {
+  "identical_all_columns": true,
+  "TSS_author": 0.9425,
+  "TSS_ours": 0.9425
+ },
+ "SEP_performance_metrics_BiLSTM_F_S_12.csv": {
+  "identical_all_columns": true,
+  "TSS_author": 0.8587,
+  "TSS_ours": 0.8587
+ },
+ "SEP_performance_metrics_BiLSTM_F_S_24.csv": {
+  "identical_all_columns": true,
+  "TSS_author": 0.8689,
+  "TSS_ours": 0.8689
+ },
+ "SEP_performance_metrics_BiLSTM_F_S_36.csv": {
+  "identical_all_columns": true,
+  "TSS_author": 0.9609,
+  "TSS_ours": 0.9609
+ },
+ "SEP_performance_metrics_BiLSTM_F_S_48.csv": {
+  "identical_all_columns": true,
+  "TSS_author": 0.9807,
+  "TSS_ours": 0.9807
+ },
+ "SEP_performance_metrics_BiLSTM_F_S_60.csv": {
+  "identical_all_columns": true,
+  "TSS_author": 0.9713,
+  "TSS_ours": 0.9713
+ },
+ "SEP_performance_metrics_BiLSTM_F_S_72.csv": {
+  "identical_all_columns": true,
+  "TSS_author": 0.939,
+  "TSS_ours": 0.939
+ }
+}

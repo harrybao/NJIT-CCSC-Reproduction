@@ -144,7 +144,3 @@ Saving result to file: results/SEP_prediction_results_F_S_72.csv
 Saving the performance metrics to files: default_results/SEP_performance_metrics_BiLSTM_F_S_72.csv
 -------------------------------------------------------
 
-
-real	0m32.189s
-user	0m39.137s
-sys	0m1.682s
