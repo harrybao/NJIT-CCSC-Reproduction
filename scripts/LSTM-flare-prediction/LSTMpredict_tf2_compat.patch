@@ -1,6 +1,13 @@
 --- LSTMpredict.py	2026-10-13 12:50:09.120221945 +0000
-+++ LSTMpredict_tf2.py	2026-10-13 13:23:45.586082361 +0000
-@@ -20,6 +20,7 @@
++++ LSTMpredict_tf2.py	2026-10-13 13:28:26.561371347 +0000
+@@ -14,12 +14,14 @@
+ #   software for any purpose.  It is provided "as is" without
+ #   express or implied warranty.
+ # =========================================================================
++import numpy as np  # TF2 compat: old keras.models star-import used to re-export np
+ import pandas as pd
+ from keras.utils import np_utils
+ from sklearn.preprocessing import LabelEncoder
  from sklearn.utils import class_weight
  from keras.models import *
  from keras.layers import *
@@ -8,7 +15,7 @@
  from sklearn.metrics import confusion_matrix
  import sys
  
-@@ -288,7 +289,7 @@
+@@ -288,7 +290,7 @@
      layer1_out = Dense(200, activation='relu')(attention_mul)
      layer2_out = Dense(500, activation='relu')(layer1_out)
      output = Dense(nclass, activation='softmax', activity_regularizer=regularizers.l2(0.0001))(layer2_out)
@@ -17,7 +24,7 @@
      return model
  
      # result_file = '../data/result.csv'
-@@ -398,9 +399,9 @@
+@@ -398,9 +400,9 @@
              y_valid_tr = data_transform(y_valid)
              y_test_tr = data_transform(y_test)
  
