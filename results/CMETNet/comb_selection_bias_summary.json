@@ -1,0 +1,32 @@
+{
+ "years": [
+  "1997",
+  "1998",
+  "1999",
+  "2000",
+  "2001",
+  "2002",
+  "2003",
+  "2004",
+  "2005",
+  "2006",
+  "2010",
+  "2011",
+  "2012",
+  "2013",
+  "2014",
+  "2015",
+  "2016",
+  "2017"
+ ],
+ "n_events_total": 348,
+ "event_weighted_MAE_selected_on_test": 12.357798511119608,
+ "event_weighted_MAE_mean_over_rounds": 13.411259465154577,
+ "event_weighted_MAE_val_selected": 13.091220700532428,
+ "years_where_test_selection_lower_than_mean": 18,
+ "mean_optimism_hours(mean_over_rounds - selected_on_test)": 1.2146321331741534,
+ "range_optimism_hours": [
+  0.2971278344833337,
+  2.8980316048269366
+ ]
+}

@@ -123,5 +123,41 @@
   "mean_over_rounds_MAE": 9.405772351837062,
   "std_over_rounds_MAE": 0.5221442414284078,
   "val_selected_MAE": 8.954154296757817
+ },
+ "2014": {
+  "n_test_events": 21,
+  "n_pool": 342,
+  "selected_on_test_MAE": 14.486613936993598,
+  "selected_on_test_r": 0.6016535592987472,
+  "mean_over_rounds_MAE": 15.73523787101873,
+  "std_over_rounds_MAE": 0.5608814100310181,
+  "val_selected_MAE": 16.352943494218984
+ },
+ "2015": {
+  "n_test_events": 17,
+  "n_pool": 346,
+  "selected_on_test_MAE": 6.931026392209836,
+  "selected_on_test_r": 0.7843209537733977,
+  "mean_over_rounds_MAE": 8.219277827392485,
+  "std_over_rounds_MAE": 0.5027359530163583,
+  "val_selected_MAE": 8.296496790739605
+ },
+ "2016": {
+  "n_test_events": 6,
+  "n_pool": 357,
+  "selected_on_test_MAE": 24.56447007425429,
+  "selected_on_test_r": 0.2306506515394348,
+  "mean_over_rounds_MAE": 27.452777800797982,
+  "std_over_rounds_MAE": 0.6748669003042596,
+  "val_selected_MAE": 25.6223113318386
+ },
+ "2017": {
+  "n_test_events": 7,
+  "n_pool": 356,
+  "selected_on_test_MAE": 16.301982923002416,
+  "selected_on_test_r": 0.5576311160197777,
+  "mean_over_rounds_MAE": 17.151193584398037,
+  "std_over_rounds_MAE": 0.5384420268085613,
+  "val_selected_MAE": 17.268682445073086
  }
 }

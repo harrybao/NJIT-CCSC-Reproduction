@@ -38,6 +38,6 @@ json.dump(res, open(out_json, "w"), indent=1)
 cols = ["storm", "res_min", "h", "n", "RMSE_ours", "RMSE_author", "RMSE_persist_1step", "RMSE_persist_h", "SS_vs_1step", "SS_vs_h"]
 md = "| " + " | ".join(cols) + " |\n|" + "---|" * len(cols) + "\n"
 for _, r in df.iterrows():
-    md += "| " + " | ".join(f"{r[c]:.3f}" if isinstance(r[c], float) else str(r[c]) for c in cols) + " |\n"
+    md += "| " + " | ".join(str(int(r[c])) if c in ("storm", "res_min", "h", "n") else (f"{r[c]:.3f}" if r[c] == r[c] else "—") for c in cols) + " |\n"
 open(out_md, "w").write(md)
 print(md)

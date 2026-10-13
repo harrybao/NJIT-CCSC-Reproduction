@@ -27,18 +27,19 @@ under `github.com/ccsc-tools`), plus the related SolarDB tool MagNet.
 | **Successfully reproduced** (scope: released model + released test data → authors' stored outputs/numbers) | SEP-prediction (12/12 metric rows exact), RNN-CME-prediction (10/10 identical predictions), SolarUnet (masks byte-identical after a file-ordering fix), MIST (TSS 0.9062 = README 0.90), SINet (F10.7 exact; F30 within 2 %), Kp-prediction (within MC noise), DeepGeoCME (identical confusion matrix, TSS 0.757) |
 | **Partially reproduced** | LSTM-flare-prediction (Table 2 retrained, 10 seeds; Table 5 protocol re-run; demo ≥M5.0 label inversion found), FlareML (demo inference only), SolarFlareNet (stored outputs reproduced, but 8/9 shipped models show no skill), TSInet (default runs; CLI bug), CMETNet (numerical ensemble only; test-set selection bias quantified), SYMHnet (stored storm outputs reproduced at tool level; the released test path is effectively one-step-ahead) |
 | **Attempted but unsuccessful** | Dst-prediction: the stored outputs are reproduced, but the released `predict()` substitutes 0.9 × the true label for most predictions. The raw model does not reproduce the reported skill (R² 0.06–0.38). |
-| **Blocked by missing data or compute** | FibrilNet and SDNN (weights and inputs only on web.njit.edu), SolarCNN (weight file missing from the repo), DeepHMI (1,000-step diffusion ≈ 11+ CPU-hours; authors' outputs re-scored instead), MagNet (nature.njit.edu) |
+| **Blocked by missing data or compute** | FibrilNet and SDNN (weights and inputs only on web.njit.edu), SolarCNN (weight file missing from the repo), DeepHMI (1,000-step diffusion ≈ 37 CPU-hours at the measured speed; authors' output re-scored instead), MagNet (nature.njit.edu) |
 | **Not attempted** | LLMFlare: needs gated Llama-3.1-8B weights, a paid Gemini API key and a GPU. I did not incur costs without authorisation. |
 
 **Key insights for reliable scientific ML.**
-1. **Validation design dominates.** The pretrained MIST transformer reaches TSS 0.906 on its released random split of overlapping 24-hour windows (95.6 % of test windows have a 23-hour-overlapping training neighbour). On the chronologically and active-region-independent 2015–2018 data it reaches **TSS 0.197** (AUC 0.997 → 0.833). On that same independent test set, the 2019 LSTM retrained on the published split reaches TSS 0.73–0.88 depending on threshold policy.
-2. **The 2019 LSTM data split is exemplary.** It is chronological (2010–13 / 2014 / 2015–18) with zero shared active regions. Using it, I measured how much choosing the threshold on the test set inflates TSS: +0.01 for ≥C and +0.14 for ≥M5.0.
+1. **Validation design dominates.** The pretrained MIST transformer reaches TSS 0.906 on its released random split of overlapping 24-hour windows (95.6 % of test windows have a 23-hour-overlapping training neighbour). On the chronologically and active-region-independent 2015–2018 data it reaches **TSS 0.197** (AUC 0.997 → 0.833). On that same independent test set, the 2019 ≥M LSTM retrained on the published split reaches TSS 0.73–0.75, depending on threshold policy.
+2. **The 2019 LSTM data split is exemplary.** It is chronological (2010–13 / 2014 / 2015–18) with zero shared active regions. Using it, I measured how much choosing the decision threshold on the test set inflates TSS. Relative to choosing it on the 2014 validation year, the gain is +0.005 (≥C), +0.009 (≥M) and +0.052 (≥M5.0). Relative to the tool's fixed threshold it is +0.009, +0.018 and +0.143. Rare classes are the most sensitive.
 3. **Several released evaluation paths do not measure what they appear to measure.**
    * Dst: label-dependent post-processing.
    * SYMHnet: identical 1 h and 2 h data with a next-row target.
    * SolarFlareNet: bundled test rows also present in training, and a position-based feature selection shifted by one column.
    * CMETNet: best-of-10 model chosen on the test year.
    * FlareML: display-side metric adjustment and test-batch scaling.
+
 ![Released vs independent evaluation](../results/figures/released_vs_independent.png)
 
 *Figure 1. The same model scored two ways. Light dots: the evaluation as shipped in the repository. Dark dots: an
@@ -196,7 +197,15 @@ Full 16-field records are in `tool_inventory.md`; commit hashes are in `tools/up
 * **RNN-CME-prediction:** for all 10 GRU/LSTM × 12–60 h models, predicted labels are **identical** to the stored outputs (TSS 0.817–1.000). The test set covers 2 ARs (12497, 12529).
 * **CMETNet** (numerical COMB ensemble; CNN not run).
   * The released script trains each regressor 10 times on random 200-event subsamples and keeps the round with the lowest MAE **on the hold-out year**.
-  * Re-implementing the loop for every year with ≥ 3 events (same estimators and hyper-parameters): [[CMETNET]]
+  * Re-implementing the loop for every year with ≥ 3 events (same estimators and hyper-parameters; 18 hold-out years, 348 events; `results/CMETNet/comb_selection_bias*.json`):
+
+| Selection rule for the 10 rounds | Event-weighted MAE (h) |
+|---|---|
+| Best round chosen **on the test year** (released procedure) | **12.36** |
+| Best round chosen on the previous year (validation) | 13.09 |
+| No selection (average over rounds) | 13.41 |
+
+  Test-year selection gives a lower MAE than the average round in **18 of 18 years** (optimism 0.3–2.9 h, mean 1.2 h). Even with that optimism, the numerical ensemble does not reach the README's COMB MAE of 10.32 h; the CNN branch and the paper's exact year set were not reproduced.
   * `pretrained_models_results.py` plots hard-coded MAE/PPMCC values; it does not compute them.
 * **DeepGeoCME:** release assets verified by SHA-256. Our confusion matrix on the 33 test events is **identical** to the shipped figure (TN 14, FP 2, FN 2, TP 15): TSS 0.757, recall 0.882, precision 0.882, Brier score 0.080.
 
@@ -224,7 +233,11 @@ Full 16-field records are in `tool_inventory.md`; commit hashes are in `tools/up
 * **SYMHnet.**
   * The released test path reproduces the authors' stored storm outputs at tool level (same series; RMSE of the same order, MC noise).
   * The released data folders for 1 h and 2 h are **byte-identical** (same MD5), and `SYM_H == SYMH_ORIG` (no shift). The test windowing (`lag=1`, `forecast_horizon=1`) targets the **next row**, i.e. +1 min or +5 min.
-  * Results with two persistence references: [[SYMH]]
+  * Results for all 28 runs (7 test storms × 1/5-min × 1/2 h; `results/SYMHnet/aggregate.md`):
+    * 13 runs have an author file to compare against. Median relative RMSE difference is 20 %. For storm 37 (the README's showcase, SYM-H −393 nT) the RMSE is 5.22 / 5.07 nT (5-min, 1 h / 2 h) vs the authors' 5.12 / 5.10, and 4.65 / 5.00 vs 4.92 / 4.99 (1-min).
+    * Against **h-hour persistence**, i.e. SYM-H(t) predicting SYM-H(t + h), the nominal task, skill SS = 1 − MSE/MSE_ref is **+0.85 to +0.98**.
+    * Against **one-step persistence** (SYM-H(t) predicting the next row, which is what the released test path actually targets), SS is **−0.29 to −11.7 in all 28 runs**. The model is worse than repeating the current value.
+    * Read together, the released evaluation compares a next-step prediction with an h-hour reference. Whether the paper's FSS (0.343 / 0.553 for storm 37) used a different pipeline cannot be determined from the released package.
 * **SINet.**
   * F10.7: RMSE 3.8801 / 13.7411 / 15.0921 / 16.3241 (1 / 27 / 45 / 60 d), identical to the notebook to 4 decimals.
   * F30: 2.0466 / 7.7862 / 9.1215 / 10.1475, vs notebook 2.0586 / 7.6491 / 9.1584 / 9.9921 (within 2 %).
@@ -259,10 +272,10 @@ Full 16-field records are in `tool_inventory.md`; commit hashes are in `tools/up
 | FlareML | demo log | identical | exact (demo) |
 | RNN-CME | stored outputs | identical labels | exact |
 | SEP | `default_results` (TSS 0.86–0.99) | identical | exact |
-| CMETNet | MAE 9.75 h, r 0.83 (README) | [[CMETNET_SHORT]] | partial (no CNN) |
+| CMETNet | MAE 9.75 h, r 0.83 (CMETNet); COMB 10.32 h (README plot) | COMB 12.36 h (released test-year selection) / 13.09 h (validation selection), 18 years | partial (no CNN); COMB higher than reported |
 | Dst | stored results, R² ≈ 0.94 | released path R² ≈ 0.94; raw model R² 0.06–0.38 | not supported by raw model |
 | Kp | stored results | within MC noise | reproduced |
-| SYMHnet | README FSS 0.343 / 0.553 (storm 37, 5-min) | [[SYMH_SHORT]] | see §5.3 |
+| SYMHnet | README FSS 0.343 / 0.553 (storm 37, 5-min) | storm-37 RMSE within 1–6 % of stored files; SS vs h-h persistence +0.93/+0.97, vs 1-step persistence −1.15/−1.03 | tool outputs reproduced; horizon definition inconsistent |
 | SINet | notebook RMSE | F10.7 exact; F30 within 2 % | reproduced |
 | TSInet | stored 30-day files | similar RMSE; naive baseline better | reproduced at tool level |
 | SolarUnet | stored masks | byte-identical (sorted listing) | exact |
