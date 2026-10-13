@@ -141,7 +141,18 @@ Full 16-field records are in `tool_inventory.md`; commit hashes are in `tools/up
 
   Mean (std) over seeds; full table in `results/LSTM-flare-prediction/table2_summary.md`.
   * Split audit: train / validation / test HARPs are disjoint (0 shared ARs) and chronological (`table2_split_audit.json`).
-* *Paper Table 5 protocol (≥C; 10×10 CV, original `LSTMpredict.py` with the 4-line TF2 compatibility patch `scripts/LSTM-flare-prediction/LSTMpredict_tf2_compat.patch`):* [[TABLE5]]
+* *Paper Table 5 protocol (≥C; 10×10 CV, original `LSTMpredict.py` with the 4-line TF2 compatibility patch `scripts/LSTM-flare-prediction/LSTMpredict_tf2_compat.patch`).* 100 trainings, 86 CPU-minutes:
+
+| Metric | Authors' `output.txt` (TF 1.12, Keras 2.2.4) | Re-run (TF 2.10) |
+|---|---|---|
+| Recall | 0.773 (0.027) | 0.741 (0.023) |
+| Precision | 0.541 (0.030) | 0.531 (0.024) |
+| ACC | 0.826 (0.015) | 0.821 (0.012) |
+| BACC | 0.806 (0.004) | 0.790 (0.005) |
+| HSS | 0.526 (0.021) | 0.505 (0.018) |
+| **TSS** | **0.612 (0.009)** | **0.581 (0.011)** |
+
+  The re-run is 0.031 TSS lower, a consistent but small gap. Patching in Keras 2.2.4's default `recurrent_activation='hard_sigmoid'` did not change the result (Table 2 ≥C TSS 0.589 ± 0.009, 5 seeds), so the remaining gap is attributed to other framework or version differences or unrecorded run-to-run variation (`table5_comparison.json`).
 * *Code notes:* the history-masking check tests `row` instead of `prev_row`, so incomplete history rows are never masked. Table 5 selects the threshold that maximises mean TSS on the test folds.
 
 **MIST.**
@@ -234,7 +245,7 @@ Full 16-field records are in `tool_inventory.md`; commit hashes are in `tools/up
 
 | Tool | Reported (source) | Reproduced here | Agreement |
 |---|---|---|---|
-| LSTM ≥C Table 5 | TSS 0.612 ± 0.009 (`output.txt`) | [[TABLE5_SHORT]] | see §5.1 |
+| LSTM ≥C Table 5 | TSS 0.612 ± 0.009 (`output.txt`) | TSS 0.581 ± 0.011 (TF 2.10, same code and protocol) | close (Δ = −0.031) |
 | LSTM Table 2 (paper split) | paper tables not readable here | TSS 0.877 / 0.748 / 0.589 (≥M5.0 / ≥M / ≥C, test-chosen threshold, 10 seeds) | numbers for the authors to compare |
 | MIST | TSS 0.90 (README) | 0.906 (released split); 0.197 (2015–18) | released number exact; not robust out-of-sample |
 | SolarFlareNet | paper TSS not readable; stored result CSVs | stored CSVs reproduced; 8/9 AUC ≈ 0.5 | stored outputs reproduced; skill not |

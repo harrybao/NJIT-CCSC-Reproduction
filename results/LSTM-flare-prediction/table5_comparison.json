@@ -1,0 +1,26 @@
+{
+ "probe": "Keras-2.2.4 default recurrent_activation='hard_sigmoid' patched into the released TF2 LSTM; Table 2 >=C, 5 seeds",
+ "test_opt_TSS_mean": 0.5893281651847321,
+ "test_opt_TSS_std": 0.00868590907174581,
+ "fixed_TSS_mean": 0.5826197273271297,
+ "reference_sigmoid_10seeds_test_opt_TSS": 0.589,
+ "table5_rerun": {
+  "recall": "0.741 (0.023)",
+  "precision": "0.531 (0.024)",
+  "acc": "0.821 (0.012)",
+  "bacc": "0.79 (0.005)",
+  "hss": "0.505 (0.018)",
+  "tss": "0.581 (0.011)",
+  "runtime_min": 86
+ },
+ "table5_author_output": {
+  "recall": "0.773 (0.027)",
+  "precision": "0.541 (0.030)",
+  "acc": "0.826 (0.015)",
+  "bacc": "0.806 (0.004)",
+  "hss": "0.526 (0.021)",
+  "tss": "0.612 (0.009)",
+  "env": "Python 3.6.8, Keras 2.2.4, TF 1.12.0"
+ },
+ "conclusion": "Gap of 0.031 TSS between TF2.10 re-run and authors' TF1.12 output is not explained by the LSTM recurrent_activation default."
+}

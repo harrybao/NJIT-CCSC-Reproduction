@@ -79,5 +79,22 @@
   "mean_over_rounds_MAE": 15.091281382298007,
   "std_over_rounds_MAE": 0.6427624199137161,
   "val_selected_MAE": 15.199706531285083
+ },
+ "2006": {
+  "n_test_events": 8,
+  "n_pool": 355,
+  "selected_on_test_MAE": 14.957384678663626,
+  "selected_on_test_r": 0.5774137686989993,
+  "mean_over_rounds_MAE": 17.855416283490563,
+  "std_over_rounds_MAE": 1.0084377961789384,
+  "val_selected_MAE": 16.831416397077838
+ },
+ "2010": {
+  "n_test_events": 8,
+  "n_pool": 355,
+  "selected_on_test_MAE": 14.768565605123626,
+  "selected_on_test_r": 0.9126285995201461,
+  "mean_over_rounds_MAE": 15.749333401016463,
+  "std_over_rounds_MAE": 0.760811420201225
  }
 }
