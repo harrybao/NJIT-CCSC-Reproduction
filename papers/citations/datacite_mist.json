@@ -1,0 +1,194 @@
+{
+ "data": {
+  "id": "10.5281/zenodo.16780646",
+  "type": "dois",
+  "attributes": {
+   "doi": "10.5281/zenodo.16780646",
+   "prefix": "10.5281",
+   "suffix": "zenodo.16780646",
+   "identifiers": [
+    {
+     "identifier": "oai:zenodo.org:16780646",
+     "identifierType": "oai"
+    }
+   ],
+   "alternateIdentifiers": [
+    {
+     "alternateIdentifierType": "oai",
+     "alternateIdentifier": "oai:zenodo.org:16780646"
+    }
+   ],
+   "creators": [
+    {
+     "name": "Chaudhary, Yash",
+     "nameType": "Personal",
+     "givenName": "Yash",
+     "familyName": "Chaudhary",
+     "affiliation": [
+      "New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": []
+    },
+    {
+     "name": "Abdullah, Yasser",
+     "nameType": "Personal",
+     "givenName": "Yasser",
+     "familyName": "Abdullah",
+     "affiliation": [
+      "New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": []
+    },
+    {
+     "name": "Wang, Jason T. L.",
+     "nameType": "Personal",
+     "givenName": "Jason T. L.",
+     "familyName": "Wang",
+     "affiliation": [
+      "New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": []
+    }
+   ],
+   "titles": [
+    {
+     "title": "A New Deep Learning Method for Solar Flare Prediction"
+    }
+   ],
+   "publisher": "Zenodo",
+   "container": {},
+   "publicationYear": 2025,
+   "subjects": [
+    {
+     "subject": "Solar Flare Prediction"
+    },
+    {
+     "subject": "Time-Series Forecasting"
+    },
+    {
+     "subject": "Deep Learning"
+    },
+    {
+     "subject": "Transformer Model"
+    },
+    {
+     "subject": "Python"
+    },
+    {
+     "subject": "PyTorch"
+    }
+   ],
+   "contributors": [],
+   "dates": [
+    {
+     "date": "2025-08-08",
+     "dateType": "Issued"
+    }
+   ],
+   "language": null,
+   "types": {
+    "ris": "COMP",
+    "bibtex": "misc",
+    "citeproc": "article",
+    "schemaOrg": "SoftwareSourceCode",
+    "resourceType": "",
+    "resourceTypeGeneral": "Software"
+   },
+   "relatedIdentifiers": [
+    {
+     "relationType": "IsVersionOf",
+     "relatedIdentifier": "10.5281/zenodo.16778289",
+     "relatedIdentifierType": "DOI"
+    }
+   ],
+   "relatedItems": [],
+   "sizes": [],
+   "formats": [],
+   "version": null,
+   "rightsList": [
+    {
+     "rights": "MIT License",
+     "rightsUri": "https://opensource.org/licenses/MIT",
+     "schemeUri": "https://spdx.org/licenses/",
+     "rightsIdentifier": "mit",
+     "rightsIdentifierScheme": "SPDX"
+    }
+   ],
+   "descriptions": [
+    {
+     "description": "This package contains the code and data for a new deep learning framework for the prediction of solar flares. The model is designed to forecast the probability of a >=M-class solar flare within a 24-hour window using time-series data from NASA's Solar Dynamics Observatory. This package provides the full model architecture, the training and testing scripts, and the processed data necessary to replicate the model's state-of-the-art performance, which achieves a True Skill Statistic (TSS) of 0.90.",
+     "descriptionType": "Abstract"
+    }
+   ],
+   "geoLocations": [],
+   "fundingReferences": [],
+   "xml": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHJlc291cmNlIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCBodHRwOi8vc2NoZW1hLmRhdGFjaXRlLm9yZy9tZXRhL2tlcm5lbC00L21ldGFkYXRhLnhzZCI+CiAgPGlkZW50aWZpZXIgaWRlbnRpZmllclR5cGU9IkRPSSI+MTAuNTI4MS9aRU5PRE8uMTY3ODA2NDY8L2lkZW50aWZpZXI+CiAgPGNyZWF0b3JzPgogICAgPGNyZWF0b3I+CiAgICAgIDxjcmVhdG9yTmFtZSBuYW1lVHlwZT0iUGVyc29uYWwiPkNoYXVkaGFyeSwgWWFzaDwvY3JlYXRvck5hbWU+CiAgICAgIDxnaXZlbk5hbWU+WWFzaDwvZ2l2ZW5OYW1lPgogICAgICA8ZmFtaWx5TmFtZT5DaGF1ZGhhcnk8L2ZhbWlseU5hbWU+CiAgICAgIDxhZmZpbGlhdGlvbiBhZmZpbGlhdGlvbklkZW50aWZpZXI9Imh0dHBzOi8vcm9yLm9yZy8wNWU3NHhiODciIGFmZmlsaWF0aW9uSWRlbnRpZmllclNjaGVtZT0iUk9SIj5OZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWUgbmFtZVR5cGU9IlBlcnNvbmFsIj5BYmR1bGxhaCwgWWFzc2VyPC9jcmVhdG9yTmFtZT4KICAgICAgPGdpdmVuTmFtZT5ZYXNzZXI8L2dpdmVuTmFtZT4KICAgICAgPGZhbWlseU5hbWU+QWJkdWxsYWg8L2ZhbWlseU5hbWU+CiAgICAgIDxhZmZpbGlhdGlvbiBhZmZpbGlhdGlvbklkZW50aWZpZXI9Imh0dHBzOi8vcm9yLm9yZy8wNWU3NHhiODciIGFmZmlsaWF0aW9uSWRlbnRpZmllclNjaGVtZT0iUk9SIj5OZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWUgbmFtZVR5cGU9IlBlcnNvbmFsIj5XYW5nLCBKYXNvbiBULiBMLjwvY3JlYXRvck5hbWU+CiAgICAgIDxnaXZlbk5hbWU+SmFzb24gVC4gTC48L2dpdmVuTmFtZT4KICAgICAgPGZhbWlseU5hbWU+V2FuZzwvZmFtaWx5TmFtZT4KICAgICAgPGFmZmlsaWF0aW9uIGFmZmlsaWF0aW9uSWRlbnRpZmllcj0iaHR0cHM6Ly9yb3Iub3JnLzA1ZTc0eGI4NyIgYWZmaWxpYXRpb25JZGVudGlmaWVyU2NoZW1lPSJST1IiPk5ldyBKZXJzZXkgSW5zdGl0dXRlIG9mIFRlY2hub2xvZ3k8L2FmZmlsaWF0aW9uPgogICAgPC9jcmVhdG9yPgogIDwvY3JlYXRvcnM+CiAgPHRpdGxlcz4KICAgIDx0aXRsZT5BIE5ldyBEZWVwIExlYXJuaW5nIE1ldGhvZCBmb3IgU29sYXIgRmxhcmUgUHJlZGljdGlvbjwvdGl0bGU+CiAgPC90aXRsZXM+CiAgPHB1Ymxpc2hlcj5aZW5vZG88L3B1Ymxpc2hlcj4KICA8cHVibGljYXRpb25ZZWFyPjIwMjU8L3B1YmxpY2F0aW9uWWVhcj4KICA8cmVzb3VyY2VUeXBlIHJlc291cmNlVHlwZUdlbmVyYWw9IlNvZnR3YXJlIi8+CiAgPHN1YmplY3RzPgogICAgPHN1YmplY3Q+U29sYXIgRmxhcmUgUHJlZGljdGlvbjwvc3ViamVjdD4KICAgIDxzdWJqZWN0PlRpbWUtU2VyaWVzIEZvcmVjYXN0aW5nPC9zdWJqZWN0PgogICAgPHN1YmplY3Q+RGVlcCBMZWFybmluZzwvc3ViamVjdD4KICAgIDxzdWJqZWN0PlRyYW5zZm9ybWVyIE1vZGVsPC9zdWJqZWN0PgogICAgPHN1YmplY3Q+UHl0aG9uPC9zdWJqZWN0PgogICAgPHN1YmplY3Q+UHlUb3JjaDwvc3ViamVjdD4KICA8L3N1YmplY3RzPgogIDxkYXRlcz4KICAgIDxkYXRlIGRhdGVUeXBlPSJJc3N1ZWQiPjIwMjUtMDgtMDg8L2RhdGU+CiAgPC9kYXRlcz4KICA8YWx0ZXJuYXRlSWRlbnRpZmllcnM+CiAgICA8YWx0ZXJuYXRlSWRlbnRpZmllciBhbHRlcm5hdGVJZGVudGlmaWVyVHlwZT0ib2FpIj5vYWk6emVub2RvLm9yZzoxNjc4MDY0NjwvYWx0ZXJuYXRlSWRlbnRpZmllcj4KICA8L2FsdGVybmF0ZUlkZW50aWZpZXJzPgogIDxyZWxhdGVkSWRlbnRpZmllcnM+CiAgICA8cmVsYXRlZElkZW50aWZpZXIgcmVsYXRlZElkZW50aWZpZXJUeXBlPSJET0kiIHJlbGF0aW9uVHlwZT0iSXNWZXJzaW9uT2YiPjEwLjUyODEvemVub2RvLjE2Nzc4Mjg5PC9yZWxhdGVkSWRlbnRpZmllcj4KICA8L3JlbGF0ZWRJZGVudGlmaWVycz4KICA8c2l6ZXMvPgogIDxmb3JtYXRzLz4KICA8dmVyc2lvbi8+CiAgPHJpZ2h0c0xpc3Q+CiAgICA8cmlnaHRzIHJpZ2h0c1VSST0iaHR0cHM6Ly9vcGVuc291cmNlLm9yZy9saWNlbnNlcy9NSVQiIHJpZ2h0c0lkZW50aWZpZXI9Im1pdCIgcmlnaHRzSWRlbnRpZmllclNjaGVtZT0ic3BkeCI+TUlUIExpY2Vuc2U8L3JpZ2h0cz4KICA8L3JpZ2h0c0xpc3Q+CiAgPGRlc2NyaXB0aW9ucz4KICAgIDxkZXNjcmlwdGlvbiBkZXNjcmlwdGlvblR5cGU9IkFic3RyYWN0Ij5UaGlzIHBhY2thZ2UgY29udGFpbnMgdGhlIGNvZGUgYW5kIGRhdGEgZm9yIGEgbmV3IGRlZXAgbGVhcm5pbmcgZnJhbWV3b3JrIGZvciB0aGUgcHJlZGljdGlvbiBvZiBzb2xhciBmbGFyZXMuIFRoZSBtb2RlbCBpcyBkZXNpZ25lZCB0byBmb3JlY2FzdCB0aGUgcHJvYmFiaWxpdHkgb2YgYSAmZ3Q7PU0tY2xhc3Mgc29sYXIgZmxhcmUgd2l0aGluIGEgMjQtaG91ciB3aW5kb3cgdXNpbmcgdGltZS1zZXJpZXMgZGF0YSBmcm9tIE5BU0EncyBTb2xhciBEeW5hbWljcyBPYnNlcnZhdG9yeS4gVGhpcyBwYWNrYWdlIHByb3ZpZGVzIHRoZSBmdWxsIG1vZGVsIGFyY2hpdGVjdHVyZSwgdGhlIHRyYWluaW5nIGFuZCB0ZXN0aW5nIHNjcmlwdHMsIGFuZCB0aGUgcHJvY2Vzc2VkIGRhdGEgbmVjZXNzYXJ5IHRvIHJlcGxpY2F0ZSB0aGUgbW9kZWwncyBzdGF0ZS1vZi10aGUtYXJ0IHBlcmZvcm1hbmNlLCB3aGljaCBhY2hpZXZlcyBhIFRydWUgU2tpbGwgU3RhdGlzdGljIChUU1MpIG9mIDAuOTAuPC9kZXNjcmlwdGlvbj4KICA8L2Rlc2NyaXB0aW9ucz4KPC9yZXNvdXJjZT4K",
+   "url": "https://zenodo.org/doi/10.5281/zenodo.16780646",
+   "contentUrl": null,
+   "metadataVersion": 0,
+   "schemaVersion": "http://datacite.org/schema/kernel-4",
+   "source": "api",
+   "isActive": true,
+   "state": "findable",
+   "reason": null,
+   "viewCount": 0,
+   "viewsOverTime": [],
+   "downloadCount": 0,
+   "downloadsOverTime": [],
+   "referenceCount": 0,
+   "citationCount": 0,
+   "citationsOverTime": [],
+   "partCount": 0,
+   "partOfCount": 0,
+   "versionCount": 0,
+   "versionOfCount": 1,
+   "created": "2025-08-08T14:41:52.000Z",
+   "registered": "2025-08-08T14:41:52.000Z",
+   "published": "2025",
+   "updated": "2025-08-08T14:41:52.000Z"
+  },
+  "relationships": {
+   "client": {
+    "data": {
+     "id": "cern.zenodo",
+     "type": "clients"
+    }
+   },
+   "provider": {
+    "data": {
+     "id": "cern",
+     "type": "providers"
+    }
+   },
+   "media": {
+    "data": {
+     "id": "10.5281/zenodo.16780646",
+     "type": "media"
+    }
+   },
+   "references": {
+    "data": []
+   },
+   "citations": {
+    "data": []
+   },
+   "parts": {
+    "data": []
+   },
+   "partOf": {
+    "data": []
+   },
+   "versions": {
+    "data": []
+   },
+   "versionOf": {
+    "data": [
+     {
+      "id": "10.5281/zenodo.16778289",
+      "type": "dois"
+     }
+    ]
+   }
+  }
+ }
+}

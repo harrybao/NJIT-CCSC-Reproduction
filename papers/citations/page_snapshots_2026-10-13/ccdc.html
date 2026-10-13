@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CCDC: Community Coordinated Data Center</title>
+  <link rel="icon" href="./icons/titleiconnjit.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/styles.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <style>
+    html { overflow-y: scroll; }
+    body { background-color: white; background-image: none; }
+    .ccdc-main { width: 88%; margin: 30px auto; text-align: center; }
+    .ccdc-home { display: block; margin: 0 0 0 58px; }
+    .ccdc-heading { margin: 5px 0 42.5px; font-size: 50px; font-weight: bold; }
+    .ccdc-catalog { width: 85%; margin: 0 auto; }
+    .ccdc-description { margin: 0 0 32.5px; color: black; font-size: 20px; font-weight: bold; line-height: 1.1; }
+    .ccdc-divider { width: 1120px; max-width: 100%; height: 3px; background: darkblue; margin: 0 auto 15px; }
+    .ccdc-card { display: flex; flex-direction: column; height: auto; min-height: 300px; max-width: 100%; margin: 30px auto 15px; }
+    .ccdc-card .ccsc_title_p { height: auto; margin-bottom: 24px; }
+    .ccdc-card .ccsc_tile_title_citation_div { position: static; height: auto; margin-top: auto; }
+    .ccdc-citation { display: block; margin: 0 auto; }
+    .ccdc-datasets { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 20px; }
+    .ccdc-datasets .ccdc-card { margin: 30px 0 15px; }
+    @media (max-width: 600px) {
+      .ccdc-heading { font-size: 34px; }
+      .ccdc-catalog { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="ccdc-main">
+    <a class="ccsc_home_button ccdc-home" href="./" target="_top">Home</a>
+    <h1 class="ccdc-heading">Community Coordinated Data Center</h1>
+    <section class="ccdc-catalog" aria-label="AI-ready datasets">
+      <p class="ccdc-description">These AI-ready datasets are now available on GitHub and Zenodo for interested researchers to download and use.</p>
+      <div class="ccdc-divider" aria-hidden="true"></div>
+      <div id="datasets" class="ccdc-datasets">
+      <article class="ccsc_tile_div ccdc-card">
+        <p class="ccsc_title_p">
+          <a href="https://github.com/Reasopprime/njit-flaredb/" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">FlareDB: A Database of Significant Flares in Solar Cycles 24 and 25 with SDO/HMI and SDO/AIA Observations</a>
+        </p>
+        <div class="ccsc_tile_title_citation_div">
+          <a class="ccsc_citation_text_button ccdc-citation" href="https://doi.org/10.5281/zenodo.16790538" target="_blank" rel="noopener noreferrer" aria-label="FlareDB citation on Zenodo">Citation</a>
+        </div>
+      </article>
+      </div>
+      <p id="catalog-error" role="status" hidden></p>
+    </section>
+  </main>
+  <script>
+    (async () => {
+      try {
+        const response = await fetch('./ccdc_pages/pages_data.json', { cache: 'no-store' });
+        if (!response.ok) throw new Error('Catalog unavailable');
+        const entries = await response.json();
+        const template = document.querySelector('#datasets article');
+        const cards = entries.map(entry => {
+          const card = template.cloneNode(true);
+          const title = card.querySelector('.ccsc_title_p a');
+          const citation = card.querySelector('.ccdc-citation');
+          const githubUrl = new URL(entry.github);
+          const citationUrl = new URL(entry.zenodo);
+          if (githubUrl.protocol !== 'https:' || citationUrl.protocol !== 'https:') throw new Error('Invalid dataset URL');
+          title.textContent = entry.title;
+          title.href = githubUrl.href;
+          citation.href = citationUrl.href;
+          citation.setAttribute('aria-label', entry.title + ' citation on Zenodo');
+          return card;
+        });
+        document.getElementById('datasets').replaceChildren(...cards);
+      } catch {
+        const error = document.getElementById('catalog-error');
+        error.textContent = 'The latest dataset catalog could not be loaded. Please refresh to try again.';
+        error.hidden = false;
+      }
+    })();
+  </script>
+</body>
+</html>

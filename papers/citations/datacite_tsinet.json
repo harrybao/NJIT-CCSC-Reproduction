@@ -1,0 +1,233 @@
+{
+ "data": {
+  "id": "10.5281/zenodo.7516668",
+  "type": "dois",
+  "attributes": {
+   "doi": "10.5281/zenodo.7516668",
+   "prefix": "10.5281",
+   "suffix": "zenodo.7516668",
+   "identifiers": [],
+   "alternateIdentifiers": [],
+   "creators": [
+    {
+     "name": "Abduallah, Yasser",
+     "nameType": "Personal",
+     "givenName": "Yasser",
+     "familyName": "Abduallah",
+     "affiliation": [
+      "Department of Computer Science, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0003-0792-2270",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Wang, Jason T. L.",
+     "nameType": "Personal",
+     "givenName": "Jason T. L.",
+     "familyName": "Wang",
+     "affiliation": [
+      "Department of Computer Science, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0002-2486-1097",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Yucong Shen",
+     "affiliation": [
+      "Department of Computer Science, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": []
+    },
+    {
+     "name": "Alobaid, Khalid A.",
+     "nameType": "Personal",
+     "givenName": "Khalid A.",
+     "familyName": "Alobaid",
+     "affiliation": [
+      "Department of Computer Science, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": []
+    },
+    {
+     "name": "Criscuoli, Serena",
+     "nameType": "Personal",
+     "givenName": "Serena",
+     "familyName": "Criscuoli",
+     "affiliation": [
+      "National Solar Observatory, Boulder, Colorado, USA"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0002-4525-9038",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Wang, Haimin",
+     "nameType": "Personal",
+     "givenName": "Haimin",
+     "familyName": "Wang",
+     "affiliation": [
+      "Institute for Space Weather Sciences, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0002-5233-565X",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    }
+   ],
+   "titles": [
+    {
+     "title": "Reconstruction of Total Solar Irradiance by Deep Learning"
+    }
+   ],
+   "publisher": "Zenodo",
+   "container": {},
+   "publicationYear": 2022,
+   "subjects": [
+    {
+     "subject": "machine-learning"
+    },
+    {
+     "subject": "solar irradiance"
+    },
+    {
+     "subject": "forecasting"
+    },
+    {
+     "subject": "TSI"
+    },
+    {
+     "subject": "reconstruction"
+    }
+   ],
+   "contributors": [],
+   "dates": [
+    {
+     "date": "2022-12-05",
+     "dateType": "Issued"
+    }
+   ],
+   "language": null,
+   "types": {
+    "ris": "COMP",
+    "bibtex": "misc",
+    "citeproc": "article",
+    "schemaOrg": "SoftwareSourceCode",
+    "resourceTypeGeneral": "Software"
+   },
+   "relatedIdentifiers": [
+    {
+     "relationType": "IsSupplementTo",
+     "relatedIdentifier": "https://github.com/ccsc-tools/TSInet-irradiance-reconstruction/tree/v1.6",
+     "relatedIdentifierType": "URL"
+    },
+    {
+     "relationType": "IsVersionOf",
+     "relatedIdentifier": "10.5281/zenodo.6984520",
+     "relatedIdentifierType": "DOI"
+    }
+   ],
+   "relatedItems": [],
+   "sizes": [],
+   "formats": [],
+   "version": "v1.6",
+   "rightsList": [
+    {
+     "rights": "Open Access",
+     "rightsUri": "info:eu-repo/semantics/openAccess"
+    }
+   ],
+   "descriptions": [
+    {
+     "description": "Reconstruction of Total Solar Irradiance by Deep Learning",
+     "descriptionType": "Abstract"
+    }
+   ],
+   "geoLocations": [],
+   "fundingReferences": [],
+   "xml": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHJlc291cmNlIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCBodHRwOi8vc2NoZW1hLmRhdGFjaXRlLm9yZy9tZXRhL2tlcm5lbC00LjEvbWV0YWRhdGEueHNkIj4KICA8aWRlbnRpZmllciBpZGVudGlmaWVyVHlwZT0iRE9JIj4xMC41MjgxL1pFTk9ETy43NTE2NjY4PC9pZGVudGlmaWVyPgogIDxjcmVhdG9ycz4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWU+WWFzc2VyIEFiZHVhbGxhaDwvY3JlYXRvck5hbWU+CiAgICAgIDxuYW1lSWRlbnRpZmllciBuYW1lSWRlbnRpZmllclNjaGVtZT0iT1JDSUQiIHNjaGVtZVVSST0iaHR0cDovL29yY2lkLm9yZy8iPjAwMDAtMDAwMy0wNzkyLTIyNzA8L25hbWVJZGVudGlmaWVyPgogICAgICA8YWZmaWxpYXRpb24+RGVwYXJ0bWVudCBvZiBDb21wdXRlciBTY2llbmNlLCBOZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWU+SmFzb24gVC4gTC4gV2FuZzwvY3JlYXRvck5hbWU+CiAgICAgIDxuYW1lSWRlbnRpZmllciBuYW1lSWRlbnRpZmllclNjaGVtZT0iT1JDSUQiIHNjaGVtZVVSST0iaHR0cDovL29yY2lkLm9yZy8iPjAwMDAtMDAwMi0yNDg2LTEwOTc8L25hbWVJZGVudGlmaWVyPgogICAgICA8YWZmaWxpYXRpb24+RGVwYXJ0bWVudCBvZiBDb21wdXRlciBTY2llbmNlLCBOZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWU+WXVjb25nIFNoZW48L2NyZWF0b3JOYW1lPgogICAgICA8YWZmaWxpYXRpb24+RGVwYXJ0bWVudCBvZiBDb21wdXRlciBTY2llbmNlLCBOZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWU+S2hhbGlkIEEuIEFsb2JhaWQ8L2NyZWF0b3JOYW1lPgogICAgICA8YWZmaWxpYXRpb24+RGVwYXJ0bWVudCBvZiBDb21wdXRlciBTY2llbmNlLCBOZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWU+U2VyZW5hIENyaXNjdW9saTwvY3JlYXRvck5hbWU+CiAgICAgIDxuYW1lSWRlbnRpZmllciBuYW1lSWRlbnRpZmllclNjaGVtZT0iT1JDSUQiIHNjaGVtZVVSST0iaHR0cDovL29yY2lkLm9yZy8iPjAwMDAtMDAwMi00NTI1LTkwMzg8L25hbWVJZGVudGlmaWVyPgogICAgICA8YWZmaWxpYXRpb24+TmF0aW9uYWwgU29sYXIgT2JzZXJ2YXRvcnksIEJvdWxkZXIsIENvbG9yYWRvLCBVU0E8L2FmZmlsaWF0aW9uPgogICAgPC9jcmVhdG9yPgogICAgPGNyZWF0b3I+CiAgICAgIDxjcmVhdG9yTmFtZT5IYWltaW4gV2FuZzwvY3JlYXRvck5hbWU+CiAgICAgIDxuYW1lSWRlbnRpZmllciBuYW1lSWRlbnRpZmllclNjaGVtZT0iT1JDSUQiIHNjaGVtZVVSST0iaHR0cDovL29yY2lkLm9yZy8iPjAwMDAtMDAwMi01MjMzLTU2NVg8L25hbWVJZGVudGlmaWVyPgogICAgICA8YWZmaWxpYXRpb24+SW5zdGl0dXRlIGZvciBTcGFjZSBXZWF0aGVyIFNjaWVuY2VzLCBOZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICA8L2NyZWF0b3JzPgogIDx0aXRsZXM+CiAgICA8dGl0bGU+UmVjb25zdHJ1Y3Rpb24gb2YgVG90YWwgU29sYXIgSXJyYWRpYW5jZSBieSBEZWVwIExlYXJuaW5nPC90aXRsZT4KICA8L3RpdGxlcz4KICA8cHVibGlzaGVyPlplbm9kbzwvcHVibGlzaGVyPgogIDxwdWJsaWNhdGlvblllYXI+MjAyMjwvcHVibGljYXRpb25ZZWFyPgogIDxzdWJqZWN0cz4KICAgIDxzdWJqZWN0Pm1hY2hpbmUtbGVhcm5pbmc8L3N1YmplY3Q+CiAgICA8c3ViamVjdD5zb2xhciBpcnJhZGlhbmNlPC9zdWJqZWN0PgogICAgPHN1YmplY3Q+Zm9yZWNhc3Rpbmc8L3N1YmplY3Q+CiAgICA8c3ViamVjdD5UU0k8L3N1YmplY3Q+CiAgICA8c3ViamVjdD5yZWNvbnN0cnVjdGlvbjwvc3ViamVjdD4KICA8L3N1YmplY3RzPgogIDxkYXRlcz4KICAgIDxkYXRlIGRhdGVUeXBlPSJJc3N1ZWQiPjIwMjItMTItMDU8L2RhdGU+CiAgPC9kYXRlcz4KICA8cmVzb3VyY2VUeXBlIHJlc291cmNlVHlwZUdlbmVyYWw9IlNvZnR3YXJlIi8+CiAgPGFsdGVybmF0ZUlkZW50aWZpZXJzPgogICAgPGFsdGVybmF0ZUlkZW50aWZpZXIgYWx0ZXJuYXRlSWRlbnRpZmllclR5cGU9InVybCI+aHR0cHM6Ly96ZW5vZG8ub3JnL3JlY29yZC83NTE2NjY4PC9hbHRlcm5hdGVJZGVudGlmaWVyPgogIDwvYWx0ZXJuYXRlSWRlbnRpZmllcnM+CiAgPHJlbGF0ZWRJZGVudGlmaWVycz4KICAgIDxyZWxhdGVkSWRlbnRpZmllciByZWxhdGVkSWRlbnRpZmllclR5cGU9IlVSTCIgcmVsYXRpb25UeXBlPSJJc1N1cHBsZW1lbnRUbyI+aHR0cHM6Ly9naXRodWIuY29tL2Njc2MtdG9vbHMvVFNJbmV0LWlycmFkaWFuY2UtcmVjb25zdHJ1Y3Rpb24vdHJlZS92MS42PC9yZWxhdGVkSWRlbnRpZmllcj4KICAgIDxyZWxhdGVkSWRlbnRpZmllciByZWxhdGVkSWRlbnRpZmllclR5cGU9IkRPSSIgcmVsYXRpb25UeXBlPSJJc1ZlcnNpb25PZiI+MTAuNTI4MS96ZW5vZG8uNjk4NDUyMDwvcmVsYXRlZElkZW50aWZpZXI+CiAgPC9yZWxhdGVkSWRlbnRpZmllcnM+CiAgPHZlcnNpb24+djEuNjwvdmVyc2lvbj4KICA8cmlnaHRzTGlzdD4KICAgIDxyaWdodHMgcmlnaHRzVVJJPSJpbmZvOmV1LXJlcG8vc2VtYW50aWNzL29wZW5BY2Nlc3MiPk9wZW4gQWNjZXNzPC9yaWdodHM+CiAgPC9yaWdodHNMaXN0PgogIDxkZXNjcmlwdGlvbnM+CiAgICA8ZGVzY3JpcHRpb24gZGVzY3JpcHRpb25UeXBlPSJBYnN0cmFjdCI+Jmx0O3AmZ3Q7UmVjb25zdHJ1Y3Rpb24gb2YgVG90YWwgU29sYXIgSXJyYWRpYW5jZSBieSBEZWVwIExlYXJuaW5nJmx0Oy9wJmd0OzwvZGVzY3JpcHRpb24+CiAgPC9kZXNjcmlwdGlvbnM+CjwvcmVzb3VyY2U+",
+   "url": "https://zenodo.org/record/7516668",
+   "contentUrl": null,
+   "metadataVersion": 0,
+   "schemaVersion": "http://datacite.org/schema/kernel-4",
+   "source": "mds",
+   "isActive": true,
+   "state": "findable",
+   "reason": null,
+   "viewCount": 0,
+   "viewsOverTime": [],
+   "downloadCount": 0,
+   "downloadsOverTime": [],
+   "referenceCount": 0,
+   "citationCount": 0,
+   "citationsOverTime": [],
+   "partCount": 0,
+   "partOfCount": 0,
+   "versionCount": 0,
+   "versionOfCount": 1,
+   "created": "2023-01-09T16:51:14.000Z",
+   "registered": "2023-01-09T16:51:15.000Z",
+   "published": "2022",
+   "updated": "2023-01-09T16:51:17.000Z"
+  },
+  "relationships": {
+   "client": {
+    "data": {
+     "id": "cern.zenodo",
+     "type": "clients"
+    }
+   },
+   "provider": {
+    "data": {
+     "id": "cern",
+     "type": "providers"
+    }
+   },
+   "media": {
+    "data": {
+     "id": "10.5281/zenodo.7516668",
+     "type": "media"
+    }
+   },
+   "references": {
+    "data": []
+   },
+   "citations": {
+    "data": []
+   },
+   "parts": {
+    "data": []
+   },
+   "partOf": {
+    "data": []
+   },
+   "versions": {
+    "data": []
+   },
+   "versionOf": {
+    "data": [
+     {
+      "id": "10.5281/zenodo.6984520",
+      "type": "dois"
+     }
+    ]
+   }
+  }
+ }
+}

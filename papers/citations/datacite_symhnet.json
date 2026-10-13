@@ -1,0 +1,272 @@
+{
+ "data": {
+  "id": "10.5281/zenodo.10602518",
+  "type": "dois",
+  "attributes": {
+   "doi": "10.5281/zenodo.10602518",
+   "prefix": "10.5281",
+   "suffix": "zenodo.10602518",
+   "identifiers": [
+    {
+     "identifier": "oai:zenodo.org:10602518",
+     "identifierType": "oai"
+    }
+   ],
+   "alternateIdentifiers": [
+    {
+     "alternateIdentifierType": "oai",
+     "alternateIdentifier": "oai:zenodo.org:10602518"
+    }
+   ],
+   "creators": [
+    {
+     "name": "Abduallah, Yasser",
+     "nameType": "Personal",
+     "givenName": "Yasser",
+     "familyName": "Abduallah",
+     "affiliation": [
+      "New Jersey Institute of Technolog"
+     ],
+     "nameIdentifiers": [
+      {
+       "nameIdentifier": "0000-0003-0792-2270",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Alobail, Khalid A.",
+     "nameType": "Personal",
+     "givenName": "Khalid A.",
+     "familyName": "Alobail",
+     "affiliation": [
+      "New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "nameIdentifier": "0009-0007-4731-2772",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Wang, Jason T. L.",
+     "nameType": "Personal",
+     "givenName": "Jason T. L.",
+     "familyName": "Wang",
+     "affiliation": [
+      "New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "nameIdentifier": "0000-0002-2486-1097",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Wang, Haimin",
+     "nameType": "Personal",
+     "givenName": "Haimin",
+     "familyName": "Wang",
+     "affiliation": [
+      "New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "nameIdentifier": "0000-0002-5233-565X",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Jordanova, Vania K.",
+     "nameType": "Personal",
+     "givenName": "Vania K.",
+     "familyName": "Jordanova",
+     "affiliation": [
+      "Los Alamos National Laboratory"
+     ],
+     "nameIdentifiers": [
+      {
+       "nameIdentifier": "0000-0003-0475-8743",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Yurchyshyn, Vasyl",
+     "nameType": "Personal",
+     "givenName": "Vasyl",
+     "familyName": "Yurchyshyn",
+     "affiliation": [
+      "Neurosurgeons of New Jersey"
+     ],
+     "nameIdentifiers": [
+      {
+       "nameIdentifier": "0000-0001-9982-2175",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Cavus, Huseyin",
+     "nameType": "Personal",
+     "givenName": "Huseyin",
+     "familyName": "Cavus",
+     "affiliation": [
+      "Harvard-Smithsonian Center for Astrophysics"
+     ],
+     "nameIdentifiers": []
+    },
+    {
+     "name": "Jing, Ju",
+     "nameType": "Personal",
+     "givenName": "Ju",
+     "familyName": "Jing",
+     "affiliation": [
+      "New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": []
+    }
+   ],
+   "titles": [
+    {
+     "title": "Prediction of the SYM-H Index Using a Bayesian Deep Learning Method with Uncertainty Quantification"
+    }
+   ],
+   "publisher": "Zenodo",
+   "container": {},
+   "publicationYear": 2024,
+   "subjects": [],
+   "contributors": [],
+   "dates": [
+    {
+     "date": "2024-01-31",
+     "dateType": "Issued"
+    }
+   ],
+   "language": null,
+   "types": {
+    "ris": "COMP",
+    "bibtex": "misc",
+    "citeproc": "article",
+    "schemaOrg": "SoftwareSourceCode",
+    "resourceType": "",
+    "resourceTypeGeneral": "Software"
+   },
+   "relatedIdentifiers": [
+    {
+     "relationType": "IsSupplementTo",
+     "relatedIdentifier": "https://github.com/ccsc-tools/SYMHnet/tree/v1.0",
+     "resourceTypeGeneral": "Software",
+     "relatedIdentifierType": "URL"
+    },
+    {
+     "relationType": "IsVersionOf",
+     "relatedIdentifier": "10.5281/zenodo.10602474",
+     "relatedIdentifierType": "DOI"
+    },
+    {
+     "relationType": "IsPartOf",
+     "relatedIdentifier": "1542-7390",
+     "resourceTypeGeneral": "Collection",
+     "relatedIdentifierType": "ISSN"
+    }
+   ],
+   "relatedItems": [],
+   "sizes": [],
+   "formats": [],
+   "version": null,
+   "rightsList": [
+    {
+     "rights": "Creative Commons Attribution 4.0 International",
+     "rightsUri": "https://creativecommons.org/licenses/by/4.0/legalcode",
+     "schemeUri": "https://spdx.org/licenses/",
+     "rightsIdentifier": "cc-by-4.0",
+     "rightsIdentifierScheme": "SPDX"
+    }
+   ],
+   "descriptions": [
+    {
+     "description": "Prediction of the SYM-H Index Using a Bayesian Deep Learning Method with Uncertainty Quantification",
+     "descriptionType": "Abstract"
+    }
+   ],
+   "geoLocations": [],
+   "fundingReferences": [],
+   "xml": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHJlc291cmNlIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCBodHRwOi8vc2NoZW1hLmRhdGFjaXRlLm9yZy9tZXRhL2tlcm5lbC00L21ldGFkYXRhLnhzZCI+CiAgPGlkZW50aWZpZXIgaWRlbnRpZmllclR5cGU9IkRPSSI+MTAuNTI4MS9aRU5PRE8uMTA2MDI1MTg8L2lkZW50aWZpZXI+CiAgPGNyZWF0b3JzPgogICAgPGNyZWF0b3I+CiAgICAgIDxjcmVhdG9yTmFtZSBuYW1lVHlwZT0iUGVyc29uYWwiPkFiZHVhbGxhaCwgWWFzc2VyPC9jcmVhdG9yTmFtZT4KICAgICAgPGdpdmVuTmFtZT5ZYXNzZXI8L2dpdmVuTmFtZT4KICAgICAgPGZhbWlseU5hbWU+QWJkdWFsbGFoPC9mYW1pbHlOYW1lPgogICAgICA8bmFtZUlkZW50aWZpZXIgbmFtZUlkZW50aWZpZXJTY2hlbWU9Ik9SQ0lEIiBzY2hlbWVVUkk9IiI+MDAwMC0wMDAzLTA3OTItMjI3MDwvbmFtZUlkZW50aWZpZXI+CiAgICAgIDxhZmZpbGlhdGlvbj5OZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2c8L2FmZmlsaWF0aW9uPgogICAgPC9jcmVhdG9yPgogICAgPGNyZWF0b3I+CiAgICAgIDxjcmVhdG9yTmFtZSBuYW1lVHlwZT0iUGVyc29uYWwiPkFsb2JhaWwsIEtoYWxpZCBBLjwvY3JlYXRvck5hbWU+CiAgICAgIDxnaXZlbk5hbWU+S2hhbGlkIEEuPC9naXZlbk5hbWU+CiAgICAgIDxmYW1pbHlOYW1lPkFsb2JhaWw8L2ZhbWlseU5hbWU+CiAgICAgIDxuYW1lSWRlbnRpZmllciBuYW1lSWRlbnRpZmllclNjaGVtZT0iT1JDSUQiIHNjaGVtZVVSST0iIj4wMDA5LTAwMDctNDczMS0yNzcyPC9uYW1lSWRlbnRpZmllcj4KICAgICAgPGFmZmlsaWF0aW9uIGFmZmlsaWF0aW9uSWRlbnRpZmllcj0iaHR0cHM6Ly9yb3Iub3JnLzA1ZTc0eGI4NyIgYWZmaWxpYXRpb25JZGVudGlmaWVyU2NoZW1lPSJST1IiPk5ldyBKZXJzZXkgSW5zdGl0dXRlIG9mIFRlY2hub2xvZ3k8L2FmZmlsaWF0aW9uPgogICAgPC9jcmVhdG9yPgogICAgPGNyZWF0b3I+CiAgICAgIDxjcmVhdG9yTmFtZSBuYW1lVHlwZT0iUGVyc29uYWwiPldhbmcsIEphc29uIFQuIEwuPC9jcmVhdG9yTmFtZT4KICAgICAgPGdpdmVuTmFtZT5KYXNvbiBULiBMLjwvZ2l2ZW5OYW1lPgogICAgICA8ZmFtaWx5TmFtZT5XYW5nPC9mYW1pbHlOYW1lPgogICAgICA8bmFtZUlkZW50aWZpZXIgbmFtZUlkZW50aWZpZXJTY2hlbWU9Ik9SQ0lEIiBzY2hlbWVVUkk9IiI+MDAwMC0wMDAyLTI0ODYtMTA5NzwvbmFtZUlkZW50aWZpZXI+CiAgICAgIDxhZmZpbGlhdGlvbiBhZmZpbGlhdGlvbklkZW50aWZpZXI9Imh0dHBzOi8vcm9yLm9yZy8wNWU3NHhiODciIGFmZmlsaWF0aW9uSWRlbnRpZmllclNjaGVtZT0iUk9SIj5OZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWUgbmFtZVR5cGU9IlBlcnNvbmFsIj5XYW5nLCBIYWltaW48L2NyZWF0b3JOYW1lPgogICAgICA8Z2l2ZW5OYW1lPkhhaW1pbjwvZ2l2ZW5OYW1lPgogICAgICA8ZmFtaWx5TmFtZT5XYW5nPC9mYW1pbHlOYW1lPgogICAgICA8bmFtZUlkZW50aWZpZXIgbmFtZUlkZW50aWZpZXJTY2hlbWU9Ik9SQ0lEIiBzY2hlbWVVUkk9IiI+MDAwMC0wMDAyLTUyMzMtNTY1WDwvbmFtZUlkZW50aWZpZXI+CiAgICAgIDxhZmZpbGlhdGlvbiBhZmZpbGlhdGlvbklkZW50aWZpZXI9Imh0dHBzOi8vcm9yLm9yZy8wNWU3NHhiODciIGFmZmlsaWF0aW9uSWRlbnRpZmllclNjaGVtZT0iUk9SIj5OZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWUgbmFtZVR5cGU9IlBlcnNvbmFsIj5Kb3JkYW5vdmEsIFZhbmlhIEsuPC9jcmVhdG9yTmFtZT4KICAgICAgPGdpdmVuTmFtZT5WYW5pYSBLLjwvZ2l2ZW5OYW1lPgogICAgICA8ZmFtaWx5TmFtZT5Kb3JkYW5vdmE8L2ZhbWlseU5hbWU+CiAgICAgIDxuYW1lSWRlbnRpZmllciBuYW1lSWRlbnRpZmllclNjaGVtZT0iT1JDSUQiIHNjaGVtZVVSST0iIj4wMDAwLTAwMDMtMDQ3NS04NzQzPC9uYW1lSWRlbnRpZmllcj4KICAgICAgPGFmZmlsaWF0aW9uPkxvcyBBbGFtb3MgTmF0aW9uYWwgTGFib3JhdG9yeTwvYWZmaWxpYXRpb24+CiAgICA8L2NyZWF0b3I+CiAgICA8Y3JlYXRvcj4KICAgICAgPGNyZWF0b3JOYW1lIG5hbWVUeXBlPSJQZXJzb25hbCI+WXVyY2h5c2h5biwgVmFzeWw8L2NyZWF0b3JOYW1lPgogICAgICA8Z2l2ZW5OYW1lPlZhc3lsPC9naXZlbk5hbWU+CiAgICAgIDxmYW1pbHlOYW1lPll1cmNoeXNoeW48L2ZhbWlseU5hbWU+CiAgICAgIDxuYW1lSWRlbnRpZmllciBuYW1lSWRlbnRpZmllclNjaGVtZT0iT1JDSUQiIHNjaGVtZVVSST0iIj4wMDAwLTAwMDEtOTk4Mi0yMTc1PC9uYW1lSWRlbnRpZmllcj4KICAgICAgPGFmZmlsaWF0aW9uIGFmZmlsaWF0aW9uSWRlbnRpZmllcj0iaHR0cHM6Ly9yb3Iub3JnLzA1MnMzbTk3NiIgYWZmaWxpYXRpb25JZGVudGlmaWVyU2NoZW1lPSJST1IiPk5ldXJvc3VyZ2VvbnMgb2YgTmV3IEplcnNleTwvYWZmaWxpYXRpb24+CiAgICA8L2NyZWF0b3I+CiAgICA8Y3JlYXRvcj4KICAgICAgPGNyZWF0b3JOYW1lIG5hbWVUeXBlPSJQZXJzb25hbCI+Q2F2dXMsIEh1c2V5aW48L2NyZWF0b3JOYW1lPgogICAgICA8Z2l2ZW5OYW1lPkh1c2V5aW48L2dpdmVuTmFtZT4KICAgICAgPGZhbWlseU5hbWU+Q2F2dXM8L2ZhbWlseU5hbWU+CiAgICAgIDxhZmZpbGlhdGlvbj5IYXJ2YXJkLVNtaXRoc29uaWFuIENlbnRlciBmb3IgQXN0cm9waHlzaWNzPC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWUgbmFtZVR5cGU9IlBlcnNvbmFsIj5KaW5nLCBKdTwvY3JlYXRvck5hbWU+CiAgICAgIDxnaXZlbk5hbWU+SnU8L2dpdmVuTmFtZT4KICAgICAgPGZhbWlseU5hbWU+SmluZzwvZmFtaWx5TmFtZT4KICAgICAgPGFmZmlsaWF0aW9uIGFmZmlsaWF0aW9uSWRlbnRpZmllcj0iaHR0cHM6Ly9yb3Iub3JnLzA1ZTc0eGI4NyIgYWZmaWxpYXRpb25JZGVudGlmaWVyU2NoZW1lPSJST1IiPk5ldyBKZXJzZXkgSW5zdGl0dXRlIG9mIFRlY2hub2xvZ3k8L2FmZmlsaWF0aW9uPgogICAgPC9jcmVhdG9yPgogIDwvY3JlYXRvcnM+CiAgPHRpdGxlcz4KICAgIDx0aXRsZT5QcmVkaWN0aW9uIG9mIHRoZSBTWU0tSCBJbmRleCBVc2luZyBhIEJheWVzaWFuIERlZXAgTGVhcm5pbmcgTWV0aG9kIHdpdGggVW5jZXJ0YWludHkgUXVhbnRpZmljYXRpb248L3RpdGxlPgogIDwvdGl0bGVzPgogIDxwdWJsaXNoZXI+WmVub2RvPC9wdWJsaXNoZXI+CiAgPHB1YmxpY2F0aW9uWWVhcj4yMDI0PC9wdWJsaWNhdGlvblllYXI+CiAgPHJlc291cmNlVHlwZSByZXNvdXJjZVR5cGVHZW5lcmFsPSJTb2Z0d2FyZSIvPgogIDxkYXRlcz4KICAgIDxkYXRlIGRhdGVUeXBlPSJJc3N1ZWQiPjIwMjQtMDEtMzE8L2RhdGU+CiAgPC9kYXRlcz4KICA8YWx0ZXJuYXRlSWRlbnRpZmllcnM+CiAgICA8YWx0ZXJuYXRlSWRlbnRpZmllciBhbHRlcm5hdGVJZGVudGlmaWVyVHlwZT0ib2FpIj5vYWk6emVub2RvLm9yZzoxMDYwMjUxODwvYWx0ZXJuYXRlSWRlbnRpZmllcj4KICA8L2FsdGVybmF0ZUlkZW50aWZpZXJzPgogIDxyZWxhdGVkSWRlbnRpZmllcnM+CiAgICA8cmVsYXRlZElkZW50aWZpZXIgcmVsYXRlZElkZW50aWZpZXJUeXBlPSJVUkwiIHJlbGF0aW9uVHlwZT0iSXNTdXBwbGVtZW50VG8iIHJlc291cmNlVHlwZUdlbmVyYWw9IlNvZnR3YXJlIj5odHRwczovL2dpdGh1Yi5jb20vY2NzYy10b29scy9TWU1IbmV0L3RyZWUvdjEuMDwvcmVsYXRlZElkZW50aWZpZXI+CiAgICA8cmVsYXRlZElkZW50aWZpZXIgcmVsYXRlZElkZW50aWZpZXJUeXBlPSJET0kiIHJlbGF0aW9uVHlwZT0iSXNWZXJzaW9uT2YiPjEwLjUyODEvemVub2RvLjEwNjAyNDc0PC9yZWxhdGVkSWRlbnRpZmllcj4KICAgIDxyZWxhdGVkSWRlbnRpZmllciByZWxhdGVkSWRlbnRpZmllclR5cGU9IklTU04iIHJlbGF0aW9uVHlwZT0iSXNQYXJ0T2YiIHJlc291cmNlVHlwZUdlbmVyYWw9IkNvbGxlY3Rpb24iPjE1NDItNzM5MDwvcmVsYXRlZElkZW50aWZpZXI+CiAgPC9yZWxhdGVkSWRlbnRpZmllcnM+CiAgPHNpemVzLz4KICA8Zm9ybWF0cy8+CiAgPHZlcnNpb24vPgogIDxyaWdodHNMaXN0PgogICAgPHJpZ2h0cyByaWdodHNVUkk9Imh0dHBzOi8vY3JlYXRpdmVjb21tb25zLm9yZy9saWNlbnNlcy9ieS80LjAvbGVnYWxjb2RlIiByaWdodHNJZGVudGlmaWVyPSJjYy1ieS00LjAiIHJpZ2h0c0lkZW50aWZpZXJTY2hlbWU9InNwZHgiPkNyZWF0aXZlIENvbW1vbnMgQXR0cmlidXRpb24gNC4wIEludGVybmF0aW9uYWw8L3JpZ2h0cz4KICA8L3JpZ2h0c0xpc3Q+CiAgPGRlc2NyaXB0aW9ucz4KICAgIDxkZXNjcmlwdGlvbiBkZXNjcmlwdGlvblR5cGU9IkFic3RyYWN0Ij5QcmVkaWN0aW9uIG9mIHRoZSBTWU0tSCBJbmRleCBVc2luZyBhIEJheWVzaWFuIERlZXAgTGVhcm5pbmcgTWV0aG9kIHdpdGggVW5jZXJ0YWludHkgUXVhbnRpZmljYXRpb248L2Rlc2NyaXB0aW9uPgogIDwvZGVzY3JpcHRpb25zPgo8L3Jlc291cmNlPgo=",
+   "url": "https://zenodo.org/doi/10.5281/zenodo.10602518",
+   "contentUrl": null,
+   "metadataVersion": 2,
+   "schemaVersion": "http://datacite.org/schema/kernel-4",
+   "source": "api",
+   "isActive": true,
+   "state": "findable",
+   "reason": null,
+   "viewCount": 0,
+   "viewsOverTime": [],
+   "downloadCount": 0,
+   "downloadsOverTime": [],
+   "referenceCount": 0,
+   "citationCount": 0,
+   "citationsOverTime": [
+    {
+     "year": "2024",
+     "total": 1
+    }
+   ],
+   "partCount": 0,
+   "partOfCount": 0,
+   "versionCount": 0,
+   "versionOfCount": 1,
+   "created": "2024-01-31T23:12:15.000Z",
+   "registered": "2024-01-31T23:12:15.000Z",
+   "published": "2024",
+   "updated": "2024-07-10T18:08:32.000Z"
+  },
+  "relationships": {
+   "client": {
+    "data": {
+     "id": "cern.zenodo",
+     "type": "clients"
+    }
+   },
+   "provider": {
+    "data": {
+     "id": "cern",
+     "type": "providers"
+    }
+   },
+   "media": {
+    "data": {
+     "id": "10.5281/zenodo.10602518",
+     "type": "media"
+    }
+   },
+   "references": {
+    "data": []
+   },
+   "citations": {
+    "data": []
+   },
+   "parts": {
+    "data": []
+   },
+   "partOf": {
+    "data": []
+   },
+   "versions": {
+    "data": []
+   },
+   "versionOf": {
+    "data": [
+     {
+      "id": "10.5281/zenodo.10602474",
+      "type": "dois"
+     }
+    ]
+   }
+  }
+ }
+}

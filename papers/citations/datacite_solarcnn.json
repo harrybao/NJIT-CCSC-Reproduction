@@ -1,0 +1,259 @@
+{
+ "data": {
+  "id": "10.5281/zenodo.15250172",
+  "type": "dois",
+  "attributes": {
+   "doi": "10.5281/zenodo.15250172",
+   "prefix": "10.5281",
+   "suffix": "zenodo.15250172",
+   "identifiers": [
+    {
+     "identifier": "oai:zenodo.org:15250172",
+     "identifierType": "oai"
+    }
+   ],
+   "alternateIdentifiers": [
+    {
+     "alternateIdentifierType": "oai",
+     "alternateIdentifier": "oai:zenodo.org:15250172"
+    }
+   ],
+   "creators": [
+    {
+     "name": "Chunhui Xu",
+     "nameType": "Personal",
+     "familyName": "Chunhui Xu",
+     "affiliation": [
+      "Institute for Space Weather Sciences, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "nameIdentifier": "0009-0008-1653-9357",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Jason T. L. Wang",
+     "nameType": "Personal",
+     "familyName": "Jason T. L. Wang",
+     "affiliation": [
+      "Institute for Space Weather Sciences, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "nameIdentifier": "0000-0002-2486-1097",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Haimin Wang",
+     "nameType": "Personal",
+     "familyName": "Haimin Wang",
+     "affiliation": [
+      "Institute for Space Weather Sciences, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "nameIdentifier": "0000-0002-5233-565X",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Haodi Jiang",
+     "nameType": "Personal",
+     "familyName": "Haodi Jiang",
+     "affiliation": [
+      "Institute for Space Weather Sciences, New Jersey Institute of Technology",
+      "Department of Computer Science, Sam Houston State University"
+     ],
+     "nameIdentifiers": [
+      {
+       "nameIdentifier": "0000-0001-6460-408X",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Qin Li",
+     "nameType": "Personal",
+     "familyName": "Qin Li",
+     "affiliation": [
+      "Institute for Space Weather Sciences, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": []
+    },
+    {
+     "name": "Yasser Abduallah",
+     "nameType": "Personal",
+     "familyName": "Yasser Abduallah",
+     "affiliation": [
+      "Institute for Space Weather Sciences, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "nameIdentifier": "0000-0003-0792-2270",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Yan Xu",
+     "nameType": "Personal",
+     "familyName": "Yan Xu",
+     "affiliation": [
+      "Institute for Space Weather Sciences, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": []
+    }
+   ],
+   "titles": [
+    {
+     "title": "Super-Resolution of SOHO/MDI Magnetograms of Solar Active Regions Using SDO/HMI Data and an Attention-Aided Convolutional Neural Network"
+    }
+   ],
+   "publisher": "Zenodo",
+   "container": {},
+   "publicationYear": 2025,
+   "subjects": [
+    {
+     "subject": "machine-learning"
+    },
+    {
+     "subject": "deep learning"
+    },
+    {
+     "subject": "solar"
+    },
+    {
+     "subject": "active region"
+    },
+    {
+     "subject": "photoshpere"
+    },
+    {
+     "subject": "magnetic fields"
+    }
+   ],
+   "contributors": [],
+   "dates": [
+    {
+     "date": "2025-04-20",
+     "dateType": "Issued"
+    }
+   ],
+   "language": null,
+   "types": {
+    "ris": "GEN",
+    "bibtex": "misc",
+    "citeproc": "article",
+    "schemaOrg": "CreativeWork",
+    "resourceType": "",
+    "resourceTypeGeneral": "Model"
+   },
+   "relatedIdentifiers": [
+    {
+     "relationType": "IsSupplementTo",
+     "relatedIdentifier": "https://github.com/ccsc-tools/SolarCNN",
+     "relatedIdentifierType": "URL"
+    },
+    {
+     "relationType": "IsVersionOf",
+     "relatedIdentifier": "10.5281/zenodo.15244025",
+     "relatedIdentifierType": "DOI"
+    }
+   ],
+   "relatedItems": [],
+   "sizes": [],
+   "formats": [],
+   "version": null,
+   "rightsList": [
+    {
+     "rights": "Other (Open)"
+    }
+   ],
+   "descriptions": [
+    {
+     "description": "CCSC open-source model: SolarCNN and its workflow of prediction.",
+     "descriptionType": "Abstract"
+    }
+   ],
+   "geoLocations": [],
+   "fundingReferences": [],
+   "xml": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHJlc291cmNlIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCBodHRwOi8vc2NoZW1hLmRhdGFjaXRlLm9yZy9tZXRhL2tlcm5lbC00L21ldGFkYXRhLnhzZCI+CiAgPGlkZW50aWZpZXIgaWRlbnRpZmllclR5cGU9IkRPSSI+MTAuNTI4MS9aRU5PRE8uMTUyNTAxNzI8L2lkZW50aWZpZXI+CiAgPGNyZWF0b3JzPgogICAgPGNyZWF0b3I+CiAgICAgIDxjcmVhdG9yTmFtZSBuYW1lVHlwZT0iUGVyc29uYWwiPkNodW5odWkgWHU8L2NyZWF0b3JOYW1lPgogICAgICA8ZmFtaWx5TmFtZT5DaHVuaHVpIFh1PC9mYW1pbHlOYW1lPgogICAgICA8bmFtZUlkZW50aWZpZXIgbmFtZUlkZW50aWZpZXJTY2hlbWU9Ik9SQ0lEIiBzY2hlbWVVUkk9IiI+MDAwOS0wMDA4LTE2NTMtOTM1NzwvbmFtZUlkZW50aWZpZXI+CiAgICAgIDxhZmZpbGlhdGlvbj5JbnN0aXR1dGUgZm9yIFNwYWNlIFdlYXRoZXIgU2NpZW5jZXMsIE5ldyBKZXJzZXkgSW5zdGl0dXRlIG9mIFRlY2hub2xvZ3k8L2FmZmlsaWF0aW9uPgogICAgPC9jcmVhdG9yPgogICAgPGNyZWF0b3I+CiAgICAgIDxjcmVhdG9yTmFtZSBuYW1lVHlwZT0iUGVyc29uYWwiPkphc29uIFQuIEwuIFdhbmc8L2NyZWF0b3JOYW1lPgogICAgICA8ZmFtaWx5TmFtZT5KYXNvbiBULiBMLiBXYW5nPC9mYW1pbHlOYW1lPgogICAgICA8bmFtZUlkZW50aWZpZXIgbmFtZUlkZW50aWZpZXJTY2hlbWU9Ik9SQ0lEIiBzY2hlbWVVUkk9IiI+MDAwMC0wMDAyLTI0ODYtMTA5NzwvbmFtZUlkZW50aWZpZXI+CiAgICAgIDxhZmZpbGlhdGlvbj5JbnN0aXR1dGUgZm9yIFNwYWNlIFdlYXRoZXIgU2NpZW5jZXMsIE5ldyBKZXJzZXkgSW5zdGl0dXRlIG9mIFRlY2hub2xvZ3k8L2FmZmlsaWF0aW9uPgogICAgPC9jcmVhdG9yPgogICAgPGNyZWF0b3I+CiAgICAgIDxjcmVhdG9yTmFtZSBuYW1lVHlwZT0iUGVyc29uYWwiPkhhaW1pbiBXYW5nPC9jcmVhdG9yTmFtZT4KICAgICAgPGZhbWlseU5hbWU+SGFpbWluIFdhbmc8L2ZhbWlseU5hbWU+CiAgICAgIDxuYW1lSWRlbnRpZmllciBuYW1lSWRlbnRpZmllclNjaGVtZT0iT1JDSUQiIHNjaGVtZVVSST0iIj4wMDAwLTAwMDItNTIzMy01NjVYPC9uYW1lSWRlbnRpZmllcj4KICAgICAgPGFmZmlsaWF0aW9uPkluc3RpdHV0ZSBmb3IgU3BhY2UgV2VhdGhlciBTY2llbmNlcywgTmV3IEplcnNleSBJbnN0aXR1dGUgb2YgVGVjaG5vbG9neTwvYWZmaWxpYXRpb24+CiAgICA8L2NyZWF0b3I+CiAgICA8Y3JlYXRvcj4KICAgICAgPGNyZWF0b3JOYW1lIG5hbWVUeXBlPSJQZXJzb25hbCI+SGFvZGkgSmlhbmc8L2NyZWF0b3JOYW1lPgogICAgICA8ZmFtaWx5TmFtZT5IYW9kaSBKaWFuZzwvZmFtaWx5TmFtZT4KICAgICAgPG5hbWVJZGVudGlmaWVyIG5hbWVJZGVudGlmaWVyU2NoZW1lPSJPUkNJRCIgc2NoZW1lVVJJPSIiPjAwMDAtMDAwMS02NDYwLTQwOFg8L25hbWVJZGVudGlmaWVyPgogICAgICA8YWZmaWxpYXRpb24+SW5zdGl0dXRlIGZvciBTcGFjZSBXZWF0aGVyIFNjaWVuY2VzLCBOZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgICAgPGFmZmlsaWF0aW9uPkRlcGFydG1lbnQgb2YgQ29tcHV0ZXIgU2NpZW5jZSwgU2FtIEhvdXN0b24gU3RhdGUgVW5pdmVyc2l0eTwvYWZmaWxpYXRpb24+CiAgICA8L2NyZWF0b3I+CiAgICA8Y3JlYXRvcj4KICAgICAgPGNyZWF0b3JOYW1lIG5hbWVUeXBlPSJQZXJzb25hbCI+UWluIExpPC9jcmVhdG9yTmFtZT4KICAgICAgPGZhbWlseU5hbWU+UWluIExpPC9mYW1pbHlOYW1lPgogICAgICA8YWZmaWxpYXRpb24+SW5zdGl0dXRlIGZvciBTcGFjZSBXZWF0aGVyIFNjaWVuY2VzLCBOZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWUgbmFtZVR5cGU9IlBlcnNvbmFsIj5ZYXNzZXIgQWJkdWFsbGFoPC9jcmVhdG9yTmFtZT4KICAgICAgPGZhbWlseU5hbWU+WWFzc2VyIEFiZHVhbGxhaDwvZmFtaWx5TmFtZT4KICAgICAgPG5hbWVJZGVudGlmaWVyIG5hbWVJZGVudGlmaWVyU2NoZW1lPSJPUkNJRCIgc2NoZW1lVVJJPSIiPjAwMDAtMDAwMy0wNzkyLTIyNzA8L25hbWVJZGVudGlmaWVyPgogICAgICA8YWZmaWxpYXRpb24+SW5zdGl0dXRlIGZvciBTcGFjZSBXZWF0aGVyIFNjaWVuY2VzLCBOZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWUgbmFtZVR5cGU9IlBlcnNvbmFsIj5ZYW4gWHU8L2NyZWF0b3JOYW1lPgogICAgICA8ZmFtaWx5TmFtZT5ZYW4gWHU8L2ZhbWlseU5hbWU+CiAgICAgIDxhZmZpbGlhdGlvbj5JbnN0aXR1dGUgZm9yIFNwYWNlIFdlYXRoZXIgU2NpZW5jZXMsIE5ldyBKZXJzZXkgSW5zdGl0dXRlIG9mIFRlY2hub2xvZ3k8L2FmZmlsaWF0aW9uPgogICAgPC9jcmVhdG9yPgogIDwvY3JlYXRvcnM+CiAgPHRpdGxlcz4KICAgIDx0aXRsZT5TdXBlci1SZXNvbHV0aW9uIG9mIFNPSE8vTURJIE1hZ25ldG9ncmFtcyBvZiBTb2xhciBBY3RpdmUgUmVnaW9ucyBVc2luZyBTRE8vSE1JIERhdGEgYW5kIGFuIEF0dGVudGlvbi1BaWRlZCBDb252b2x1dGlvbmFsIE5ldXJhbCBOZXR3b3JrPC90aXRsZT4KICA8L3RpdGxlcz4KICA8cHVibGlzaGVyPlplbm9kbzwvcHVibGlzaGVyPgogIDxwdWJsaWNhdGlvblllYXI+MjAyNTwvcHVibGljYXRpb25ZZWFyPgogIDxyZXNvdXJjZVR5cGUgcmVzb3VyY2VUeXBlR2VuZXJhbD0iTW9kZWwiLz4KICA8c3ViamVjdHM+CiAgICA8c3ViamVjdD5tYWNoaW5lLWxlYXJuaW5nPC9zdWJqZWN0PgogICAgPHN1YmplY3Q+ZGVlcCBsZWFybmluZzwvc3ViamVjdD4KICAgIDxzdWJqZWN0PnNvbGFyPC9zdWJqZWN0PgogICAgPHN1YmplY3Q+YWN0aXZlIHJlZ2lvbjwvc3ViamVjdD4KICAgIDxzdWJqZWN0PnBob3Rvc2hwZXJlPC9zdWJqZWN0PgogICAgPHN1YmplY3Q+bWFnbmV0aWMgZmllbGRzPC9zdWJqZWN0PgogIDwvc3ViamVjdHM+CiAgPGRhdGVzPgogICAgPGRhdGUgZGF0ZVR5cGU9Iklzc3VlZCI+MjAyNS0wNC0yMDwvZGF0ZT4KICA8L2RhdGVzPgogIDxhbHRlcm5hdGVJZGVudGlmaWVycz4KICAgIDxhbHRlcm5hdGVJZGVudGlmaWVyIGFsdGVybmF0ZUlkZW50aWZpZXJUeXBlPSJvYWkiPm9haTp6ZW5vZG8ub3JnOjE1MjUwMTcyPC9hbHRlcm5hdGVJZGVudGlmaWVyPgogIDwvYWx0ZXJuYXRlSWRlbnRpZmllcnM+CiAgPHJlbGF0ZWRJZGVudGlmaWVycz4KICAgIDxyZWxhdGVkSWRlbnRpZmllciByZWxhdGVkSWRlbnRpZmllclR5cGU9IlVSTCIgcmVsYXRpb25UeXBlPSJJc1N1cHBsZW1lbnRUbyI+aHR0cHM6Ly9naXRodWIuY29tL2Njc2MtdG9vbHMvU29sYXJDTk48L3JlbGF0ZWRJZGVudGlmaWVyPgogICAgPHJlbGF0ZWRJZGVudGlmaWVyIHJlbGF0ZWRJZGVudGlmaWVyVHlwZT0iRE9JIiByZWxhdGlvblR5cGU9IklzVmVyc2lvbk9mIj4xMC41MjgxL3plbm9kby4xNTI0NDAyNTwvcmVsYXRlZElkZW50aWZpZXI+CiAgPC9yZWxhdGVkSWRlbnRpZmllcnM+CiAgPHNpemVzLz4KICA8Zm9ybWF0cy8+CiAgPHZlcnNpb24vPgogIDxyaWdodHNMaXN0PgogICAgPHJpZ2h0cz5PdGhlciAoT3Blbik8L3JpZ2h0cz4KICA8L3JpZ2h0c0xpc3Q+CiAgPGRlc2NyaXB0aW9ucz4KICAgIDxkZXNjcmlwdGlvbiBkZXNjcmlwdGlvblR5cGU9IkFic3RyYWN0Ij5DQ1NDIG9wZW4tc291cmNlIG1vZGVsOiBTb2xhckNOTiBhbmQgaXRzIHdvcmtmbG93IG9mIHByZWRpY3Rpb24uPC9kZXNjcmlwdGlvbj4KICA8L2Rlc2NyaXB0aW9ucz4KPC9yZXNvdXJjZT4K",
+   "url": "https://zenodo.org/doi/10.5281/zenodo.15250172",
+   "contentUrl": null,
+   "metadataVersion": 2,
+   "schemaVersion": "http://datacite.org/schema/kernel-4",
+   "source": "api",
+   "isActive": true,
+   "state": "findable",
+   "reason": null,
+   "viewCount": 0,
+   "viewsOverTime": [],
+   "downloadCount": 0,
+   "downloadsOverTime": [],
+   "referenceCount": 0,
+   "citationCount": 0,
+   "citationsOverTime": [
+    {
+     "year": "2025",
+     "total": 1
+    }
+   ],
+   "partCount": 0,
+   "partOfCount": 0,
+   "versionCount": 0,
+   "versionOfCount": 1,
+   "created": "2025-04-20T03:45:39.000Z",
+   "registered": "2025-04-20T03:45:39.000Z",
+   "published": "2025",
+   "updated": "2025-09-04T19:27:52.000Z"
+  },
+  "relationships": {
+   "client": {
+    "data": {
+     "id": "cern.zenodo",
+     "type": "clients"
+    }
+   },
+   "provider": {
+    "data": {
+     "id": "cern",
+     "type": "providers"
+    }
+   },
+   "media": {
+    "data": {
+     "id": "10.5281/zenodo.15250172",
+     "type": "media"
+    }
+   },
+   "references": {
+    "data": []
+   },
+   "citations": {
+    "data": []
+   },
+   "parts": {
+    "data": []
+   },
+   "partOf": {
+    "data": []
+   },
+   "versions": {
+    "data": []
+   },
+   "versionOf": {
+    "data": [
+     {
+      "id": "10.5281/zenodo.15244025",
+      "type": "dois"
+     }
+    ]
+   }
+  }
+ }
+}

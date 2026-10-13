@@ -1,0 +1,283 @@
+{
+ "data": {
+  "id": "10.5281/zenodo.7521568",
+  "type": "dois",
+  "attributes": {
+   "doi": "10.5281/zenodo.7521568",
+   "prefix": "10.5281",
+   "suffix": "zenodo.7521568",
+   "identifiers": [],
+   "alternateIdentifiers": [],
+   "creators": [
+    {
+     "name": "Jiang, Haodi",
+     "nameType": "Personal",
+     "givenName": "Haodi",
+     "familyName": "Jiang",
+     "affiliation": [
+      "Department of Computer Science, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0001-6460-408X",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Jing, Ju",
+     "nameType": "Personal",
+     "givenName": "Ju",
+     "familyName": "Jing",
+     "affiliation": [
+      "Institute for Space Weather Sciences, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0002-8179-3625",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Wang, Jiasheng",
+     "nameType": "Personal",
+     "givenName": "Jiasheng",
+     "familyName": "Wang",
+     "affiliation": [
+      "Institute for Space Weather Sciences, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0001-5099-8209",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Liu, Chang",
+     "nameType": "Personal",
+     "givenName": "Chang",
+     "familyName": "Liu",
+     "affiliation": [
+      "Institute for Space Weather Sciences, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0002-6178-7471",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Li, Qin",
+     "nameType": "Personal",
+     "givenName": "Qin",
+     "familyName": "Li",
+     "affiliation": [
+      "Institute for Space Weather Sciences, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": []
+    },
+    {
+     "name": "Xu, Yan",
+     "nameType": "Personal",
+     "givenName": "Yan",
+     "familyName": "Xu",
+     "affiliation": [
+      "Institute for Space Weather Sciences, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": []
+    },
+    {
+     "name": "Wang, Jason T. L.",
+     "nameType": "Personal",
+     "givenName": "Jason T. L.",
+     "familyName": "Wang",
+     "affiliation": [
+      "Department of Computer Science, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0002-2486-1097",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Wang, Haimin",
+     "nameType": "Personal",
+     "givenName": "Haimin",
+     "familyName": "Wang",
+     "affiliation": [
+      "Institute for Space Weather Sciences, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0002-5233-565X",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    }
+   ],
+   "titles": [
+    {
+     "title": "Tracing H\u03b1 Fibrils through Bayesian Deep Learning"
+    }
+   ],
+   "publisher": "Zenodo",
+   "container": {},
+   "publicationYear": 2023,
+   "subjects": [
+    {
+     "subject": "H\u03b1 Fibrils"
+    },
+    {
+     "subject": "deep learninig"
+    },
+    {
+     "subject": "Bayesian"
+    },
+    {
+     "subject": "solar"
+    }
+   ],
+   "contributors": [
+    {
+     "name": "Abduallah, Yasser",
+     "nameType": "Personal",
+     "givenName": "Yasser",
+     "familyName": "Abduallah",
+     "affiliation": [
+      "Department of Computer Science, New Jersey Institute of Technology"
+     ],
+     "contributorType": "DataCurator",
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0003-0792-2270",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    }
+   ],
+   "dates": [
+    {
+     "date": "2023-01-05",
+     "dateType": "Issued"
+    }
+   ],
+   "language": null,
+   "types": {
+    "ris": "COMP",
+    "bibtex": "misc",
+    "citeproc": "article",
+    "schemaOrg": "SoftwareSourceCode",
+    "resourceTypeGeneral": "Software"
+   },
+   "relatedIdentifiers": [
+    {
+     "relationType": "IsSupplementTo",
+     "relatedIdentifier": "https://github.com/ccsc-tools/FibrilNet/tree/v1.6",
+     "relatedIdentifierType": "URL"
+    },
+    {
+     "relationType": "IsVersionOf",
+     "relatedIdentifier": "10.5281/zenodo.7490658",
+     "relatedIdentifierType": "DOI"
+    }
+   ],
+   "relatedItems": [],
+   "sizes": [],
+   "formats": [],
+   "version": "v1.6",
+   "rightsList": [
+    {
+     "rights": "Open Access",
+     "rightsUri": "info:eu-repo/semantics/openAccess"
+    }
+   ],
+   "descriptions": [
+    {
+     "description": "Tracing H\u03b1 Fibrils through Bayesian Deep Learning",
+     "descriptionType": "Abstract"
+    }
+   ],
+   "geoLocations": [],
+   "fundingReferences": [],
+   "xml": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHJlc291cmNlIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCBodHRwOi8vc2NoZW1hLmRhdGFjaXRlLm9yZy9tZXRhL2tlcm5lbC00LjEvbWV0YWRhdGEueHNkIj4KICA8aWRlbnRpZmllciBpZGVudGlmaWVyVHlwZT0iRE9JIj4xMC41MjgxL1pFTk9ETy43NTIxNTY4PC9pZGVudGlmaWVyPgogIDxjcmVhdG9ycz4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWU+SGFvZGkgSmlhbmc8L2NyZWF0b3JOYW1lPgogICAgICA8bmFtZUlkZW50aWZpZXIgbmFtZUlkZW50aWZpZXJTY2hlbWU9Ik9SQ0lEIiBzY2hlbWVVUkk9Imh0dHA6Ly9vcmNpZC5vcmcvIj4wMDAwLTAwMDEtNjQ2MC00MDhYPC9uYW1lSWRlbnRpZmllcj4KICAgICAgPGFmZmlsaWF0aW9uPkRlcGFydG1lbnQgb2YgQ29tcHV0ZXIgU2NpZW5jZSwgTmV3IEplcnNleSBJbnN0aXR1dGUgb2YgVGVjaG5vbG9neTwvYWZmaWxpYXRpb24+CiAgICA8L2NyZWF0b3I+CiAgICA8Y3JlYXRvcj4KICAgICAgPGNyZWF0b3JOYW1lPkp1IEppbmc8L2NyZWF0b3JOYW1lPgogICAgICA8bmFtZUlkZW50aWZpZXIgbmFtZUlkZW50aWZpZXJTY2hlbWU9Ik9SQ0lEIiBzY2hlbWVVUkk9Imh0dHA6Ly9vcmNpZC5vcmcvIj4wMDAwLTAwMDItODE3OS0zNjI1PC9uYW1lSWRlbnRpZmllcj4KICAgICAgPGFmZmlsaWF0aW9uPkluc3RpdHV0ZSBmb3IgU3BhY2UgV2VhdGhlciBTY2llbmNlcywgTmV3IEplcnNleSBJbnN0aXR1dGUgb2YgVGVjaG5vbG9neTwvYWZmaWxpYXRpb24+CiAgICA8L2NyZWF0b3I+CiAgICA8Y3JlYXRvcj4KICAgICAgPGNyZWF0b3JOYW1lPkppYXNoZW5nIFdhbmc8L2NyZWF0b3JOYW1lPgogICAgICA8bmFtZUlkZW50aWZpZXIgbmFtZUlkZW50aWZpZXJTY2hlbWU9Ik9SQ0lEIiBzY2hlbWVVUkk9Imh0dHA6Ly9vcmNpZC5vcmcvIj4wMDAwLTAwMDEtNTA5OS04MjA5PC9uYW1lSWRlbnRpZmllcj4KICAgICAgPGFmZmlsaWF0aW9uPkluc3RpdHV0ZSBmb3IgU3BhY2UgV2VhdGhlciBTY2llbmNlcywgTmV3IEplcnNleSBJbnN0aXR1dGUgb2YgVGVjaG5vbG9neTwvYWZmaWxpYXRpb24+CiAgICA8L2NyZWF0b3I+CiAgICA8Y3JlYXRvcj4KICAgICAgPGNyZWF0b3JOYW1lPkNoYW5nIExpdTwvY3JlYXRvck5hbWU+CiAgICAgIDxuYW1lSWRlbnRpZmllciBuYW1lSWRlbnRpZmllclNjaGVtZT0iT1JDSUQiIHNjaGVtZVVSST0iaHR0cDovL29yY2lkLm9yZy8iPjAwMDAtMDAwMi02MTc4LTc0NzE8L25hbWVJZGVudGlmaWVyPgogICAgICA8YWZmaWxpYXRpb24+SW5zdGl0dXRlIGZvciBTcGFjZSBXZWF0aGVyIFNjaWVuY2VzLCBOZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWU+UWluIExpPC9jcmVhdG9yTmFtZT4KICAgICAgPGFmZmlsaWF0aW9uPkluc3RpdHV0ZSBmb3IgU3BhY2UgV2VhdGhlciBTY2llbmNlcywgTmV3IEplcnNleSBJbnN0aXR1dGUgb2YgVGVjaG5vbG9neTwvYWZmaWxpYXRpb24+CiAgICA8L2NyZWF0b3I+CiAgICA8Y3JlYXRvcj4KICAgICAgPGNyZWF0b3JOYW1lPllhbiBYdTwvY3JlYXRvck5hbWU+CiAgICAgIDxhZmZpbGlhdGlvbj5JbnN0aXR1dGUgZm9yIFNwYWNlIFdlYXRoZXIgU2NpZW5jZXMsIE5ldyBKZXJzZXkgSW5zdGl0dXRlIG9mIFRlY2hub2xvZ3k8L2FmZmlsaWF0aW9uPgogICAgPC9jcmVhdG9yPgogICAgPGNyZWF0b3I+CiAgICAgIDxjcmVhdG9yTmFtZT5KYXNvbiBULiBMLiBXYW5nPC9jcmVhdG9yTmFtZT4KICAgICAgPG5hbWVJZGVudGlmaWVyIG5hbWVJZGVudGlmaWVyU2NoZW1lPSJPUkNJRCIgc2NoZW1lVVJJPSJodHRwOi8vb3JjaWQub3JnLyI+MDAwMC0wMDAyLTI0ODYtMTA5NzwvbmFtZUlkZW50aWZpZXI+CiAgICAgIDxhZmZpbGlhdGlvbj5EZXBhcnRtZW50IG9mIENvbXB1dGVyIFNjaWVuY2UsIE5ldyBKZXJzZXkgSW5zdGl0dXRlIG9mIFRlY2hub2xvZ3k8L2FmZmlsaWF0aW9uPgogICAgPC9jcmVhdG9yPgogICAgPGNyZWF0b3I+CiAgICAgIDxjcmVhdG9yTmFtZT5IYWltaW4gV2FuZzwvY3JlYXRvck5hbWU+CiAgICAgIDxuYW1lSWRlbnRpZmllciBuYW1lSWRlbnRpZmllclNjaGVtZT0iT1JDSUQiIHNjaGVtZVVSST0iaHR0cDovL29yY2lkLm9yZy8iPjAwMDAtMDAwMi01MjMzLTU2NVg8L25hbWVJZGVudGlmaWVyPgogICAgICA8YWZmaWxpYXRpb24+SW5zdGl0dXRlIGZvciBTcGFjZSBXZWF0aGVyIFNjaWVuY2VzLCBOZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICA8L2NyZWF0b3JzPgogIDx0aXRsZXM+CiAgICA8dGl0bGU+VHJhY2luZyBIzrEgRmlicmlscyB0aHJvdWdoIEJheWVzaWFuIERlZXAgTGVhcm5pbmc8L3RpdGxlPgogIDwvdGl0bGVzPgogIDxwdWJsaXNoZXI+WmVub2RvPC9wdWJsaXNoZXI+CiAgPHB1YmxpY2F0aW9uWWVhcj4yMDIzPC9wdWJsaWNhdGlvblllYXI+CiAgPHN1YmplY3RzPgogICAgPHN1YmplY3Q+SM6xIEZpYnJpbHM8L3N1YmplY3Q+CiAgICA8c3ViamVjdD5kZWVwIGxlYXJuaW5pZzwvc3ViamVjdD4KICAgIDxzdWJqZWN0PkJheWVzaWFuPC9zdWJqZWN0PgogICAgPHN1YmplY3Q+c29sYXI8L3N1YmplY3Q+CiAgPC9zdWJqZWN0cz4KICA8Y29udHJpYnV0b3JzPgogICAgPGNvbnRyaWJ1dG9yIGNvbnRyaWJ1dG9yVHlwZT0iRGF0YUN1cmF0b3IiPgogICAgICA8Y29udHJpYnV0b3JOYW1lPllhc3NlciBBYmR1YWxsYWg8L2NvbnRyaWJ1dG9yTmFtZT4KICAgICAgPG5hbWVJZGVudGlmaWVyIG5hbWVJZGVudGlmaWVyU2NoZW1lPSJPUkNJRCIgc2NoZW1lVVJJPSJodHRwOi8vb3JjaWQub3JnLyI+MDAwMC0wMDAzLTA3OTItMjI3MDwvbmFtZUlkZW50aWZpZXI+CiAgICAgIDxhZmZpbGlhdGlvbj5EZXBhcnRtZW50IG9mIENvbXB1dGVyIFNjaWVuY2UsIE5ldyBKZXJzZXkgSW5zdGl0dXRlIG9mIFRlY2hub2xvZ3k8L2FmZmlsaWF0aW9uPgogICAgPC9jb250cmlidXRvcj4KICA8L2NvbnRyaWJ1dG9ycz4KICA8ZGF0ZXM+CiAgICA8ZGF0ZSBkYXRlVHlwZT0iSXNzdWVkIj4yMDIzLTAxLTA1PC9kYXRlPgogIDwvZGF0ZXM+CiAgPHJlc291cmNlVHlwZSByZXNvdXJjZVR5cGVHZW5lcmFsPSJTb2Z0d2FyZSIvPgogIDxhbHRlcm5hdGVJZGVudGlmaWVycz4KICAgIDxhbHRlcm5hdGVJZGVudGlmaWVyIGFsdGVybmF0ZUlkZW50aWZpZXJUeXBlPSJ1cmwiPmh0dHBzOi8vemVub2RvLm9yZy9yZWNvcmQvNzUyMTU2ODwvYWx0ZXJuYXRlSWRlbnRpZmllcj4KICA8L2FsdGVybmF0ZUlkZW50aWZpZXJzPgogIDxyZWxhdGVkSWRlbnRpZmllcnM+CiAgICA8cmVsYXRlZElkZW50aWZpZXIgcmVsYXRlZElkZW50aWZpZXJUeXBlPSJVUkwiIHJlbGF0aW9uVHlwZT0iSXNTdXBwbGVtZW50VG8iPmh0dHBzOi8vZ2l0aHViLmNvbS9jY3NjLXRvb2xzL0ZpYnJpbE5ldC90cmVlL3YxLjY8L3JlbGF0ZWRJZGVudGlmaWVyPgogICAgPHJlbGF0ZWRJZGVudGlmaWVyIHJlbGF0ZWRJZGVudGlmaWVyVHlwZT0iRE9JIiByZWxhdGlvblR5cGU9IklzVmVyc2lvbk9mIj4xMC41MjgxL3plbm9kby43NDkwNjU4PC9yZWxhdGVkSWRlbnRpZmllcj4KICA8L3JlbGF0ZWRJZGVudGlmaWVycz4KICA8dmVyc2lvbj52MS42PC92ZXJzaW9uPgogIDxyaWdodHNMaXN0PgogICAgPHJpZ2h0cyByaWdodHNVUkk9ImluZm86ZXUtcmVwby9zZW1hbnRpY3Mvb3BlbkFjY2VzcyI+T3BlbiBBY2Nlc3M8L3JpZ2h0cz4KICA8L3JpZ2h0c0xpc3Q+CiAgPGRlc2NyaXB0aW9ucz4KICAgIDxkZXNjcmlwdGlvbiBkZXNjcmlwdGlvblR5cGU9IkFic3RyYWN0Ij4mbHQ7cCZndDtUcmFjaW5nIEgmYW1wO2FscGhhOyBGaWJyaWxzIHRocm91Z2ggQmF5ZXNpYW4gRGVlcCBMZWFybmluZyZsdDsvcCZndDs8L2Rlc2NyaXB0aW9uPgogIDwvZGVzY3JpcHRpb25zPgo8L3Jlc291cmNlPg==",
+   "url": "https://zenodo.org/record/7521568",
+   "contentUrl": null,
+   "metadataVersion": 0,
+   "schemaVersion": "http://datacite.org/schema/kernel-4",
+   "source": "mds",
+   "isActive": true,
+   "state": "findable",
+   "reason": null,
+   "viewCount": 0,
+   "viewsOverTime": [],
+   "downloadCount": 0,
+   "downloadsOverTime": [],
+   "referenceCount": 0,
+   "citationCount": 0,
+   "citationsOverTime": [],
+   "partCount": 0,
+   "partOfCount": 0,
+   "versionCount": 0,
+   "versionOfCount": 1,
+   "created": "2023-01-10T16:40:30.000Z",
+   "registered": "2023-01-10T16:40:31.000Z",
+   "published": "2023",
+   "updated": "2023-01-10T16:40:33.000Z"
+  },
+  "relationships": {
+   "client": {
+    "data": {
+     "id": "cern.zenodo",
+     "type": "clients"
+    }
+   },
+   "provider": {
+    "data": {
+     "id": "cern",
+     "type": "providers"
+    }
+   },
+   "media": {
+    "data": {
+     "id": "10.5281/zenodo.7521568",
+     "type": "media"
+    }
+   },
+   "references": {
+    "data": []
+   },
+   "citations": {
+    "data": []
+   },
+   "parts": {
+    "data": []
+   },
+   "partOf": {
+    "data": []
+   },
+   "versions": {
+    "data": []
+   },
+   "versionOf": {
+    "data": [
+     {
+      "id": "10.5281/zenodo.7490658",
+      "type": "dois"
+     }
+    ]
+   }
+  }
+ }
+}

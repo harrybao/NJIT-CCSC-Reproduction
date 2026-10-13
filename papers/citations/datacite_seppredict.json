@@ -1,0 +1,245 @@
+{
+ "data": {
+  "id": "10.5281/zenodo.7516609",
+  "type": "dois",
+  "attributes": {
+   "doi": "10.5281/zenodo.7516609",
+   "prefix": "10.5281",
+   "suffix": "zenodo.7516609",
+   "identifiers": [],
+   "alternateIdentifiers": [],
+   "creators": [
+    {
+     "name": "Abduallah, Yasser",
+     "nameType": "Personal",
+     "givenName": "Yasser",
+     "familyName": "Abduallah",
+     "affiliation": [
+      "Institute for Space Weather Sciences, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0003-0792-2270",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Jordanova, Vania K.",
+     "nameType": "Personal",
+     "givenName": "Vania K.",
+     "familyName": "Jordanova",
+     "affiliation": [
+      "Space Science and Applications, Los Alamos National Laboratory"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0003-0475-8743",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Liu, Hao",
+     "nameType": "Personal",
+     "givenName": "Hao",
+     "familyName": "Liu",
+     "affiliation": [
+      "Institute for Space Weather Sciences, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0002-1975-1272",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Li, Qin",
+     "nameType": "Personal",
+     "givenName": "Qin",
+     "familyName": "Li",
+     "affiliation": [
+      "Big Bear Solar Observatory, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0002-6178-7471",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Wang, Jason T. L.",
+     "nameType": "Personal",
+     "givenName": "Jason T. L.",
+     "familyName": "Wang",
+     "affiliation": [
+      "Department of Computer Science, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0002-2486-1097",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Wang, Haimin",
+     "nameType": "Personal",
+     "givenName": "Haimin",
+     "familyName": "Wang",
+     "affiliation": [
+      "Institute for Space Weather Sciences, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0002-5233-565X",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    }
+   ],
+   "titles": [
+    {
+     "title": "Predicting Solar Energetic Particles Using SDO/HMI Vector Magnetic Data Products and a Bidirectional LSTM Network"
+    }
+   ],
+   "publisher": "Zenodo",
+   "container": {},
+   "publicationYear": 2022,
+   "subjects": [
+    {
+     "subject": "machine-learning"
+    },
+    {
+     "subject": "solar energetic particles"
+    },
+    {
+     "subject": "coronal mass ejection"
+    },
+    {
+     "subject": "solar flares"
+    }
+   ],
+   "contributors": [],
+   "dates": [
+    {
+     "date": "2022-06-27",
+     "dateType": "Issued"
+    }
+   ],
+   "language": null,
+   "types": {
+    "ris": "COMP",
+    "bibtex": "misc",
+    "citeproc": "article",
+    "schemaOrg": "SoftwareSourceCode",
+    "resourceTypeGeneral": "Software"
+   },
+   "relatedIdentifiers": [
+    {
+     "relationType": "IsSupplementTo",
+     "relatedIdentifier": "https://github.com/ccsc-tools/SEP-prediction/tree/v1.4",
+     "relatedIdentifierType": "URL"
+    },
+    {
+     "relationType": "IsVersionOf",
+     "relatedIdentifier": "10.5281/zenodo.6728562",
+     "relatedIdentifierType": "DOI"
+    }
+   ],
+   "relatedItems": [],
+   "sizes": [],
+   "formats": [],
+   "version": "v1.4",
+   "rightsList": [
+    {
+     "rights": "Open Access",
+     "rightsUri": "info:eu-repo/semantics/openAccess"
+    }
+   ],
+   "descriptions": [
+    {
+     "description": "Predicting Solar Energetic Particles Using SDO/HMI Vector Magnetic Data Products a BiLSTM Network",
+     "descriptionType": "Abstract"
+    }
+   ],
+   "geoLocations": [],
+   "fundingReferences": [],
+   "xml": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHJlc291cmNlIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCBodHRwOi8vc2NoZW1hLmRhdGFjaXRlLm9yZy9tZXRhL2tlcm5lbC00LjEvbWV0YWRhdGEueHNkIj4KICA8aWRlbnRpZmllciBpZGVudGlmaWVyVHlwZT0iRE9JIj4xMC41MjgxL1pFTk9ETy43NTE2NjA5PC9pZGVudGlmaWVyPgogIDxjcmVhdG9ycz4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWU+WWFzc2VyIEFiZHVhbGxhaDwvY3JlYXRvck5hbWU+CiAgICAgIDxuYW1lSWRlbnRpZmllciBuYW1lSWRlbnRpZmllclNjaGVtZT0iT1JDSUQiIHNjaGVtZVVSST0iaHR0cDovL29yY2lkLm9yZy8iPjAwMDAtMDAwMy0wNzkyLTIyNzA8L25hbWVJZGVudGlmaWVyPgogICAgICA8YWZmaWxpYXRpb24+SW5zdGl0dXRlIGZvciBTcGFjZSBXZWF0aGVyIFNjaWVuY2VzLCBOZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWU+VmFuaWEgSy4gSm9yZGFub3ZhPC9jcmVhdG9yTmFtZT4KICAgICAgPG5hbWVJZGVudGlmaWVyIG5hbWVJZGVudGlmaWVyU2NoZW1lPSJPUkNJRCIgc2NoZW1lVVJJPSJodHRwOi8vb3JjaWQub3JnLyI+MDAwMC0wMDAzLTA0NzUtODc0MzwvbmFtZUlkZW50aWZpZXI+CiAgICAgIDxhZmZpbGlhdGlvbj5TcGFjZSBTY2llbmNlIGFuZCBBcHBsaWNhdGlvbnMsIExvcyBBbGFtb3MgTmF0aW9uYWwgTGFib3JhdG9yeTwvYWZmaWxpYXRpb24+CiAgICA8L2NyZWF0b3I+CiAgICA8Y3JlYXRvcj4KICAgICAgPGNyZWF0b3JOYW1lPkhhbyBMaXU8L2NyZWF0b3JOYW1lPgogICAgICA8bmFtZUlkZW50aWZpZXIgbmFtZUlkZW50aWZpZXJTY2hlbWU9Ik9SQ0lEIiBzY2hlbWVVUkk9Imh0dHA6Ly9vcmNpZC5vcmcvIj4wMDAwLTAwMDItMTk3NS0xMjcyPC9uYW1lSWRlbnRpZmllcj4KICAgICAgPGFmZmlsaWF0aW9uPkluc3RpdHV0ZSBmb3IgU3BhY2UgV2VhdGhlciBTY2llbmNlcywgTmV3IEplcnNleSBJbnN0aXR1dGUgb2YgVGVjaG5vbG9neTwvYWZmaWxpYXRpb24+CiAgICA8L2NyZWF0b3I+CiAgICA8Y3JlYXRvcj4KICAgICAgPGNyZWF0b3JOYW1lPlFpbiBMaTwvY3JlYXRvck5hbWU+CiAgICAgIDxuYW1lSWRlbnRpZmllciBuYW1lSWRlbnRpZmllclNjaGVtZT0iT1JDSUQiIHNjaGVtZVVSST0iaHR0cDovL29yY2lkLm9yZy8iPjAwMDAtMDAwMi02MTc4LTc0NzE8L25hbWVJZGVudGlmaWVyPgogICAgICA8YWZmaWxpYXRpb24+QmlnIEJlYXIgU29sYXIgT2JzZXJ2YXRvcnksIE5ldyBKZXJzZXkgSW5zdGl0dXRlIG9mIFRlY2hub2xvZ3k8L2FmZmlsaWF0aW9uPgogICAgPC9jcmVhdG9yPgogICAgPGNyZWF0b3I+CiAgICAgIDxjcmVhdG9yTmFtZT5KYXNvbiBULiBMLiBXYW5nPC9jcmVhdG9yTmFtZT4KICAgICAgPG5hbWVJZGVudGlmaWVyIG5hbWVJZGVudGlmaWVyU2NoZW1lPSJPUkNJRCIgc2NoZW1lVVJJPSJodHRwOi8vb3JjaWQub3JnLyI+MDAwMC0wMDAyLTI0ODYtMTA5NzwvbmFtZUlkZW50aWZpZXI+CiAgICAgIDxhZmZpbGlhdGlvbj5EZXBhcnRtZW50IG9mIENvbXB1dGVyIFNjaWVuY2UsIE5ldyBKZXJzZXkgSW5zdGl0dXRlIG9mIFRlY2hub2xvZ3k8L2FmZmlsaWF0aW9uPgogICAgPC9jcmVhdG9yPgogICAgPGNyZWF0b3I+CiAgICAgIDxjcmVhdG9yTmFtZT5IYWltaW4gV2FuZzwvY3JlYXRvck5hbWU+CiAgICAgIDxuYW1lSWRlbnRpZmllciBuYW1lSWRlbnRpZmllclNjaGVtZT0iT1JDSUQiIHNjaGVtZVVSST0iaHR0cDovL29yY2lkLm9yZy8iPjAwMDAtMDAwMi01MjMzLTU2NVg8L25hbWVJZGVudGlmaWVyPgogICAgICA8YWZmaWxpYXRpb24+SW5zdGl0dXRlIGZvciBTcGFjZSBXZWF0aGVyIFNjaWVuY2VzLCBOZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICA8L2NyZWF0b3JzPgogIDx0aXRsZXM+CiAgICA8dGl0bGU+UHJlZGljdGluZyBTb2xhciBFbmVyZ2V0aWMgUGFydGljbGVzIFVzaW5nIFNETy9ITUkgVmVjdG9yIE1hZ25ldGljIERhdGEgUHJvZHVjdHMgYW5kIGEgQmlkaXJlY3Rpb25hbCBMU1RNIE5ldHdvcms8L3RpdGxlPgogIDwvdGl0bGVzPgogIDxwdWJsaXNoZXI+WmVub2RvPC9wdWJsaXNoZXI+CiAgPHB1YmxpY2F0aW9uWWVhcj4yMDIyPC9wdWJsaWNhdGlvblllYXI+CiAgPHN1YmplY3RzPgogICAgPHN1YmplY3Q+bWFjaGluZS1sZWFybmluZzwvc3ViamVjdD4KICAgIDxzdWJqZWN0PnNvbGFyIGVuZXJnZXRpYyBwYXJ0aWNsZXM8L3N1YmplY3Q+CiAgICA8c3ViamVjdD5jb3JvbmFsIG1hc3MgZWplY3Rpb248L3N1YmplY3Q+CiAgICA8c3ViamVjdD5zb2xhciBmbGFyZXM8L3N1YmplY3Q+CiAgPC9zdWJqZWN0cz4KICA8ZGF0ZXM+CiAgICA8ZGF0ZSBkYXRlVHlwZT0iSXNzdWVkIj4yMDIyLTA2LTI3PC9kYXRlPgogIDwvZGF0ZXM+CiAgPHJlc291cmNlVHlwZSByZXNvdXJjZVR5cGVHZW5lcmFsPSJTb2Z0d2FyZSIvPgogIDxhbHRlcm5hdGVJZGVudGlmaWVycz4KICAgIDxhbHRlcm5hdGVJZGVudGlmaWVyIGFsdGVybmF0ZUlkZW50aWZpZXJUeXBlPSJ1cmwiPmh0dHBzOi8vemVub2RvLm9yZy9yZWNvcmQvNzUxNjYwOTwvYWx0ZXJuYXRlSWRlbnRpZmllcj4KICA8L2FsdGVybmF0ZUlkZW50aWZpZXJzPgogIDxyZWxhdGVkSWRlbnRpZmllcnM+CiAgICA8cmVsYXRlZElkZW50aWZpZXIgcmVsYXRlZElkZW50aWZpZXJUeXBlPSJVUkwiIHJlbGF0aW9uVHlwZT0iSXNTdXBwbGVtZW50VG8iPmh0dHBzOi8vZ2l0aHViLmNvbS9jY3NjLXRvb2xzL1NFUC1wcmVkaWN0aW9uL3RyZWUvdjEuNDwvcmVsYXRlZElkZW50aWZpZXI+CiAgICA8cmVsYXRlZElkZW50aWZpZXIgcmVsYXRlZElkZW50aWZpZXJUeXBlPSJET0kiIHJlbGF0aW9uVHlwZT0iSXNWZXJzaW9uT2YiPjEwLjUyODEvemVub2RvLjY3Mjg1NjI8L3JlbGF0ZWRJZGVudGlmaWVyPgogIDwvcmVsYXRlZElkZW50aWZpZXJzPgogIDx2ZXJzaW9uPnYxLjQ8L3ZlcnNpb24+CiAgPHJpZ2h0c0xpc3Q+CiAgICA8cmlnaHRzIHJpZ2h0c1VSST0iaW5mbzpldS1yZXBvL3NlbWFudGljcy9vcGVuQWNjZXNzIj5PcGVuIEFjY2VzczwvcmlnaHRzPgogIDwvcmlnaHRzTGlzdD4KICA8ZGVzY3JpcHRpb25zPgogICAgPGRlc2NyaXB0aW9uIGRlc2NyaXB0aW9uVHlwZT0iQWJzdHJhY3QiPiZsdDtwJmd0O1ByZWRpY3RpbmcgU29sYXIgRW5lcmdldGljIFBhcnRpY2xlcyBVc2luZyBTRE8vSE1JIFZlY3RvciBNYWduZXRpYyBEYXRhIFByb2R1Y3RzIGEgQmlMU1RNIE5ldHdvcmsmbHQ7L3AmZ3Q7PC9kZXNjcmlwdGlvbj4KICA8L2Rlc2NyaXB0aW9ucz4KPC9yZXNvdXJjZT4=",
+   "url": "https://zenodo.org/record/7516609",
+   "contentUrl": null,
+   "metadataVersion": 0,
+   "schemaVersion": "http://datacite.org/schema/kernel-4",
+   "source": "mds",
+   "isActive": true,
+   "state": "findable",
+   "reason": null,
+   "viewCount": 0,
+   "viewsOverTime": [],
+   "downloadCount": 0,
+   "downloadsOverTime": [],
+   "referenceCount": 0,
+   "citationCount": 0,
+   "citationsOverTime": [],
+   "partCount": 0,
+   "partOfCount": 0,
+   "versionCount": 0,
+   "versionOfCount": 1,
+   "created": "2023-01-09T16:36:20.000Z",
+   "registered": "2023-01-09T16:36:21.000Z",
+   "published": "2022",
+   "updated": "2023-01-09T16:36:24.000Z"
+  },
+  "relationships": {
+   "client": {
+    "data": {
+     "id": "cern.zenodo",
+     "type": "clients"
+    }
+   },
+   "provider": {
+    "data": {
+     "id": "cern",
+     "type": "providers"
+    }
+   },
+   "media": {
+    "data": {
+     "id": "10.5281/zenodo.7516609",
+     "type": "media"
+    }
+   },
+   "references": {
+    "data": []
+   },
+   "citations": {
+    "data": []
+   },
+   "parts": {
+    "data": []
+   },
+   "partOf": {
+    "data": []
+   },
+   "versions": {
+    "data": []
+   },
+   "versionOf": {
+    "data": [
+     {
+      "id": "10.5281/zenodo.6728562",
+      "type": "dois"
+     }
+    ]
+   }
+  }
+ }
+}

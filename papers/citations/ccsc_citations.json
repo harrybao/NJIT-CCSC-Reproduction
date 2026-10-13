@@ -1,0 +1,596 @@
+[
+ {
+  "page": "solarunet",
+  "ccsc_tile_title": "Identifying and Tracking Solar Magnetic Flux Elements with Deep Learning",
+  "github_repo": "https://github.com/ccsc-tools/SolarUnet-magnetic-tracking",
+  "citation_button_url": "https://zenodo.org/record/5643647#.YYUqvbopChc",
+  "zenodo_doi": "10.5281/zenodo.5643647",
+  "citation_apa": "Jiang, H., Wang, J., Liu, C., Jing, J., Liu, H., Wang, J. T. L., &amp; Wang, H. (2021). <i>Identifying and Tracking Solar Magnetic Flux Elements with Deep Learning</i> (Version v.1.2) [Computer software]. Zenodo. https://doi.org/10.5281/ZENODO.5643647",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.5643647,\n  doi = {10.5281/ZENODO.5643647},\n  url = {https://zenodo.org/record/5643647},\n  author = {Jiang, Haodi and Wang, Jiasheng and Liu, Chang and Jing, Ju and Liu, Hao and Wang, Jason T. L. and Wang, Haimin},\n  keywords = {Solar magnetic fields, Solar photosphere, Convolutional neural networks},\n  title = {Identifying and Tracking Solar Magnetic Flux Elements with Deep Learning},\n  publisher = {Zenodo},\n  year = {2021},\n  copyright = {Open Access}\n}",
+  "zenodo_title": "Identifying and Tracking Solar Magnetic Flux Elements with Deep Learning",
+  "version": "v.1.2",
+  "publication_year": 2021,
+  "creators": [
+   "Jiang, Haodi",
+   "Wang, Jiasheng",
+   "Liu, Chang",
+   "Jing, Ju",
+   "Liu, Hao",
+   "Wang, Jason T. L.",
+   "Wang, Haimin"
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsSupplementTo",
+    "relatedIdentifier": "https://github.com/ccsc-tools/SolarUnet-magnetic-tracking/tree/v.1.2",
+    "relatedIdentifierType": "URL"
+   },
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.5563049",
+    "relatedIdentifierType": "DOI"
+   }
+  ],
+  "description_first_300": "DeepSun open-source software: SolarUnet"
+ },
+ {
+  "page": "flareml",
+  "ccsc_tile_title": "Predicting Solar Flares with Machine Learning",
+  "github_repo": "https://github.com/ccsc-tools/FlareML",
+  "citation_button_url": "https://zenodo.org/record/7506997#.Y7cEzRXMK3A",
+  "zenodo_doi": "10.5281/zenodo.7506997",
+  "citation_apa": "Abduallah, Y., Wang, J. T. L., &amp; Wang, H. (2023). <i>Predicting Solar Flares with Machine Learning</i> (Version v1.5) [Computer software]. Zenodo. https://doi.org/10.5281/ZENODO.7506997",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.7506997,\n  doi = {10.5281/ZENODO.7506997},\n  url = {https://zenodo.org/record/7506997},\n  author = {Abduallah, Yasser and Wang, Jason T. L. and Wang, Haimin},\n  keywords = {AI tool, machine learning, solar flares},\n  title = {Predicting Solar Flares with Machine Learning},\n  publisher = {Zenodo},\n  year = {2023},\n  copyright = {Open Access}\n}",
+  "zenodo_title": "Predicting Solar Flares with Machine Learning",
+  "version": "v1.5",
+  "publication_year": 2023,
+  "creators": [
+   "Abduallah, Yasser",
+   "Wang, Jason T. L.",
+   "Wang, Haimin"
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsSupplementTo",
+    "relatedIdentifier": "https://github.com/ccsc-tools/FlareML/tree/v1.5",
+    "relatedIdentifierType": "URL"
+   },
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.5585976",
+    "relatedIdentifierType": "DOI"
+   }
+  ],
+  "description_first_300": "DeepSun open-source software: FlareML"
+ },
+ {
+  "page": "cmepredict",
+  "ccsc_tile_title": "Predicting Coronal Mass Ejections Using SDO/HMI Vector Magnetic Data Products and Recurrent Neural Networks",
+  "github_repo": "https://github.com/ccsc-tools/RNN-CME-prediction",
+  "citation_button_url": "https://zenodo.org/record/7415731#.Y5IkXXbMJD8",
+  "zenodo_doi": "10.5281/zenodo.7415731",
+  "citation_apa": "Liu, H., Liu, C., Wang, J. T. L., &amp; Wang, H. (2022). <i>Predicting Coronal Mass Ejections Using SDO/HMI Vector Magnetic Data Products and Recurrent Neural Networks</i> (Version v1.3) [Computer software]. Zenodo. https://doi.org/10.5281/ZENODO.7415731",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.7415731,\n  doi = {10.5281/ZENODO.7415731},\n  url = {https://zenodo.org/record/7415731},\n  author = {Liu, Hao and Liu, Chang and Wang, Jason T. L. and Wang, Haimin},\n  keywords = {Solar coronal mass ejections, Solar flares, Solar activity, Solar active regions},\n  title = {Predicting Coronal Mass Ejections Using SDO/HMI Vector Magnetic Data Products and Recurrent Neural Networks},\n  publisher = {Zenodo},\n  year = {2022},\n  copyright = {Open Access}\n}",
+  "zenodo_title": "Predicting Coronal Mass Ejections Using SDO/HMI Vector Magnetic Data Products and Recurrent Neural Networks",
+  "version": "v1.3",
+  "publication_year": 2022,
+  "creators": [
+   "Liu, Hao",
+   "Liu, Chang",
+   "Wang, Jason T. L.",
+   "Wang, Haimin"
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsSupplementTo",
+    "relatedIdentifier": "https://github.com/ccsc-tools/RNN-CME-prediction/tree/v1.3",
+    "relatedIdentifierType": "URL"
+   },
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.5733518",
+    "relatedIdentifierType": "DOI"
+   }
+  ],
+  "description_first_300": "DeepSun open source software: RNN-CME-prediction"
+ },
+ {
+  "page": "flarepredict",
+  "ccsc_tile_title": "Predicting Solar Flares Using a Long Short-term Memory Network",
+  "github_repo": "https://github.com/ccsc-tools/LSTM-flare-prediction",
+  "citation_button_url": "https://zenodo.org/record/5739321#.YaWNcNDMKUk",
+  "zenodo_doi": "10.5281/zenodo.5739321",
+  "citation_apa": "Liu, H., Liu, C., Wang, J. T. L., &amp; Wang, H. (2021). <i>Predicting Solar Flares Using a Long Short-term Memory Network</i> (Version v1.0.2) [Computer software]. Zenodo. https://doi.org/10.5281/ZENODO.5739321",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.5739321,\n  doi = {10.5281/ZENODO.5739321},\n  url = {https://zenodo.org/record/5739321},\n  author = {Liu, Hao and Liu, Chang and Wang, Jason T. L. and Wang, Haimin},\n  keywords = {magnetic fields, Solar flares, Solar activity},\n  title = {Predicting Solar Flares Using a Long Short-term Memory Network},\n  publisher = {Zenodo},\n  year = {2021},\n  copyright = {Open Access}\n}",
+  "zenodo_title": "Predicting Solar Flares Using a Long Short-term Memory Network",
+  "version": "v1.0.2",
+  "publication_year": 2021,
+  "creators": [
+   "Liu, Hao",
+   "Liu, Chang",
+   "Wang, Jason T. L.",
+   "Wang, Haimin"
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsSupplementTo",
+    "relatedIdentifier": "https://github.com/ccsc-tools/LSTM-flare-prediction/tree/v1.0.2",
+    "relatedIdentifierType": "URL"
+   },
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.5739267",
+    "relatedIdentifierType": "DOI"
+   }
+  ],
+  "description_first_300": "DeepSun open source software: LSTM-flare-prediction"
+ },
+ {
+  "page": "seppredict",
+  "ccsc_tile_title": "Predicting Solar Energetic Particles Using SDO/HMI Vector Magnetic Data Products and a Bidirectional LSTM Network",
+  "github_repo": "https://github.com/ccsc-tools/SEP-prediction",
+  "citation_button_url": "https://zenodo.org/record/7516609#.Y7xChBXMLrk",
+  "zenodo_doi": "10.5281/zenodo.7516609",
+  "citation_apa": "Abduallah, Y., Jordanova, V. K., Liu, H., Li, Q., Wang, J. T. L., &amp; Wang, H. (2022). <i>Predicting Solar Energetic Particles Using SDO/HMI Vector Magnetic Data Products and a Bidirectional LSTM Network</i> (Version v1.4) [Computer software]. Zenodo. https://doi.org/10.5281/ZENODO.7516609",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.7516609,\n  doi = {10.5281/ZENODO.7516609},\n  url = {https://zenodo.org/record/7516609},\n  author = {Abduallah, Yasser and Jordanova, Vania K. and Liu, Hao and Li, Qin and Wang, Jason T. L. and Wang, Haimin},\n  keywords = {machine-learning, solar energetic particles, coronal mass ejection, solar flares},\n  title = {Predicting Solar Energetic Particles Using SDO/HMI Vector Magnetic Data Products and a Bidirectional LSTM Network},\n  publisher = {Zenodo},\n  year = {2022},\n  copyright = {Open Access}\n}",
+  "zenodo_title": "Predicting Solar Energetic Particles Using SDO/HMI Vector Magnetic Data Products and a Bidirectional LSTM Network",
+  "version": "v1.4",
+  "publication_year": 2022,
+  "creators": [
+   "Abduallah, Yasser",
+   "Jordanova, Vania K.",
+   "Liu, Hao",
+   "Li, Qin",
+   "Wang, Jason T. L.",
+   "Wang, Haimin"
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsSupplementTo",
+    "relatedIdentifier": "https://github.com/ccsc-tools/SEP-prediction/tree/v1.4",
+    "relatedIdentifierType": "URL"
+   },
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.6728562",
+    "relatedIdentifierType": "DOI"
+   }
+  ],
+  "description_first_300": "Predicting Solar Energetic Particles Using SDO/HMI Vector Magnetic Data Products a BiLSTM Network"
+ },
+ {
+  "page": "dsttpredict",
+  "ccsc_tile_title": "Forecasting the Disturbance Storm Time Index with Bayesian Deep Learning",
+  "github_repo": "https://github.com/ccsc-tools/Dst-prediction",
+  "citation_button_url": "https://zenodo.org/record/7529705#.Y8ApDBXMJD8",
+  "zenodo_doi": "10.5281/zenodo.7529705",
+  "citation_apa": "Abduallah, Y., Wang, J. T. L., Prianka Bose, Genwei Zhang, Gerges, F., &amp; Wang, H. (2022). <i>Forecasting the Disturbance Storm Time Index with Bayesian Deep Learning</i> (Version v1.1) [Computer software]. Zenodo. https://doi.org/10.5281/ZENODO.7529705",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.7529705,\n  doi = {10.5281/ZENODO.7529705},\n  url = {https://zenodo.org/record/7529705},\n  author = {Abduallah, Yasser and Wang, Jason T. L. and {Prianka Bose} and {Genwei Zhang} and Gerges, Firas and Wang, Haimin},\n  keywords = {machine-learning, Disturbance Storm Time Index, dst index, Bayesian, deep learning transformer, deep learning},\n  title = {Forecasting the Disturbance Storm Time Index with Bayesian Deep Learning},\n  publisher = {Zenodo},\n  year = {2022},\n  copyright = {Open Access}\n}",
+  "zenodo_title": "Forecasting the Disturbance Storm Time Index with Bayesian Deep Learning",
+  "version": "v1.1",
+  "publication_year": 2022,
+  "creators": [
+   "Abduallah, Yasser",
+   "Wang, Jason T. L.",
+   "Prianka Bose",
+   "Genwei Zhang",
+   "Gerges, Firas",
+   "Wang, Haimin"
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsSupplementTo",
+    "relatedIdentifier": "https://github.com/ccsc-tools/Dst-prediction/tree/v1.1",
+    "relatedIdentifierType": "URL"
+   },
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.6757941",
+    "relatedIdentifierType": "DOI"
+   }
+  ],
+  "description_first_300": "Forecasting the Disturbance Storm Time Index with Bayesian Deep Learning"
+ },
+ {
+  "page": "tsinet",
+  "ccsc_tile_title": "Reconstruction of Total Solar Irradiance by Deep Learning",
+  "github_repo": "https://github.com/ccsc-tools/TSInet-irradiance-reconstruction",
+  "citation_button_url": "https://zenodo.org/record/7516668#.Y7xGBBXMLrk",
+  "zenodo_doi": "10.5281/zenodo.7516668",
+  "citation_apa": "Abduallah, Y., Wang, J. T. L., Yucong Shen, Alobaid, K. A., Criscuoli, S., &amp; Wang, H. (2022). <i>Reconstruction of Total Solar Irradiance by Deep Learning</i> (Version v1.6) [Computer software]. Zenodo. https://doi.org/10.5281/ZENODO.7516668",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.7516668,\n  doi = {10.5281/ZENODO.7516668},\n  url = {https://zenodo.org/record/7516668},\n  author = {Abduallah, Yasser and Wang, Jason T. L. and {Yucong Shen} and Alobaid, Khalid A. and Criscuoli, Serena and Wang, Haimin},\n  keywords = {machine-learning, solar irradiance, forecasting, TSI, reconstruction},\n  title = {Reconstruction of Total Solar Irradiance by Deep Learning},\n  publisher = {Zenodo},\n  year = {2022},\n  copyright = {Open Access}\n}",
+  "zenodo_title": "Reconstruction of Total Solar Irradiance by Deep Learning",
+  "version": "v1.6",
+  "publication_year": 2022,
+  "creators": [
+   "Abduallah, Yasser",
+   "Wang, Jason T. L.",
+   "Yucong Shen",
+   "Alobaid, Khalid A.",
+   "Criscuoli, Serena",
+   "Wang, Haimin"
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsSupplementTo",
+    "relatedIdentifier": "https://github.com/ccsc-tools/TSInet-irradiance-reconstruction/tree/v1.6",
+    "relatedIdentifierType": "URL"
+   },
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.6984520",
+    "relatedIdentifierType": "DOI"
+   }
+  ],
+  "description_first_300": "Reconstruction of Total Solar Irradiance by Deep Learning"
+ },
+ {
+  "page": "kpnet",
+  "ccsc_tile_title": "A Transformer-Based Framework for Geomagnetic Activity Prediction",
+  "github_repo": "https://github.com/ccsc-tools/kp-prediction",
+  "citation_button_url": "https://zenodo.org/record/7514451#.Y7uEWhXMLrc",
+  "zenodo_doi": "10.5281/zenodo.7514451",
+  "citation_apa": "Abduallah, Y., Wang, J. T. L., Chunhui Xu, &amp; Wang, H. (2022). <i>A Transformer-Based Framework for Geomagnetic Activity Prediction</i> (Version v1.1) [Computer software]. Zenodo. https://doi.org/10.5281/ZENODO.7514451",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.7514451,\n  doi = {10.5281/ZENODO.7514451},\n  url = {https://zenodo.org/record/7514451},\n  author = {Abduallah, Yasser and Wang, Jason T. L. and {Chunhui Xu} and Wang, Haimin},\n  keywords = {Kp index, solar index, solar activity, planetary, deep learning transformer, deep learning, machine learning, solar activities},\n  title = {A Transformer-Based Framework for Geomagnetic Activity Prediction},\n  publisher = {Zenodo},\n  year = {2022},\n  copyright = {Open Access}\n}",
+  "zenodo_title": "A Transformer-Based Framework for Geomagnetic Activity Prediction",
+  "version": "v1.1",
+  "publication_year": 2022,
+  "creators": [
+   "Abduallah, Yasser",
+   "Wang, Jason T. L.",
+   "Chunhui Xu",
+   "Wang, Haimin"
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsSupplementTo",
+    "relatedIdentifier": "https://github.com/ccsc-tools/Kp-prediction/tree/v1.1",
+    "relatedIdentifierType": "URL"
+   },
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.7047115",
+    "relatedIdentifierType": "DOI"
+   }
+  ],
+  "description_first_300": "A Transformer-Based Framework for Geomagnetic Activity Prediction"
+ },
+ {
+  "page": "cmenet",
+  "ccsc_tile_title": "Predicting CME Arrival Time through Data Integration and Ensemble Learning",
+  "github_repo": "https://github.com/ccsc-tools/CMETNet",
+  "citation_button_url": "https://zenodo.org/record/7516684#.Y7xI1hXMLrk",
+  "zenodo_doi": "10.5281/zenodo.7516684",
+  "citation_apa": "Alobaid, K. A., Abduallah, Y., Wang, J. T. L., &amp; Wang, H. (2022). <i>Predicting CME Arrival Time through Data Integration and Ensemble Learning</i> (Version v.1.1) [Computer software]. Zenodo. https://doi.org/10.5281/ZENODO.7516684",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.7516684,\n  doi = {10.5281/ZENODO.7516684},\n  url = {https://zenodo.org/record/7516684},\n  author = {Alobaid, Khalid A. and Abduallah, Yasser and Wang, Jason T. L. and Wang, Haimin},\n  keywords = {cme, solar, coronal mass ejection, deep learning, machine learning, ensemble learning},\n  title = {Predicting CME Arrival Time through Data Integration and Ensemble Learning},\n  publisher = {Zenodo},\n  year = {2022},\n  copyright = {Open Access}\n}",
+  "zenodo_title": "Predicting CME Arrival Time through Data Integration and Ensemble Learning",
+  "version": "v.1.1",
+  "publication_year": 2022,
+  "creators": [
+   "Alobaid, Khalid A.",
+   "Abduallah, Yasser",
+   "Wang, Jason T. L.",
+   "Wang, Haimin"
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsSupplementTo",
+    "relatedIdentifier": "https://github.com/ccsc-tools/CMETNet/tree/v.1.1",
+    "relatedIdentifierType": "URL"
+   },
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.7311567",
+    "relatedIdentifierType": "DOI"
+   }
+  ],
+  "description_first_300": "Predicting CME Arrival Time through Data Integration and Ensemble Learning"
+ },
+ {
+  "page": "fibrilnet",
+  "ccsc_tile_title": "Tracing Hα Fibrils through Bayesian Deep Learning",
+  "github_repo": "https://github.com/ccsc-tools/FibrilNet",
+  "citation_button_url": "https://zenodo.org/record/7521568#.Y72VmhXMLrk",
+  "zenodo_doi": "10.5281/zenodo.7521568",
+  "citation_apa": "Jiang, H., Jing, J., Wang, J., Liu, C., Li, Q., Xu, Y., Wang, J. T. L., &amp; Wang, H. (2023). <i>Tracing Hα Fibrils through Bayesian Deep Learning</i> (Version v1.6) [Computer software]. Zenodo. https://doi.org/10.5281/ZENODO.7521568",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.7521568,\n  doi = {10.5281/ZENODO.7521568},\n  url = {https://zenodo.org/record/7521568},\n  author = {Jiang, Haodi and Jing, Ju and Wang, Jiasheng and Liu, Chang and Li, Qin and Xu, Yan and Wang, Jason T. L. and Wang, Haimin},\n  keywords = {Hα Fibrils, deep learninig, Bayesian, solar},\n  title = {Tracing Hα Fibrils through Bayesian Deep Learning},\n  publisher = {Zenodo},\n  year = {2023},\n  copyright = {Open Access}\n}",
+  "zenodo_title": "Tracing Hα Fibrils through Bayesian Deep Learning",
+  "version": "v1.6",
+  "publication_year": 2023,
+  "creators": [
+   "Jiang, Haodi",
+   "Jing, Ju",
+   "Wang, Jiasheng",
+   "Liu, Chang",
+   "Li, Qin",
+   "Xu, Yan",
+   "Wang, Jason T. L.",
+   "Wang, Haimin"
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsSupplementTo",
+    "relatedIdentifier": "https://github.com/ccsc-tools/FibrilNet/tree/v1.6",
+    "relatedIdentifierType": "URL"
+   },
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.7490658",
+    "relatedIdentifierType": "DOI"
+   }
+  ],
+  "description_first_300": "Tracing Hα Fibrils through Bayesian Deep Learning"
+ },
+ {
+  "page": "sdnn",
+  "ccsc_tile_title": "Stokes Inversion for GST/NIRIS Using Stacked Deep Neural Networks",
+  "github_repo": "https://github.com/ccsc-tools/SDNN",
+  "citation_button_url": "https://zenodo.org/record/7521580#.Y72WVBXMLrk",
+  "zenodo_doi": "10.5281/zenodo.7521580",
+  "citation_apa": "Jiang, H., Li, Q., Xu, Y., Hsu, W., Ahn, K., Cao, W., Wang, J. T. L., &amp; Wang, H. (2023). <i>Stokes Inversion for GST/NIRIS Using Stacked Deep Neural Networks</i> (Version v1.3) [Computer software]. Zenodo. https://doi.org/10.5281/ZENODO.7521580",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.7521580,\n  doi = {10.5281/ZENODO.7521580},\n  url = {https://zenodo.org/record/7521580},\n  author = {Jiang, Haodi and Li, Qin and Xu, Yan and Hsu, Wynne and Ahn, Kwangsu and Cao, Wenda and Wang, Jason T. L. and Wang, Haimin},\n  keywords = {machine-learning, solar, deep learning, stokes, inversion, bbso, GST/NIRIS},\n  title = {Stokes Inversion for GST/NIRIS Using Stacked Deep Neural Networks},\n  publisher = {Zenodo},\n  year = {2023},\n  copyright = {Open Access}\n}",
+  "zenodo_title": "Stokes Inversion for GST/NIRIS Using Stacked Deep Neural Networks",
+  "version": "v1.3",
+  "publication_year": 2023,
+  "creators": [
+   "Jiang, Haodi",
+   "Li, Qin",
+   "Xu, Yan",
+   "Hsu, Wynne",
+   "Ahn, Kwangsu",
+   "Cao, Wenda",
+   "Wang, Jason T. L.",
+   "Wang, Haimin"
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsSupplementTo",
+    "relatedIdentifier": "https://github.com/ccsc-tools/SDNN/tree/v1.3",
+    "relatedIdentifierType": "URL"
+   },
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.7495687",
+    "relatedIdentifierType": "DOI"
+   }
+  ],
+  "description_first_300": "Stokes Inversion for GST/NIRIS Using Stacked Deep Neural Networks"
+ },
+ {
+  "page": "solarflarenet",
+  "ccsc_tile_title": "Operational Prediction of Solar Flares Using a Transformer-Based Framework",
+  "github_repo": "https://github.com/ccsc-tools/SolarFlareNet",
+  "citation_button_url": "https://zenodo.org/record/10201356",
+  "zenodo_doi": "10.5281/zenodo.10201356",
+  "citation_apa": "Abduallah, Y., Wang, J. T. L., Wang, H., &amp; Xu, Y. (2023). <i>Operational Prediction of Solar Flares Using a Transformer-Based Framework</i> [Computer software]. Zenodo. https://doi.org/10.5281/ZENODO.10201356",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.10201356,\n  doi = {10.5281/ZENODO.10201356},\n  url = {https://zenodo.org/doi/10.5281/zenodo.10201356},\n  author = {Abduallah, Yasser and Wang, Jason T.L. and Wang, Haimin and Xu, Yan},\n  title = {Operational Prediction of Solar Flares Using a Transformer-Based Framework},\n  publisher = {Zenodo},\n  year = {2023},\n  copyright = {Creative Commons Attribution 4.0 International}\n}",
+  "zenodo_title": "Operational Prediction of Solar Flares Using a Transformer-Based Framework",
+  "version": null,
+  "publication_year": 2023,
+  "creators": [
+   "Abduallah, Yasser",
+   "Wang, Jason T.L.",
+   "Wang, Haimin",
+   "Xu, Yan"
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsSupplementTo",
+    "relatedIdentifier": "https://github.com/ccsc-tools/SolarFlareNet/tree/v1.3",
+    "relatedIdentifierType": "URL"
+   },
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.10073489",
+    "relatedIdentifierType": "DOI"
+   }
+  ],
+  "description_first_300": "Operational Prediction of Solar Flares Using a Transformer-Based Framework"
+ },
+ {
+  "page": "symhnet",
+  "ccsc_tile_title": "Prediction of the SYM-H Index Using a Bayesian Deep Learning Method with Uncertainty Quantification",
+  "github_repo": "https://github.com/ccsc-tools/SYMHnet",
+  "citation_button_url": "https://zenodo.org/records/10602518",
+  "zenodo_doi": "10.5281/zenodo.10602518",
+  "citation_apa": "Abduallah, Y., Alobail, K. A., Wang, J. T. L., Wang, H., Jordanova, V. K., Yurchyshyn, V., Cavus, H., &amp; Jing, J. (2024). <i>Prediction of the SYM-H Index Using a Bayesian Deep Learning Method with Uncertainty Quantification</i> [Computer software]. Zenodo. https://doi.org/10.5281/ZENODO.10602518",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.10602518,\n  doi = {10.5281/ZENODO.10602518},\n  url = {https://zenodo.org/doi/10.5281/zenodo.10602518},\n  author = {Abduallah, Yasser and Alobail, Khalid A. and Wang, Jason T. L. and Wang, Haimin and Jordanova, Vania K. and Yurchyshyn, Vasyl and Cavus, Huseyin and Jing, Ju},\n  title = {Prediction of the SYM-H Index Using a Bayesian Deep Learning Method with Uncertainty Quantification},\n  publisher = {Zenodo},\n  year = {2024},\n  copyright = {Creative Commons Attribution 4.0 International}\n}",
+  "zenodo_title": "Prediction of the SYM-H Index Using a Bayesian Deep Learning Method with Uncertainty Quantification",
+  "version": null,
+  "publication_year": 2024,
+  "creators": [
+   "Abduallah, Yasser",
+   "Alobail, Khalid A.",
+   "Wang, Jason T. L.",
+   "Wang, Haimin",
+   "Jordanova, Vania K.",
+   "Yurchyshyn, Vasyl",
+   "Cavus, Huseyin",
+   "Jing, Ju"
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsSupplementTo",
+    "relatedIdentifier": "https://github.com/ccsc-tools/SYMHnet/tree/v1.0",
+    "relatedIdentifierType": "URL"
+   },
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.10602474",
+    "relatedIdentifierType": "DOI"
+   },
+   {
+    "relationType": "IsPartOf",
+    "relatedIdentifier": "1542-7390",
+    "relatedIdentifierType": "ISSN"
+   }
+  ],
+  "description_first_300": "Prediction of the SYM-H Index Using a Bayesian Deep Learning Method with Uncertainty Quantification"
+ },
+ {
+  "page": "solarcnn",
+  "ccsc_tile_title": "Super-Resolution of SOHO/MDI Magnetograms of Solar Active Regions Using SDO/HMI Data and an Attention-Aided Convolutional Neural Network",
+  "github_repo": "https://github.com/ccsc-tools/SolarCNN",
+  "citation_button_url": "https://zenodo.org/records/15250172",
+  "zenodo_doi": "10.5281/zenodo.15250172",
+  "citation_apa": "Chunhui Xu, Jason T. L. Wang, Haimin Wang, Haodi Jiang, Qin Li, Yasser Abduallah, &amp; Yan Xu. (2025). <i>Super-Resolution of SOHO/MDI Magnetograms of Solar Active Regions Using SDO/HMI Data and an Attention-Aided Convolutional Neural Network</i>. Zenodo. https://doi.org/10.5281/ZENODO.15250172",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.15250172,\n  doi = {10.5281/ZENODO.15250172},\n  url = {https://zenodo.org/doi/10.5281/zenodo.15250172},\n  author = {Chunhui Xu,  and Jason T. L. Wang,  and Haimin Wang,  and Haodi Jiang,  and Qin Li,  and Yasser Abduallah,  and Yan Xu, },\n  keywords = {machine-learning, deep learning, solar, active region, photoshpere, magnetic fields},\n  title = {Super-Resolution of SOHO/MDI Magnetograms of Solar Active Regions Using SDO/HMI Data and an Attention-Aided Convolutional Neural Network},\n  publisher = {Zenodo},\n  year = {2025},\n  copyright = {Other (Open)}\n}",
+  "zenodo_title": "Super-Resolution of SOHO/MDI Magnetograms of Solar Active Regions Using SDO/HMI Data and an Attention-Aided Convolutional Neural Network",
+  "version": null,
+  "publication_year": 2025,
+  "creators": [
+   "Chunhui Xu",
+   "Jason T. L. Wang",
+   "Haimin Wang",
+   "Haodi Jiang",
+   "Qin Li",
+   "Yasser Abduallah",
+   "Yan Xu"
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsSupplementTo",
+    "relatedIdentifier": "https://github.com/ccsc-tools/SolarCNN",
+    "relatedIdentifierType": "URL"
+   },
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.15244025",
+    "relatedIdentifierType": "DOI"
+   }
+  ],
+  "description_first_300": "CCSC open-source model: SolarCNN and its workflow of prediction."
+ },
+ {
+  "page": "mist",
+  "ccsc_tile_title": "A New Deep Learning Method for Solar Flare Prediction",
+  "github_repo": "https://github.com/ccsc-tools/MIST",
+  "citation_button_url": "https://zenodo.org/records/16780646",
+  "zenodo_doi": "10.5281/zenodo.16780646",
+  "citation_apa": "Chaudhary, Y., Abdullah, Y., &amp; Wang, J. T. L. (2025). <i>A New Deep Learning Method for Solar Flare Prediction</i> [Computer software]. Zenodo. https://doi.org/10.5281/ZENODO.16780646",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.16780646,\n  doi = {10.5281/ZENODO.16780646},\n  url = {https://zenodo.org/doi/10.5281/zenodo.16780646},\n  author = {Chaudhary, Yash and Abdullah, Yasser and Wang, Jason T. L.},\n  keywords = {Solar Flare Prediction, Time-Series Forecasting, Deep Learning, Transformer Model, Python, PyTorch},\n  title = {A New Deep Learning Method for Solar Flare Prediction},\n  publisher = {Zenodo},\n  year = {2025},\n  copyright = {MIT License}\n}",
+  "zenodo_title": "A New Deep Learning Method for Solar Flare Prediction",
+  "version": null,
+  "publication_year": 2025,
+  "creators": [
+   "Chaudhary, Yash",
+   "Abdullah, Yasser",
+   "Wang, Jason T. L."
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.16778289",
+    "relatedIdentifierType": "DOI"
+   }
+  ],
+  "description_first_300": "This package contains the code and data for a new deep learning framework for the prediction of solar flares. The model is designed to forecast the probability of a >=M-class solar flare within a 24-hour window using time-series data from NASA's Solar Dynamics Observatory. This package provides the "
+ },
+ {
+  "page": "deephmi",
+  "ccsc_tile_title": "Improving the Spatial Resolution of SDO/HMI Transverse and Line-of-Sight Magnetograms Using GST/NIRIS Data with Machine Learning",
+  "github_repo": "https://github.com/ccsc-tools/DeepHMI",
+  "citation_button_url": "https://zenodo.org/records/17059248",
+  "zenodo_doi": "10.5281/zenodo.17059248",
+  "citation_apa": "Chunhui Xu, Yan Xu, Jason T. L. Wang, Qin Li, &amp; Haimin Wang. (2025). <i>Improving the Spatial Resolution of SDO/HMI Transverse and Line-of-Sight Magnetograms Using GST/NIRIS Data with Machine Learning</i>. Zenodo. https://doi.org/10.5281/ZENODO.17059248",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.17059248,\n  doi = {10.5281/ZENODO.17059248},\n  url = {https://zenodo.org/doi/10.5281/zenodo.17059248},\n  author = {Chunhui Xu,  and Yan Xu,  and Jason T. L. Wang,  and Qin Li,  and Haimin Wang, },\n  keywords = {machine-learning, deep learning, solar, active region, photoshpere, magnetic fields},\n  title = {Improving the Spatial Resolution of SDO/HMI Transverse and Line-of-Sight Magnetograms Using GST/NIRIS Data with Machine Learning},\n  publisher = {Zenodo},\n  year = {2025},\n  copyright = {Creative Commons Attribution 4.0 International}\n}",
+  "zenodo_title": "Improving the Spatial Resolution of SDO/HMI Transverse and Line-of-Sight Magnetograms Using GST/NIRIS Data with Machine Learning",
+  "version": null,
+  "publication_year": 2025,
+  "creators": [
+   "Chunhui Xu",
+   "Yan Xu",
+   "Jason T. L. Wang",
+   "Qin Li",
+   "Haimin Wang"
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsSupplementTo",
+    "relatedIdentifier": "https://github.com/ccsc-tools/DeepHMI",
+    "relatedIdentifierType": "URL"
+   },
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.17042209",
+    "relatedIdentifierType": "DOI"
+   }
+  ],
+  "description_first_300": "CCSC open-source DeepHMI model."
+ },
+ {
+  "page": "sinet",
+  "ccsc_tile_title": "Daily Predictions of F10.7 and F30 Solar Indices with Deep Learning",
+  "github_repo": "https://github.com/ccsc-tools/SINet",
+  "citation_button_url": "https://zenodo.org/records/20274899",
+  "zenodo_doi": "10.5281/zenodo.20274899",
+  "citation_apa": "Wang, Z., Abduallah, Y., &amp; Wang, J. T. L. (2026). <i>Daily Predictions of F10.7 and F30 Solar Indices with Deep Learning</i>. Zenodo. https://doi.org/10.5281/ZENODO.20274899",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.20274899,\n  doi = {10.5281/ZENODO.20274899},\n  url = {https://zenodo.org/doi/10.5281/zenodo.20274899},\n  author = {Wang, Zhenduo and Abduallah, Yasser and Wang, Jason T.L.},\n  title = {Daily Predictions of F10.7 and F30 Solar Indices with Deep Learning},\n  publisher = {Zenodo},\n  year = {2026},\n  copyright = {Creative Commons Attribution 4.0 International}\n}",
+  "zenodo_title": "Daily Predictions of F10.7 and F30 Solar Indices with Deep Learning",
+  "version": null,
+  "publication_year": 2026,
+  "creators": [
+   "Wang, Zhenduo",
+   "Abduallah, Yasser",
+   "Wang, Jason T.L."
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.20140134",
+    "relatedIdentifierType": "DOI"
+   }
+  ],
+  "description_first_300": "CCSC open-source SINet model."
+ },
+ {
+  "page": "llmflare",
+  "ccsc_tile_title": "LLMFlare: Explainable Solar Flare Prediction Using Large Language Models",
+  "github_repo": "https://github.com/ccsc-tools/LLMFlare",
+  "citation_button_url": "https://zenodo.org/records/20738748",
+  "zenodo_doi": "10.5281/zenodo.20738748",
+  "citation_apa": "Chaudhary, Y., Abdullah, Y., &amp; Wang, J. T. L. (2026). <i>Explainable Solar Flare Prediction Using Large Language Models</i>. Zenodo. https://doi.org/10.5281/ZENODO.20738748",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.20738748,\n  doi = {10.5281/ZENODO.20738748},\n  url = {https://zenodo.org/doi/10.5281/zenodo.20738748},\n  author = {Chaudhary, Yash and Abdullah, Yasser and Wang, Jason T.L.},\n  title = {Explainable Solar Flare Prediction Using Large Language Models},\n  publisher = {Zenodo},\n  year = {2026},\n  copyright = {Creative Commons Attribution 4.0 International}\n}",
+  "zenodo_title": "Explainable Solar Flare Prediction Using Large Language Models",
+  "version": null,
+  "publication_year": 2026,
+  "creators": [
+   "Chaudhary, Yash",
+   "Abdullah, Yasser",
+   "Wang, Jason T.L."
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.20738747",
+    "relatedIdentifierType": "DOI"
+   }
+  ],
+  "description_first_300": "This package contains the code and data for explainable solar flare prediction using large language models."
+ },
+ {
+  "page": "deepgeocme",
+  "ccsc_tile_title": "Deep Learning-Enabled Prediction of Geoeffective CMEs Using SOHO and SDO Observations",
+  "github_repo": "https://github.com/ccsc-tools/DeepGeoCME",
+  "citation_button_url": "https://zenodo.org/records/22955090",
+  "zenodo_doi": "10.5281/zenodo.22955090",
+  "citation_apa": "Yan, Z., Abduallah, Y., &amp; Wang, J. T. L. (2026). <i>Deep Learning-Enabled Prediction of Geoeffective CMEs Using SOHO and SDO Observations</i> (Version 1.0.0). Zenodo. https://doi.org/10.5281/ZENODO.22955090",
+  "citation_bibtex": "@misc{https://doi.org/10.5281/zenodo.22955090,\n  doi = {10.5281/ZENODO.22955090},\n  url = {https://zenodo.org/doi/10.5281/zenodo.22955090},\n  author = {Yan, Zhaoxin and Abduallah, Yasser and Wang, Jason T. L.},\n  keywords = {Space weather, Coronal mass ejections, Geoeffectiveness, Deep learning},\n  title = {Deep Learning-Enabled Prediction of Geoeffective CMEs Using SOHO and SDO Observations},\n  publisher = {Zenodo},\n  year = {2026},\n  copyright = {Creative Commons Attribution 4.0 International}\n}",
+  "zenodo_title": "Deep Learning-Enabled Prediction of Geoeffective CMEs Using SOHO and SDO Observations",
+  "version": "1.0.0",
+  "publication_year": 2026,
+  "creators": [
+   "Yan, Zhaoxin",
+   "Abduallah, Yasser",
+   "Wang, Jason T. L."
+  ],
+  "related_identifiers": [
+   {
+    "relationType": "IsVersionOf",
+    "relatedIdentifier": "10.5281/zenodo.22955089",
+    "relatedIdentifierType": "DOI"
+   }
+  ],
+  "description_first_300": "DeepGeoCME: A deep learning model for predicting CME geoeffectiveness using SOHO and SDO observations."
+ }
+]

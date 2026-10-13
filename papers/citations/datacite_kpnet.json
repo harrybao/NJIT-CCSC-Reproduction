@@ -1,0 +1,216 @@
+{
+ "data": {
+  "id": "10.5281/zenodo.7514451",
+  "type": "dois",
+  "attributes": {
+   "doi": "10.5281/zenodo.7514451",
+   "prefix": "10.5281",
+   "suffix": "zenodo.7514451",
+   "identifiers": [],
+   "alternateIdentifiers": [],
+   "creators": [
+    {
+     "name": "Abduallah, Yasser",
+     "nameType": "Personal",
+     "givenName": "Yasser",
+     "familyName": "Abduallah",
+     "affiliation": [
+      "Department of Computer Science, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0003-0792-2270",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Wang, Jason T. L.",
+     "nameType": "Personal",
+     "givenName": "Jason T. L.",
+     "familyName": "Wang",
+     "affiliation": [
+      "Department of Computer Science, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0002-2486-1097",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Chunhui Xu",
+     "affiliation": [
+      "Department of Computer Science, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": []
+    },
+    {
+     "name": "Wang, Haimin",
+     "nameType": "Personal",
+     "givenName": "Haimin",
+     "familyName": "Wang",
+     "affiliation": [
+      "Institute for Space Weather Sciences, New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "schemeUri": "https://orcid.org",
+       "nameIdentifier": "https://orcid.org/0000-0002-5233-565X",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    }
+   ],
+   "titles": [
+    {
+     "title": "A Transformer-Based Framework for Geomagnetic Activity Prediction"
+    }
+   ],
+   "publisher": "Zenodo",
+   "container": {},
+   "publicationYear": 2022,
+   "subjects": [
+    {
+     "subject": "Kp index"
+    },
+    {
+     "subject": "solar index"
+    },
+    {
+     "subject": "solar activity"
+    },
+    {
+     "subject": "planetary"
+    },
+    {
+     "subject": "deep learning transformer"
+    },
+    {
+     "subject": "deep learning"
+    },
+    {
+     "subject": "machine learning"
+    },
+    {
+     "subject": "solar activities"
+    }
+   ],
+   "contributors": [],
+   "dates": [
+    {
+     "date": "2022-09-28",
+     "dateType": "Issued"
+    }
+   ],
+   "language": null,
+   "types": {
+    "ris": "COMP",
+    "bibtex": "misc",
+    "citeproc": "article",
+    "schemaOrg": "SoftwareSourceCode",
+    "resourceTypeGeneral": "Software"
+   },
+   "relatedIdentifiers": [
+    {
+     "relationType": "IsSupplementTo",
+     "relatedIdentifier": "https://github.com/ccsc-tools/Kp-prediction/tree/v1.1",
+     "relatedIdentifierType": "URL"
+    },
+    {
+     "relationType": "IsVersionOf",
+     "relatedIdentifier": "10.5281/zenodo.7047115",
+     "relatedIdentifierType": "DOI"
+    }
+   ],
+   "relatedItems": [],
+   "sizes": [],
+   "formats": [],
+   "version": "v1.1",
+   "rightsList": [
+    {
+     "rights": "Open Access",
+     "rightsUri": "info:eu-repo/semantics/openAccess"
+    }
+   ],
+   "descriptions": [
+    {
+     "description": "A Transformer-Based Framework for Geomagnetic Activity Prediction",
+     "descriptionType": "Abstract"
+    }
+   ],
+   "geoLocations": [],
+   "fundingReferences": [],
+   "xml": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHJlc291cmNlIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCBodHRwOi8vc2NoZW1hLmRhdGFjaXRlLm9yZy9tZXRhL2tlcm5lbC00LjEvbWV0YWRhdGEueHNkIj4KICA8aWRlbnRpZmllciBpZGVudGlmaWVyVHlwZT0iRE9JIj4xMC41MjgxL1pFTk9ETy43NTE0NDUxPC9pZGVudGlmaWVyPgogIDxjcmVhdG9ycz4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWU+WWFzc2VyIEFiZHVhbGxhaDwvY3JlYXRvck5hbWU+CiAgICAgIDxuYW1lSWRlbnRpZmllciBuYW1lSWRlbnRpZmllclNjaGVtZT0iT1JDSUQiIHNjaGVtZVVSST0iaHR0cDovL29yY2lkLm9yZy8iPjAwMDAtMDAwMy0wNzkyLTIyNzA8L25hbWVJZGVudGlmaWVyPgogICAgICA8YWZmaWxpYXRpb24+RGVwYXJ0bWVudCBvZiBDb21wdXRlciBTY2llbmNlLCBOZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWU+SmFzb24gVC4gTC4gV2FuZzwvY3JlYXRvck5hbWU+CiAgICAgIDxuYW1lSWRlbnRpZmllciBuYW1lSWRlbnRpZmllclNjaGVtZT0iT1JDSUQiIHNjaGVtZVVSST0iaHR0cDovL29yY2lkLm9yZy8iPjAwMDAtMDAwMi0yNDg2LTEwOTc8L25hbWVJZGVudGlmaWVyPgogICAgICA8YWZmaWxpYXRpb24+RGVwYXJ0bWVudCBvZiBDb21wdXRlciBTY2llbmNlLCBOZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWU+Q2h1bmh1aSBYdTwvY3JlYXRvck5hbWU+CiAgICAgIDxhZmZpbGlhdGlvbj5EZXBhcnRtZW50IG9mIENvbXB1dGVyIFNjaWVuY2UsIE5ldyBKZXJzZXkgSW5zdGl0dXRlIG9mIFRlY2hub2xvZ3k8L2FmZmlsaWF0aW9uPgogICAgPC9jcmVhdG9yPgogICAgPGNyZWF0b3I+CiAgICAgIDxjcmVhdG9yTmFtZT5IYWltaW4gV2FuZzwvY3JlYXRvck5hbWU+CiAgICAgIDxuYW1lSWRlbnRpZmllciBuYW1lSWRlbnRpZmllclNjaGVtZT0iT1JDSUQiIHNjaGVtZVVSST0iaHR0cDovL29yY2lkLm9yZy8iPjAwMDAtMDAwMi01MjMzLTU2NVg8L25hbWVJZGVudGlmaWVyPgogICAgICA8YWZmaWxpYXRpb24+SW5zdGl0dXRlIGZvciBTcGFjZSBXZWF0aGVyIFNjaWVuY2VzLCBOZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICA8L2NyZWF0b3JzPgogIDx0aXRsZXM+CiAgICA8dGl0bGU+QSBUcmFuc2Zvcm1lci1CYXNlZCBGcmFtZXdvcmsgZm9yIEdlb21hZ25ldGljIEFjdGl2aXR5IFByZWRpY3Rpb248L3RpdGxlPgogIDwvdGl0bGVzPgogIDxwdWJsaXNoZXI+WmVub2RvPC9wdWJsaXNoZXI+CiAgPHB1YmxpY2F0aW9uWWVhcj4yMDIyPC9wdWJsaWNhdGlvblllYXI+CiAgPHN1YmplY3RzPgogICAgPHN1YmplY3Q+S3AgaW5kZXg8L3N1YmplY3Q+CiAgICA8c3ViamVjdD5zb2xhciBpbmRleDwvc3ViamVjdD4KICAgIDxzdWJqZWN0PnNvbGFyIGFjdGl2aXR5PC9zdWJqZWN0PgogICAgPHN1YmplY3Q+cGxhbmV0YXJ5PC9zdWJqZWN0PgogICAgPHN1YmplY3Q+ZGVlcCBsZWFybmluZyB0cmFuc2Zvcm1lcjwvc3ViamVjdD4KICAgIDxzdWJqZWN0PmRlZXAgbGVhcm5pbmc8L3N1YmplY3Q+CiAgICA8c3ViamVjdD5tYWNoaW5lIGxlYXJuaW5nPC9zdWJqZWN0PgogICAgPHN1YmplY3Q+c29sYXIgYWN0aXZpdGllczwvc3ViamVjdD4KICA8L3N1YmplY3RzPgogIDxkYXRlcz4KICAgIDxkYXRlIGRhdGVUeXBlPSJJc3N1ZWQiPjIwMjItMDktMjg8L2RhdGU+CiAgPC9kYXRlcz4KICA8cmVzb3VyY2VUeXBlIHJlc291cmNlVHlwZUdlbmVyYWw9IlNvZnR3YXJlIi8+CiAgPGFsdGVybmF0ZUlkZW50aWZpZXJzPgogICAgPGFsdGVybmF0ZUlkZW50aWZpZXIgYWx0ZXJuYXRlSWRlbnRpZmllclR5cGU9InVybCI+aHR0cHM6Ly96ZW5vZG8ub3JnL3JlY29yZC83NTE0NDUxPC9hbHRlcm5hdGVJZGVudGlmaWVyPgogIDwvYWx0ZXJuYXRlSWRlbnRpZmllcnM+CiAgPHJlbGF0ZWRJZGVudGlmaWVycz4KICAgIDxyZWxhdGVkSWRlbnRpZmllciByZWxhdGVkSWRlbnRpZmllclR5cGU9IlVSTCIgcmVsYXRpb25UeXBlPSJJc1N1cHBsZW1lbnRUbyI+aHR0cHM6Ly9naXRodWIuY29tL2Njc2MtdG9vbHMvS3AtcHJlZGljdGlvbi90cmVlL3YxLjE8L3JlbGF0ZWRJZGVudGlmaWVyPgogICAgPHJlbGF0ZWRJZGVudGlmaWVyIHJlbGF0ZWRJZGVudGlmaWVyVHlwZT0iRE9JIiByZWxhdGlvblR5cGU9IklzVmVyc2lvbk9mIj4xMC41MjgxL3plbm9kby43MDQ3MTE1PC9yZWxhdGVkSWRlbnRpZmllcj4KICA8L3JlbGF0ZWRJZGVudGlmaWVycz4KICA8dmVyc2lvbj52MS4xPC92ZXJzaW9uPgogIDxyaWdodHNMaXN0PgogICAgPHJpZ2h0cyByaWdodHNVUkk9ImluZm86ZXUtcmVwby9zZW1hbnRpY3Mvb3BlbkFjY2VzcyI+T3BlbiBBY2Nlc3M8L3JpZ2h0cz4KICA8L3JpZ2h0c0xpc3Q+CiAgPGRlc2NyaXB0aW9ucz4KICAgIDxkZXNjcmlwdGlvbiBkZXNjcmlwdGlvblR5cGU9IkFic3RyYWN0Ij4mbHQ7cCZndDtBIFRyYW5zZm9ybWVyLUJhc2VkIEZyYW1ld29yayBmb3IgR2VvbWFnbmV0aWMgQWN0aXZpdHkgUHJlZGljdGlvbiZsdDsvcCZndDs8L2Rlc2NyaXB0aW9uPgogIDwvZGVzY3JpcHRpb25zPgo8L3Jlc291cmNlPg==",
+   "url": "https://zenodo.org/record/7514451",
+   "contentUrl": null,
+   "metadataVersion": 0,
+   "schemaVersion": "http://datacite.org/schema/kernel-4",
+   "source": "mds",
+   "isActive": true,
+   "state": "findable",
+   "reason": null,
+   "viewCount": 0,
+   "viewsOverTime": [],
+   "downloadCount": 0,
+   "downloadsOverTime": [],
+   "referenceCount": 0,
+   "citationCount": 0,
+   "citationsOverTime": [],
+   "partCount": 0,
+   "partOfCount": 0,
+   "versionCount": 0,
+   "versionOfCount": 1,
+   "created": "2023-01-09T03:04:55.000Z",
+   "registered": "2023-01-09T03:04:55.000Z",
+   "published": "2022",
+   "updated": "2023-01-09T03:04:58.000Z"
+  },
+  "relationships": {
+   "client": {
+    "data": {
+     "id": "cern.zenodo",
+     "type": "clients"
+    }
+   },
+   "provider": {
+    "data": {
+     "id": "cern",
+     "type": "providers"
+    }
+   },
+   "media": {
+    "data": {
+     "id": "10.5281/zenodo.7514451",
+     "type": "media"
+    }
+   },
+   "references": {
+    "data": []
+   },
+   "citations": {
+    "data": []
+   },
+   "parts": {
+    "data": []
+   },
+   "partOf": {
+    "data": []
+   },
+   "versions": {
+    "data": []
+   },
+   "versionOf": {
+    "data": [
+     {
+      "id": "10.5281/zenodo.7047115",
+      "type": "dois"
+     }
+    ]
+   }
+  }
+ }
+}

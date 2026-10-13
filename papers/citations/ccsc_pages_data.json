@@ -1,0 +1,116 @@
+[
+    {
+        "page": "solarunet",
+        "title": "Identifying and Tracking Solar Magnetic Flux Elements with Deep Learning",
+        "repo": "SolarUnet-magnetic-tracking",
+        "zenodo": "https://zenodo.org/record/5643647#.YYUqvbopChc"
+    },
+    {
+        "page": "flareml",
+        "title": "Predicting Solar Flares with Machine Learning",
+        "repo": "FlareML",
+        "zenodo": "https://zenodo.org/record/7506997#.Y7cEzRXMK3A"
+    },
+    {
+        "page": "cmepredict",
+        "title": "Predicting Coronal Mass Ejections Using SDO/HMI Vector Magnetic Data Products and Recurrent Neural Networks",
+        "repo": "RNN-CME-prediction",
+        "zenodo": "https://zenodo.org/record/7415731#.Y5IkXXbMJD8"
+    },
+    {
+        "page": "flarepredict",
+        "title": "Predicting Solar Flares Using a Long Short-term Memory Network",
+        "repo": "LSTM-flare-prediction",
+        "zenodo": "https://zenodo.org/record/5739321#.YaWNcNDMKUk"
+    },
+    {
+        "page": "seppredict",
+        "title": "Predicting Solar Energetic Particles Using SDO/HMI Vector Magnetic Data Products and a Bidirectional LSTM Network",
+        "repo": "SEP-prediction",
+        "zenodo": "https://zenodo.org/record/7516609#.Y7xChBXMLrk"
+    },
+    {
+        "page": "dsttpredict",
+        "title": "Forecasting the Disturbance Storm Time Index with Bayesian Deep Learning",
+        "repo": "Dst-prediction",
+        "zenodo": "https://zenodo.org/record/7529705#.Y8ApDBXMJD8"
+    },
+    {
+        "page": "tsinet",
+        "title": "Reconstruction of Total Solar Irradiance by Deep Learning",
+        "repo": "TSInet-irradiance-reconstruction",
+        "zenodo": "https://zenodo.org/record/7516668#.Y7xGBBXMLrk"
+    },
+    {
+        "page": "kpnet",
+        "title": "A Transformer-Based Framework for Geomagnetic Activity Prediction",
+        "repo": "kp-prediction",
+        "zenodo": "https://zenodo.org/record/7514451#.Y7uEWhXMLrc"
+    },
+    {
+        "page": "cmenet",
+        "title": "Predicting CME Arrival Time through Data Integration and Ensemble Learning",
+        "repo": "CMETNet",
+        "zenodo": "https://zenodo.org/record/7516684#.Y7xI1hXMLrk"
+    },
+    {
+        "page": "fibrilnet",
+        "title": "Tracing H\u03b1 Fibrils through Bayesian Deep Learning",
+        "repo": "FibrilNet",
+        "zenodo": "https://zenodo.org/record/7521568#.Y72VmhXMLrk"
+    },
+    {
+        "page": "sdnn",
+        "title": "Stokes Inversion for GST/NIRIS Using Stacked Deep Neural Networks",
+        "repo": "SDNN",
+        "zenodo": "https://zenodo.org/record/7521580#.Y72WVBXMLrk"
+    },
+    {
+        "page": "solarflarenet",
+        "title": "Operational Prediction of Solar Flares Using a Transformer-Based Framework",
+        "repo": "SolarFlareNet",
+        "zenodo": "https://zenodo.org/record/10201356"
+    },
+    {
+        "page": "symhnet",
+        "title": "Prediction of the SYM-H Index Using a Bayesian Deep Learning Method with Uncertainty Quantification",
+        "repo": "SYMHnet",
+        "zenodo": "https://zenodo.org/records/10602518"
+    },
+    {
+        "page": "solarcnn",
+        "title": "Super-Resolution of SOHO/MDI Magnetograms of Solar Active Regions Using SDO/HMI Data and an Attention-Aided Convolutional Neural Network",
+        "repo": "SolarCNN",
+        "zenodo": "https://zenodo.org/records/15250172"
+    },
+    {
+        "page": "mist",
+        "title": "A New Deep Learning Method for Solar Flare Prediction",
+        "repo": "MIST",
+        "zenodo": "https://zenodo.org/records/16780646"
+    },
+    {
+        "page": "deephmi",
+        "title": "Improving the Spatial Resolution of SDO/HMI Transverse and Line-of-Sight Magnetograms Using GST/NIRIS Data with Machine Learning",
+        "repo": "DeepHMI",
+        "zenodo": "https://zenodo.org/records/17059248"
+    },
+    {
+        "page": "sinet",
+        "title": "Daily Predictions of F10.7 and F30 Solar Indices with Deep Learning",
+        "repo": "SINet",
+        "zenodo": "https://zenodo.org/records/20274899"
+    },
+    {
+        "page": "llmflare",
+        "title": "LLMFlare: Explainable Solar Flare Prediction Using Large Language Models",
+        "repo": "LLMFlare",
+        "zenodo": "https://zenodo.org/records/20738748"
+    },
+    {
+        "page": "deepgeocme",
+        "title": "Deep Learning-Enabled Prediction of Geoeffective CMEs Using SOHO and SDO Observations",
+        "repo": "DeepGeoCME",
+        "zenodo": "https://zenodo.org/records/22955090"
+    }
+]

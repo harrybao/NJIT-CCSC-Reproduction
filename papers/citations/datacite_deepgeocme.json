@@ -1,0 +1,203 @@
+{
+ "data": {
+  "id": "10.5281/zenodo.22955090",
+  "type": "dois",
+  "attributes": {
+   "doi": "10.5281/zenodo.22955090",
+   "prefix": "10.5281",
+   "suffix": "zenodo.22955090",
+   "identifiers": [
+    {
+     "identifier": "oai:zenodo.org:22955090",
+     "identifierType": "oai"
+    }
+   ],
+   "alternateIdentifiers": [
+    {
+     "alternateIdentifierType": "oai",
+     "alternateIdentifier": "oai:zenodo.org:22955090"
+    }
+   ],
+   "creators": [
+    {
+     "name": "Yan, Zhaoxin",
+     "nameType": "Personal",
+     "givenName": "Zhaoxin",
+     "familyName": "Yan",
+     "affiliation": [
+      "New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "nameIdentifier": "0009-0004-3523-0380",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Abduallah, Yasser",
+     "nameType": "Personal",
+     "givenName": "Yasser",
+     "familyName": "Abduallah",
+     "affiliation": [
+      "New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "nameIdentifier": "0000-0003-0792-2270",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Wang, Jason T. L.",
+     "nameType": "Personal",
+     "givenName": "Jason T. L.",
+     "familyName": "Wang",
+     "affiliation": [
+      "New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "nameIdentifier": "0000-0002-2486-1097",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    }
+   ],
+   "titles": [
+    {
+     "title": "Deep Learning-Enabled Prediction of Geoeffective CMEs Using SOHO and SDO Observations"
+    }
+   ],
+   "publisher": "Zenodo",
+   "container": {},
+   "publicationYear": 2026,
+   "subjects": [
+    {
+     "subject": "Space weather"
+    },
+    {
+     "subject": "Coronal mass ejections"
+    },
+    {
+     "subject": "Geoeffectiveness"
+    },
+    {
+     "subject": "Deep learning"
+    }
+   ],
+   "contributors": [],
+   "dates": [
+    {
+     "date": "2026-09-24",
+     "dateType": "Issued"
+    }
+   ],
+   "language": null,
+   "types": {
+    "ris": "GEN",
+    "bibtex": "misc",
+    "citeproc": "article",
+    "schemaOrg": "CreativeWork",
+    "resourceType": "",
+    "resourceTypeGeneral": "Model"
+   },
+   "relatedIdentifiers": [
+    {
+     "relationType": "IsVersionOf",
+     "relatedIdentifier": "10.5281/zenodo.22955089",
+     "relatedIdentifierType": "DOI"
+    }
+   ],
+   "relatedItems": [],
+   "sizes": [],
+   "formats": [],
+   "version": "1.0.0",
+   "rightsList": [
+    {
+     "rights": "Creative Commons Attribution 4.0 International",
+     "rightsUri": "https://creativecommons.org/licenses/by/4.0/legalcode",
+     "schemeUri": "https://spdx.org/licenses/",
+     "rightsIdentifier": "cc-by-4.0",
+     "rightsIdentifierScheme": "SPDX"
+    }
+   ],
+   "descriptions": [
+    {
+     "description": "DeepGeoCME: A deep learning model for predicting CME geoeffectiveness using SOHO and SDO observations.",
+     "descriptionType": "Abstract"
+    }
+   ],
+   "geoLocations": [],
+   "fundingReferences": [],
+   "xml": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHJlc291cmNlIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCBodHRwOi8vc2NoZW1hLmRhdGFjaXRlLm9yZy9tZXRhL2tlcm5lbC00L21ldGFkYXRhLnhzZCI+CiAgPGlkZW50aWZpZXIgaWRlbnRpZmllclR5cGU9IkRPSSI+MTAuNTI4MS9aRU5PRE8uMjI5NTUwOTA8L2lkZW50aWZpZXI+CiAgPGNyZWF0b3JzPgogICAgPGNyZWF0b3I+CiAgICAgIDxjcmVhdG9yTmFtZSBuYW1lVHlwZT0iUGVyc29uYWwiPllhbiwgWmhhb3hpbjwvY3JlYXRvck5hbWU+CiAgICAgIDxnaXZlbk5hbWU+Wmhhb3hpbjwvZ2l2ZW5OYW1lPgogICAgICA8ZmFtaWx5TmFtZT5ZYW48L2ZhbWlseU5hbWU+CiAgICAgIDxuYW1lSWRlbnRpZmllciBuYW1lSWRlbnRpZmllclNjaGVtZT0iT1JDSUQiIHNjaGVtZVVSST0iIj4wMDA5LTAwMDQtMzUyMy0wMzgwPC9uYW1lSWRlbnRpZmllcj4KICAgICAgPGFmZmlsaWF0aW9uIGFmZmlsaWF0aW9uSWRlbnRpZmllcj0iaHR0cHM6Ly9yb3Iub3JnLzA1ZTc0eGI4NyIgYWZmaWxpYXRpb25JZGVudGlmaWVyU2NoZW1lPSJST1IiPk5ldyBKZXJzZXkgSW5zdGl0dXRlIG9mIFRlY2hub2xvZ3k8L2FmZmlsaWF0aW9uPgogICAgPC9jcmVhdG9yPgogICAgPGNyZWF0b3I+CiAgICAgIDxjcmVhdG9yTmFtZSBuYW1lVHlwZT0iUGVyc29uYWwiPkFiZHVhbGxhaCwgWWFzc2VyPC9jcmVhdG9yTmFtZT4KICAgICAgPGdpdmVuTmFtZT5ZYXNzZXI8L2dpdmVuTmFtZT4KICAgICAgPGZhbWlseU5hbWU+QWJkdWFsbGFoPC9mYW1pbHlOYW1lPgogICAgICA8bmFtZUlkZW50aWZpZXIgbmFtZUlkZW50aWZpZXJTY2hlbWU9Ik9SQ0lEIiBzY2hlbWVVUkk9IiI+MDAwMC0wMDAzLTA3OTItMjI3MDwvbmFtZUlkZW50aWZpZXI+CiAgICAgIDxhZmZpbGlhdGlvbiBhZmZpbGlhdGlvbklkZW50aWZpZXI9Imh0dHBzOi8vcm9yLm9yZy8wNWU3NHhiODciIGFmZmlsaWF0aW9uSWRlbnRpZmllclNjaGVtZT0iUk9SIj5OZXcgSmVyc2V5IEluc3RpdHV0ZSBvZiBUZWNobm9sb2d5PC9hZmZpbGlhdGlvbj4KICAgIDwvY3JlYXRvcj4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWUgbmFtZVR5cGU9IlBlcnNvbmFsIj5XYW5nLCBKYXNvbiBULiBMLjwvY3JlYXRvck5hbWU+CiAgICAgIDxnaXZlbk5hbWU+SmFzb24gVC4gTC48L2dpdmVuTmFtZT4KICAgICAgPGZhbWlseU5hbWU+V2FuZzwvZmFtaWx5TmFtZT4KICAgICAgPG5hbWVJZGVudGlmaWVyIG5hbWVJZGVudGlmaWVyU2NoZW1lPSJPUkNJRCIgc2NoZW1lVVJJPSIiPjAwMDAtMDAwMi0yNDg2LTEwOTc8L25hbWVJZGVudGlmaWVyPgogICAgICA8YWZmaWxpYXRpb24gYWZmaWxpYXRpb25JZGVudGlmaWVyPSJodHRwczovL3Jvci5vcmcvMDVlNzR4Yjg3IiBhZmZpbGlhdGlvbklkZW50aWZpZXJTY2hlbWU9IlJPUiI+TmV3IEplcnNleSBJbnN0aXR1dGUgb2YgVGVjaG5vbG9neTwvYWZmaWxpYXRpb24+CiAgICA8L2NyZWF0b3I+CiAgPC9jcmVhdG9ycz4KICA8dGl0bGVzPgogICAgPHRpdGxlPkRlZXAgTGVhcm5pbmctRW5hYmxlZCBQcmVkaWN0aW9uIG9mIEdlb2VmZmVjdGl2ZSBDTUVzIFVzaW5nIFNPSE8gYW5kIFNETyBPYnNlcnZhdGlvbnM8L3RpdGxlPgogIDwvdGl0bGVzPgogIDxwdWJsaXNoZXI+WmVub2RvPC9wdWJsaXNoZXI+CiAgPHB1YmxpY2F0aW9uWWVhcj4yMDI2PC9wdWJsaWNhdGlvblllYXI+CiAgPHJlc291cmNlVHlwZSByZXNvdXJjZVR5cGVHZW5lcmFsPSJNb2RlbCIvPgogIDxzdWJqZWN0cz4KICAgIDxzdWJqZWN0PlNwYWNlIHdlYXRoZXI8L3N1YmplY3Q+CiAgICA8c3ViamVjdD5Db3JvbmFsIG1hc3MgZWplY3Rpb25zPC9zdWJqZWN0PgogICAgPHN1YmplY3Q+R2VvZWZmZWN0aXZlbmVzczwvc3ViamVjdD4KICAgIDxzdWJqZWN0PkRlZXAgbGVhcm5pbmc8L3N1YmplY3Q+CiAgPC9zdWJqZWN0cz4KICA8ZGF0ZXM+CiAgICA8ZGF0ZSBkYXRlVHlwZT0iSXNzdWVkIj4yMDI2LTA5LTI0PC9kYXRlPgogIDwvZGF0ZXM+CiAgPGFsdGVybmF0ZUlkZW50aWZpZXJzPgogICAgPGFsdGVybmF0ZUlkZW50aWZpZXIgYWx0ZXJuYXRlSWRlbnRpZmllclR5cGU9Im9haSI+b2FpOnplbm9kby5vcmc6MjI5NTUwOTA8L2FsdGVybmF0ZUlkZW50aWZpZXI+CiAgPC9hbHRlcm5hdGVJZGVudGlmaWVycz4KICA8cmVsYXRlZElkZW50aWZpZXJzPgogICAgPHJlbGF0ZWRJZGVudGlmaWVyIHJlbGF0ZWRJZGVudGlmaWVyVHlwZT0iRE9JIiByZWxhdGlvblR5cGU9IklzVmVyc2lvbk9mIj4xMC41MjgxL3plbm9kby4yMjk1NTA4OTwvcmVsYXRlZElkZW50aWZpZXI+CiAgPC9yZWxhdGVkSWRlbnRpZmllcnM+CiAgPHNpemVzLz4KICA8Zm9ybWF0cy8+CiAgPHZlcnNpb24+MS4wLjA8L3ZlcnNpb24+CiAgPHJpZ2h0c0xpc3Q+CiAgICA8cmlnaHRzIHJpZ2h0c1VSST0iaHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LzQuMC9sZWdhbGNvZGUiIHJpZ2h0c0lkZW50aWZpZXI9ImNjLWJ5LTQuMCIgcmlnaHRzSWRlbnRpZmllclNjaGVtZT0iU1BEWCIgc2NoZW1lVVJJPSJodHRwczovL3NwZHgub3JnL2xpY2Vuc2VzLyI+Q3JlYXRpdmUgQ29tbW9ucyBBdHRyaWJ1dGlvbiA0LjAgSW50ZXJuYXRpb25hbDwvcmlnaHRzPgogIDwvcmlnaHRzTGlzdD4KICA8ZGVzY3JpcHRpb25zPgogICAgPGRlc2NyaXB0aW9uIGRlc2NyaXB0aW9uVHlwZT0iQWJzdHJhY3QiPkRlZXBHZW9DTUU6IEEgZGVlcCBsZWFybmluZyBtb2RlbCBmb3IgcHJlZGljdGluZyBDTUUgZ2VvZWZmZWN0aXZlbmVzcyB1c2luZyBTT0hPIGFuZCBTRE8gb2JzZXJ2YXRpb25zLjwvZGVzY3JpcHRpb24+CiAgPC9kZXNjcmlwdGlvbnM+CjwvcmVzb3VyY2U+Cg==",
+   "url": "https://zenodo.org/doi/10.5281/zenodo.22955090",
+   "contentUrl": null,
+   "metadataVersion": 0,
+   "schemaVersion": "http://datacite.org/schema/kernel-4",
+   "source": "api",
+   "isActive": true,
+   "state": "findable",
+   "reason": null,
+   "viewCount": 0,
+   "viewsOverTime": [],
+   "downloadCount": 0,
+   "downloadsOverTime": [],
+   "referenceCount": 0,
+   "citationCount": 0,
+   "citationsOverTime": [],
+   "partCount": 0,
+   "partOfCount": 0,
+   "versionCount": 0,
+   "versionOfCount": 1,
+   "created": "2026-09-25T11:27:04.000Z",
+   "registered": "2026-09-25T11:27:05.000Z",
+   "published": "2026",
+   "updated": "2026-09-25T11:32:39.000Z"
+  },
+  "relationships": {
+   "client": {
+    "data": {
+     "id": "cern.zenodo",
+     "type": "clients"
+    }
+   },
+   "provider": {
+    "data": {
+     "id": "cern",
+     "type": "providers"
+    }
+   },
+   "media": {
+    "data": {
+     "id": "10.5281/zenodo.22955090",
+     "type": "media"
+    }
+   },
+   "references": {
+    "data": []
+   },
+   "citations": {
+    "data": []
+   },
+   "parts": {
+    "data": []
+   },
+   "partOf": {
+    "data": []
+   },
+   "versions": {
+    "data": []
+   },
+   "versionOf": {
+    "data": [
+     {
+      "id": "10.5281/zenodo.22955089",
+      "type": "dois"
+     }
+    ]
+   }
+  }
+ }
+}

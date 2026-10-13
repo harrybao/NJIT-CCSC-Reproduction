@@ -1,0 +1,185 @@
+{
+ "data": {
+  "id": "10.5281/zenodo.20738748",
+  "type": "dois",
+  "attributes": {
+   "doi": "10.5281/zenodo.20738748",
+   "prefix": "10.5281",
+   "suffix": "zenodo.20738748",
+   "identifiers": [
+    {
+     "identifier": "oai:zenodo.org:20738748",
+     "identifierType": "oai"
+    }
+   ],
+   "alternateIdentifiers": [
+    {
+     "alternateIdentifierType": "oai",
+     "alternateIdentifier": "oai:zenodo.org:20738748"
+    }
+   ],
+   "creators": [
+    {
+     "name": "Chaudhary, Yash",
+     "nameType": "Personal",
+     "givenName": "Yash",
+     "familyName": "Chaudhary",
+     "affiliation": [
+      "New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "nameIdentifier": "0009-0007-4167-8589",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    },
+    {
+     "name": "Abdullah, Yasser",
+     "nameType": "Personal",
+     "givenName": "Yasser",
+     "familyName": "Abdullah",
+     "affiliation": [
+      "New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": []
+    },
+    {
+     "name": "Wang, Jason T.L.",
+     "nameType": "Personal",
+     "givenName": "Jason T.L.",
+     "familyName": "Wang",
+     "affiliation": [
+      "New Jersey Institute of Technology"
+     ],
+     "nameIdentifiers": [
+      {
+       "nameIdentifier": "0000-0002-2486-1097",
+       "nameIdentifierScheme": "ORCID"
+      }
+     ]
+    }
+   ],
+   "titles": [
+    {
+     "title": "Explainable Solar Flare Prediction Using Large Language Models"
+    }
+   ],
+   "publisher": "Zenodo",
+   "container": {},
+   "publicationYear": 2026,
+   "subjects": [],
+   "contributors": [],
+   "dates": [
+    {
+     "date": "2026-06-18",
+     "dateType": "Issued"
+    }
+   ],
+   "language": null,
+   "types": {
+    "ris": "COMP",
+    "bibtex": "misc",
+    "citeproc": "article",
+    "schemaOrg": "SoftwareSourceCode",
+    "resourceType": "",
+    "resourceTypeGeneral": "ComputationalNotebook"
+   },
+   "relatedIdentifiers": [
+    {
+     "relationType": "IsVersionOf",
+     "relatedIdentifier": "10.5281/zenodo.20738747",
+     "relatedIdentifierType": "DOI"
+    }
+   ],
+   "relatedItems": [],
+   "sizes": [],
+   "formats": [],
+   "version": null,
+   "rightsList": [
+    {
+     "rights": "Creative Commons Attribution 4.0 International",
+     "rightsUri": "https://creativecommons.org/licenses/by/4.0/legalcode",
+     "schemeUri": "https://spdx.org/licenses/",
+     "rightsIdentifier": "cc-by-4.0",
+     "rightsIdentifierScheme": "SPDX"
+    }
+   ],
+   "descriptions": [
+    {
+     "description": "This package contains the code and data for explainable solar flare prediction using large language models.",
+     "descriptionType": "Abstract"
+    }
+   ],
+   "geoLocations": [],
+   "fundingReferences": [],
+   "xml": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHJlc291cmNlIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCBodHRwOi8vc2NoZW1hLmRhdGFjaXRlLm9yZy9tZXRhL2tlcm5lbC00L21ldGFkYXRhLnhzZCI+CiAgPGlkZW50aWZpZXIgaWRlbnRpZmllclR5cGU9IkRPSSI+MTAuNTI4MS9aRU5PRE8uMjA3Mzg3NDg8L2lkZW50aWZpZXI+CiAgPGNyZWF0b3JzPgogICAgPGNyZWF0b3I+CiAgICAgIDxjcmVhdG9yTmFtZSBuYW1lVHlwZT0iUGVyc29uYWwiPkNoYXVkaGFyeSwgWWFzaDwvY3JlYXRvck5hbWU+CiAgICAgIDxnaXZlbk5hbWU+WWFzaDwvZ2l2ZW5OYW1lPgogICAgICA8ZmFtaWx5TmFtZT5DaGF1ZGhhcnk8L2ZhbWlseU5hbWU+CiAgICAgIDxuYW1lSWRlbnRpZmllciBuYW1lSWRlbnRpZmllclNjaGVtZT0iT1JDSUQiIHNjaGVtZVVSST0iIj4wMDA5LTAwMDctNDE2Ny04NTg5PC9uYW1lSWRlbnRpZmllcj4KICAgICAgPGFmZmlsaWF0aW9uIGFmZmlsaWF0aW9uSWRlbnRpZmllcj0iaHR0cHM6Ly9yb3Iub3JnLzA1ZTc0eGI4NyIgYWZmaWxpYXRpb25JZGVudGlmaWVyU2NoZW1lPSJST1IiPk5ldyBKZXJzZXkgSW5zdGl0dXRlIG9mIFRlY2hub2xvZ3k8L2FmZmlsaWF0aW9uPgogICAgPC9jcmVhdG9yPgogICAgPGNyZWF0b3I+CiAgICAgIDxjcmVhdG9yTmFtZSBuYW1lVHlwZT0iUGVyc29uYWwiPkFiZHVsbGFoLCBZYXNzZXI8L2NyZWF0b3JOYW1lPgogICAgICA8Z2l2ZW5OYW1lPllhc3NlcjwvZ2l2ZW5OYW1lPgogICAgICA8ZmFtaWx5TmFtZT5BYmR1bGxhaDwvZmFtaWx5TmFtZT4KICAgICAgPGFmZmlsaWF0aW9uIGFmZmlsaWF0aW9uSWRlbnRpZmllcj0iaHR0cHM6Ly9yb3Iub3JnLzA1ZTc0eGI4NyIgYWZmaWxpYXRpb25JZGVudGlmaWVyU2NoZW1lPSJST1IiPk5ldyBKZXJzZXkgSW5zdGl0dXRlIG9mIFRlY2hub2xvZ3k8L2FmZmlsaWF0aW9uPgogICAgPC9jcmVhdG9yPgogICAgPGNyZWF0b3I+CiAgICAgIDxjcmVhdG9yTmFtZSBuYW1lVHlwZT0iUGVyc29uYWwiPldhbmcsIEphc29uIFQuTC48L2NyZWF0b3JOYW1lPgogICAgICA8Z2l2ZW5OYW1lPkphc29uIFQuTC48L2dpdmVuTmFtZT4KICAgICAgPGZhbWlseU5hbWU+V2FuZzwvZmFtaWx5TmFtZT4KICAgICAgPG5hbWVJZGVudGlmaWVyIG5hbWVJZGVudGlmaWVyU2NoZW1lPSJPUkNJRCIgc2NoZW1lVVJJPSIiPjAwMDAtMDAwMi0yNDg2LTEwOTc8L25hbWVJZGVudGlmaWVyPgogICAgICA8YWZmaWxpYXRpb24gYWZmaWxpYXRpb25JZGVudGlmaWVyPSJodHRwczovL3Jvci5vcmcvMDVlNzR4Yjg3IiBhZmZpbGlhdGlvbklkZW50aWZpZXJTY2hlbWU9IlJPUiI+TmV3IEplcnNleSBJbnN0aXR1dGUgb2YgVGVjaG5vbG9neTwvYWZmaWxpYXRpb24+CiAgICA8L2NyZWF0b3I+CiAgPC9jcmVhdG9ycz4KICA8dGl0bGVzPgogICAgPHRpdGxlPkV4cGxhaW5hYmxlIFNvbGFyIEZsYXJlIFByZWRpY3Rpb24gVXNpbmcgTGFyZ2UgTGFuZ3VhZ2UgTW9kZWxzPC90aXRsZT4KICA8L3RpdGxlcz4KICA8cHVibGlzaGVyPlplbm9kbzwvcHVibGlzaGVyPgogIDxwdWJsaWNhdGlvblllYXI+MjAyNjwvcHVibGljYXRpb25ZZWFyPgogIDxyZXNvdXJjZVR5cGUgcmVzb3VyY2VUeXBlR2VuZXJhbD0iQ29tcHV0YXRpb25hbE5vdGVib29rIi8+CiAgPGRhdGVzPgogICAgPGRhdGUgZGF0ZVR5cGU9Iklzc3VlZCI+MjAyNi0wNi0xODwvZGF0ZT4KICA8L2RhdGVzPgogIDxhbHRlcm5hdGVJZGVudGlmaWVycz4KICAgIDxhbHRlcm5hdGVJZGVudGlmaWVyIGFsdGVybmF0ZUlkZW50aWZpZXJUeXBlPSJvYWkiPm9haTp6ZW5vZG8ub3JnOjIwNzM4NzQ4PC9hbHRlcm5hdGVJZGVudGlmaWVyPgogIDwvYWx0ZXJuYXRlSWRlbnRpZmllcnM+CiAgPHJlbGF0ZWRJZGVudGlmaWVycz4KICAgIDxyZWxhdGVkSWRlbnRpZmllciByZWxhdGVkSWRlbnRpZmllclR5cGU9IkRPSSIgcmVsYXRpb25UeXBlPSJJc1ZlcnNpb25PZiI+MTAuNTI4MS96ZW5vZG8uMjA3Mzg3NDc8L3JlbGF0ZWRJZGVudGlmaWVyPgogIDwvcmVsYXRlZElkZW50aWZpZXJzPgogIDxzaXplcy8+CiAgPGZvcm1hdHMvPgogIDx2ZXJzaW9uLz4KICA8cmlnaHRzTGlzdD4KICAgIDxyaWdodHMgcmlnaHRzVVJJPSJodHRwczovL2NyZWF0aXZlY29tbW9ucy5vcmcvbGljZW5zZXMvYnkvNC4wL2xlZ2FsY29kZSIgcmlnaHRzSWRlbnRpZmllcj0iY2MtYnktNC4wIiByaWdodHNJZGVudGlmaWVyU2NoZW1lPSJTUERYIiBzY2hlbWVVUkk9Imh0dHBzOi8vc3BkeC5vcmcvbGljZW5zZXMvIj5DcmVhdGl2ZSBDb21tb25zIEF0dHJpYnV0aW9uIDQuMCBJbnRlcm5hdGlvbmFsPC9yaWdodHM+CiAgPC9yaWdodHNMaXN0PgogIDxkZXNjcmlwdGlvbnM+CiAgICA8ZGVzY3JpcHRpb24gZGVzY3JpcHRpb25UeXBlPSJBYnN0cmFjdCI+VGhpcyBwYWNrYWdlIGNvbnRhaW5zIHRoZSBjb2RlIGFuZCBkYXRhIGZvciBleHBsYWluYWJsZSBzb2xhciBmbGFyZSBwcmVkaWN0aW9uIHVzaW5nIGxhcmdlIGxhbmd1YWdlIG1vZGVscy48L2Rlc2NyaXB0aW9uPgogIDwvZGVzY3JpcHRpb25zPgo8L3Jlc291cmNlPgo=",
+   "url": "https://zenodo.org/doi/10.5281/zenodo.20738748",
+   "contentUrl": null,
+   "metadataVersion": 1,
+   "schemaVersion": "http://datacite.org/schema/kernel-4",
+   "source": "api",
+   "isActive": true,
+   "state": "findable",
+   "reason": null,
+   "viewCount": 0,
+   "viewsOverTime": [],
+   "downloadCount": 0,
+   "downloadsOverTime": [],
+   "referenceCount": 0,
+   "citationCount": 0,
+   "citationsOverTime": [],
+   "partCount": 0,
+   "partOfCount": 0,
+   "versionCount": 0,
+   "versionOfCount": 1,
+   "created": "2026-06-17T23:08:11.000Z",
+   "registered": "2026-06-17T23:08:11.000Z",
+   "published": "2026",
+   "updated": "2026-09-15T20:21:10.000Z"
+  },
+  "relationships": {
+   "client": {
+    "data": {
+     "id": "cern.zenodo",
+     "type": "clients"
+    }
+   },
+   "provider": {
+    "data": {
+     "id": "cern",
+     "type": "providers"
+    }
+   },
+   "media": {
+    "data": {
+     "id": "10.5281/zenodo.20738748",
+     "type": "media"
+    }
+   },
+   "references": {
+    "data": []
+   },
+   "citations": {
+    "data": []
+   },
+   "parts": {
+    "data": []
+   },
+   "partOf": {
+    "data": []
+   },
+   "versions": {
+    "data": []
+   },
+   "versionOf": {
+    "data": [
+     {
+      "id": "10.5281/zenodo.20738747",
+      "type": "dois"
+     }
+    ]
+   }
+  }
+ }
+}

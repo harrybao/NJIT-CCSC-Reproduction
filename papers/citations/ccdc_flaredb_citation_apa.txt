@@ -1,0 +1,1 @@
+Liu, N., Abduallah, Y., Kapure, T., Li, Q., Wang, H., &amp; Wang, J. (2025). <i>FlareDB: A Database of Significant Flares in Solar Cycles 24 and 25 with SDO/HMI and SDO/AIA Observations - Quick-look Movies</i> (Versions 2025-05-31) [Dataset]. Zenodo. https://doi.org/10.5281/ZENODO.16790538
