@@ -1,0 +1,10 @@
+Starting testing with a model with id: default_model testing data file: data/test_data/flaringar_simple_random_40.csv
+Loading data set...
+Done loading data...
+Formatting and mapping the flares classes..
+Prediction is in progress, please wait until it is done...
+Finished the prediction task..
+
+real	0m4.005s
+user	0m3.952s
+sys	0m1.247s

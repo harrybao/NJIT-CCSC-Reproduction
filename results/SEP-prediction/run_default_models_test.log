@@ -1,0 +1,150 @@
+WARNING: GPU device not found.
+WARNING: GPU device not found.
+Running classification test type: FC_S  training for h = 12 hour ahead
+testing data file: data/events_fc_testing_12.csv
+Loading the model and its weights.
+Loading weights from model dir: default_models/sep_model_fc_12hr
+Building model for: default_models/sep_model_fc_12hr/model_weights
+Loading weights from: default_models/sep_model_fc_12hr/model_weights
+Loading data from data file: data/events_fc_testing_12.csv
+Prediction and calibration..
+Saving result to file: results/SEP_prediction_results_FC_S_12.csv
+Saving the performance metrics to files: default_results/SEP_performance_metrics_BiLSTM_FC_S_12.csv
+-------------------------------------------------------
+
+Running classification test type: FC_S  training for h = 24 hour ahead
+testing data file: data/events_fc_testing_24.csv
+Loading the model and its weights.
+Loading weights from model dir: default_models/sep_model_fc_24hr
+Building model for: default_models/sep_model_fc_24hr/model_weights
+Loading weights from: default_models/sep_model_fc_24hr/model_weights
+Loading data from data file: data/events_fc_testing_24.csv
+Prediction and calibration..
+Saving result to file: results/SEP_prediction_results_FC_S_24.csv
+Saving the performance metrics to files: default_results/SEP_performance_metrics_BiLSTM_FC_S_24.csv
+-------------------------------------------------------
+
+Running classification test type: FC_S  training for h = 36 hour ahead
+testing data file: data/events_fc_testing_36.csv
+Loading the model and its weights.
+Loading weights from model dir: default_models/sep_model_fc_36hr
+Building model for: default_models/sep_model_fc_36hr/model_weights
+Loading weights from: default_models/sep_model_fc_36hr/model_weights
+Loading data from data file: data/events_fc_testing_36.csv
+Prediction and calibration..
+Saving result to file: results/SEP_prediction_results_FC_S_36.csv
+Saving the performance metrics to files: default_results/SEP_performance_metrics_BiLSTM_FC_S_36.csv
+-------------------------------------------------------
+
+Running classification test type: FC_S  training for h = 48 hour ahead
+testing data file: data/events_fc_testing_48.csv
+Loading the model and its weights.
+Loading weights from model dir: default_models/sep_model_fc_48hr
+Building model for: default_models/sep_model_fc_48hr/model_weights
+Loading weights from: default_models/sep_model_fc_48hr/model_weights
+Loading data from data file: data/events_fc_testing_48.csv
+Prediction and calibration..
+Saving result to file: results/SEP_prediction_results_FC_S_48.csv
+Saving the performance metrics to files: default_results/SEP_performance_metrics_BiLSTM_FC_S_48.csv
+-------------------------------------------------------
+
+Running classification test type: FC_S  training for h = 60 hour ahead
+testing data file: data/events_fc_testing_60.csv
+Loading the model and its weights.
+Loading weights from model dir: default_models/sep_model_fc_60hr
+Building model for: default_models/sep_model_fc_60hr/model_weights
+Loading weights from: default_models/sep_model_fc_60hr/model_weights
+Loading data from data file: data/events_fc_testing_60.csv
+Prediction and calibration..
+Saving result to file: results/SEP_prediction_results_FC_S_60.csv
+Saving the performance metrics to files: default_results/SEP_performance_metrics_BiLSTM_FC_S_60.csv
+-------------------------------------------------------
+
+Running classification test type: FC_S  training for h = 72 hour ahead
+testing data file: data/events_fc_testing_72.csv
+Loading the model and its weights.
+Loading weights from model dir: default_models/sep_model_fc_72hr
+Building model for: default_models/sep_model_fc_72hr/model_weights
+Loading weights from: default_models/sep_model_fc_72hr/model_weights
+Loading data from data file: data/events_fc_testing_72.csv
+Prediction and calibration..
+Saving result to file: results/SEP_prediction_results_FC_S_72.csv
+Saving the performance metrics to files: default_results/SEP_performance_metrics_BiLSTM_FC_S_72.csv
+-------------------------------------------------------
+
+Running classification test type: F_S  training for h = 12 hour ahead
+testing data file: data/events_f_testing_12.csv
+Loading the model and its weights.
+Loading weights from model dir: default_models/sep_model_f_12hr
+Building model for: default_models/sep_model_f_12hr/model_weights
+Loading weights from: default_models/sep_model_f_12hr/model_weights
+Loading data from data file: data/events_f_testing_12.csv
+Prediction and calibration..
+Saving result to file: results/SEP_prediction_results_F_S_12.csv
+Saving the performance metrics to files: default_results/SEP_performance_metrics_BiLSTM_F_S_12.csv
+-------------------------------------------------------
+
+Running classification test type: F_S  training for h = 24 hour ahead
+testing data file: data/events_f_testing_24.csv
+Loading the model and its weights.
+Loading weights from model dir: default_models/sep_model_f_24hr
+Building model for: default_models/sep_model_f_24hr/model_weights
+Loading weights from: default_models/sep_model_f_24hr/model_weights
+Loading data from data file: data/events_f_testing_24.csv
+Prediction and calibration..
+Saving result to file: results/SEP_prediction_results_F_S_24.csv
+Saving the performance metrics to files: default_results/SEP_performance_metrics_BiLSTM_F_S_24.csv
+-------------------------------------------------------
+
+Running classification test type: F_S  training for h = 36 hour ahead
+testing data file: data/events_f_testing_36.csv
+Loading the model and its weights.
+Loading weights from model dir: default_models/sep_model_f_36hr
+Building model for: default_models/sep_model_f_36hr/model_weights
+Loading weights from: default_models/sep_model_f_36hr/model_weights
+Loading data from data file: data/events_f_testing_36.csv
+Prediction and calibration..
+Saving result to file: results/SEP_prediction_results_F_S_36.csv
+Saving the performance metrics to files: default_results/SEP_performance_metrics_BiLSTM_F_S_36.csv
+-------------------------------------------------------
+
+Running classification test type: F_S  training for h = 48 hour ahead
+testing data file: data/events_f_testing_48.csv
+Loading the model and its weights.
+Loading weights from model dir: default_models/sep_model_f_48hr
+Building model for: default_models/sep_model_f_48hr/model_weights
+Loading weights from: default_models/sep_model_f_48hr/model_weights
+Loading data from data file: data/events_f_testing_48.csv
+Prediction and calibration..
+Saving result to file: results/SEP_prediction_results_F_S_48.csv
+Saving the performance metrics to files: default_results/SEP_performance_metrics_BiLSTM_F_S_48.csv
+-------------------------------------------------------
+
+Running classification test type: F_S  training for h = 60 hour ahead
+testing data file: data/events_f_testing_60.csv
+Loading the model and its weights.
+Loading weights from model dir: default_models/sep_model_f_60hr
+Building model for: default_models/sep_model_f_60hr/model_weights
+Loading weights from: default_models/sep_model_f_60hr/model_weights
+Loading data from data file: data/events_f_testing_60.csv
+Prediction and calibration..
+Saving result to file: results/SEP_prediction_results_F_S_60.csv
+Saving the performance metrics to files: default_results/SEP_performance_metrics_BiLSTM_F_S_60.csv
+-------------------------------------------------------
+
+Running classification test type: F_S  training for h = 72 hour ahead
+testing data file: data/events_f_testing_72.csv
+Loading the model and its weights.
+Loading weights from model dir: default_models/sep_model_f_72hr
+Building model for: default_models/sep_model_f_72hr/model_weights
+Loading weights from: default_models/sep_model_f_72hr/model_weights
+Loading data from data file: data/events_f_testing_72.csv
+Prediction and calibration..
+Saving result to file: results/SEP_prediction_results_F_S_72.csv
+Saving the performance metrics to files: default_results/SEP_performance_metrics_BiLSTM_F_S_72.csv
+-------------------------------------------------------
+
+
+real	0m32.189s
+user	0m39.137s
+sys	0m1.682s

@@ -1,0 +1,72 @@
+WARNING: GPU device not found.
+Python version: 3.9.25
+Tensorflow bakcend version: 2.10.1
+
+
+[2026-10-13 12:55:22] Testing is initiated for time_window: 24 and flare class: C 
+[2026-10-13 12:55:27] Loading weights from model dir: models/24/C 
+[2026-10-13 12:55:28] Predicting test data set samples.. 
+[2026-10-13 12:55:37] Saving result to file: result/SolarFlareNet/C_24.csv 
+[2026-10-13 12:55:37] ===========================================================
+
+ 
+[2026-10-13 12:55:37] Testing is initiated for time_window: 24 and flare class: M 
+[2026-10-13 12:55:43] Loading weights from model dir: models/24/M 
+[2026-10-13 12:55:43] Predicting test data set samples.. 
+[2026-10-13 12:55:55] Saving result to file: result/SolarFlareNet/M_24.csv 
+[2026-10-13 12:55:55] ===========================================================
+
+ 
+[2026-10-13 12:55:55] Testing is initiated for time_window: 24 and flare class: M5 
+[2026-10-13 12:55:59] Loading weights from model dir: models/24/M5 
+[2026-10-13 12:56:00] Predicting test data set samples.. 
+[2026-10-13 12:56:12] Saving result to file: result/SolarFlareNet/M5_24.csv 
+[2026-10-13 12:56:12] ===========================================================
+
+ 
+[2026-10-13 12:56:12] Testing is initiated for time_window: 48 and flare class: C 
+[2026-10-13 12:56:19] Loading weights from model dir: models/48/C 
+[2026-10-13 12:56:19] Predicting test data set samples.. 
+[2026-10-13 12:56:30] Saving result to file: result/SolarFlareNet/C_48.csv 
+[2026-10-13 12:56:30] ===========================================================
+
+ 
+[2026-10-13 12:56:30] Testing is initiated for time_window: 48 and flare class: M 
+[2026-10-13 12:56:36] Loading weights from model dir: models/48/M 
+[2026-10-13 12:56:36] Predicting test data set samples.. 
+[2026-10-13 12:56:52] Saving result to file: result/SolarFlareNet/M_48.csv 
+[2026-10-13 12:56:52] ===========================================================
+
+ 
+[2026-10-13 12:56:52] Testing is initiated for time_window: 48 and flare class: M5 
+[2026-10-13 12:56:58] Loading weights from model dir: models/48/M5 
+[2026-10-13 12:56:59] Predicting test data set samples.. 
+[2026-10-13 12:57:21] Saving result to file: result/SolarFlareNet/M5_48.csv 
+[2026-10-13 12:57:21] ===========================================================
+
+ 
+[2026-10-13 12:57:21] Testing is initiated for time_window: 72 and flare class: C 
+[2026-10-13 12:57:29] Loading weights from model dir: models/72/C 
+[2026-10-13 12:57:29] Predicting test data set samples.. 
+[2026-10-13 12:57:51] Saving result to file: result/SolarFlareNet/C_72.csv 
+[2026-10-13 12:57:52] ===========================================================
+
+ 
+[2026-10-13 12:57:52] Testing is initiated for time_window: 72 and flare class: M 
+[2026-10-13 12:57:58] Loading weights from model dir: models/72/M 
+[2026-10-13 12:57:59] Predicting test data set samples.. 
+[2026-10-13 12:58:21] Saving result to file: result/SolarFlareNet/M_72.csv 
+[2026-10-13 12:58:21] ===========================================================
+
+ 
+[2026-10-13 12:58:21] Testing is initiated for time_window: 72 and flare class: M5 
+[2026-10-13 12:58:28] Loading weights from model dir: models/72/M5 
+[2026-10-13 12:58:28] Predicting test data set samples.. 
+[2026-10-13 12:58:46] Saving result to file: result/SolarFlareNet/M5_72.csv 
+[2026-10-13 12:58:46] ===========================================================
+
+ 
+
+real	3m26.648s
+user	4m26.624s
+sys	0m15.982s

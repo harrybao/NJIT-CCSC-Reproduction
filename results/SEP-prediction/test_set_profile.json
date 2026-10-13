@@ -1,0 +1,278 @@
+{
+ "fc_12": {
+  "train_rows": 3534,
+  "test_rows": 509,
+  "label_values": {
+   "N": 349,
+   "P": 160
+  },
+  "test_time": [
+   "2017-04-01T09:58:37.80Z",
+   "2017-09-08T06:10:41.80Z"
+  ],
+  "train_time": [
+   "2011-02-14T13:58:12.30Z",
+   "2016-07-23T00:58:46.90Z"
+  ],
+  "test_unique_NOAA_AR": 3,
+  "test_positive_unique_NOAA_AR": [
+   12665,
+   12673
+  ],
+  "test_positive_unique_days": 4,
+  "AR_overlap_train_test": 0
+ },
+ "fc_24": {
+  "train_rows": 7002,
+  "test_rows": 801,
+  "label_values": {
+   "N": 479,
+   "P": 322
+  },
+  "test_time": [
+   "2017-03-31T21:58:37.50Z",
+   "2017-09-08T06:10:41.80Z"
+  ],
+  "train_time": [
+   "2011-02-14T01:58:12.20Z",
+   "2016-07-23T00:58:46.90Z"
+  ],
+  "test_unique_NOAA_AR": 3,
+  "test_positive_unique_NOAA_AR": [
+   12665,
+   12673
+  ],
+  "test_positive_unique_days": 6,
+  "AR_overlap_train_test": 0
+ },
+ "fc_36": {
+  "train_rows": 10498,
+  "test_rows": 973,
+  "label_values": {
+   "N": 526,
+   "P": 447
+  },
+  "test_time": [
+   "2017-03-31T09:58:37.60Z",
+   "2017-09-08T06:10:41.80Z"
+  ],
+  "train_time": [
+   "2011-02-13T13:58:12.20Z",
+   "2016-07-23T00:58:46.90Z"
+  ],
+  "test_unique_NOAA_AR": 3,
+  "test_positive_unique_NOAA_AR": [
+   12665,
+   12673
+  ],
+  "test_positive_unique_days": 7,
+  "AR_overlap_train_test": 0
+ },
+ "fc_48": {
+  "train_rows": 13750,
+  "test_rows": 1200,
+  "label_values": {
+   "P": 603,
+   "N": 597
+  },
+  "test_time": [
+   "2017-03-30T21:58:37.40Z",
+   "2017-09-08T22:34:41.50Z"
+  ],
+  "train_time": [
+   "2011-02-13T01:58:12.10Z",
+   "2016-07-23T00:58:46.90Z"
+  ],
+  "test_unique_NOAA_AR": 3,
+  "test_positive_unique_NOAA_AR": [
+   12665,
+   12673
+  ],
+  "test_positive_unique_days": 9,
+  "AR_overlap_train_test": 0
+ },
+ "fc_60": {
+  "train_rows": 16604,
+  "test_rows": 1376,
+  "label_values": {
+   "P": 745,
+   "N": 631
+  },
+  "test_time": [
+   "2017-03-30T09:58:37.50Z",
+   "2017-09-08T22:34:41.50Z"
+  ],
+  "train_time": [
+   "2011-02-12T13:58:12.10Z",
+   "2016-07-23T00:58:46.90Z"
+  ],
+  "test_unique_NOAA_AR": 3,
+  "test_positive_unique_NOAA_AR": [
+   12665,
+   12673
+  ],
+  "test_positive_unique_days": 10,
+  "AR_overlap_train_test": 0
+ },
+ "fc_72": {
+  "train_rows": 19234,
+  "test_rows": 1552,
+  "label_values": {
+   "P": 909,
+   "N": 643
+  },
+  "test_time": [
+   "2017-03-29T21:58:37.20Z",
+   "2017-09-08T22:34:41.50Z"
+  ],
+  "train_time": [
+   "2011-02-12T01:58:12.00Z",
+   "2016-07-23T00:58:46.90Z"
+  ],
+  "test_unique_NOAA_AR": 3,
+  "test_positive_unique_NOAA_AR": [
+   12665,
+   12673
+  ],
+  "test_positive_unique_days": 12,
+  "AR_overlap_train_test": 0
+ },
+ "f_12": {
+  "train_rows": 21609,
+  "test_rows": 842,
+  "label_values": {
+   "N": 682,
+   "P": 160
+  },
+  "test_time": [
+   "2017-04-01T09:58:37.80Z",
+   "2017-09-08T22:34:41.50Z"
+  ],
+  "train_time": [
+   "2010-05-05T05:22:22.90Z",
+   "2016-11-29T23:34:32.10Z"
+  ],
+  "test_unique_NOAA_AR": 3,
+  "test_positive_unique_NOAA_AR": [
+   12665,
+   12673
+  ],
+  "test_positive_unique_days": 4,
+  "AR_overlap_train_test": 0
+ },
+ "f_24": {
+  "train_rows": 36016,
+  "test_rows": 1085,
+  "label_values": {
+   "N": 763,
+   "P": 322
+  },
+  "test_time": [
+   "2017-03-31T21:58:37.50Z",
+   "2017-09-08T22:34:41.50Z"
+  ],
+  "train_time": [
+   "2010-05-04T17:22:22.60Z",
+   "2016-11-29T23:34:32.10Z"
+  ],
+  "test_unique_NOAA_AR": 3,
+  "test_positive_unique_NOAA_AR": [
+   12665,
+   12673
+  ],
+  "test_positive_unique_days": 6,
+  "AR_overlap_train_test": 0
+ },
+ "f_36": {
+  "train_rows": 47476,
+  "test_rows": 1283,
+  "label_values": {
+   "N": 836,
+   "P": 447
+  },
+  "test_time": [
+   "2017-03-31T09:58:37.60Z",
+   "2017-09-08T22:34:41.50Z"
+  ],
+  "train_time": [
+   "2010-05-04T05:34:22.70Z",
+   "2016-11-29T23:34:32.10Z"
+  ],
+  "test_unique_NOAA_AR": 3,
+  "test_positive_unique_NOAA_AR": [
+   12665,
+   12673
+  ],
+  "test_positive_unique_days": 7,
+  "AR_overlap_train_test": 0
+ },
+ "f_48": {
+  "train_rows": 57360,
+  "test_rows": 1484,
+  "label_values": {
+   "N": 881,
+   "P": 603
+  },
+  "test_time": [
+   "2017-03-30T21:58:37.40Z",
+   "2017-09-08T22:34:41.50Z"
+  ],
+  "train_time": [
+   "2010-05-03T17:22:22.40Z",
+   "2016-11-29T23:34:32.10Z"
+  ],
+  "test_unique_NOAA_AR": 3,
+  "test_positive_unique_NOAA_AR": [
+   12665,
+   12673
+  ],
+  "test_positive_unique_days": 9,
+  "AR_overlap_train_test": 0
+ },
+ "f_60": {
+  "train_rows": 66033,
+  "test_rows": 1706,
+  "label_values": {
+   "N": 961,
+   "P": 745
+  },
+  "test_time": [
+   "2017-03-30T09:58:37.50Z",
+   "2017-09-08T22:34:41.50Z"
+  ],
+  "train_time": [
+   "2010-05-03T15:10:22.50Z",
+   "2016-11-29T23:34:32.10Z"
+  ],
+  "test_unique_NOAA_AR": 3,
+  "test_positive_unique_NOAA_AR": [
+   12665,
+   12673
+  ],
+  "test_positive_unique_days": 10,
+  "AR_overlap_train_test": 0
+ },
+ "f_72": {
+  "train_rows": 73311,
+  "test_rows": 1867,
+  "label_values": {
+   "N": 958,
+   "P": 909
+  },
+  "test_time": [
+   "2017-03-29T21:58:37.20Z",
+   "2017-09-08T22:34:41.50Z"
+  ],
+  "train_time": [
+   "2010-05-02T23:10:22.40Z",
+   "2016-11-29T23:34:32.10Z"
+  ],
+  "test_unique_NOAA_AR": 3,
+  "test_positive_unique_NOAA_AR": [
+   12665,
+   12673
+  ],
+  "test_positive_unique_days": 12,
+  "AR_overlap_train_test": 0
+ }
+}

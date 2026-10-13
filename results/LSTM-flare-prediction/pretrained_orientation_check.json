@@ -1,0 +1,98 @@
+{
+ "C": {
+  "label_classes_sorted": [
+   "C",
+   "N"
+  ],
+  "n": 185,
+  "n_pos": 84,
+  "model.h5|col0>=thr": {
+   "TSS": 0.30999528524281006,
+   "recall": 0.5476190476190477,
+   "FP": 24,
+   "agree_with_author_output": 0.9297297297297298
+  },
+  "model.h5|col1>=thr": {
+   "TSS": -0.30999528524281,
+   "recall": 0.4523809523809524,
+   "FP": 77,
+   "agree_with_author_output": 0.07027027027027027
+  },
+  "custom_model_id.h5|col0>=thr": {
+   "TSS": 0.30999528524281006,
+   "recall": 0.5476190476190477,
+   "FP": 24,
+   "agree_with_author_output": 0.9297297297297298
+  },
+  "custom_model_id.h5|col1>=thr": {
+   "TSS": -0.30999528524281,
+   "recall": 0.4523809523809524,
+   "FP": 77,
+   "agree_with_author_output": 0.07027027027027027
+  }
+ },
+ "M": {
+  "label_classes_sorted": [
+   "M",
+   "N"
+  ],
+  "n": 212,
+  "n_pos": 23,
+  "model.h5|col0>=thr": {
+   "TSS": -0.13066482631700022,
+   "recall": 0.2608695652173913,
+   "FP": 74,
+   "agree_with_author_output": 0.8773584905660378
+  },
+  "model.h5|col1>=thr": {
+   "TSS": 0.11663216011042105,
+   "recall": 0.6086956521739131,
+   "FP": 93,
+   "agree_with_author_output": 0.18396226415094338
+  },
+  "custom_model_id.h5|col0>=thr": {
+   "TSS": -0.25925925925925924,
+   "recall": 0.0,
+   "FP": 49,
+   "agree_with_author_output": 0.6650943396226415
+  },
+  "custom_model_id.h5|col1>=thr": {
+   "TSS": 0.5396825396825398,
+   "recall": 1.0,
+   "FP": 87,
+   "agree_with_author_output": 0.37735849056603776
+  }
+ },
+ "M5": {
+  "label_classes_sorted": [
+   "N",
+   "X"
+  ],
+  "n": 189,
+  "n_pos": 49,
+  "model.h5|col0>=thr": {
+   "TSS": -0.6714285714285714,
+   "recall": 0.0,
+   "FP": 94,
+   "agree_with_author_output": 0.021164021164021163
+  },
+  "model.h5|col1>=thr": {
+   "TSS": 0.6857142857142857,
+   "recall": 1.0,
+   "FP": 44,
+   "agree_with_author_output": 0.9894179894179894
+  },
+  "custom_model_id.h5|col0>=thr": {
+   "TSS": -0.6714285714285714,
+   "recall": 0.0,
+   "FP": 94,
+   "agree_with_author_output": 0.021164021164021163
+  },
+  "custom_model_id.h5|col1>=thr": {
+   "TSS": 0.6857142857142857,
+   "recall": 1.0,
+   "FP": 44,
+   "agree_with_author_output": 0.9894179894179894
+  }
+ }
+}

@@ -1,0 +1,10 @@
+{"intended_feature_names(c_ls)": ["TOTUSJH", "TOTUSJZ", "USFLUX", "MEANALP", "R_VALUE", "TOTPOT", "SAVNCPP", "AREA_ACR", "ABSNJZH"], "csv_columns_actually_selected": ["TOTPOT", "ABSNJZH", "USFLUX", "AREA_ACR", "MEANPOT", "R_VALUE", "MEANGAM", "MEANJZH", "MEANJZD"]}
+C_24: n=42827 pos=29058 agree=0.3890 maxdp=9.99e-01 | TSS all=0.792 (author file -0.061) | dup-in-train=0.794 | NOT-in-train (n=2581, pos=2079) TSS=0.697
+M_24: n=47775 pos=1368 agree=0.9999 maxdp=7.76e-03 | TSS all=0.049 (author file 0.049) | dup-in-train=0.060 | NOT-in-train (n=7517, pos=381) TSS=0.015
+M5_24: n=47775 pos=104 agree=1.0000 maxdp=1.00e-02 | TSS all=-0.026 (author file -0.026) | dup-in-train=-0.011 | NOT-in-train (n=7517, pos=18) TSS=-0.096
+C_48: n=54471 pos=36203 agree=0.9998 maxdp=7.15e-03 | TSS all=-0.013 (author file -0.013) | dup-in-train=0.006 | NOT-in-train (n=15304, pos=2408) TSS=-0.061
+M_48: n=62560 pos=1775 agree=0.9999 maxdp=8.43e-03 | TSS all=-0.013 (author file -0.013) | dup-in-train=-0.016 | NOT-in-train (n=11056, pos=496) TSS=-0.004
+M5_48: n=62560 pos=104 agree=0.9999 maxdp=7.34e-03 | TSS all=-0.041 (author file -0.041) | dup-in-train=-0.043 | NOT-in-train (n=11056, pos=18) TSS=-0.033
+C_72: n=61128 pos=39873 agree=0.9998 maxdp=7.21e-03 | TSS all=-0.001 (author file -0.001) | dup-in-train=nan | NOT-in-train (n=45264, pos=39873) TSS=-0.033
+M_72: n=71729 pos=2131 agree=1.0000 maxdp=5.88e-03 | TSS all=0.002 (author file 0.003) | dup-in-train=0.001 | NOT-in-train (n=13609, pos=537) TSS=0.009
+M5_72: n=71729 pos=104 agree=1.0000 maxdp=7.96e-03 | TSS all=-0.022 (author file -0.022) | dup-in-train=-0.022 | NOT-in-train (n=13609, pos=18) TSS=-0.022

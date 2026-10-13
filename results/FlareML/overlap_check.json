@@ -1,0 +1,12 @@
+{
+ "relative_tolerance": 0.006,
+ "test_rows": 40,
+ "test_rows_matching_a_training_row_all13_features": 31,
+ "of_which_same_class_letter": 31,
+ "test_rows_matching_original_db_all13_features": 40,
+ "test_rows_matching_original_db_by_date_and_AR": 40,
+ "test_date_range": [
+  "2010-05-03",
+  "2015-03-11"
+ ]
+}

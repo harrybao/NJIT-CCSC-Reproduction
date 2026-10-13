@@ -1,0 +1,65 @@
+{
+ "C_24": {
+  "all_model_weights_restored": true,
+  "first_error_line": "",
+  "n_model_weight_tensors": 95,
+  "n_checkpoint_layer_tensors": 95,
+  "checkpoint_mtime_note": "see git history; files shipped in repo"
+ },
+ "M_24": {
+  "all_model_weights_restored": true,
+  "first_error_line": "",
+  "n_model_weight_tensors": 95,
+  "n_checkpoint_layer_tensors": 95,
+  "checkpoint_mtime_note": "see git history; files shipped in repo"
+ },
+ "M5_24": {
+  "all_model_weights_restored": true,
+  "first_error_line": "",
+  "n_model_weight_tensors": 95,
+  "n_checkpoint_layer_tensors": 95,
+  "checkpoint_mtime_note": "see git history; files shipped in repo"
+ },
+ "C_48": {
+  "all_model_weights_restored": true,
+  "first_error_line": "",
+  "n_model_weight_tensors": 95,
+  "n_checkpoint_layer_tensors": 95,
+  "checkpoint_mtime_note": "see git history; files shipped in repo"
+ },
+ "M_48": {
+  "all_model_weights_restored": true,
+  "first_error_line": "",
+  "n_model_weight_tensors": 95,
+  "n_checkpoint_layer_tensors": 95,
+  "checkpoint_mtime_note": "see git history; files shipped in repo"
+ },
+ "M5_48": {
+  "all_model_weights_restored": true,
+  "first_error_line": "",
+  "n_model_weight_tensors": 95,
+  "n_checkpoint_layer_tensors": 95,
+  "checkpoint_mtime_note": "see git history; files shipped in repo"
+ },
+ "C_72": {
+  "all_model_weights_restored": true,
+  "first_error_line": "",
+  "n_model_weight_tensors": 95,
+  "n_checkpoint_layer_tensors": 95,
+  "checkpoint_mtime_note": "see git history; files shipped in repo"
+ },
+ "M_72": {
+  "all_model_weights_restored": true,
+  "first_error_line": "",
+  "n_model_weight_tensors": 95,
+  "n_checkpoint_layer_tensors": 95,
+  "checkpoint_mtime_note": "see git history; files shipped in repo"
+ },
+ "M5_72": {
+  "all_model_weights_restored": true,
+  "first_error_line": "",
+  "n_model_weight_tensors": 95,
+  "n_checkpoint_layer_tensors": 95,
+  "checkpoint_mtime_note": "see git history; files shipped in repo"
+ }
+}
