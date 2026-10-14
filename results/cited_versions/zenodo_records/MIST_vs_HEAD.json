@@ -1,0 +1,37 @@
+{
+ "record": "16780646",
+ "zip": "CCSC_Yash.zip",
+ "zip_bytes": 262780906,
+ "git_head": "7cc02f1",
+ "stripped_prefix_components": 1,
+ "n_zip_files": 14,
+ "n_git_files": 14,
+ "identical": 12,
+ "different": 1,
+ "only_in_zip": 1,
+ "only_in_git": 1,
+ "different_files": [
+  {
+   "path": "test.py",
+   "zip_size": 1845,
+   "git_size": 1855,
+   "equal_after_newline_normalisation": false,
+   "diff_lines_changed": 2
+  }
+ ],
+ "only_in_zip_files": [
+  {
+   "path": "data/processed/X_train.npy",
+   "size": 207796352
+  }
+ ],
+ "only_in_git_files": [
+  "README.md"
+ ],
+ "only_in_zip_by_ext": {
+  ".npy": 1
+ },
+ "only_in_git_by_ext": {
+  ".md": 1
+ }
+}

@@ -1,0 +1,45 @@
+{
+ "record": "22955090",
+ "zip": "DeepGeoCME.zip",
+ "zip_bytes": 327504412,
+ "git_head": "6daa000",
+ "stripped_prefix_components": 1,
+ "n_zip_files": 16,
+ "n_git_files": 14,
+ "identical": 12,
+ "different": 2,
+ "only_in_zip": 2,
+ "only_in_git": 0,
+ "different_files": [
+  {
+   "path": "README.md",
+   "zip_size": 1697,
+   "git_size": 1805,
+   "equal_after_newline_normalisation": false,
+   "diff_lines_changed": 2
+  },
+  {
+   "path": "test.csv",
+   "zip_size": 482,
+   "git_size": 448,
+   "equal_after_newline_normalisation": true,
+   "diff_lines_changed": 0
+  }
+ ],
+ "only_in_zip_files": [
+  {
+   "path": "assets/dnet_best.pt",
+   "size": 199043550
+  },
+  {
+   "path": "assets/test_tensors.zip",
+   "size": 144235306
+  }
+ ],
+ "only_in_git_files": [],
+ "only_in_zip_by_ext": {
+  ".pt": 1,
+  ".zip": 1
+ },
+ "only_in_git_by_ext": {}
+}

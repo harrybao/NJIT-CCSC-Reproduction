@@ -35,7 +35,7 @@ Files downloaded from the authors' own links (SHA-256 hashes in `../results/down
 * MagNet code and validation data: `https://nature.njit.edu/solardb/magnetdata/MagNet/` (`scripts/MagNet/mirror_magnet.py`; the 1.18 GB model was only inspected remotely)
 
 Still not obtainable:
-* the six direct Zenodo uploads (SolarCNN, MIST, DeepHMI, SINet, LLMFlare, DeepGeoCME) and the full SolarCNN and DeepHMI datasets: `zenodo.org` returned HTTP 504;
+* SolarCNN's Zenodo record (full 76-sample test set): restricted access. The other five direct-upload archives were compared with GitHub by range reads (`results/cited_versions/zenodo_records/`); only MIST's `X_train.npy` was downloaded from them;
 * the LLMFlare base model `meta-llama/Llama-3.1-8B` (gated; a Hugging Face token is required).
 
 The FlareDB event list profile is in `../results/datasets/flaredb_profile.json` (script `../scripts/datasets/profile_flaredb.py`).

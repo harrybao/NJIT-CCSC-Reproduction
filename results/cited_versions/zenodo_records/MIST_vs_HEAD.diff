@@ -1,0 +1,7 @@
+--- zenodo/test.py
++++ github-HEAD/test.py
+@@ -6,3 +6,3 @@
+ from model_architecture import MTST
+-
++import os 
+ # --- Configuration ---

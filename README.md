@@ -70,7 +70,7 @@ reports/                   English report, CCDC analysis, Chinese notes, e-mail 
 * Hardware: 4 vCPU, 15 GB RAM, **no GPU** (cloud container).
 * Network: full access was enabled by the applicant on 2026-10-13.
   * Reached: `nature.njit.edu`, `web.njit.edu`, arXiv, nature.com, frontiersin.org, Google Drive, GitHub, PyPI.
-  * **Still unreachable:** `zenodo.org` (HTTP 504 gateway time-out), so the six direct Zenodo uploads could not be downloaded.
+  * `zenodo.org`: HTTP 504 on 2026-10-13, reachable on 2026-10-14. The six direct-upload archives were compared with GitHub (`results/cited_versions/zenodo_records/`): five match, apart from a one-line `import os` missing from MIST's archived `test.py`. SolarCNN's record is restricted-access.
   * Also unreachable: the A&A, AGU/Wiley and Springer full texts (403 or paywall).
 * Model files downloaded from the authors' links are not redistributed. Their SHA-256 hashes are in `results/downloaded_artefacts_sha256.txt`.
 * No paid services were used. No upstream repository was modified. No e-mail was sent.

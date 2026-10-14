@@ -50,7 +50,9 @@ Thank you for your guidance. Following your suggestion, I will state my interest
 
 **What I did.**
 * For each of the 19 tools on the CCSC page, I followed the Citation button to its Zenodo record. Thirteen of these are GitHub releases (e.g. LSTM v1.0.2, SYMHnet v1.0), and I ran or diffed exactly those versions.
-* Zenodo itself timed out from my environment, so the six direct Zenodo uploads were run from GitHub. Their identity with the archives is unverified.
+* For the six direct Zenodo uploads I ran the GitHub versions and checked them file by file against the archives.
+  * Five match in content, except that MIST's archived `test.py` is missing an `import os`, which the GitHub version has.
+  * SolarCNN's record is restricted-access. Would it be possible to access its 76-sample test set?
 * I ran the released code with the released models on a CPU machine. I compared the results with the stored outputs and with the papers' tables (16 full texts).
 * The report explains each tool (research question, inputs, model, pipeline, outputs, metrics, limitations), what was reproduced, and what was blocked: [link]. All scripts and logs are in the same repository.
 

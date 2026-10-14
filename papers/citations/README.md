@@ -7,7 +7,7 @@ Retrieved 2026-10-13, after network access to `nature.njit.edu` was enabled.
 the **Citation** button links to the tool's **Zenodo record**. `https://nature.njit.edu/solardb/ccdc` builds its cards from
 `ccdc_pages/pages_data.json` (`ccdc_pages_data.json`).
 
-**How the citation text was obtained.** Zenodo itself returned HTTP 504 (gateway time-out) from this environment. Each record's DOI
+**How the citation text was obtained.** On 2026-10-13 Zenodo itself returned HTTP 504 (gateway time-out) from this environment; it was reachable on 2026-10-14, when the archives were compared with GitHub (`../../results/cited_versions/zenodo_records/`). Each record's DOI
 (10.5281/zenodo.<record>) was therefore resolved through DataCite, the registry Zenodo deposits its metadata to:
 * APA text and BibTeX via doi.org content negotiation (`ccsc_citations.bib`);
 * full metadata in `datacite_<page>.json`;

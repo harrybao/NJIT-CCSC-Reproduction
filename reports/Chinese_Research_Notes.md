@@ -11,9 +11,12 @@
 1. **Citation 按钮都点了。**
    * 你开放网络之后，CCSC 页面能打开了。页面上正好有 19 个工具，就是 GitHub `ccsc-tools` 下的那 19 个仓库。
    * 每个工具的 **Citation 按钮指向一个 Zenodo 软件存档**，不是期刊论文。
-   * Zenodo 本身一直返回 504（网关超时），所以我改用 DataCite 解析了全部 19 个 DOI，拿到了 APA、BibTeX 和完整元数据，存放在 `papers/citations/`。
+   * 第一天 Zenodo 一直返回 504（网关超时），所以我改用 DataCite 解析了全部 19 个 DOI，拿到了 APA、BibTeX 和完整元数据，存放在 `papers/citations/`。
    * 其中 13 个存档对应 GitHub 的某个 release tag（例如 LSTM v1.0.2、SYMHnet v1.0），我按这些**被引版本**重跑或做了 diff。
-   * 另外 6 个是直接上传到 Zenodo 的压缩包（SolarCNN、MIST、DeepHMI、SINet、LLMFlare、DeepGeoCME），下载不了，只能用 GitHub 最新版代替。这一点如实标注为"未核验"。
+   * 另外 6 个是直接上传到 Zenodo 的压缩包（SolarCNN、MIST、DeepHMI、SINet、LLMFlare、DeepGeoCME），我跑的是 GitHub 最新版。第二天 Zenodo 恢复了，我逐个文件核对了这些压缩包：
+     * DeepHMI、SINet、LLMFlare、DeepGeoCME 和 GitHub 版本内容一致，差异只是换行符；DeepGeoCME 的模型文件也一致。
+     * MIST 的存档版 `test.py` 少了一行 `import os`，按原样运行会直接报错，GitHub 版已修好。存档里还多了一个 GitHub 上没有的训练集 `X_train.npy`。
+     * SolarCNN 的记录是**受限访问**，文件不公开，无法核对。
    * **CCDC 页面**的标题是 "Community Coordinated Data Center"，目前只列了 **FlareDB** 一个数据集。
 2. **复现情况**（全部在 4 核 CPU、无 GPU 的环境里完成，用于对比的论文全文共 16 篇）：
    * **工具和论文两个层面都复现了：** SINet（F10.7 RMSE 3.88 / 16.32，与论文一致）、DeepGeoCME（TSS 0.757，与论文一致）。
@@ -327,7 +330,7 @@
      * PSNR：32.6 → **36.8** dB；
      * 论文 Table 3（76 个样本）：0.833 → 0.904，34.7 → 37.4。
      * 提升的方向和幅度都和论文一致。
-⑧ 只有 3 个样本（论文测试集的 76 个在 Zenodo 上，下载不了），所以判为"部分复现"。
+⑧ 只有 3 个样本，所以判为"部分复现"。论文的 76 个测试样本在 Zenodo 上，但该记录是受限访问。
 
 ### 4.15 DeepHMI（A&A 2025）
 
@@ -417,6 +420,6 @@
 * **突出建设性的部分：** MIST 的样本外复核、LSTM 规范划分的价值、给 SolarUnet 和 TSInet 提出的一行代码修复，以及一个可复用的审计脚本。
 * **不要在第一封回复里一次性罗列所有问题。** 建议正文只写 3 个最有代表性的点（MIST 的样本外复核、LSTM 的阈值选择、Dst 的标签后处理），其余写在附带的报告里。
 * **Email 草稿**见 `reports/Email_Summary_to_Professor.md`，里面有两个版本（简短版和详细版）。**由你决定是否发送、发送哪个版本**，我不会替你发送任何邮件。
-* **Zenodo 打不开**：6 个直接上传到 Zenodo 的工具存档没能下载核对，可以如实说明，并问一下这些存档是否与 GitHub 最新版相同。
+* **Zenodo 存档**：5 个已核对，基本和 GitHub 一致。SolarCNN 的记录是受限访问，如果想做论文层面的复现，可以礼貌地问教授能否开放，或者提供那 76 个测试样本。
 * **MagNet 缺少 `layers/attention.py`**：可以作为一个具体的小问题礼貌地提出来，例如问是否可以补上，这比空泛地说"复现不了"更有建设性。
 * **CCDC 目前只有 FlareDB 一个数据集。** 我把它作为数据科学分析的重点（见 `reports/CCDC_Dataset_Analysis.md` §2.1）：它是一个只包含大耀斑的"事件库"，没有负样本，适合案例研究和表示学习；要用于预报，就必须补充负样本并按活动区分组划分。这可以作为与教授讨论 NSF AI-Ready 数据集方向的切入点。

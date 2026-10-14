@@ -1,0 +1,29 @@
+{
+ "record": "20738748",
+ "zip": "LLMFlare.zip",
+ "zip_bytes": 324037113,
+ "git_head": "2a2403b",
+ "stripped_prefix_components": 1,
+ "n_zip_files": 24,
+ "n_git_files": 24,
+ "identical": 23,
+ "different": 0,
+ "only_in_zip": 1,
+ "only_in_git": 1,
+ "different_files": [],
+ "only_in_zip_files": [
+  {
+   "path": ".gitignore",
+   "size": 91
+  }
+ ],
+ "only_in_git_files": [
+  "REAME.md"
+ ],
+ "only_in_zip_by_ext": {
+  "(none)": 1
+ },
+ "only_in_git_by_ext": {
+  ".md": 1
+ }
+}

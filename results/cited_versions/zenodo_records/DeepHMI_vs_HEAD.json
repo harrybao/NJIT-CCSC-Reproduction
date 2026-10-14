@@ -1,0 +1,47 @@
+{
+ "record": "17059248",
+ "zip": "AA_Project_ChunhuiXu_3.zip",
+ "zip_bytes": 66345735,
+ "git_head": "92d3ebb",
+ "stripped_prefix_components": 1,
+ "n_zip_files": 12,
+ "n_git_files": 12,
+ "identical": 8,
+ "different": 4,
+ "only_in_zip": 0,
+ "only_in_git": 0,
+ "different_files": [
+  {
+   "path": "model.py",
+   "zip_size": 10294,
+   "git_size": 10009,
+   "equal_after_newline_normalisation": true,
+   "diff_lines_changed": 0
+  },
+  {
+   "path": "requirements.txt",
+   "zip_size": 80,
+   "git_size": 76,
+   "equal_after_newline_normalisation": true,
+   "diff_lines_changed": 0
+  },
+  {
+   "path": "test.py",
+   "zip_size": 5989,
+   "git_size": 5845,
+   "equal_after_newline_normalisation": true,
+   "diff_lines_changed": 0
+  },
+  {
+   "path": "train.py",
+   "zip_size": 9708,
+   "git_size": 9440,
+   "equal_after_newline_normalisation": true,
+   "diff_lines_changed": 0
+  }
+ ],
+ "only_in_zip_files": [],
+ "only_in_git_files": [],
+ "only_in_zip_by_ext": {},
+ "only_in_git_by_ext": {}
+}

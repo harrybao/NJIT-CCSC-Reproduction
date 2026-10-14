@@ -8,9 +8,12 @@ Inventory of the deep-learning tools in the NJIT **Community Coordinated Softwar
 * **The CCSC page was opened and its Citation buttons were followed** (2026-10-13, after the applicant enabled network access).
   * The page builds its 19 tiles from `ccsc_pages/pages_data.json`. Each tile title links to `github.com/ccsc-tools/<repo>`, and each **Citation** button links to a **Zenodo record**.
   * The 19 tiles are exactly the 19 tool repositories in the `ccsc-tools` GitHub account. Page snapshot and JSON: `papers/citations/`.
-* `zenodo.org` returned HTTP 504 (gateway time-out), so each Zenodo DOI was resolved through DataCite: APA text, BibTeX and full metadata (`papers/citations/ccsc_citations.bib`, `datacite_*.json`).
+* `zenodo.org` returned HTTP 504 (gateway time-out) on the first day, so each Zenodo DOI was resolved through DataCite: APA text, BibTeX and full metadata (`papers/citations/ccsc_citations.bib`, `datacite_*.json`).
 * **For 13 tools the cited Zenodo record is a GitHub release tag.** That version was run, or diffed against HEAD (`results/cited_versions/cited_tag_vs_HEAD_diffstat.txt`).
-* **For 6 tools it is a direct Zenodo upload** (SolarCNN, MIST, DeepHMI, SINet, LLMFlare, DeepGeoCME). It could not be downloaded, so the GitHub HEAD was run, and whether the two are identical is unverified.
+* **For 6 tools it is a direct Zenodo upload** (SolarCNN, MIST, DeepHMI, SINet, LLMFlare, DeepGeoCME). The GitHub HEAD was run. Once Zenodo was reachable (2026-10-14), each archive was compared file by file with HEAD (`results/cited_versions/zenodo_records/`).
+  * DeepHMI, SINet, LLMFlare and DeepGeoCME: identical in content.
+  * MIST: identical except that the archived `test.py` lacks `import os` and fails as cited; the archive also adds `X_train.npy`.
+  * SolarCNN: the record is restricted-access.
 * **Papers.** Full texts came from arXiv (14 used for comparison), *Scientific Reports* (SolarFlareNet) and *Frontiers* (CMETNet). Not accessible: A&A (DeepHMI), the Springer LNCS chapter (KpNet), and AGU/Wiley (SINet's JGR version; its arXiv version was used).
 * **MagNet** is not on the CCSC page. It is distributed at `nature.njit.edu/solardb/magnet` ("Un-published code") and is listed at the end as a related SolarDB tool.
 
@@ -41,15 +44,15 @@ Status labels follow the five categories requested: **Successfully Reproduced**,
 | 11 | SDNN | Stokes inversion (B, Doppler width, LOS velocity) | Stacked 1-D CNN | Jiang et al., ApJ 939:66 (2022) ✅ | 10.5281/zenodo.7521580 (v1.3) | ✅ web.njit.edu (149 MB) | No | **Successfully reproduced** at tool level (5/5 maps, r = 1.000000); paper's ME reference maps not shipped |
 | 12 | SolarFlareNet | ≥M5.0/≥M/≥C flare in 24/48/72 h | Conv1D+LSTM+4 transformer blocks | Abduallah et al., Sci. Rep. 13:13665 (2023) ✅ | 10.5281/zenodo.10201356 (tag v1.3) | ✅ repo | Optional | **Partially** – stored CSVs reproduced; 8/9 models no skill vs paper TSS 0.71–0.84 |
 | 13 | SYMHnet | SYM-H 1–2 h ahead, 1/5-min data | GNN + BiLSTM + MC dropout | Abduallah et al., Space Weather 22 e2023SW003824 (2024) ✅ | 10.5281/zenodo.10602518 (tag v1.0) | ✅ repo | Optional | **Partially** – v1.0 reproduces the paper's per-storm RMSE for storms 31/33/42 (~2 %), not 28/36/37/40; next-row target |
-| 14 | SolarCNN | MDI → HMI-quality magnetograms | Attention-aided CNN | Xu et al., Sol. Phys. 299:36 (2024) ✅ | 10.5281/zenodo.15250172 (direct upload ❓) | ✅ Google Drive (README link) | No | **Partially** – shipped predictions exact; with training normalisation SSIM 0.812 → 0.892 (paper 0.833 → 0.904) on 3 of 76 samples |
-| 15 | MIST | ≥M flare in 24 h | Patch time-series transformer | ❓ closest: Chaudhary et al., arXiv:2606.21896 (2026) | 10.5281/zenodo.16780646 (direct upload ❓) | ✅ repo | No | **Partially** – README TSS 0.906 exact; arXiv paper's numbers differ; out-of-sample TSS 0.197 |
-| 16 | DeepHMI | HMI → GST/NIRIS resolution | Conditional diffusion model | Xu et al., A&A (2025) ✅ | 10.5281/zenodo.17059248 (direct upload ❓) | ✅ repo | Strongly | **Blocked (compute)** – ≈ 37 CPU-hours; shipped output re-scored |
-| 17 | SINet | F10.7 & F30, 1–60 d | TimesNet-style | Wang Z. et al., JGR Space Physics (2026); arXiv:2604.10045 ✅ | 10.5281/zenodo.20274899 (direct upload ❓) | ✅ repo | No | **Successfully reproduced** (tool and paper: F10.7 RMSE 3.88 / 16.32 sfu) |
-| 18 | LLMFlare | Natural-language flare explanations | MIST + SHAP + Llama-3.1-8B LoRA | ❓ none found | 10.5281/zenodo.20738748 (direct upload ❓) | LoRA adapter only | Yes | **Not attempted** – gated Llama, paid Gemini API, GPU (needs authorisation) |
-| 19 | DeepGeoCME | Is a CME geoeffective? | ResNet-50 + EfficientNet-B0 + attention | Yan et al., arXiv:2605.24748 (2026) ✅ | 10.5281/zenodo.22955090 (direct upload, 1.0.0 ❓) | ✅ GitHub release | No | **Successfully reproduced** (tool and paper: TSS 0.757) |
+| 14 | SolarCNN | MDI → HMI-quality magnetograms | Attention-aided CNN | Xu et al., Sol. Phys. 299:36 (2024) ✅ | 10.5281/zenodo.15250172 (direct upload; **restricted access** ❓) | ✅ Google Drive (README link) | No | **Partially** – shipped predictions exact; with training normalisation SSIM 0.812 → 0.892 (paper 0.833 → 0.904) on 3 of 76 samples |
+| 15 | MIST | ≥M flare in 24 h | Patch time-series transformer | ❓ closest: Chaudhary et al., arXiv:2606.21896 (2026) | 10.5281/zenodo.16780646 (direct upload; = HEAD except `test.py` lacks `import os`) | ✅ repo | No | **Partially** – README TSS 0.906 exact; arXiv paper's numbers differ; out-of-sample TSS 0.197 |
+| 16 | DeepHMI | HMI → GST/NIRIS resolution | Conditional diffusion model | Xu et al., A&A (2025) ✅ | 10.5281/zenodo.17059248 (direct upload; = HEAD) | ✅ repo | Strongly | **Blocked (compute)** – ≈ 37 CPU-hours; shipped output re-scored |
+| 17 | SINet | F10.7 & F30, 1–60 d | TimesNet-style | Wang Z. et al., JGR Space Physics (2026); arXiv:2604.10045 ✅ | 10.5281/zenodo.20274899 (direct upload; = HEAD) | ✅ repo | No | **Successfully reproduced** (tool and paper: F10.7 RMSE 3.88 / 16.32 sfu) |
+| 18 | LLMFlare | Natural-language flare explanations | MIST + SHAP + Llama-3.1-8B LoRA | ❓ none found | 10.5281/zenodo.20738748 (direct upload; = HEAD) | LoRA adapter only | Yes | **Not attempted** – gated Llama, paid Gemini API, GPU (needs authorisation) |
+| 19 | DeepGeoCME | Is a CME geoeffective? | ResNet-50 + EfficientNet-B0 + attention | Yan et al., arXiv:2605.24748 (2026) ✅ | 10.5281/zenodo.22955090 (direct upload, 1.0.0; = HEAD + release assets) | ✅ GitHub release | No | **Successfully reproduced** (tool and paper: TSS 0.757) |
 | – | MagNet (SolarDB; not on the CCSC page) | MDI LOS + Hα → transverse field | 2 × ResNet-101/DANet heads | Jiang et al., Sol. Phys. 298:87 (2023) ✅ | — | ✅ nature.njit.edu (1.18 GB) | Recommended | **Blocked** – package lacks `layers/attention.py` (PAM, CAM) that the model file imports |
 
-"direct upload ❓" means that the record's citation was resolved, but its files could not be downloaded (Zenodo 504), so whether they equal the GitHub HEAD that was run is unverified.
+"= HEAD" means that the archive's files match the GitHub HEAD that was run, by size and CRC-32 or after line-ending normalisation. SolarCNN's record is restricted-access and could not be checked.
 
 (`reports/CCSC_Reproduction_Report.md` is the authoritative status document.)
 
@@ -322,10 +325,10 @@ Fields: 1 name · 2 research question · 3 paper title · 4 citation · 5 paper 
 1. **SolarCNN**.
 2. Enhance (super-resolve) SOHO/MDI LOS magnetograms of ARs using SDO/HMI as ground truth, to give cycle-23 data HMI-like quality.
 3. "Super-Resolution of SOHO/MDI Magnetograms of Solar Active Regions Using SDO/HMI Data and an Attention-Aided Convolutional Neural Network".
-4. Paper: Xu C., Wang J. T. L., Wang H., Jiang H., Li Q., Abduallah Y., Xu Y. 2024, *Solar Physics* 299:36 ✅. **Citation button:** Xu, C., Wang, J. T. L., Wang, H., Jiang, H., Li, Q., Abduallah, Y., & Xu, Y. (2025). *Super-Resolution of SOHO/MDI Magnetograms of Solar Active Regions Using SDO/HMI Data and an Attention-Aided Convolutional Neural Network*. Zenodo. doi:10.5281/zenodo.15250172 (direct upload; not downloadable here) ✅.
+4. Paper: Xu C., Wang J. T. L., Wang H., Jiang H., Li Q., Abduallah Y., Xu Y. 2024, *Solar Physics* 299:36 ✅. **Citation button:** Xu, C., Wang, J. T. L., Wang, H., Jiang, H., Li, Q., Abduallah, Y., & Xu, Y. (2025). *Super-Resolution of SOHO/MDI Magnetograms of Solar Active Regions Using SDO/HMI Data and an Attention-Aided Convolutional Neural Network*. Zenodo. doi:10.5281/zenodo.15250172 (direct upload; restricted access) ✅.
 5. doi:10.1007/s11207-024-02283-1 ✅; arXiv:2403.18302 ✅.
 6. github.com/ccsc-tools/SolarCNN (52d4fa7) ✅.
-7. 3 MDI/HMI 256×256 pairs + 3 stored predictions; full set on Zenodo ✅.
+7. 3 MDI/HMI 256×256 pairs + 3 stored predictions; the README points to Zenodo for the full set, but that record is restricted-access ✅.
 8. Attention-aided CNN; mixed SSIM/L1 loss ✅.
 9. TF 2.6 + tensorflow-addons ✅.
 10. The repo copy lacks `variables.data-*`. The README's Google Drive link supplies `model_solarcnn.zip` (163 MB), whose `saved_model.pb` and `variables.index` are byte-identical to the repo's ✅.
@@ -336,7 +339,7 @@ Fields: 1 name · 2 research question · 3 paper title · 4 citation · 5 paper 
 15. With the Drive weights, `test.py` reproduces the 3 shipped predictions to 3 × 10⁻⁵ G. `test.py` omits the training normalisation (clip ±2000 G, ÷2000), so those predictions are not better than the input.
     * With the normalisation, on the 3 shipped pairs, in the training space: SSIM **0.892** vs 0.812 for the MDI input, PCC 0.954 vs 0.943, PSNR **36.77** vs 32.63 dB.
     * This is the same direction and size as the paper (`results/SolarCNN/eval_normalised.json`).
-16. **Partially reproduced.** The tool level is exact; the paper's improvement is reproduced on 3 of its 76 test samples (the rest are on Zenodo).
+16. **Partially reproduced.** The tool level is exact; the paper's improvement is reproduced on 3 of its 76 test samples (the rest are in the restricted-access Zenodo record).
 
 ### 2.15 DeepHMI
 1. **DeepHMI**.
@@ -366,7 +369,7 @@ Fields: 1 name · 2 research question · 3 paper title · 4 citation · 5 paper 
 4. **Citation button:** Chaudhary, Y., Abdullah [sic], Y., & Wang, J. T. L. (2025). *A New Deep Learning Method for Solar Flare Prediction* [Computer software]. Zenodo. doi:10.5281/zenodo.16780646 (direct upload) ✅.
 5. arXiv:2606.21896 ✅ (closest paper; its link to MIST is inferred).
 6. github.com/ccsc-tools/MIST (7cc02f1) ✅.
-7. `processed_solar_dataset.csv` = **exactly the LSTM-flare Table 2 ≥M training file** (2010-05 → 2014-01; 84,577 rows; 16 features). Windows of 24 rows are labelled by row p+24 and **split 80/20 at random**; the shipped StandardScaler was fitted on all 84,577 rows ✅ (all verified).
+7. GitHub ships `X_test`, `y_test` and `y_train`, but the Zenodo archive also contains `X_train.npy` (67,642 windows). `processed_solar_dataset.csv` = **exactly the LSTM-flare Table 2 ≥M training file** (2010-05 → 2014-01; 84,577 rows; 16 features). Windows of 24 rows are labelled by row p+24 and **split 80/20 at random**; the shipped StandardScaler was fitted on all 84,577 rows ✅ (all verified).
 8. Patching (2 h patches) → linear embedding → 3-layer transformer encoder (d=128, 8 heads) → pooling → sigmoid ✅.
 9. PyTorch 2.3 (ran on 1.12.1) ✅.
 10. Yes ✅.

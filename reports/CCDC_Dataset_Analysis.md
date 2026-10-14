@@ -89,7 +89,7 @@ Source of all numbers: `results/datasets/bundled_dataset_profile.json` and the p
 | TSInet | SORCE, TCTE (LASP), NRLTSI2, SATIRE-S/M | CSV | 6,017 (SORCE) … 50,038 rows | 2003 → 2020 (+ models) | day | TSI (W m⁻²) | train SORCE / test other series |
 | SINet | NOAA F10.7, Toyokawa/Nobeyama F30 | CSV + preprocessing pickle | — | test 2009 → 2021 | day | index value | train data not shipped |
 | SolarUnet / FibrilNet / SDNN | BBSO/GST (NIRIS, Hα), SWAMIS labels, ME inversion | PNG/FITS | 3 / 5 test images; 242 train pairs | 2017–2018 | image | masks / maps | demo only |
-| SolarCNN / DeepHMI / DeepGeoCME | SOHO/MDI + SDO/HMI; HMI + GST/NIRIS; SOHO + SDO | FITS / PyTorch tensors | 3 pairs / 1 pair / 33 events | — | image / event | HMI / NIRIS / geoeffective | demo only (full sets on Zenodo) |
+| SolarCNN / DeepHMI / DeepGeoCME | SOHO/MDI + SDO/HMI; HMI + GST/NIRIS; SOHO + SDO | FITS / PyTorch tensors | 3 pairs / 1 pair / 33 events | — | image / event | HMI / NIRIS / geoeffective | demo only (SolarCNN's full set is in a restricted-access Zenodo record; the DeepHMI and DeepGeoCME archives hold only the shipped files) |
 | RNN-CME `CME_data_samples` | as RNN-CME | CSV with header | 12–60 h: 20,347–60,769 train / 1,312–3,297 test rows (= paper Table 1) | 2010 → 2019 | HARP × 12 min | N / P | the paper's full split; **column order differs from the training copy** |
 | MagNet validation (SolarDB) | SOHO/MDI, SDO/HMI, BBSO Hα | FITS | 12 MDI + 12 HMI cases, ≈ 35 MB | 2010–2011 | AR image | Bx, By | validation only |
 | FlareDB event list (CCDC) | GOES + JSOC | CSV, no header | 103 events (paper: 151) | 2011-02 → 2024-05 | flare event | GOES class | none |

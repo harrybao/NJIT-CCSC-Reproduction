@@ -1,0 +1,68 @@
+{
+ "record": "20274899",
+ "zip": "SINet_Zhenduo.zip",
+ "zip_bytes": 149824032,
+ "git_head": "8017d8d",
+ "stripped_prefix_components": 2,
+ "n_zip_files": 20,
+ "n_git_files": 20,
+ "identical": 13,
+ "different": 7,
+ "only_in_zip": 0,
+ "only_in_git": 0,
+ "different_files": [
+  {
+   "path": "F107_test.py",
+   "zip_size": 7902,
+   "git_size": 7616,
+   "equal_after_newline_normalisation": true,
+   "diff_lines_changed": 0
+  },
+  {
+   "path": "F30_test.py",
+   "zip_size": 7900,
+   "git_size": 7614,
+   "equal_after_newline_normalisation": true,
+   "diff_lines_changed": 0
+  },
+  {
+   "path": "README.md",
+   "zip_size": 2495,
+   "git_size": 2430,
+   "equal_after_newline_normalisation": true,
+   "diff_lines_changed": 0
+  },
+  {
+   "path": "data/F10.7_test.csv",
+   "zip_size": 83921,
+   "git_size": 79083,
+   "equal_after_newline_normalisation": true,
+   "diff_lines_changed": 0
+  },
+  {
+   "path": "data/F30_test.csv",
+   "zip_size": 82617,
+   "git_size": 77779,
+   "equal_after_newline_normalisation": true,
+   "diff_lines_changed": 0
+  },
+  {
+   "path": "requirements.txt",
+   "zip_size": 90,
+   "git_size": 85,
+   "equal_after_newline_normalisation": true,
+   "diff_lines_changed": 0
+  },
+  {
+   "path": "utils.py",
+   "zip_size": 13156,
+   "git_size": 12802,
+   "equal_after_newline_normalisation": true,
+   "diff_lines_changed": 0
+  }
+ ],
+ "only_in_zip_files": [],
+ "only_in_git_files": [],
+ "only_in_zip_by_ext": {},
+ "only_in_git_by_ext": {}
+}

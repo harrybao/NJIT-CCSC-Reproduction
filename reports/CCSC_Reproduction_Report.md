@@ -13,9 +13,9 @@ software version its **Citation** button points to, plus the related SolarDB too
 **What was asked.** "For each tool, click the Citation button, download the tool to reproduce all results and let me know how the tool works."
 
 **What was done.**
-* **Citation buttons.** I followed all 19 Citation buttons on the CCSC page and the one on the CCDC page. Each button opens a Zenodo record. Zenodo itself timed out (HTTP 504) from the environment, so each DOI was resolved through DataCite, the registry Zenodo deposits to.
+* **Citation buttons.** I followed all 19 Citation buttons on the CCSC page and the one on the CCDC page. Each button opens a Zenodo record. Zenodo first timed out (HTTP 504) from the environment, so each DOI was resolved through DataCite, the registry Zenodo deposits to. Zenodo later became reachable, and the archives were then checked directly.
   * For 13 tools the cited record is a GitHub release tag (e.g. LSTM-flare v1.0.2, SYMHnet v1.0). I ran or diffed **that** version.
-  * For 6 tools the record is a direct Zenodo upload, which could not be downloaded (`papers/citations/`).
+  * For 6 tools the record is a direct Zenodo upload. I compared each archive's contents file by file with the GitHub version that was run (§3.5). Four match in content; MIST's archived `test.py` fails as cited (fixed on GitHub); SolarCNN's record is restricted-access.
 * **Runs.** I built four isolated Python environments on a 4-core CPU machine without a GPU. For each tool I ran the authors' released test/prediction path with the authors' pretrained models, and compared the outputs with:
   1. the authors' stored outputs;
   2. the **published papers' tables** (16 full texts: 14 from arXiv, plus *Scientific Reports* and *Frontiers*).
@@ -101,7 +101,7 @@ Rows follow the order of the CCSC page. Full 16-field records are in `tool_inven
   * Both files and an HTML snapshot are saved in `papers/citations/`.
 * The 19 tiles are exactly the 19 `ccsc-tools` repositories reproduced here.
 * The CCDC page lists one dataset, FlareDB (see `reports/CCDC_Dataset_Analysis.md`).
-* `zenodo.org` answered HTTP 504 (gateway time-out). I tried the API, the record pages and `www.zenodo.org`, and the Wayback Machine has no snapshots. Each DOI was therefore resolved through DataCite and doi.org content negotiation (APA, BibTeX and full metadata; `scripts/citations/fetch_ccsc_citations.py`).
+* On 2026-10-13 `zenodo.org` answered HTTP 504 (gateway time-out). I tried the API, the record pages and `www.zenodo.org`, and the Wayback Machine has no snapshots. Each DOI was therefore resolved through DataCite and doi.org content negotiation (APA, BibTeX and full metadata; `scripts/citations/fetch_ccsc_citations.py`). On 2026-10-14 Zenodo answered normally, and the six direct-upload archives were checked (§3.5).
 * On the CCSC page, several DOIs differ from the badges in the GitHub READMEs (e.g. FlareML page 10.5281/zenodo.7506997 vs README 10.5281/zenodo.5634114). I treated the page as authoritative.
 
 **3.2 Reproduction protocol (per tool).**
@@ -146,7 +146,17 @@ Rows follow the order of the CCSC page. Full 16-field records are in `tool_inven
 
   So the HEAD mismatch reported earlier came from HEAD's newer models. The test script still reads softmax column 0, so ≥M5.0 is inverted as released (TSS −0.679).
 * **SYMHnet v1.0:** 11 input features (HEAD has 8) and different weights; the same data and the same next-row target. All 28 runs were repeated at v1.0 (`results/cited_versions/SYMHnet_v1.0/`).
-* **Direct Zenodo uploads** (SolarCNN, MIST, DeepHMI, SINet, LLMFlare, DeepGeoCME): the archives could not be downloaded (Zenodo 504), so whether they equal the GitHub HEAD that was run is **unverified**.
+* **Direct Zenodo uploads.** Each zip's central directory was read with HTTP range requests, and every entry's size and CRC-32 was compared with the GitHub file at the same path (`scripts/citations/compare_zenodo_archives.py`; `results/cited_versions/zenodo_records/`):
+
+  | Tool | Result of the archive check |
+  |---|---|
+  | DeepHMI, SINet | identical content; the differing files differ only in line endings (CRLF vs LF) |
+  | LLMFlare | identical (23 files) |
+  | DeepGeoCME | identical in substance (HEAD's README adds one sentence linking to Zenodo). The archived model and test tensors have the same size and CRC-32 as the GitHub release assets that were run |
+  | MIST | model and data identical. The archived `test.py` lacks `import os` but calls `os.path.join`, so **the cited version fails with `NameError`**; HEAD adds the import. The archive also contains `data/processed/X_train.npy`, which GitHub lacks (used in §5.1) |
+  | SolarCNN | the record is **restricted-access**: no public files, so it cannot be checked |
+
+  For these tools, the HEAD results therefore stand for the cited versions, apart from MIST's one-line fix.
 
 ---
 
@@ -156,7 +166,8 @@ Rows follow the order of the CCSC page. Full 16-field records are in `tool_inven
 * **Network:**
   * Reachable at first: GitHub and PyPI.
   * Reachable after the applicant enabled full network access: `nature.njit.edu`, `web.njit.edu`, arXiv, nature.com, frontiersin.org and Google Drive.
-  * Still unreachable: Zenodo (504); the AGU/Wiley, A&A and Springer full texts (403 or paywall).
+  * Zenodo: HTTP 504 on 2026-10-13, reachable on 2026-10-14 (SolarCNN's record is restricted-access).
+  * Still unreachable: the AGU/Wiley, A&A and Springer full texts (403 or paywall).
 * **Environments** (frozen in `tools/environments/`):
   * `tf210`: Python 3.9.25, TensorFlow 2.10.1 (CPU), Keras 2.10, TFP 0.17, tensorflow-addons 0.19, scikit-learn 1.2.1, xgboost 1.5. Used for the TensorFlow tools (the papers used TF 1.11–2.11).
   * `sk024`: Python 3.9, scikit-learn 0.24.2, sklearn-extensions 0.0.2. Used for FlareML; the pickles were written by scikit-learn 0.23.2.
@@ -207,7 +218,7 @@ Rows follow the order of the CCSC page. Full 16-field records are in `tool_inven
   The authors' `output.txt` equals the paper's Table 5 ≥C column digit for digit. The re-run is 0.031 TSS lower. Patching in Keras 2.2.4's `hard_sigmoid` recurrent activation did not change this, so the gap is attributed to framework differences (`table5_comparison.json`).
 * *Code notes:* the history-masking check tests `row` instead of `prev_row`, so incomplete history rows are never masked. Table 5 selects the threshold that maximises mean TSS on the test folds.
 
-**MIST (cited: Zenodo 16780646, not downloadable; GitHub HEAD run).**
+**MIST (cited: Zenodo 16780646; identical to GitHub HEAD except that the archived `test.py` lacks `import os` and fails with `NameError`; HEAD run).**
 * The released `test.py` reproduces **TSS 0.9062** (TP 493, FN 49, FP 56, TN 16,313), matching the README's 0.90.
 * *Paper.* The software record's title ("A New Deep Learning Method for Solar Flare Prediction") does not match any paper I could find. The closest is arXiv:2606.21896 (Chaudhary, Wang, Xu, Xu & Zhang 2026). It describes the same design: 16 SHARP features, T = 24, patch length 2, d = 128, May 2010–May 2018 data, and a stratified random train/test split with Optuna thresholds tuned "to maximize the true skill statistic on the test set".
   * Its reported test numbers differ from the released model's on the released split:
@@ -300,7 +311,7 @@ Rows follow the order of the CCSC page. Full 16-field records are in `tool_inven
 * Test-year selection beats the average round in 18 of 18 years (optimism 0.3–2.9 h).
 * `pretrained_models_results.py` plots hard-coded MAE/PPMCC values; it does not compute them.
 
-**DeepGeoCME (cited: Zenodo 22955090; GitHub release assets verified by SHA-256).**
+**DeepGeoCME (cited: Zenodo 22955090, identical in substance to GitHub HEAD; the archived model and test tensors match the GitHub release assets, which were verified by SHA-256).**
 * Our confusion matrix on the 33 test events is **identical** to the shipped figure (TN 14, FP 2, FN 2, TP 15): TSS 0.757, recall 0.882, precision 0.882, Brier score 0.080.
 * **This equals the paper's headline TSS of 0.757** (80:20 split). The paper's 5-fold CV (TSS 0.703 ± 0.030) needs the training images, which are not shipped.
 
@@ -351,7 +362,7 @@ Rows follow the order of the CCSC page. Full 16-field records are in `tool_inven
   * The paper's FSS uses the Burton equation as its reference, which I did not re-implement.
 * HEAD's newer models give RMSE 1.8–5.6 nT on the same storms, i.e. further from the paper (`results/SYMHnet/paper_table_compare_HEAD.json`).
 
-**SINet (cited: Zenodo 20274899, not downloadable; GitHub HEAD run).**
+**SINet (cited: Zenodo 20274899; identical in content to GitHub HEAD, which was run).**
 * F10.7: RMSE 3.8801 / 13.7411 / 15.0921 / 16.3241 sfu (1 / 27 / 45 / 60 d), identical to the notebook to 4 decimals.
 * **The paper (arXiv:2604.10045) reports 3.88 (1 d) and 16.32 (60 d): reproduced.**
 * F30: 2.0466 / 7.7862 / 9.1215 / 10.1475 against the notebook's 2.0586 / 7.6491 / 9.1584 / 9.9921 (within 2 %); the paper reports 9.99 at 60 d.
@@ -398,7 +409,7 @@ Rows follow the order of the CCSC page. Full 16-field records are in `tool_inven
 
 * The shipped input is the paper's test image D3 (2017-07-13 16:20:12, AR 12665). The paper's Table 1 (LOS-velocity PPMCC 0.912, Doppler-width PPMCC 0.716 against Milne–Eddington) needs the ME maps, which are not shipped.
 
-**SolarCNN (cited: Zenodo 15250172, not downloadable; model from the README's Google Drive link).**
+**SolarCNN (cited: Zenodo 15250172, a restricted-access record; model from the README's Google Drive link).**
 * The Drive archive's `saved_model.pb` and `variables.index` are byte-identical to the repository's; it adds the missing `variables.data` (185 MB).
 * The released `test.py` reproduces the 3 shipped predictions to **3 × 10⁻⁵ G** (max |Δ|).
 * `test.py` feeds raw Gauss values, but `train.py` trains on clip(±2000 G)/2000. Scored in the training space with the paper's metrics (`eval_normalised.json`, mean of the 3 shipped pairs):
@@ -410,9 +421,9 @@ Rows follow the order of the CCSC page. Full 16-field records are in `tool_inven
 | **Normalised input (as trained)** | **0.892** | **0.954** | **36.77** |
 | Paper Table 3, SolarCNN vs None (76 test samples) | 0.904 vs 0.833 | 0.884 vs 0.863 | 37.40 vs 34.73 |
 
-  With the training normalisation, the model improves on its input by about as much as the paper reports. The released test path hides this. The paper's 76-sample test set is on Zenodo (unreachable).
+  With the training normalisation, the model improves on its input by about as much as the paper reports. The released test path hides this. The paper's 76-sample test set is in the restricted-access Zenodo record.
 
-**DeepHMI (cited: Zenodo 17059248, not downloadable; GitHub HEAD).**
+**DeepHMI (cited: Zenodo 17059248; identical in content to GitHub HEAD).**
 * One U-Net pass takes ≈ 67 s on this CPU (1,000 steps × 2 components ≈ 37 h), so the run is blocked by compute.
 * Re-scoring the authors' shipped output on the single test pair against GST/NIRIS:
   * Bz: SSIM 0.810 vs 0.733 (HMI input), RMSE 190 vs 220 G, PCC 0.972 vs 0.965.
@@ -455,7 +466,7 @@ Rows follow the order of the CCSC page. Full 16-field records are in `tool_inven
 
 ## 7. Limitations and Challenges
 
-1. **Zenodo was unreachable** (HTTP 504). The 6 tools whose Citation button points to a direct Zenodo upload were run from the GitHub HEAD, and whether the archive equals HEAD is unverified. SolarCNN's full test set is also there.
+1. **Zenodo.** It was unreachable on the first day (HTTP 504); the six direct-upload archives were compared with GitHub on the second (§3.5). SolarCNN's record, which holds its full 76-sample test set, is restricted-access, so its archive and the paper-level test could not be checked.
 2. **Paper access.** arXiv, *Scientific Reports* and *Frontiers* full texts were read. The AGU/Wiley (SINet's JGR version), A&A (DeepHMI) and Springer (KpNet) versions returned 403 or a paywall; SINet's arXiv version was used instead. Values read off bar charts (Dst) are approximate.
 3. **Paper evaluations not in the releases.** Several papers report cross-validation means (SEP, RNN-CME, SolarFlareNet, LSTM Table 5) or compare against reference products (FibrilNet, SDNN) whose data or code are not shipped. Paper-level comparison is limited to what the release supports.
 4. **Version drift.** The tools were written for TF 1.11–2.11 and PyTorch 1.12–2.6; I ran TF 2.10 and PyTorch 1.12 on CPU. Most outputs were exact, which indicates numerical stability; the LSTM Table 5 gap (−0.03 TSS) may be version-related.
