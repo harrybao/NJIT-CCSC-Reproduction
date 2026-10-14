@@ -71,7 +71,7 @@ Thank you for your guidance. Following your suggestion, I will state my interest
    * The Table 2 split (2010–13 / 2014 / 2015–18, no shared ARs) is an excellent design. Retraining 10 seeds at the paper's thresholds gave TSS 0.812 / 0.730 / 0.580, against 0.877 / 0.790 / 0.607 in Table 4.
    * The Table 5 ≥C protocol under TF 2.10 gave 0.581 against 0.612.
 2. *MIST.*
-   * Its processed dataset matches the LSTM ≥M training file value for value. The windows overlap by 23 hours and are split at random; 95.6 % of test windows have a training neighbour.
+   * Its processed dataset matches the LSTM ≥M training file value for value. The windows overlap by 23 hours and are split at random. Using the `X_train.npy` included in the Zenodo archive, 95.8 % of test windows share 23 of their 24 hours with a training window.
    * On the 2015–2018 file, the same weights give TSS 0.197 (AUC 0.83).
 3. *RNN-CME.*
    * On the full test sets in `CME_data_samples`, the released models reach GRU TSS 0.31–0.49, against 0.45–0.60 in Table 4.

@@ -34,7 +34,7 @@ software version its **Citation** button points to, plus the related SolarDB too
 
 **Key insights for reliable scientific ML.**
 1. **Validation design dominates.**
-   * The pretrained MIST transformer reaches TSS 0.906 on its released random split of overlapping 24-hour windows: 95.6 % of test windows have a 23-hour-overlapping training neighbour.
+   * The pretrained MIST transformer reaches TSS 0.906 on its released random split of overlapping 24-hour windows. Checked against the authors' own training array (in the Zenodo archive), 95.8 % of test windows share 23 of their 24 hours with a training window.
    * On chronologically and active-region-independent 2015–2018 data it reaches **TSS 0.197** (AUC 0.997 → 0.833).
    * On that same independent test set, the 2019 ≥M LSTM retrained on its published split reaches TSS 0.73–0.75.
 2. **The 2019 LSTM data split is exemplary.** It is chronological (2010–13 / 2014 / 2015–18) with zero shared active regions. Using it, I measured how much choosing the decision threshold on the test set inflates TSS:
@@ -232,7 +232,10 @@ Rows follow the order of the CCSC page. Full 16-field records are in `tool_inven
 
   * The two are therefore related but not the same experiment.
 * *Data provenance:* `processed_solar_dataset.csv` equals the LSTM Table 2 ≥M training file (2010-05 → 2014-01) to within 4.4 × 10⁻¹⁶, with identical labels. Windows are rows *p…p+23* labelled by row *p+24*. The 80/20 split is random over windows, and the scaler is fitted on all 84,577 rows.
-* **Overlap:** 16,172 of 16,911 test windows (95.6 %) have an adjacent window, differing by one hour, in training.
+* **Overlap.**
+  * Reconstructed from the CSV: 16,172 of 16,911 test windows (95.6 %) have an adjacent window, shifted by one hour, in training.
+  * **Confirmed with the authors' own training array.** The Zenodo archive contains `X_train.npy` (67,642 windows, matching `y_train`). Compared exactly, 16,195 test windows (**95.8 %**) share 23 of their 24 rows with a training window, and 132 are identical to one. That includes 522 of the 542 positive test windows (96.3 %). File: `results/MIST/train_test_overlap_from_zenodo.json`.
+  * The small excess over the reconstruction comes from windows whose rows also recur elsewhere in the data.
 * **Out-of-sample check** (same weights and preprocessing):
 
 | Evaluation set | n windows | positives | AUC | TSS @0.5 | TSS @ threshold chosen on 2014 |

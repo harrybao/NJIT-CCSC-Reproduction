@@ -377,7 +377,7 @@ Fields: 1 name · 2 research question · 3 paper title · 4 citation · 5 paper 
 12. No.
 13. 142 MB.
 14. README: TSS 0.90 ✅. arXiv:2606.21896: test accuracy 95.18 %, recall 0.89, AUC 0.96 at threshold 0.5; 67,661 / 16,916 train/test samples; thresholds for feature selection tuned with Optuna "to maximize the true skill statistic on the test set" ✅.
-15. TSS 0.9062 reproduced exactly. However, **95.6 % of test windows have a 23-of-24-hour-overlapping neighbour in the training set**. On the chronologically and AR-independent 2015–2018 Table 2 test file, the same model gives **TSS 0.197** (AUC 0.83), versus TSS ≈ 0.73 for the 2019 LSTM on the same data.
+15. TSS 0.9062 reproduced exactly. However, **95.8 % of test windows share 23 of their 24 hours with a training window**, measured directly against the authors' `X_train.npy` from the Zenodo archive. 132 test windows are identical to a training window, and 522 of the 542 positive test windows overlap. On the chronologically and AR-independent 2015–2018 Table 2 test file, the same model gives **TSS 0.197** (AUC 0.83), versus TSS ≈ 0.73 for the 2019 LSTM on the same data.
 16. **Partially reproduced.** The README number is exact. The arXiv paper's numbers differ from the released model's on its released split (accuracy 99.38 %, recall 0.910, AUC 0.997; 67,642 / 16,911 windows). The out-of-sample evaluation reveals leakage.
 
 ### 2.17 SINet

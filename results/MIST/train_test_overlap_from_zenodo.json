@@ -1,0 +1,27 @@
+{
+ "X_train_shape": [
+  67642,
+  24,
+  16
+ ],
+ "X_test_shape": [
+  16911,
+  24,
+  16
+ ],
+ "y_train_len": 67642,
+ "y_train_matches_X_train": true,
+ "positives_train_test": [
+  2168,
+  542
+ ],
+ "test_windows_identical_to_a_training_window": 132,
+ "test_windows_with_training_window_one_row_earlier": 13498,
+ "test_windows_with_training_window_one_row_later": 13498,
+ "test_windows_with_any_23of24_overlap_in_train": 16195,
+ "fraction_with_overlap": 0.9576606942226953,
+ "positive_test_windows_with_overlap": [
+  522,
+  542
+ ]
+}
