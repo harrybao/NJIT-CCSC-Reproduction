@@ -18,7 +18,7 @@
 
 Dear Professor Wang,
 
-Thank you for pointing me to CCSC and CCDC. I followed the Citation button of each of the 19 tools to its Zenodo record and ran each tool at the cited version, with your released code, data and pretrained weights, on a CPU-only machine. I compared the outputs with the stored results and with the tables in the papers. The write-up covers how each tool works, what reproduced and what I could not run: [link].
+Thank you for pointing me to CCSC and CCDC. As you suggested, I will describe my interest in your group's research in my statement of purpose. I followed the Citation button of each of the 19 tools to its Zenodo record and ran each tool at the cited version, with your released code, data and pretrained weights, on a CPU-only machine. I compared the outputs with the stored results and with the tables in the papers. The write-up covers how each tool works, what reproduced and what I could not run: [link].
 
 In brief:
 * SINet and DeepGeoCME reproduce the papers' headline numbers (F10.7 RMSE 3.88 / 16.32 sfu; TSS 0.757).
@@ -26,7 +26,7 @@ In brief:
 * With the model from the SolarCNN README's Google Drive link, SolarCNN also improves on its MDI input by about as much as the paper reports. This only shows once the training normalisation (clip ±2000 G, ÷2000) is applied, which `test.py` currently omits.
 
 Because my interest is out-of-sample validation, I also tested several models on independent data:
-1. Your 2019 LSTM dataset uses a chronological split with no shared active regions. Retraining it with the released code gave TSS 0.81 / 0.73 / 0.58 (≥M5.0 / ≥M / ≥C) at the paper's thresholds, close to Table 4.
+1. Your 2019 LSTM dataset uses a chronological split with no shared active regions. Retraining it with the released code gave TSS 0.81 / 0.73 / 0.58 (≥M5.0 / ≥M / ≥C) at the paper's thresholds, somewhat below Table 4 (0.88 / 0.79 / 0.61).
 2. MIST's released data are the LSTM ≥M training file, split at random into overlapping 24-hour windows. On your 2015–2018 test file, the same weights give TSS ≈ 0.20, versus 0.91 on the released split.
 3. In a few packages the released evaluation seems to differ from the paper, and I would be grateful to know whether the papers used different code:
    * The Dst tool's `predict()` uses the test labels.
