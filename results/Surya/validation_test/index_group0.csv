@@ -1,0 +1,6 @@
+,path,timestep,present
+0,data/Surya-1.0_validation_data/20140107_1500.nc,2014-01-07 15:00:00,1
+5,data/Surya-1.0_validation_data/20140107_1600.nc,2014-01-07 16:00:00,1
+10,data/Surya-1.0_validation_data/20140107_1700.nc,2014-01-07 17:00:00,1
+15,data/Surya-1.0_validation_data/20140107_1800.nc,2014-01-07 18:00:00,1
+20,data/Surya-1.0_validation_data/20140107_1900.nc,2014-01-07 19:00:00,1
