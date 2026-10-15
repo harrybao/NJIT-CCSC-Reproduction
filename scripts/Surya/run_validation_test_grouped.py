@@ -14,15 +14,20 @@ change the arithmetic of a forward pass:
   * the DataLoader uses num_workers=0 instead of 2 (memory: one sample is 3.5 GB in float32);
   * each batch is scored in up to two precision modes (see MODES).
 
-A forward hook keeps the model outputs so that per-step and per-channel MSE and a persistence baseline
-(the last input frame used as the forecast, in the same normalised units) can be reported. Downsampled AIA 94
-images (512 x 512) are saved for a figure like the one the test draws.
+A forward hook computes per-channel MSE of each model output as it is produced, and a persistence baseline
+(the last input frame used as the forecast, in the same normalised units) is scored on the same targets.
+Downsampled AIA 94 images (512 x 512) are saved for a figure like the one the test draws.
+
+Memory (15 GB box): one sample is 3.5 GB of float32 inputs and targets and the float32 weights are 1.5 GB.
+To keep the bfloat16 pass inside the limit, the parameters are set to requires_grad=False, so autocast does not
+cache bfloat16 copies of every weight (under torch.no_grad this does not change any arithmetic), and each
+precision mode is run in its own process (see run_validation_test.sh). Peak RSS is recorded per sample.
 
 Usage:
   python run_validation_test_grouped.py --upstream /path/to/Surya --workdir /path/with/data/Surya-1.0 \
       --out results/Surya/validation_test --modes cuda_autocast_noop,cpu_bf16 [--groups 0,1] [--keep-files]
 """
-import argparse, contextlib, hashlib, json, os, sys, time
+import argparse, hashlib, json, os, resource, sys, time
 
 # The xet download backend keeps a chunk cache (up to 10 GB by default) under ~/.cache/huggingface/xet,
 # i.e. a second copy of every file, which this disk cannot hold. Use plain HTTP downloads instead.
@@ -168,8 +173,19 @@ def main():
     model.load_state_dict(weights, strict=True)
     del weights
     n_params = sum(p.numel() for p in model.parameters())
-    captured = []
-    model.register_forward_hook(lambda m, i, o: captured.append(o.detach().float().cpu()))
+    model.requires_grad_(False)
+    state = {"targets": None, "outputs": []}
+
+    def hook(module, inputs, output):
+        # score each output as soon as it exists; keep only small summaries
+        s = len(state["outputs"])
+        tgt = state["targets"][:, :, s]
+        o = output.detach()
+        per_chan = [F.mse_loss(o[:, c].float(), tgt[:, c]).item() for c in range(tgt.shape[1])]
+        state["outputs"].append({"mse_fp32": F.mse_loss(o.float(), tgt).item(), "per_channel": per_chan,
+                                 "dtype": str(o.dtype), "aia94_512": down(o[0, T.SDO_CHANNELS.index("aia94")])})
+
+    model.register_forward_hook(hook)
     shas = lfs_sha256()
     env = {"torch": torch.__version__, "threads": torch.get_num_threads(), "n_parameters": n_params,
            "cuda_available": torch.cuda.is_available(), "model_training_flag": model.training}
@@ -217,27 +233,29 @@ def main():
             imgs = {"input_t-60": down(batch_data["ts"][0, c94, 0]), "input_t": down(batch_data["ts"][0, c94, 1]),
                     "target_t+60": down(targets[0, c94, 0]), "target_t+120": down(targets[0, c94, 1])}
             for mode in modes:
-                captured.clear()
+                state["targets"], state["outputs"] = targets, []
                 t1 = time.time()
                 with MODES[mode]():
                     with torch.no_grad():
                         loss, _ = T.batch_step(model, batch_data, batch_metadata, "cpu", rollout=1)
                 secs = time.time() - t1
-                assert len(captured) == 2
-                per_step = [F.mse_loss(captured[s], targets[:, :, s]).item() for s in range(2)]
-                per_chan = [[F.mse_loss(captured[s][:, c], targets[:, c, s]).item()
-                             for c in range(targets.shape[1])] for s in range(2)]
+                outs = state["outputs"]
+                assert len(outs) == 2
                 rec[mode] = {"loss": loss, "delta_vs_reference": loss - float(T.REFERENCE_LOSS[k]),
-                             "mse_per_step_fp32_recomputed": per_step, "mse_per_channel_per_step": per_chan,
-                             "output_dtype": str(captured[0].dtype), "seconds_two_forward_passes": round(secs, 1)}
-                imgs[f"{mode}_pred_t+60"] = down(captured[0][0, c94])
-                imgs[f"{mode}_pred_t+120"] = down(captured[1][0, c94])
+                             "mse_per_step_fp32_recomputed": [o["mse_fp32"] for o in outs],
+                             "mse_per_channel_per_step": [o["per_channel"] for o in outs],
+                             "output_dtype": outs[0]["dtype"], "seconds_two_forward_passes": round(secs, 1),
+                             "peak_rss_gb_so_far": round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**20, 2)}
+                imgs[f"{mode}_pred_t+60"] = outs[0]["aia94_512"]
+                imgs[f"{mode}_pred_t+120"] = outs[1]["aia94_512"]
                 print(f"[{ref_hhmm}] {mode}: loss {loss:.6f} ref {T.REFERENCE_LOSS[k]:.6f} "
-                      f"delta {loss - T.REFERENCE_LOSS[k]:+.2e} ({secs:.0f} s)", flush=True)
-            np.savez_compressed(os.path.join(out, "aia94_512", f"sample_{ref_hhmm}.npz"), **imgs)
-            with open(log_path, "a") as fp:
+                      f"delta {loss - T.REFERENCE_LOSS[k]:+.2e} ({secs:.0f} s, peak RSS "
+                      f"{rec[mode]['peak_rss_gb_so_far']} GB)", flush=True)
+            tag = "_".join(modes)
+            np.savez_compressed(os.path.join(out, "aia94_512", f"sample_{ref_hhmm}_{tag}.npz"), **imgs)
+            with open(log_path.replace(".jsonl", f"_{tag}.jsonl"), "a") as fp:
                 fp.write(json.dumps(rec) + "\n")
-            captured.clear()
+            state["targets"], state["outputs"] = None, []
             del batch_data, targets, x_last
         if not a.keep_files:
             for p in local:
