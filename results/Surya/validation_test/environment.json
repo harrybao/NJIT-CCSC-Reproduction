@@ -1,0 +1,7 @@
+{
+ "torch": "2.10.0+cpu",
+ "threads": 4,
+ "n_parameters": 366190080,
+ "cuda_available": false,
+ "model_training_flag": true
+}
