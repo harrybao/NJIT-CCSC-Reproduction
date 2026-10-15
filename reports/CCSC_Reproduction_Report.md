@@ -1,9 +1,9 @@
 # Reproducing the NJIT CCSC Deep-Learning Tools: Methods, Results and Lessons for Reliable Scientific ML
 
-**Author:** Xiangsheng (Harry) Bao (Master of Data Science candidate, University of Sydney)
-**Date:** 13 October 2026
+**Author:** Xiangsheng (Harry) Bao (Master of Data Science candidate, University of Sydney)  
+**Date:** 13–14 October 2026  
 **Scope:** the 19 tools listed on <https://nature.njit.edu/solardb/ccsc> (verified against the live page), each at the
-software version its **Citation** button points to, plus the related SolarDB tool MagNet.
+software version its **Citation** button points to, plus the related SolarDB tool MagNet.  
 **Repository:** every number below is produced by a script in `scripts/` and logged in `results/`.
 
 ---

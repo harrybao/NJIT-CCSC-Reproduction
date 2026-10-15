@@ -18,7 +18,7 @@
 
 Dear Professor Wang,
 
-Thank you for pointing me to CCSC and CCDC. As you suggested, I will describe my interest in your group's research in my statement of purpose. I followed the Citation button of each of the 19 tools to its Zenodo record and ran each tool at the cited version, with your released code, data and pretrained weights, on a CPU-only machine. I compared the outputs with the stored results and with the tables in the papers. The write-up covers how each tool works, what reproduced and what I could not run: [link].
+Thank you for pointing me to CCSC and CCDC. As you suggested, I will describe my interest in your group's research in my statement of purpose. I followed the Citation button of each of the 19 tools to its Zenodo record and ran each tool at the cited version, with your released code, data and pretrained weights, on a CPU-only machine. I compared the outputs with the stored results and with the tables in the papers. The attached report covers how each tool works, what reproduced and what I could not run; a second attachment analyses the CCDC dataset (FlareDB) from a data-science perspective.
 
 In brief:
 * SINet and DeepGeoCME reproduce the papers' headline numbers (F10.7 RMSE 3.88 / 16.32 sfu; TSS 0.757).
