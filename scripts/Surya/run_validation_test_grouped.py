@@ -27,7 +27,7 @@ Usage:
   python run_validation_test_grouped.py --upstream /path/to/Surya --workdir /path/with/data/Surya-1.0 \
       --out results/Surya/validation_test --modes cuda_autocast_noop,cpu_bf16 [--groups 0,1] [--keep-files]
 """
-import argparse, hashlib, json, os, resource, sys, time
+import argparse, gc, hashlib, json, os, resource, sys, time
 
 # The xet download backend keeps a chunk cache (up to 10 GB by default) under ~/.cache/huggingface/xet,
 # i.e. a second copy of every file, which this disk cannot hold. Use plain HTTP downloads instead.
@@ -214,9 +214,16 @@ def main():
         assert got == group, (got, group)
         loader = DataLoader(dataset, shuffle=False, batch_size=1, num_workers=0, pin_memory=False,
                             drop_last=False, collate_fn=custom_collate_fn)
+        tag = "_".join(modes)
+        done_path = log_path.replace(".jsonl", f"_{tag}.jsonl")
+        done = {json.loads(l)["reference_time"] for l in open(done_path)} if os.path.exists(done_path) else set()
         for bi, (batch_data, batch_metadata) in enumerate(loader):
             ref_hhmm = pd.Timestamp(batch_metadata["timestamps_input"][0][-1]).strftime("%H%M")
             assert ref_hhmm == group[bi], (ref_hhmm, group[bi])  # guard against the dataset's silent skip-ahead
+            if f"2014-01-07T{ref_hhmm[:2]}:{ref_hhmm[2:]}" in done:
+                print(f"[{ref_hhmm}] already recorded for {tag}; skipped", flush=True)
+                del batch_data
+                continue
             k = ref_order.index(ref_hhmm)
             x_last = batch_data["ts"][:, :, -1]
             targets = batch_data["forecast"]
@@ -237,7 +244,10 @@ def main():
                 t1 = time.time()
                 with MODES[mode]():
                     with torch.no_grad():
-                        loss, _ = T.batch_step(model, batch_data, batch_metadata, "cpu", rollout=1)
+                        loss, returned = T.batch_step(model, batch_data, batch_metadata, "cpu", rollout=1)
+                # batch_step returns its images as numpy views into the full input and output tensors;
+                # dropping them here frees about 3.5 GB before the next sample is loaded
+                del returned
                 secs = time.time() - t1
                 outs = state["outputs"]
                 assert len(outs) == 2
@@ -251,12 +261,12 @@ def main():
                 print(f"[{ref_hhmm}] {mode}: loss {loss:.6f} ref {T.REFERENCE_LOSS[k]:.6f} "
                       f"delta {loss - T.REFERENCE_LOSS[k]:+.2e} ({secs:.0f} s, peak RSS "
                       f"{rec[mode]['peak_rss_gb_so_far']} GB)", flush=True)
-            tag = "_".join(modes)
             np.savez_compressed(os.path.join(out, "aia94_512", f"sample_{ref_hhmm}_{tag}.npz"), **imgs)
-            with open(log_path.replace(".jsonl", f"_{tag}.jsonl"), "a") as fp:
+            with open(done_path, "a") as fp:
                 fp.write(json.dumps(rec) + "\n")
             state["targets"], state["outputs"] = None, []
             del batch_data, targets, x_last
+            gc.collect()
         if not a.keep_files:
             for p in local:
                 os.remove(p)
