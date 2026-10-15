@@ -12,30 +12,23 @@
 
 ---
 
-## Version A — concise (recommended)
+## Version A — concise, plain wording (recommended)
 
-**Subject:** CCSC tools – reproduction notes and questions (Xiangsheng Bao)
+**Subject:** reply in the same thread as Prof. Wang's email (Re: ...)
 
 Dear Professor Wang,
 
-Thank you for pointing me to CCSC and CCDC. As you suggested, I will describe my interest in your group's research in my statement of purpose. I followed the Citation button of each of the 19 tools to its Zenodo record and ran each tool at the cited version, with your released code, data and pretrained weights, on a CPU-only machine. I compared the outputs with the stored results and with the tables in the papers. The attached report covers how each tool works, what reproduced and what I could not run; a second attachment analyses the CCDC dataset (FlareDB) from a data-science perspective.
+Thank you for your reply and for the suggestions. I will mention your group's work in my statement of purpose.
 
-In brief:
-* SINet and DeepGeoCME reproduce the papers' headline numbers (F10.7 RMSE 3.88 / 16.32 sfu; TSS 0.757).
-* SEP, SDNN, FibrilNet, SolarUnet and KpNet reproduce the stored outputs exactly or within Monte-Carlo noise. For SDNN, all five maps correlate at r = 1.000000.
-* With the model from the SolarCNN README's Google Drive link, SolarCNN also improves on its MDI input by about as much as the paper reports. This only shows once the training normalisation (clip ±2000 G, ÷2000) is applied, which `test.py` currently omits.
+Over the past few days I went through the CCSC tools. For each one I followed the Citation link to its Zenodo record, used that version of the code, and ran it with the released data and pretrained models on my own CPU machine. I then compared the outputs with the results stored in each package and with the numbers in the papers. I have attached a report on what I found and how each tool works, and a short note on FlareDB from the CCDC page.
 
-Because my interest is out-of-sample validation, I also tested several models on independent data:
-1. Your 2019 LSTM dataset uses a chronological split with no shared active regions. Retraining it with the released code gave TSS 0.81 / 0.73 / 0.58 (≥M5.0 / ≥M / ≥C) at the paper's thresholds, somewhat below Table 4 (0.88 / 0.79 / 0.61).
-2. MIST's released data are the LSTM ≥M training file, split at random into overlapping 24-hour windows. On your 2015–2018 test file, the same weights give TSS ≈ 0.20, versus 0.91 on the released split.
-3. In a few packages the released evaluation seems to differ from the paper, and I would be grateful to know whether the papers used different code:
-   * The Dst tool's `predict()` uses the test labels.
-   * In the RNN-CME release the two copies of the data store the SHARP columns in different orders.
-   * SYMHnet v1.0 reproduces the paper's RMSE for storms 31, 33 and 42, but its test target is the next 1- or 5-minute row.
+Most of the tools ran and gave the same outputs as the stored results, and SINet and DeepGeoCME also matched the numbers in their papers. I could not run DeepHMI because it needs a GPU, and I did not run LLMFlare because it needs a paid API.
 
-I would be glad to help turn these checks into a reusable validation and AI-readiness toolkit for CCSC/CCDC datasets such as FlareDB, which seems relevant to the NSF AI Datasets programme.
+Since I am most interested in validation, I also tried some of the models on independent test data. The 2019 LSTM gave results reasonably close to the paper on its chronological split. MIST, however, dropped from a TSS of 0.91 to about 0.20 on the 2015-2018 test file, which I think is because its training and test windows overlap. I also noticed a few places where the released test code seems to differ from what the paper describes, for example in DSTT, SYMHnet and RNN-CME. These are listed in the report, but I may well be missing something, so I would be grateful for any comments.
 
-Kind regards,
+Thank you again for your time.
+
+Best regards,
 Xiangsheng (Harry) Bao
 
 ---
