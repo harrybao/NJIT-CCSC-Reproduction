@@ -135,6 +135,76 @@
   },
   "validation": {
    "ds_time_column": "val_time",
+   "n_candidates_full_split": 355,
+   "baseline_train_mean_on_all_candidates": {
+    "mse": 0.00015203471031821972,
+    "rmse": 0.012330235614870452,
+    "mae": 0.006428002925635677,
+    "mape_pct": 1.4727770836686827,
+    "mape_pct_targets_ge_0.05": 1.0923860704039414,
+    "mape_pct_physical_irradiance": 15.980837609852593,
+    "r2_infer_py": 0.9715402138905397,
+    "mean_spectral_corr_infer_py": 0.9897841540923807,
+    "n_samples": 355,
+    "n_elements": 476765,
+    "fraction_elements_target_lt_0.05": 0.00015521273583418704,
+    "median_ape_pct_median_over_samples": 0.5916580652285217,
+    "ci95": {
+     "mse": [
+      0.0001377036742436554,
+      0.00016853047038874538
+     ],
+     "rmse": [
+      0.011734720884679849,
+      0.012981928607002978
+     ],
+     "mae": [
+      0.0061627442529974584,
+      0.0067093253551867935
+     ],
+     "mape_pct": [
+      1.3670040660755223,
+      1.58688903572946
+     ],
+     "mape_pct_targets_ge_0.05": [
+      1.0497698264645108,
+      1.1373197085671884
+     ],
+     "mape_pct_physical_irradiance": [
+      14.496955151677891,
+      17.650618083943915
+     ],
+     "r2_infer_py": [
+      0.968509654086203,
+      0.9741683866637998
+     ],
+     "mean_spectral_corr_infer_py": [
+      0.9887183735286031,
+      0.9907119320411963
+     ]
+    },
+    "bootstrap_sd": {
+     "mse": 7.934160400815594e-06,
+     "rmse": 0.00032090314202519167,
+     "mae": 0.00013953718994108753,
+     "mape_pct": 0.05554952624288124,
+     "mape_pct_targets_ge_0.05": 0.02226153991186545,
+     "mape_pct_physical_irradiance": 0.8028111376008225,
+     "r2_infer_py": 0.0014560891181033089,
+     "mean_spectral_corr_infer_py": 0.0005125969145944512
+    }
+   },
+   "sample_design": {
+    "n_requested": 20,
+    "seed": 0,
+    "allocation": {
+     "2012": 12,
+     "2013": 8
+    },
+    "n_primary": 20,
+    "n_reserve": 20,
+    "n_skipped": 0
+   },
    "n_records": 0,
    "n_failed": 0,
    "failed": [],
