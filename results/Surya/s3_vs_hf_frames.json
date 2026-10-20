@@ -1,0 +1,202 @@
+[
+ {
+  "stamp": "20140107_1600",
+  "bytes_s3": 593250192,
+  "bytes_hf": 670337550,
+  "vars_s3": [
+   "aia131",
+   "aia1600",
+   "aia171",
+   "aia193",
+   "aia211",
+   "aia304",
+   "aia335",
+   "aia94",
+   "hmi_bx",
+   "hmi_by",
+   "hmi_bz",
+   "hmi_m",
+   "hmi_v"
+  ],
+  "vars_hf": [
+   "aia131",
+   "aia1600",
+   "aia171",
+   "aia193",
+   "aia211",
+   "aia304",
+   "aia335",
+   "aia94",
+   "hmi_bx",
+   "hmi_by",
+   "hmi_bz",
+   "hmi_m",
+   "hmi_v"
+  ],
+  "attrs_equal": false,
+  "channels": {
+   "aia131": {
+    "shape": [
+     4096,
+     4096
+    ],
+    "dtype_s3": "float32",
+    "dtype_hf": "float32",
+    "bitwise_equal": true,
+    "nan_mask_equal": true,
+    "max_abs_diff": 0.0
+   },
+   "aia1600": {
+    "shape": [
+     4096,
+     4096
+    ],
+    "dtype_s3": "float32",
+    "dtype_hf": "float32",
+    "bitwise_equal": true,
+    "nan_mask_equal": true,
+    "max_abs_diff": 0.0
+   },
+   "aia171": {
+    "shape": [
+     4096,
+     4096
+    ],
+    "dtype_s3": "float32",
+    "dtype_hf": "float32",
+    "bitwise_equal": true,
+    "nan_mask_equal": true,
+    "max_abs_diff": 0.0
+   },
+   "aia193": {
+    "shape": [
+     4096,
+     4096
+    ],
+    "dtype_s3": "float32",
+    "dtype_hf": "float32",
+    "bitwise_equal": true,
+    "nan_mask_equal": true,
+    "max_abs_diff": 0.0
+   },
+   "aia211": {
+    "shape": [
+     4096,
+     4096
+    ],
+    "dtype_s3": "float32",
+    "dtype_hf": "float32",
+    "bitwise_equal": true,
+    "nan_mask_equal": true,
+    "max_abs_diff": 0.0
+   },
+   "aia304": {
+    "shape": [
+     4096,
+     4096
+    ],
+    "dtype_s3": "float32",
+    "dtype_hf": "float32",
+    "bitwise_equal": true,
+    "nan_mask_equal": true,
+    "max_abs_diff": 0.0
+   },
+   "aia335": {
+    "shape": [
+     4096,
+     4096
+    ],
+    "dtype_s3": "float32",
+    "dtype_hf": "float32",
+    "bitwise_equal": true,
+    "nan_mask_equal": true,
+    "max_abs_diff": 0.0
+   },
+   "aia94": {
+    "shape": [
+     4096,
+     4096
+    ],
+    "dtype_s3": "float32",
+    "dtype_hf": "float32",
+    "bitwise_equal": true,
+    "nan_mask_equal": true,
+    "max_abs_diff": 0.0
+   },
+   "hmi_bx": {
+    "shape": [
+     4096,
+     4096
+    ],
+    "dtype_s3": "float32",
+    "dtype_hf": "float32",
+    "bitwise_equal": true,
+    "nan_mask_equal": true,
+    "max_abs_diff": 0.0
+   },
+   "hmi_by": {
+    "shape": [
+     4096,
+     4096
+    ],
+    "dtype_s3": "float32",
+    "dtype_hf": "float32",
+    "bitwise_equal": true,
+    "nan_mask_equal": true,
+    "max_abs_diff": 0.0
+   },
+   "hmi_bz": {
+    "shape": [
+     4096,
+     4096
+    ],
+    "dtype_s3": "float32",
+    "dtype_hf": "float32",
+    "bitwise_equal": true,
+    "nan_mask_equal": true,
+    "max_abs_diff": 0.0
+   },
+   "hmi_m": {
+    "shape": [
+     4096,
+     4096
+    ],
+    "dtype_s3": "float32",
+    "dtype_hf": "float32",
+    "bitwise_equal": true,
+    "nan_mask_equal": true,
+    "max_abs_diff": 0.0
+   },
+   "hmi_v": {
+    "shape": [
+     4096,
+     4096
+    ],
+    "dtype_s3": "float32",
+    "dtype_hf": "float32",
+    "bitwise_equal": true,
+    "nan_mask_equal": true,
+    "max_abs_diff": 0.0
+   }
+  },
+  "encoding_first_channel": {
+   "s3": {
+    "compression": "None",
+    "compression_opts": "None",
+    "chunksizes": "(4096, 4096)",
+    "shuffle": "False",
+    "zlib": "True",
+    "complevel": "5"
+   },
+   "hf": {
+    "compression": "None",
+    "compression_opts": "None",
+    "chunksizes": "(4096, 4096)",
+    "shuffle": "False",
+    "zlib": "None",
+    "complevel": "None"
+   }
+  },
+  "all_channels_bitwise_equal": true
+ }
+]
