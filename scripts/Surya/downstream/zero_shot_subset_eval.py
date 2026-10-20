@@ -8,9 +8,12 @@ bootstrap interval. Leads of 1 h and 2 h are evaluated (rollout_steps=1, as in t
 
 Per initialisation time t the inputs are the frames at t-60 and t and the targets are t+60 and t+120 (the
 released config: time_delta_input_minutes [-60, 0], time_delta_target_minutes +60). Frames are read from the
-public S3 bucket, which holds bitwise-identical data to the HF copies. The model, scalers, dataset class and
-batch_step are the authors' code; precision is float32 (CPU bfloat16 autocast breaks this model, see
-results/Surya/bf16_diagnosis). Persistence (the frame at t used as the forecast for every lead) is scored on the
+public S3 bucket, which holds bitwise-identical data to the HF copies. The model, scalers and dataset class are
+the authors' code; precision is float32 (CPU bfloat16 autocast breaks this model, see
+results/Surya/bf16_diagnosis). The two-step rollout repeats what batch_step in tests/test_surya.py does (forecast,
+then append the forecast to the inputs and drop the oldest frame, forecast again; MSE against each target), but
+frees the input tensors as soon as they are no longer needed, because batch_step's extra copies push a 15 GB
+machine to its memory limit. Persistence (the frame at t used as the forecast for every lead) is scored on the
 same targets.
 
 Sampling: only times on the full hour are used; 2 per year 2011-2019 plus 2 more drawn from all years
@@ -127,19 +130,25 @@ def main():
     model.load_state_dict(torch.load(os.path.join(FM_DIR, "surya.366m.v1.pt"), map_location="cpu",
                                      weights_only=True), strict=True)
     model.requires_grad_(False)
-    state = {"targets": None, "steps": []}
 
-    def hook(m, i, o):
-        s = len(state["steps"])
-        state["steps"].append(F.mse_loss(o.detach().float(), state["targets"][:, :, s]).item())
-    model.register_forward_hook(hook)
+    def rollout_two_steps(batch):
+        # same arithmetic as batch_step(model, batch, meta, "cpu", rollout=1) in tests/test_surya.py
+        curr = {"ts": batch.pop("ts"), "time_delta_input": batch["time_delta_input"]}
+        losses = []
+        pred = model(curr)
+        losses.append(F.mse_loss(pred, batch["forecast"][:, :, 0]).item())
+        ts_next = torch.cat((curr["ts"][:, :, 1:, ...], pred[:, :, None, ...]), dim=2)
+        del curr["ts"], pred
+        gc.collect()
+        curr["ts"] = ts_next
+        pred = model(curr)
+        losses.append(F.mse_loss(pred, batch["forecast"][:, :, 1]).item())
+        del curr, pred, ts_next
+        return losses
 
     cache = C.FrameCache(a.cache)
-    log_path = os.path.join(out, "per_init.jsonl")
-    done = {json.loads(l)["init_time"] for l in open(log_path)} if os.path.exists(log_path) else set()
-    for t in times:
-        if str(t) in done:
-            continue
+
+    def evaluate(t):
         need = [t + pd.Timedelta(minutes=d) for d in DELTAS]
         t_dl = cache.ensure(need)
         idx_path = C.write_index(need, os.path.join(out, "index_current.csv"))
@@ -156,23 +165,42 @@ def main():
         batch, meta = next(iter(DataLoader(ds, batch_size=1, shuffle=False, num_workers=0,
                                            collate_fn=custom_collate_fn)))
         assert pd.Timestamp(meta["timestamps_input"][0][-1]) == t  # guard against the dataset's skip-ahead
-        targets = batch["forecast"]
-        pers = [F.mse_loss(batch["ts"][:, :, -1], targets[:, :, s]).item() for s in range(2)]
-        state["targets"], state["steps"] = targets, []
+        pers = [F.mse_loss(batch["ts"][:, :, -1], batch["forecast"][:, :, s]).item() for s in range(2)]
         t1 = time.time()
         with torch.no_grad():
-            loss, returned = T.batch_step(model, batch, meta, "cpu", rollout=1)
-        del returned
-        rec = {"init_time": str(t), "surya_mse_lead_1h": state["steps"][0], "surya_mse_lead_2h": state["steps"][1],
-               "batch_step_loss": loss, "persistence_mse_lead_1h": pers[0], "persistence_mse_lead_2h": pers[1],
+            steps = rollout_two_steps(batch)
+        rec = {"init_time": str(t), "surya_mse_lead_1h": steps[0], "surya_mse_lead_2h": steps[1],
+               "mean_of_two_steps_as_in_test": (steps[0] + steps[1]) / 2,
+               "persistence_mse_lead_1h": pers[0], "persistence_mse_lead_2h": pers[1],
                "seconds_forward": round(time.time() - t1, 1), "seconds_download": round(t_dl, 1),
                "peak_rss_gb": C.peak_rss_gb()}
+        del batch, ds
+        gc.collect()
+        return rec
+
+    # Self-check: the repository test's sample 2014-01-07 16:48, read from S3 and scored with rollout_two_steps,
+    # must give the loss batch_step gave on the HF files (results/Surya/validation_test, float32 run).
+    check_path = os.path.join(out, "selfcheck_20140107_1648.json")
+    if not os.path.exists(check_path):
+        ref = [json.loads(l) for l in open(os.path.join(os.path.dirname(out), "validation_test",
+                                                         "per_sample_cuda_autocast_noop.jsonl"))]
+        ref = next(r for r in ref if r["reference_time"] == "2014-01-07T16:48")["cuda_autocast_noop"]["loss"]
+        rec = evaluate(pd.Timestamp("2014-01-07 16:48"))
+        rec["batch_step_loss_on_hf_files"] = ref
+        rec["abs_difference"] = abs(rec["mean_of_two_steps_as_in_test"] - ref)
+        json.dump(rec, open(check_path, "w"), indent=1)
+        print("self-check", json.dumps(rec), flush=True)
+        assert rec["abs_difference"] < 1e-6, rec
+
+    log_path = os.path.join(out, "per_init.jsonl")
+    done = {json.loads(l)["init_time"] for l in open(log_path)} if os.path.exists(log_path) else set()
+    for t in times:
+        if str(t) in done:
+            continue
+        rec = evaluate(t)
         with open(log_path, "a") as fp:
             fp.write(json.dumps(rec) + "\n")
         print(json.dumps(rec), flush=True)
-        state["targets"], state["steps"] = None, []
-        del batch, targets, ds
-        gc.collect()
     cache.clear()
 
     recs = [json.loads(l) for l in open(log_path)]
