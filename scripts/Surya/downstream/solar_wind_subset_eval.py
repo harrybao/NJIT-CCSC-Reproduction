@@ -39,6 +39,11 @@ batch["forecast"] (the unused t+60 frame) is dropped before the forward pass to 
 evaluate_model permutes batch["ts"] to (B, T, C, H, W) and infer.py does not; with one input time the patch embedding's
 flatten(1, 2) gives identical tensors either way (checked on every sample).
 
+Pipeline anchors (validation split only, --no-anchors to drop them). The saved output of solar_wind_tutorial.ipynb
+is a float32 CPU run of infer.py on three validation-period time stamps (2011-01-20 01:00 and 02:00, 2019-01-23
+02:00), with predictions printed in km/s (validation.csv constants). They are run first, scored against those printed
+numbers with a tolerance fixed in advance (0.5 km/s), and kept out of every sample metric.
+
 Baselines (MY OWN, not in Table 6): 4-day persistence V(t) (the speed at the input time), 27-day recurrence V(T - 27 d)
 (Table 7 quotes a "27-day Persistence" of 89 km/s from Ahn et al. 2025 on another period) and the training-set mean.
 They are scored on the same samples and on every candidate pair of the split (CSV only, no model).
@@ -56,9 +61,11 @@ reason. Each block also gets a reserve, used only if the primary fails.
 Usage (from the repository root):
   python scripts/Surya/downstream/solar_wind_subset_eval.py --dry-run --split test --n 30 --seed 0
   python scripts/Surya/downstream/solar_wind_subset_eval.py --split test --n 30 --seed 0
+  python scripts/Surya/downstream/solar_wind_subset_eval.py --dry-run --split validation --n 10 --seed 0
   python scripts/Surya/downstream/solar_wind_subset_eval.py --split validation --n 10 --seed 0
   python scripts/Surya/downstream/solar_wind_subset_eval.py --summarize-only
-A rerun skips time stamps already in per_sample_<split>.jsonl, so an interrupted run resumes.
+A rerun skips time stamps already in per_sample_<split>.jsonl, so an interrupted run resumes; --max-forward K limits
+one invocation to K forward passes (the dry run prints the K that fits in about 90 minutes).
 """
 import argparse
 import concurrent.futures as cf
@@ -117,6 +124,14 @@ PAPER_TABLE6 = {  # arXiv 2508.14112 v2, Sec. 2.6.5, Table 6 (copied exactly; "9
     "Surya": {"rmse_km_s": 75.92, "mae_km_s": 58.06, "validation_mse_km2_s2": 5698.62},
 }
 PAPER_TABLE7_27DAY_PERSISTENCE = 89  # "27-day Persistence Ahn et al. (2025)", RMSE km/s, other period
+# Pipeline anchors: the saved output of solar_wind_tutorial.ipynb (cell 9: infer.run_inference with config_infer.yaml,
+# "CUDA available: False", torch 2.8.0+cu126, "CPU Autocast ... Disabling autocast", i.e. a float32 CPU run of the same
+# checkpoint). infer.py un-normalises with validation.csv's constants (min 259, range 494). (input time, printed
+# prediction km/s, printed ground truth km/s); all three input times lie in the validation period (DOY 20 and 23).
+# They are scored separately and never enter the sample metrics.
+NOTEBOOK_ANCHORS = [("2011-01-20 01:00:00", 393.63, 344.00), ("2019-01-23 02:00:00", 391.95, 433.00),
+                    ("2011-01-20 02:00:00", 383.07, 351.00)]
+ANCHOR_TOL_KM_S = 0.5  # fixed before any run: 0.005 km/s print rounding plus float32 differences across CPUs/torch
 SPLIT_CSV = {"test": "test.csv", "validation": "validation.csv"}
 STRATA_YEARS = {"test": list(range(2020, 2025)), "validation": list(range(2011, 2020))}
 DEFAULT_N = {"test": 30, "validation": 10}
@@ -383,24 +398,93 @@ def candidates(split):
     return df, info
 
 
-def plan_blocks(cands, split, n, seed):
-    rng = np.random.default_rng(seed)
-    years = [y for y in STRATA_YEARS[split] if (cands["t"].dt.year == y).any()]
+def design_blocks(cands, split, n, rng):
+    """Year allocation (n split evenly, the remainder to years drawn with rng) and the consecutive equal time blocks
+    inside each year, as arrays of positions in cands (sorted by t, default index)."""
+    yr = cands["t"].dt.year.to_numpy()
+    years = [y for y in STRATA_YEARS[split] if (yr == y).any()]
     base, extra = divmod(n, len(years))
     alloc = {y: base for y in years}
     for y in sorted(int(v) for v in rng.choice(years, size=extra, replace=False)):
         alloc[y] += 1
-    blocks = []
+    parts = []
     for y in years:
-        sub = cands[cands["t"].dt.year == y].reset_index(drop=True)
-        if alloc[y] == 0:
-            continue
-        for b, part in enumerate(np.array_split(np.arange(len(sub)), alloc[y])):
-            order = rng.permutation(part)
-            blocks.append({"stratum": y, "block": b, "block_first": str(sub["t"][part[0]]),
-                           "block_last": str(sub["t"][part[-1]]), "block_candidates": int(len(part)),
-                           "order": [sub.iloc[i].to_dict() for i in order]})
+        if alloc[y] > 0:
+            parts += [(y, b, part) for b, part in enumerate(np.array_split(np.flatnonzero(yr == y), alloc[y]))]
+    return alloc, parts
+
+
+def plan_blocks(cands, split, n, seed):
+    """Blocks with their candidates in a seeded random order (the first that passes the S3 checks is the primary)."""
+    rng = np.random.default_rng(seed)
+    alloc, parts = design_blocks(cands, split, n, rng)
+    blocks = []
+    for y, b, part in parts:
+        order = rng.permutation(part)
+        blocks.append({"stratum": y, "block": b, "block_first": str(cands["t"].iloc[part[0]]),
+                       "block_last": str(cands["t"].iloc[part[-1]]), "block_candidates": int(len(part)),
+                       "order": cands.iloc[order].to_dict("records")})
     return alloc, blocks
+
+
+def design_spread(split, n, seed, sample_rmse, per_block=1, reps=2000, reps_cov=500, n_boot=2000):
+    """CSV only, no model: how typical the drawn sample is. For each of my baselines, the RMSE of `reps` random
+    samples drawn with the same design (same allocation and blocks, per_block uniformly random pairs per block), the
+    percentile of the drawn sample's RMSE among them, and how often a percentile-bootstrap 95% interval from such a
+    sample covers the RMSE over every pair of the split."""
+    cands, _ = candidates(split)
+    _, parts = design_blocks(cands, split, n, np.random.default_rng(seed))
+    rng = np.random.default_rng(seed + 1)
+    obs = cands["V_T"].to_numpy(float)
+    preds = {"persistence_4d_V_at_t": cands["V_t"].to_numpy(float),
+             "recurrence_27d_V_at_T_minus_27d": cands["V_T27"].to_numpy(float),
+             "climatology_train_mean": np.full(len(cands), norm_constants()["train"]["mean"])}
+    picks = np.concatenate([p[rng.integers(0, len(p), (reps, per_block))] for _, _, p in parts], 1)
+    out = {"design": f"{len(parts)} blocks x {per_block} pair(s), {reps} draws (coverage: {reps_cov} draws x "
+                     f"{n_boot} bootstrap resamples)"}
+    for name, pr in preds.items():
+        se = (pr - obs) ** 2
+        full = float(np.sqrt(np.nanmean(se)))
+        with np.errstate(invalid="ignore"):
+            r = np.sqrt(np.nanmean(se[picks], 1))
+        cover = 0
+        for k in range(reps_cov):
+            e = se[picks[k]]
+            e = e[np.isfinite(e)]
+            bs = np.sqrt(np.mean(e[rng.integers(0, len(e), (n_boot, len(e)))], 1))
+            lo, hi = np.percentile(bs, [2.5, 97.5])
+            cover += lo <= full <= hi
+        sv = sample_rmse.get(name)
+        out[name] = {"full_split_rmse": full, "design_rmse_median": float(np.median(r)),
+                     "design_rmse_2.5_97.5": [float(v) for v in np.percentile(r, [2.5, 97.5])],
+                     "drawn_sample_rmse": jnum(sv) if sv is not None else None,
+                     "drawn_sample_percentile": float(100 * np.mean(r <= sv)) if sv is not None else None,
+                     "bootstrap95_coverage_of_full_split_rmse": cover / reps_cov}
+    return out
+
+
+def regression_adjusted(se_model, X, x_full_mean, n_boot=N_BOOT, seed=0):
+    """Regression (control-variate) estimator of the full-split MSE: mean(se_model) - b.(mean(X) - x_full_mean),
+    b from least squares of se_model on X in the sample (Cochran, Sampling Techniques, 3rd ed., Ch. 7). X holds my
+    baselines' squared errors, whose means over every pair of the split are known from the CSV. Approximately
+    unbiased only for large n; with ~30 samples it is a sensitivity check, not a replacement for the plain mean."""
+    se_model, X = np.asarray(se_model, float), np.asarray(X, float)
+    n, k = X.shape
+
+    def est(idx):
+        S, Xs = se_model[idx], X[idx]
+        Xc, Sc = Xs - Xs.mean(1, keepdims=True), S - S.mean(1, keepdims=True)
+        b = np.linalg.solve(np.einsum("bnk,bnl->bkl", Xc, Xc) + 1e-9 * np.eye(k), np.einsum("bnk,bn->bk", Xc, Sc))
+        return S.mean(1) - np.einsum("bk,bk->b", b, Xs.mean(1) - x_full_mean), b
+
+    m, b = est(np.arange(n)[None])
+    bm, _ = est(np.random.default_rng(seed).integers(0, n, (n_boot, n)))
+    with np.errstate(invalid="ignore"):
+        return {"mse": float(m[0]), "rmse": float(np.sqrt(m[0])) if m[0] > 0 else None,
+                "ci95_mse": [float(v) for v in np.percentile(bm, [2.5, 97.5])],
+                "ci95_rmse": [float(np.sqrt(max(v, 0))) for v in np.percentile(bm, [2.5, 97.5])],
+                "b": [float(v) for v in b[0]], "n": int(n),
+                "corr_with_model_sq_err": [float(np.corrcoef(se_model, X[:, j])[0, 1]) for j in range(k)]}
 
 
 def head_check(t):
@@ -413,14 +497,63 @@ def head_check(t):
     return True, "", {"frame_bytes": b0, "frame_t60_bytes": b1}
 
 
-def select_sample(split, n, seed, check_channels=True, want_per_block=2, max_tries=30):
+def frame_check(t, check_channels=True):
+    """HEAD check of the frames at t and t+60, then (optionally) the 13-channel header check of both, in-process."""
+    ok, why, extra = head_check(t)
+    if ok and check_channels:
+        nread = 0
+        for which, ts in (("t", t), ("t+60", t + pd.Timedelta(minutes=60))):
+            try:
+                shapes, nb, _ = remote_nc_channels(C.s3_key(ts))
+            except Exception as e:
+                ok, why = False, f"could not read the netCDF header of the frame at {which}: {e!r}"
+                break
+            nread += nb
+            bad = [c for c in C.CHANNELS if shapes.get(c) != (4096, 4096)]
+            if bad:
+                ok, why = False, f"frame at {which} lacks channels {bad}"
+                break
+        extra["header_bytes_read"] = nread
+    return ok, why, extra
+
+
+def select_anchors(split, check_channels=True):
+    """Rows for the notebook anchor time stamps (validation split only), checked like any other sample."""
+    frames, allv = labels()
+    lab = frames[split].set_index("timestamp")["V"]
+    rows, skipped = [], []
+    for i, (ts, pred_nb, gt_nb) in enumerate(NOTEBOOK_ANCHORS):
+        t = pd.Timestamp(ts)
+        T = t + LEAD
+        rec = {"t": str(t), "T": str(T), "V_T": float(lab.get(T, np.nan)), "V_t": float(allv.get(t, np.nan)),
+               "V_T27": float(allv.get(T - LAG27, np.nan))}
+        if not np.isfinite(rec["V_T"]):
+            skipped.append({**rec, "stratum": "anchor", "reason": f"no row at t + 4 d in {split}.csv"})
+            continue
+        ok, why, extra = frame_check(t, check_channels)
+        if not ok:
+            skipped.append({**rec, "stratum": "anchor", "reason": why})
+            continue
+        rows.append({"split": split, "role": "anchor", "stratum": t.year, "block": -(i + 1),
+                     "block_first": str(t), "block_last": str(t), "block_candidates": 1, "timestamp": str(t),
+                     "target_time": str(T), "V_target_km_s": rec["V_T"], "V_at_input_time_km_s": rec["V_t"],
+                     "V_target_minus_27d_km_s": rec["V_T27"], "frame_key": C.s3_key(t),
+                     "frame_bytes": extra["frame_bytes"], "frame_t60_key": C.s3_key(t + pd.Timedelta(minutes=60)),
+                     "frame_t60_bytes": extra["frame_t60_bytes"], "channels_checked": bool(check_channels),
+                     "header_bytes_read": extra.get("header_bytes_read", 0),
+                     "notebook_pred_km_s": pred_nb, "notebook_ground_truth_km_s": gt_nb,
+                     "notebook_ground_truth_equals_csv": bool(abs(rec["V_T"] - gt_nb) < 1e-9)})
+    return pd.DataFrame(rows), skipped
+
+
+def select_sample(split, n, seed, check_channels=True, want_per_block=2, max_tries=30, header_workers=4):
     """Seeded, year-stratified sample with one primary and one reserve per time block (see module docstring)."""
     cands, info = candidates(split)
     alloc, blocks = plan_blocks(cands, split, n, seed)
     state = [{"pos": 0, "found": [], "skipped": []} for _ in blocks]
     ctx = mp.get_context("spawn")
     rounds = 0
-    with cf.ThreadPoolExecutor(8) as tp, cf.ProcessPoolExecutor(4, mp_context=ctx) as pp:
+    with cf.ThreadPoolExecutor(8) as tp, cf.ProcessPoolExecutor(header_workers, mp_context=ctx) as pp:
         while True:
             batch = []  # (block index, candidate row)
             for bi, (blk, st) in enumerate(zip(blocks, state)):
@@ -675,6 +808,37 @@ def csv_baselines(split, consts, seed=0):
     return out
 
 
+def anchor_check(allrec, consts):
+    """Our network output on the notebook's three samples, un-normalised the way infer.py does (validation.csv
+    constants), against the predictions the notebook printed. Checks the whole pipeline (frames from S3, dataset,
+    model build, LoRA wrap, strict load, float32 CPU forward), not the paper's numbers."""
+    va, tr = consts["validation"], consts["train"]
+    rows = []
+    for ts, pred_nb, gt_nb in NOTEBOOK_ANCHORS:
+        r = allrec.get(str(pd.Timestamp(ts)))
+        if r is None or r.get("status") != "ok":
+            rows.append({"timestamp": ts, "status": "not run" if r is None else r.get("status"),
+                         "error": None if r is None else r.get("error", "")[:300]})
+            continue
+        y = float(r["model_output_normalised"])
+        ours = y * va["ptp"] + va["min"]
+        rows.append({"timestamp": ts, "status": "ok", "notebook_pred_km_s": pred_nb,
+                     "ours_km_s_validation_csv_constants": ours, "diff_km_s": ours - pred_nb,
+                     "within_tolerance": bool(abs(ours - pred_nb) <= ANCHOR_TOL_KM_S),
+                     "ours_normalised": y, "notebook_normalised": (pred_nb - va["min"]) / va["ptp"],
+                     "ours_km_s_train_constants": y * tr["ptp"] + tr["min"],
+                     "ground_truth_notebook_km_s": gt_nb, "ground_truth_ours_km_s": r["V_target_km_s"],
+                     "ground_truth_equal": bool(abs(float(r["V_target_km_s"]) - gt_nb) < 1e-9),
+                     "forward_s": r["seconds"]["forward"]})
+    run = [x for x in rows if x["status"] == "ok"]
+    return {"source": "solar_wind_tutorial.ipynb cell 9 (infer.py with config_infer.yaml; CPU, autocast disabled, "
+                      "float32; torch 2.8.0+cu126); printed to 2 decimals",
+            "tolerance_km_s": ANCHOR_TOL_KM_S, "n_run": len(run),
+            "all_within_tolerance": bool(all(x["within_tolerance"] for x in run)) if run else None,
+            "max_abs_diff_km_s": float(max(abs(x["diff_km_s"]) for x in run)) if run else None,
+            "samples": rows}
+
+
 def summarize(out_dir, seed=0):
     consts = norm_constants()
     tr, va = consts["train"], consts["validation"]
@@ -698,16 +862,17 @@ def summarize(out_dir, seed=0):
         "splits": {}}
     for split in ("test", "validation"):
         allrec = read_records(per_sample_path(out_dir, split))
-        recs = [r for r in allrec.values() if r.get("status") == "ok"]
+        anchors = anchor_check(allrec, consts) if split == "validation" else None
+        recs = [r for r in allrec.values() if r.get("status") == "ok" and r.get("role") in ("primary", "reserve")]
         failed = [r for r in allrec.values() if r.get("status") != "ok"]
+        if anchors and anchors["n_run"]:
+            summary["splits"].setdefault(split, {})["notebook_anchor_check"] = anchors
         if not recs:
             continue
-        by_block = {}  # one sample per time block: the primary if it was scored, else the reserve
-        for r in recs:
-            k = (int(r["stratum"]), int(r["block"]))
-            if k not in by_block or r["role"] == "primary":
-                by_block[k] = r
-        recs = sorted(by_block.values(), key=lambda r: r["timestamp"])
+        # every scored primary/reserve: a reserve is run only in place of a failed primary, or for all blocks with
+        # --include-reserves (then two random pairs per block)
+        recs = sorted(recs, key=lambda r: r["timestamp"])
+        per_block = int(pd.Series([(int(r["stratum"]), int(r["block"])) for r in recs]).value_counts().max())
         obs = np.array([r["V_target_km_s"] for r in recs], float)
         y = np.array([r["model_output_normalised"] for r in recs], float)
         sc = consts[split]
@@ -739,6 +904,28 @@ def summarize(out_dir, seed=0):
                                           "model_minus_baseline_rmse_paired": paired_rmse_diff(p_main, clim, obs,
                                                                                                seed=seed)}
         res["baselines_on_same_samples"] = base
+        # how typical the scored samples are (CSV only) and a control-variate estimate of the full-split MSE
+        meta_json = os.path.join(out_dir, f"sampling_{split}.json")
+        if os.path.exists(meta_json):
+            sm = json.load(open(meta_json))
+            res["sample_representativeness_csv_only"] = design_spread(
+                split, sm["n"], sm["seed"], {k: v["rmse"] for k, v in base.items()}, per_block=per_block)
+        cands, _ = candidates(split)
+        full = cands[cands["V_t"].notna()]
+        X_full = np.array([np.mean((full["V_t"] - full["V_T"]) ** 2), np.mean((tr["mean"] - full["V_T"]) ** 2)])
+        m = np.isfinite(vt)
+        if m.sum() >= 8:
+            Xs = np.stack([(vt[m] - obs[m]) ** 2, (tr["mean"] - obs[m]) ** 2], 1)
+            ra = regression_adjusted((p_main[m] - obs[m]) ** 2, Xs, X_full, seed=seed)
+            ra.update({"label": "MY ADJUSTMENT (not the paper's): estimate of the model's MSE/RMSE over every pair "
+                                "of the split that has V(t), using the squared errors of 4-day persistence and of "
+                                "the training-mean climatology as control variates",
+                       "control_variates": ["persistence_4d sq. error", "climatology_train_mean sq. error"],
+                       "full_split_means_of_control_variates": [float(v) for v in X_full],
+                       "sample_means_of_control_variates": [float(v) for v in Xs.mean(0)],
+                       "unadjusted_on_same_rows": {"mse": float(np.mean((p_main[m] - obs[m]) ** 2)),
+                                                   "rmse": float(np.sqrt(np.mean((p_main[m] - obs[m]) ** 2)))}})
+            res["model_regression_adjusted_full_split"] = ra
         # finetune.evaluate_model's criterion: MSELoss between the raw output and the target scaled with the
         # constants of the CSV the dataset was built on (for the validation split that is exactly its valid loss)
         tn = np.array([r["target_normalised_by_dataset"] for r in recs], float)
@@ -755,8 +942,8 @@ def summarize(out_dir, seed=0):
             m = years == yv
             per_year[int(yv)] = {"n": int(m.sum()), **{k: v for k, v in errors_metrics(p_main[m], obs[m]).items()
                                                        if k in ("rmse", "mae", "bias")}}
-        summary["splits"][split] = {
-            "n_samples_scored": len(recs), "n_failed_records": len(failed),
+        summary["splits"].setdefault(split, {}).update({
+            "n_samples_scored": len(recs), "n_failed_records": len(failed), "max_samples_per_block": per_block,
             "failed": [{"timestamp": r["timestamp"], "error": r.get("error", "")[:300]} for r in failed],
             "roles": {k: int(v) for k, v in pd.Series([r["role"] for r in recs]).value_counts().items()},
             "time_range_input": [recs[0]["timestamp"], recs[-1]["timestamp"]],
@@ -778,7 +965,7 @@ def summarize(out_dir, seed=0):
                                 preds["validation_csv_constants_infer_py_as_shipped"][i]),
                             "V_at_input_time": jnum(vt[i]), "V_T_minus_27d": jnum(v27[i]),
                             "model_output_normalised": float(y[i])} for i, r in enumerate(recs)],
-        }
+        })
     env = os.path.join(out_dir, "environment.json")
     if os.path.exists(env):
         summary["environment"] = json.load(open(env))
@@ -790,13 +977,28 @@ def summarize(out_dir, seed=0):
 def get_sample(args, out_dir, cfg, scalers, force=False):
     sample_csv = os.path.join(out_dir, f"sample_{args.split}.csv")
     meta_json = os.path.join(out_dir, f"sampling_{args.split}.json")
+    want_anchors = args.split == "validation" and not args.no_anchors
     if not force and os.path.exists(sample_csv) and os.path.exists(meta_json):
         meta = json.load(open(meta_json))
-        if (meta["n"], meta["seed"], meta["check_channels"]) == (args.n, args.seed, not args.no_channel_check):
+        if (meta["n"], meta["seed"], meta["check_channels"], meta.get("anchors", False)) == \
+                (args.n, args.seed, not args.no_channel_check, want_anchors):
             log(f"reusing {sample_csv}")
             return pd.read_csv(sample_csv), meta
     t0 = time.time()
-    sample, meta = select_sample(args.split, args.n, args.seed, check_channels=not args.no_channel_check)
+    sample, meta = select_sample(args.split, args.n, args.seed, check_channels=not args.no_channel_check,
+                                 header_workers=args.header_workers)
+    meta["anchors"] = want_anchors
+    if want_anchors:
+        anc, anc_skipped = select_anchors(args.split, check_channels=not args.no_channel_check)
+        meta["anchor_info"] = {
+            "source": "solar_wind_tutorial.ipynb cell 9 saved output (infer.py, CPU, float32, torch 2.8.0+cu126)",
+            "tolerance_km_s": ANCHOR_TOL_KM_S, "requested": [a[0] for a in NOTEBOOK_ANCHORS],
+            "kept": list(anc["timestamp"]) if len(anc) else [], "skipped": anc_skipped,
+            "coincide_with_stratified_sample": sorted(set(anc["timestamp"]) & set(sample["timestamp"]))
+            if len(anc) else [],
+            "notebook_ground_truth_equals_csv_all": bool(anc["notebook_ground_truth_equals_csv"].all())
+            if len(anc) else None}
+        sample = pd.concat([sample, anc], ignore_index=True)
     meta["selection_seconds"] = round(time.time() - t0, 1)
     meta["dataset_join_check"] = check_joins(sample, cfg, scalers, args.split)
     meta["dataset_join_all_ok"] = all(x["ok"] for x in meta["dataset_join_check"])
@@ -839,7 +1041,9 @@ def dry_run(args, out_dir, label_info):
     log(f"metric self-test passed (evaluate_model rel diff {check['finetune_evaluate_model_max_rel_diff']:.1e}, "
         f"infer.py printout abs diff {check['infer_single_sample_max_abs_diff']:.1e})")
     sample, meta = get_sample(args, out_dir, cfg, scalers, force=True)
-    prim = sample[sample.role == "primary"]
+    # what a run executes: anchors first (validation split), then one primary per block
+    prim = pd.concat([sample[sample.role == "anchor"], sample[sample.role == "primary"]], ignore_index=True)
+    prim = prim.drop_duplicates("timestamp")
     consts = norm_constants()
     bw = bandwidth_probe(sample)
     ck = requests.head(hf_url(CKPT_REPO, CKPT_REV, CKPT_NAME, kind="models"), allow_redirects=False, timeout=60)
@@ -865,7 +1069,9 @@ def dry_run(args, out_dir, label_info):
            "per_sample_minutes": round(per_sample / 60, 2),
            "frame_download_minutes_per_sample_mean": round(float(dl.mean()) / 60, 2) if len(dl) else 0,
            "prefetch": hidden, "download_hidden_by_prefetch": bool(hidden and dl.max() < per_sample),
-           "total_minutes": round(total_s / 60, 1)}
+           "total_minutes": round(total_s / 60, 1),
+           # forward passes that fit in one ~90-minute run; a rerun of the same command resumes from the jsonl
+           "max_forward_per_90_min_run": int(max(1, (90 * 60 - one_off - (dl[0] if len(dl) else 0)) // per_sample))}
     disk = {"frames_total_bytes_downloaded_over_run": int(fb.sum()), "frames_max_on_disk_bytes": frames_max,
             "checkpoint_bytes": CKPT_SIZE, "checkpoint_head_x_linked_size": ck.headers.get("x-linked-size"),
             "foundation_weights_already_on_disk_linked_not_copied": os.path.join(FM_DIR, "surya.366m.v1.pt")}
@@ -891,6 +1097,13 @@ def dry_run(args, out_dir, label_info):
         f"once); checkpoint {CKPT_SIZE / 1e9:.2f} GB")
     log(f"estimated {est['total_minutes']} min ({len(prim)} forward passes); new disk at peak "
         f"~{disk['peak_disk_gb_new']} GB")
+    if est["total_minutes"] > 90:
+        log(f"more than 90 min: run with --max-forward {est['max_forward_per_90_min_run']} and repeat the same "
+            f"command until it reports 0 samples to run (each rerun resumes)")
+    if meta.get("anchors"):
+        ai = meta["anchor_info"]
+        log(f"notebook anchors kept: {ai['kept']} (skipped {len(ai['skipped'])}); notebook ground truth equals "
+            f"{args.split}.csv: {ai['notebook_ground_truth_equals_csv_all']}")
     print(sample[["role", "stratum", "block", "timestamp", "target_time", "V_target_km_s",
                   "V_at_input_time_km_s"]].to_string(index=False))
 
@@ -916,10 +1129,14 @@ def run(args, out_dir):
     recs_path = per_sample_path(out_dir, args.split)
     previous = read_records(recs_path)
     done = {t for t, r in previous.items() if r.get("status") == "ok"}
-    ok_blocks = {(int(r["stratum"]), int(r["block"])) for r in previous.values() if r.get("status") == "ok"}
-    blocks = {}
+    blocks, anchors = {}, []
     for r in sample.to_dict("records"):
-        blocks.setdefault((int(r["stratum"]), int(r["block"])), {})[r["role"]] = r
+        if r["role"] == "anchor":
+            anchors.append(r)
+        else:
+            blocks.setdefault((int(r["stratum"]), int(r["block"])), {})[r["role"]] = r
+    ok_blocks = {(int(r["stratum"]), int(r["block"])) for r in previous.values()
+                 if r.get("status") == "ok" and r.get("role") in ("primary", "reserve")}
     work, complete = [], 0
     for key, b in sorted(blocks.items()):
         if key in ok_blocks:  # one sample per block: a block is finished once its primary or reserve is scored
@@ -931,8 +1148,18 @@ def run(args, out_dir):
             work.append(prim)
         elif res is not None:
             work.append(res)
+    if args.include_reserves:  # second random pair of every block, after all primaries, interleaved across years
+        in_work = {r["timestamp"] for r in work}
+        for key in sorted(blocks, key=lambda k: (k[1], k[0])):
+            res = blocks[key].get("reserve")
+            if res is not None and res["timestamp"] not in in_work:
+                work.append(res)
+    # notebook anchors run first (an early end-to-end check); one that is also a stratified sample is run once
+    in_work = {r["timestamp"] for r in work}
+    work = [a for a in anchors if a["timestamp"] not in in_work] + work
     pending = [r for r in work if r["timestamp"] not in done][: args.max_forward]
-    log(f"{len(blocks)} blocks in the sample, {complete} already scored, {len(pending)} samples to run now")
+    log(f"{len(blocks)} blocks in the sample, {complete} already scored, {len(anchors)} anchors, "
+        f"{len(pending)} samples to run now")
     if not pending:
         summarize(out_dir, args.seed)
         return
@@ -1041,7 +1268,7 @@ def run(args, out_dir):
             rec["status"] = "failed"
             rec["error"] = repr(e)[:2000]
             log(f"[{j + 1}/{len(pending)}] {row['timestamp']} FAILED: {e!r}")
-            res = blocks[(int(row["stratum"]), int(row["block"]))].get("reserve")
+            res = blocks.get((int(row["stratum"]), int(row["block"])), {}).get("reserve")
             if (row["role"] == "primary" and res is not None and res["timestamp"] not in done
                     and all(p["timestamp"] != res["timestamp"] for p in pending)):
                 pending.append(res)
@@ -1064,7 +1291,11 @@ def run(args, out_dir):
         os.remove(ckpt)
     s = summarize(out_dir, args.seed)
     sp = s["splits"].get(args.split, {})
-    if sp:
+    if "notebook_anchor_check" in sp:
+        a = sp["notebook_anchor_check"]
+        log(f"notebook anchors: {a['n_run']} run, max |ours - notebook| {a['max_abs_diff_km_s']:.3f} km/s, "
+            f"all within {a['tolerance_km_s']} km/s: {a['all_within_tolerance']}")
+    if "metrics" in sp:
         m = sp["metrics"]["model"]["train_constants_primary"]
         log(f"{args.split}: n={sp['n_samples_scored']} RMSE {m['rmse']:.2f} {m['ci95']['rmse']} MAE {m['mae']:.2f} "
             f"{m['ci95']['mae']} MSE {m['mse']:.0f} km/s (paper 75.92 / 58.06 / 5698.62)")
@@ -1079,6 +1310,10 @@ def main():
     ap.add_argument("--out", default=os.path.join(REPO_ROOT, "results", "Surya", "solar_wind"))
     ap.add_argument("--max-forward", type=int, default=40, help="forward passes allowed in this run")
     ap.add_argument("--no-channel-check", action="store_true", help="skip the netCDF header check of each frame")
+    ap.add_argument("--header-workers", type=int, default=4,
+                    help="processes reading netCDF headers during sample selection (each ~0.2 GB of RAM)")
+    ap.add_argument("--no-anchors", action="store_true",
+                    help="validation split: leave out the three notebook anchor samples (3 extra forward passes)")
     ap.add_argument("--no-prefetch", action="store_true", help="keep only one sample's frames on disk (~1.2 GB)")
     ap.add_argument("--delete-checkpoint", action="store_true", help="remove the 1.8 GB checkpoint at the end")
     ap.add_argument("--summarize-only", action="store_true", help="recompute summary.json from the jsonl files")

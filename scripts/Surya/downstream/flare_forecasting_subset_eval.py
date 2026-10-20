@@ -58,15 +58,19 @@ reads it (its __getitem__ would otherwise retry a failing sample up to 100 times
 Data. Frames come from the public bucket s3://nasa-surya-bench (bitwise-identical to the HF copies, see
 results/Surya/s3_vs_hf_frames.json) through surya_common.FrameCache. At most one sample's three frames (about 1.8 GB)
 are on disk: once a sample has been read into memory its frames are deleted and the next sample's are downloaded while
-the model runs (at the measured 12-17 MB/s the download is hidden behind the forward pass).
+the model runs (at about 11 MB/s or more from S3 the download is mostly hidden behind the forward pass).
+
+Budget. One run does at most --max-forward forward passes (default 40) and starts no sample that would end after
+--max-minutes (default 90) of wall clock. A rerun skips time stamps already in per_sample_<split>.jsonl, so a run that
+stops at the budget, or is interrupted, resumes where it left off. The dry run reports how many forward passes fit in
+the budget at the measured bandwidth, at the bandwidth typical of this machine, and compute-only.
 
 Usage (from the repository root):
   python scripts/Surya/downstream/flare_forecasting_subset_eval.py --dry-run --split test --n 40 --seed 0
-  python scripts/Surya/downstream/flare_forecasting_subset_eval.py --split test --n 40 --seed 0 --max-forward 20  (twice)
+  python scripts/Surya/downstream/flare_forecasting_subset_eval.py --split test --n 40 --seed 0   (repeat until done)
+  python scripts/Surya/downstream/flare_forecasting_subset_eval.py --dry-run --split validation --n 20 --seed 0
   python scripts/Surya/downstream/flare_forecasting_subset_eval.py --split validation --n 20 --seed 0
   python scripts/Surya/downstream/flare_forecasting_subset_eval.py --summarize-only
-A rerun skips time stamps already in per_sample_<split>.jsonl, so an interrupted run resumes; --max-forward caps the
-forward passes of one run.
 """
 import argparse
 import collections
@@ -142,6 +146,10 @@ HOUR = pd.Timedelta(minutes=60)
 # normalising one 13-channel frame took 5-11 s (21 s for the first) in the authors' dataset logs of that run
 # (/home/user/work/surya_run/logs/data), taken as 12 s; input statistics 5 s; building and loading the model 150 s.
 SEC_FORWARD, SEC_LOAD_FRAME, SEC_STATS, SEC_MODEL = 136, 12, 5, 150
+# S3 and HF CDN bandwidth (MB/s) typical of this machine: the 16 MB probes of the flare, AR and solar-wind dry runs on
+# 2026-10-20 read 11.3-14.4 MB/s from S3 and 16.0-19.1 MB/s from HF, except one outlier at 2.3 / 1.2 MB/s.
+TYPICAL_MB_S = (11.0, 17.0)
+DEFAULT_MAX_MINUTES = 90  # the per-run wall-clock budget of the workflow
 
 
 # ----------------------------------------------------------------------------------------------- small utilities
@@ -668,13 +676,21 @@ def candidates(split, use_listing=True):
     t = lab["timestamp"].values
     info = {"rows_in_csv": int(len(lab)), "positives_in_csv": int(lab["label_max"].sum()),
             "prevalence_csv": float(lab["label_max"].mean()), "filters": []}
-    keep = np.isin(t - np.timedelta64(60, "m"), t) & np.isin(t + np.timedelta64(60, "m"), t)
+    reasons = [[] for _ in range(len(lab))]
+
+    def note(have, what):
+        """Record, per row, which of the frames t-60, t, t+60 are missing from `have`."""
+        miss = {name: ~np.isin(t + np.timedelta64(d, "m"), have) for name, d in (("t-60", -60), ("t", 0), ("t+60", 60))}
+        for i in np.flatnonzero(np.logical_or.reduce(list(miss.values()))):
+            reasons[i].append(f"{'/'.join(n for n, m in miss.items() if m[i])} {what}")
+        return ~np.logical_or.reduce(list(miss.values()))
+
+    keep = note(t, "row not in the split CSV")
     info["filters"].append({"filter": "t-60 and t+60 rows also in the split CSV", "rows_left": int(keep.sum())})
     if split == "validation":
         idx = pd.read_csv(os.path.join(LABEL_DIR, "valid_index_surya_1_0.csv"))
         have = pd.to_datetime(idx.loc[idx["present"] == 1, "timestep"]).values
-        k2 = np.isin(t - np.timedelta64(60, "m"), have) & np.isin(t, have) & np.isin(t + np.timedelta64(60, "m"), have)
-        keep &= k2
+        keep &= note(have, "not present == 1 in valid_index_surya_1_0.csv")
         info["filters"].append({"filter": "t-60, t, t+60 present == 1 in core-sdo valid_index_surya_1_0.csv",
                                 "rows_left": int(keep.sum())})
     listing = None
@@ -683,11 +699,16 @@ def candidates(split, use_listing=True):
         months = {(int(y), int(m)) for y, m in zip(need.year, need.month)}
         listing, linfo = s3_listing(months)
         on_s3 = listing["timestamp"].values
-        k3 = np.isin(t - np.timedelta64(60, "m"), on_s3) & np.isin(t, on_s3) & np.isin(t + np.timedelta64(60, "m"), on_s3)
-        keep &= k3
+        keep &= note(on_s3, "frame not in the S3 bucket listing")
         info["s3_listing"] = linfo
         info["filters"].append({"filter": "t-60, t, t+60 frames in the S3 bucket listing", "rows_left": int(keep.sum())})
     cands = lab[keep].reset_index(drop=True)
+    excl = lab.loc[~keep, ["timestamp", "label_max", "max_goes_class"]].copy()
+    excl["reason"] = ["; ".join(reasons[i]) for i in np.flatnonzero(~keep)]
+    info["excluded_rows"] = int(len(excl))
+    info["excluded_by_reason_and_label"] = {f"{r} | label_max={int(lbl)}": int(c) for (r, lbl), c in
+                                            excl.groupby(["reason", "label_max"]).size().items()}
+    info["_excluded"] = excl
     info["candidates"] = int(len(cands))
     info["candidate_positives"] = int(cands["label_max"].sum())
     info["prevalence_candidates"] = float(cands["label_max"].mean())
@@ -955,6 +976,104 @@ def read_records(path):
     return recs
 
 
+def plan_work(sample, previous, seed, max_forward):
+    """What a (re)run scores, given the sample file and the records already in per_sample_<split>.jsonl.
+
+    One sample per time block: blocks with an 'ok' record are complete; otherwise the primary is run, or the
+    reserve if the primary has a 'failed' record. Positives and negatives alternate, each in a seeded random order of
+    blocks, so any prefix of the run (an interrupted run, or a cap below the sample size) is balanced and spread over
+    the years. Returns (blocks, pending, number of complete blocks)."""
+    done = {t for t, r in previous.items() if r.get("status") == "ok"}
+    ok_blocks = {(r["stratum"], int(r["block"])) for r in previous.values() if r.get("status") == "ok"}
+    blocks = {}
+    for r in sample.to_dict("records"):
+        blocks.setdefault((r["stratum"], int(r["block"])), {})[r["role"]] = r
+    rng = np.random.default_rng(seed + 1)
+    by_cls = {c: [k for k in sorted(blocks) if k[0].startswith(c)] for c in ("pos", "neg")}
+    by_cls = {c: [ks[i] for i in rng.permutation(len(ks))] for c, ks in by_cls.items()}
+    order = [k for pair in zip(by_cls["pos"], by_cls["neg"]) for k in pair]
+    order += by_cls["pos"][len(by_cls["neg"]):] + by_cls["neg"][len(by_cls["pos"]):]
+    work, complete = [], 0
+    for key in order:
+        b = blocks[key]
+        if key in ok_blocks:
+            complete += 1
+            continue
+        failed_before = b.get("primary") and previous.get(b["primary"]["timestamp"], {}).get("status") == "failed"
+        if b.get("primary") and not failed_before:
+            work.append(b["primary"])
+        elif b.get("reserve"):
+            work.append(b["reserve"])
+    return blocks, [r for r in work if r["timestamp"] not in done][:max_forward], complete
+
+
+def pipeline_self_test(sample, meta, split, seed):
+    """Dry-run check of the bookkeeping that only a real run would otherwise exercise: the run planner (balance,
+    resume, reserve substitution) and summarize() on synthetic per-sample records written to a temporary folder.
+    Nothing here touches a model or a frame; the synthetic logits are random numbers."""
+    import tempfile
+    rep = {}
+    prim = sample[sample.role == "primary"]
+    blocks, pend, complete = plan_work(sample, {}, seed, 10 ** 6)
+    cls = [r["class"] for r in pend]
+    k = 2 * min(cls.count("pos"), cls.count("neg"))
+    assert complete == 0 and len(pend) == len(prim) == len(blocks), (len(pend), len(prim), len(blocks))
+    assert all(r["role"] == "primary" for r in pend)
+    assert cls[:k] == ["pos", "neg"] * (k // 2), "positives and negatives do not alternate"
+    assert len({(r["stratum"], int(r["block"])) for r in pend}) == len(pend), "a block is run twice"
+    capped = plan_work(sample, {}, seed, 7)[1]
+    assert [r["timestamp"] for r in capped] == [r["timestamp"] for r in pend[:7]]
+    rep["planner_fresh"] = {"pending": len(pend), "first_classes": cls[:6], "cap_respected": True}
+    # resume: five scored, the sixth failed -> those five are skipped, the sixth block falls back to its reserve
+    prev = {r["timestamp"]: {**r, "status": "ok"} for r in pend[:5]}
+    prev[pend[5]["timestamp"]] = {**pend[5], "status": "failed"}
+    _, pend2, complete2 = plan_work(sample, prev, seed, 10 ** 6)
+    b5 = blocks[(pend[5]["stratum"], int(pend[5]["block"]))]
+    assert complete2 == 5 and len(pend2) == len(pend) - 5
+    assert not {r["timestamp"] for r in pend[:5]} & {r["timestamp"] for r in pend2}
+    assert b5.get("reserve") is None or any(r["timestamp"] == b5["reserve"]["timestamp"] for r in pend2)
+    rep["planner_resume"] = {"complete": complete2, "pending": len(pend2), "failed_primary_replaced_by_reserve":
+                             b5.get("reserve") is not None}
+    # summarize() on synthetic records: every primary scored, plus one extra reserve record that must be ignored
+    rng = np.random.default_rng(seed + 99)
+    with tempfile.TemporaryDirectory() as tmp:
+        json.dump(meta, open(os.path.join(tmp, f"sampling_{split}.json"), "w"), default=str)
+        recs = []
+        for r in pend:
+            z = float(rng.normal(0.8 if r["label_max"] else -0.8, 1.2))
+            recs.append({**{q: r[q] for q in ("split", "role", "class", "year", "stratum", "block", "timestamp",
+                                               "label_max", "max_goes_class")},
+                         "label_from_dataset": int(r["label_max"]), "logit": z, "prob": float(sigmoid(z)),
+                         "seconds": {"forward": 136.0, "dataset_and_load": 36.0, "total": 180.0},
+                         "peak_rss_gb": 13.0, "status": "ok"})
+        if b5.get("reserve") is not None:
+            recs.append({**recs[5], "role": "reserve", "timestamp": b5["reserve"]["timestamp"], "logit": 9.0})
+        with open(per_sample_path(tmp, split), "w") as fp:
+            fp.writelines(json.dumps(x, default=str) + "\n" for x in recs)
+        s = summarize(tmp, seed, n_boot=2000)["splits"][split]
+    y = np.array([x["label_max"] for x in recs[:len(pend)]])
+    z = np.array([x["logit"] for x in recs[:len(pend)]])
+    pr = (z > 0).astype(int)
+    tpr, fpr = pr[y == 1].mean(), pr[y == 0].mean()
+    m = s["metrics"]["rules"][PRIMARY_RULE]
+    rw = m["reweighted"]["candidate_set_of_split (primary)"]
+    pi = meta["candidate_info"]["prevalence_candidates"]
+    cf_ = reweighted_closed_form(tpr, fpr, pi)
+    d = max(abs(m["tss"]["estimate"] - (tpr - fpr)), abs(rw["hss"]["estimate"] - cf_["hss"]),
+            abs(rw["f1"]["estimate"] - cf_["f1"]),
+            *(abs(rw["repo_formulas_on_expected_counts"][q] - cf_[q]) for q in ("tss", "hss", "f1")),
+            m["raw_sample"]["repo_DistributedClassificationMetrics"]["max_abs_diff_vs_ours"])
+    assert s["n_scored"] == len(pend), "summarize did not keep exactly one record per block"
+    assert d < 1e-6, f"summarize disagrees with the direct computation by {d}"
+    lo, hi = m["tss"]["ci95"]
+    assert lo <= m["tss"]["estimate"] <= hi
+    rep["summarize_synthetic"] = {"n_scored": s["n_scored"], "tss": m["tss"]["estimate"], "tss_ci95": [lo, hi],
+                                  "hss_reweighted": rw["hss"]["estimate"], "f1_reweighted": rw["f1"]["estimate"],
+                                  "max_abs_diff_vs_direct_and_repo": d, "extra_reserve_record_ignored": True}
+    rep["passed"] = True
+    return rep
+
+
 def split_prevalences(split, out_dir):
     meta_json = os.path.join(out_dir, f"sampling_{split}.json")
     meta = json.load(open(meta_json)) if os.path.exists(meta_json) else {}
@@ -1051,6 +1170,9 @@ def get_sample(args, out_dir, cfg, scalers, force=False):
     t0 = time.time()
     sample, meta = select_sample(args.split, args.n, args.seed, use_listing=not args.no_listing,
                                  header_check=args.header_check)
+    excl = meta["candidate_info"].pop("_excluded")
+    excl.to_csv(os.path.join(out_dir, f"excluded_{args.split}.csv"), index=False)
+    meta["candidate_info"]["excluded_file"] = f"excluded_{args.split}.csv"
     meta["selection_seconds"] = round(time.time() - t0, 1)
     meta["dataset_join_check"] = check_joins(sample, cfg, scalers, args.split)
     meta["dataset_join_all_ok"] = all(x["ok"] for x in meta["dataset_join_check"])
@@ -1059,24 +1181,45 @@ def get_sample(args, out_dir, cfg, scalers, force=False):
     return sample, meta
 
 
-def estimate(sample, bw):
+def estimate(sample, s3_mb_s, hf_mb_s, budget_min):
+    """Wall-clock model of a run: checkpoint download (the first sample's frames download alongside it and the
+    model build), then per sample: read its three frames, start downloading the next sample's frames, run the
+    model. Infinite bandwidth (s3_mb_s = hf_mb_s = inf) gives the compute-only bound."""
     prim = sample[sample.role == "primary"]
     cols = ["frame_tm60_bytes", "frame_t_bytes", "frame_tp60_bytes"]
     fb = prim[cols].to_numpy(float).sum(1)
-    s3, hf = bw["s3_frame"]["MB_per_s"] * 1e6, bw["hf_cdn_csv"]["MB_per_s"] * 1e6
-    d = fb / s3
+    d = fb / (s3_mb_s * 1e6)
+    ck = CKPT_SIZE / (hf_mb_s * 1e6)
     load = len(cols) * SEC_LOAD_FRAME
     compute = SEC_STATS + SEC_FORWARD
-    # the first sample's frames download while the checkpoint is fetched and the model is built; afterwards sample
-    # j+1's frames download while sample j runs through the model (they start once sample j has been read)
-    total = CKPT_SIZE / hf + max(SEC_MODEL, d[0] - CKPT_SIZE / hf if len(d) else 0)
-    total += sum(load + max(compute, d[j + 1] if j + 1 < len(d) else 0) for j in range(len(d)))
-    return {"frames_per_sample": len(cols), "frames_total_bytes": int(fb.sum()),
-            "frames_max_on_disk_bytes": int(fb.max()) if len(fb) else 0,
+    t = ck + max(SEC_MODEL, d[0] - ck if len(d) else 0)
+    cum = []
+    for j in range(len(d)):
+        t += load + max(compute, d[j + 1] if j + 1 < len(d) else 0)
+        cum.append(t)
+    fit = int(sum(c <= budget_min * 60 for c in cum))
+    return {"s3_MB_per_s": s3_mb_s, "hf_MB_per_s": hf_mb_s, "total_minutes": round(t / 60, 1),
             "per_sample_download_minutes_mean": round(float(d.mean()) / 60, 2) if len(d) else 0,
-            "per_sample_compute_minutes": round((load + compute) / 60, 2),
             "download_hidden_behind_forward": bool((d[1:] <= compute).all()) if len(d) > 1 else True,
-            "total_minutes": round(total / 60, 1), "forward_passes": int(len(prim))}
+            "forward_passes_within_budget": fit,
+            "runs_needed_at_budget": int(np.ceil(len(d) / fit)) if fit else None}
+
+
+def estimates(sample, bw, budget_min):
+    """The estimate at the bandwidth measured now, at the bandwidth typical of this machine, and compute-only.
+    A single 16 MB probe varies by a factor of 5 or more from minute to minute here (11.3 and 2.3 MB/s from S3 in
+    two dry runs one minute apart), so all three are reported."""
+    prim = sample[sample.role == "primary"]
+    cols = ["frame_tm60_bytes", "frame_t_bytes", "frame_tp60_bytes"]
+    fb = prim[cols].to_numpy(float).sum(1)
+    return {"forward_passes": int(len(prim)), "frames_per_sample": len(cols), "frames_total_bytes": int(fb.sum()),
+            "frames_max_on_disk_bytes": int(fb.max()) if len(fb) else 0,
+            "per_sample_compute_minutes": round((len(cols) * SEC_LOAD_FRAME + SEC_STATS + SEC_FORWARD) / 60, 2),
+            "budget_minutes_per_run": budget_min,
+            "at_measured_bandwidth": estimate(sample, bw["s3_frame"]["MB_per_s"], bw["hf_cdn_csv"]["MB_per_s"],
+                                              budget_min),
+            "at_typical_bandwidth": estimate(sample, *TYPICAL_MB_S, budget_min),
+            "compute_only": estimate(sample, float("inf"), float("inf"), budget_min)}
 
 
 def dry_run(args, out_dir):
@@ -1091,21 +1234,23 @@ def dry_run(args, out_dir):
         f"{imp['range_over_rounding_box']['prevalence'][0]:.4f}-{imp['range_over_rounding_box']['prevalence'][1]:.4f})")
     sample, meta = get_sample(args, out_dir, cfg, scalers, force=True)
     prim = sample[sample.role == "primary"]
+    pst = pipeline_self_test(sample, meta, args.split, args.seed)
+    log(f"pipeline self-test passed (planner, resume, summarize on synthetic records; max abs diff "
+        f"{pst['summarize_synthetic']['max_abs_diff_vs_direct_and_repo']:.1e})")
     bw = bandwidth_probe(prim["frame_t_key"].iloc[0])
     ck = retry(lambda: requests.head(hf_url(CKPT_REPO, CKPT_REV, CKPT_NAME, kind="models"), allow_redirects=False,
                                      timeout=60))
     pk = checkpoint_pickle_check()
     est = {"assumptions_s": {"forward": SEC_FORWARD, "read_and_normalise_per_frame": SEC_LOAD_FRAME,
                              "input_statistics": SEC_STATS, "model_build_and_load": SEC_MODEL},
-           "measured_bandwidth": bw, **estimate(sample, bw)}
-    chosen = est
+           "measured_bandwidth": bw, **estimates(sample, bw, args.max_minutes)}
     disk = {"checkpoint_bytes": CKPT_SIZE, "checkpoint_head_x_linked_size": ck.headers.get("x-linked-size"),
-            "frames_max_on_disk_bytes": chosen["frames_max_on_disk_bytes"],
-            "frames_total_bytes_over_run": chosen["frames_total_bytes"],
-            "peak_disk_gb_new_files": round((CKPT_SIZE + chosen["frames_max_on_disk_bytes"]) / 1e9, 2),
+            "frames_max_on_disk_bytes": est["frames_max_on_disk_bytes"],
+            "frames_total_bytes_over_run": est["frames_total_bytes"],
+            "peak_disk_gb_new_files": round((CKPT_SIZE + est["frames_max_on_disk_bytes"]) / 1e9, 2),
             "foundation_model_file_already_on_disk_bytes": os.path.getsize(FM_CKPT)}
     meta.update({"dry_run": True, "estimate": est, "disk": disk, "checkpoint_pickle": pk, "config": cfg_info,
-                 "paper_implied": imp,
+                 "paper_implied": imp, "pipeline_self_test": pst,
                  "forward_passes_planned": int(len(prim)), "checkpoint": f"{CKPT_REPO}@{CKPT_REV}/{CKPT_NAME}",
                  "labels": f"{LABEL_REPO}@{LABEL_REV}", "upstream_dir": UPSTREAM,
                  "upstream_head": os.popen(f"git -C {UPSTREAM} rev-parse --short HEAD").read().strip(),
@@ -1118,11 +1263,14 @@ def dry_run(args, out_dir):
         f"{int((prim['class'] == 'neg').sum())} neg) + {int((sample.role == 'reserve').sum())} reserves; "
         f"{meta['n_skipped']} draws skipped; dataset join check ok: {meta['dataset_join_all_ok']}")
     log(f"checkpoint pickle: only tensor globals {pk['only_tensor_globals']} {pk['globals']}")
-    log(f"frames over the run {chosen['frames_total_bytes'] / 1e9:.1f} GB (at most "
-        f"{chosen['frames_max_on_disk_bytes'] / 1e9:.2f} GB on disk); checkpoint {CKPT_SIZE / 1e9:.2f} GB; "
+    log(f"frames over the run {est['frames_total_bytes'] / 1e9:.1f} GB (at most "
+        f"{est['frames_max_on_disk_bytes'] / 1e9:.2f} GB on disk); checkpoint {CKPT_SIZE / 1e9:.2f} GB; "
         f"peak new disk ~{disk['peak_disk_gb_new_files']} GB")
-    log(f"estimate: {chosen['total_minutes']} min for {chosen['forward_passes']} forward passes; "
-        f"S3 {bw['s3_frame']['MB_per_s']} MB/s, HF CDN {bw['hf_cdn_csv']['MB_per_s']} MB/s")
+    for name in ("at_measured_bandwidth", "at_typical_bandwidth", "compute_only"):
+        e = est[name]
+        log(f"estimate {name} (S3 {e['s3_MB_per_s']} MB/s, HF {e['hf_MB_per_s']} MB/s): {e['total_minutes']} min "
+            f"for {est['forward_passes']} forward passes; {e['forward_passes_within_budget']} fit in "
+            f"{args.max_minutes} min, so {e['runs_needed_at_budget']} run(s)")
     print(sample[["role", "stratum", "block", "timestamp", "label_max", "max_goes_class"]].to_string(index=False))
 
 
@@ -1155,6 +1303,14 @@ def run(args, out_dir):
     from dataset import SolarFlareDataset
     from finetune import custom_collate_fn
 
+    run_t0 = time.time()
+    sample_s = []  # wall-clock seconds of each sample scored in this run
+
+    def fits(extra_s=0.0):
+        """Whether one more sample (typical duration so far, or the a-priori estimate) fits in --max-minutes."""
+        per = float(np.median(sample_s)) if sample_s else 3 * SEC_LOAD_FRAME + SEC_STATS + SEC_FORWARD
+        return args.max_minutes <= 0 or time.time() - run_t0 + extra_s + per <= args.max_minutes * 60
+
     cfg, cfg_info = load_configs()
     cfg["data"]["scalers"] = yaml.safe_load(open(SCALERS))  # as infer.main
     cfg["dtype"] = torch.float32  # as infer.main for dtype "float32"
@@ -1167,31 +1323,9 @@ def run(args, out_dir):
     recs_path = per_sample_path(out_dir, args.split)
     previous = read_records(recs_path)
     done = {t for t, r in previous.items() if r.get("status") == "ok"}
-    ok_blocks = {(r["stratum"], int(r["block"])) for r in previous.values() if r.get("status") == "ok"}
-    blocks = {}
-    for r in sample.to_dict("records"):
-        blocks.setdefault((r["stratum"], int(r["block"])), {})[r["role"]] = r
-    # run order: positives and negatives alternate, each in a seeded random order of blocks, so that any prefix of
-    # the run (an interrupted run, or --max-forward below the sample size) is balanced and spread over the years
-    rng = np.random.default_rng(args.seed + 1)
-    by_cls = {c: [k for k in sorted(blocks) if k[0].startswith(c)] for c in ("pos", "neg")}
-    by_cls = {c: [ks[i] for i in rng.permutation(len(ks))] for c, ks in by_cls.items()}
-    order = [k for pair in zip(by_cls["pos"], by_cls["neg"]) for k in pair]
-    order += by_cls["pos"][len(by_cls["neg"]):] + by_cls["neg"][len(by_cls["pos"]):]
-    work, complete = [], 0
-    for key in order:
-        b = blocks[key]
-        if key in ok_blocks:  # one sample per block
-            complete += 1
-            continue
-        failed_before = b.get("primary") and previous.get(b["primary"]["timestamp"], {}).get("status") == "failed"
-        if b.get("primary") and not failed_before:
-            work.append(b["primary"])
-        elif b.get("reserve"):
-            work.append(b["reserve"])
-    pending = [r for r in work if r["timestamp"] not in done][: args.max_forward]
+    blocks, pending, complete = plan_work(sample, previous, args.seed, args.max_forward)
     log(f"{len(blocks)} blocks in the sample, {complete} already scored, {len(pending)} samples to run now "
-        f"(cap {args.max_forward})")
+        f"(cap {args.max_forward} forward passes, {args.max_minutes} min)")
     if not pending:
         summarize(out_dir, args.seed)
         return
@@ -1218,6 +1352,10 @@ def run(args, out_dir):
 
     j = 0
     while j < len(pending):
+        if not fits():
+            log(f"time budget: {(time.time() - run_t0) / 60:.1f} of {args.max_minutes} min used; stopping with "
+                f"{len(pending) - j} sample(s) left for the next run (it resumes from {os.path.basename(recs_path)})")
+            break
         row = pending[j]
         t = pd.Timestamp(row["timestamp"])
         rec = {k: row.get(k) for k in ("split", "role", "class", "year", "stratum", "block", "timestamp", "label_max",
@@ -1237,7 +1375,7 @@ def run(args, out_dir):
             loader = DataLoader(ds, batch_size=1, num_workers=0, shuffle=False, collate_fn=custom_collate_fn)
             batch, metadata = next(iter(loader))
             t2 = time.time()
-            if j + 1 < len(pending):  # the frames are in memory: replace them on disk by the next sample's
+            if j + 1 < len(pending) and fits(SEC_STATS + SEC_FORWARD):  # frames in memory: fetch the next ones
                 fut, fut_for = pool.submit(cache.ensure, frames_for(pending[j + 1])), j + 1
             x = batch["ts"]
             rec["label_from_dataset"] = int(batch["label"].item())
@@ -1262,6 +1400,7 @@ def run(args, out_dir):
                               "dataset_and_load": round(t2 - t1, 1), "input_stats": round(t3 - t2, 1),
                               "forward": round(t4 - t3, 1), "total": round(time.time() - t_start, 1)}
             rec["status"] = "ok"
+            sample_s.append(rec["seconds"]["total"])
             log(f"[{j + 1}/{len(pending)}] {row['timestamp']} label {row['label_max']} ({row['max_goes_class']}) "
                 f"logit {logit:+.3f} p {rec['prob']:.3f} forward {rec['seconds']['forward']} s "
                 f"load {rec['seconds']['dataset_and_load']} s")
@@ -1303,6 +1442,9 @@ def main():
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--out", default=os.path.join(REPO_ROOT, "results", "Surya", "flare_forecasting"))
     ap.add_argument("--max-forward", type=int, default=40, help="forward passes allowed in this run")
+    ap.add_argument("--max-minutes", type=float, default=DEFAULT_MAX_MINUTES,
+                    help="wall-clock budget of this run; no new sample is started that would end after it (0: none). "
+                         "The dry run reports how many forward passes fit")
     ap.add_argument("--no-listing", action="store_true", help="do not list the S3 bucket (prevalence from the CSV)")
     ap.add_argument("--header-check", action="store_true",
                     help="also read the netCDF header of every drawn frame over HTTP (slow: ~16 s per frame)")

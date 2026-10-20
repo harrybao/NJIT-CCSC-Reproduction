@@ -41,6 +41,25 @@
    "listing_bytes_transferred_this_call": 0,
    "seconds": 0.2
   },
+  "excluded_rows": 3588,
+  "excluded_by_reason_and_label": {
+   "t frame not in the S3 bucket listing | label_max=0": 347,
+   "t frame not in the S3 bucket listing | label_max=1": 97,
+   "t+60 frame not in the S3 bucket listing | label_max=0": 599,
+   "t+60 frame not in the S3 bucket listing | label_max=1": 211,
+   "t+60 row not in the split CSV; t+60 frame not in the S3 bucket listing | label_max=0": 1,
+   "t-60 frame not in the S3 bucket listing | label_max=0": 591,
+   "t-60 frame not in the S3 bucket listing | label_max=1": 219,
+   "t-60 row not in the split CSV; t-60 frame not in the S3 bucket listing | label_max=0": 1,
+   "t-60/t frame not in the S3 bucket listing | label_max=0": 267,
+   "t-60/t frame not in the S3 bucket listing | label_max=1": 127,
+   "t-60/t+60 frame not in the S3 bucket listing | label_max=0": 22,
+   "t-60/t+60 frame not in the S3 bucket listing | label_max=1": 6,
+   "t-60/t/t+60 frame not in the S3 bucket listing | label_max=0": 532,
+   "t-60/t/t+60 frame not in the S3 bucket listing | label_max=1": 174,
+   "t/t+60 frame not in the S3 bucket listing | label_max=0": 270,
+   "t/t+60 frame not in the S3 bucket listing | label_max=1": 124
+  },
   "candidates": 40260,
   "candidate_positives": 11945,
   "prevalence_candidates": 0.2966964729259811,
@@ -65,7 +84,8 @@
     "neg": 2487,
     "pos": 5632
    }
-  }
+  },
+  "excluded_file": "excluded_test.csv"
  },
  "n_blocks": 40,
  "blocks_without_primary": [],
@@ -74,7 +94,7 @@
  "n_skipped": 0,
  "selection_rounds": 1,
  "header_bytes_read": 0,
- "selection_seconds": 17.7,
+ "selection_seconds": 19.1,
  "dataset_join_check": [
   {
    "timestamp": "2021-12-04 18:00:00",
@@ -1209,23 +1229,48 @@
   "measured_bandwidth": {
    "s3_frame": {
     "bytes": 16777216,
-    "seconds": 1.41,
-    "MB_per_s": 11.9
+    "seconds": 1.2,
+    "MB_per_s": 14.0
    },
    "hf_cdn_csv": {
     "bytes": 16777216,
-    "seconds": 0.75,
-    "MB_per_s": 22.3
+    "seconds": 0.81,
+    "MB_per_s": 20.7
    }
   },
+  "forward_passes": 40,
   "frames_per_sample": 3,
   "frames_total_bytes": 63898077865,
   "frames_max_on_disk_bytes": 1761351635,
-  "per_sample_download_minutes_mean": 2.24,
   "per_sample_compute_minutes": 2.95,
-  "download_hidden_behind_forward": false,
-  "total_minutes": 124.4,
-  "forward_passes": 40
+  "budget_minutes_per_run": 90,
+  "at_measured_bandwidth": {
+   "s3_MB_per_s": 14.0,
+   "hf_MB_per_s": 20.7,
+   "total_minutes": 121.9,
+   "per_sample_download_minutes_mean": 1.9,
+   "download_hidden_behind_forward": true,
+   "forward_passes_within_budget": 29,
+   "runs_needed_at_budget": 2
+  },
+  "at_typical_bandwidth": {
+   "s3_MB_per_s": 11.0,
+   "hf_MB_per_s": 17.0,
+   "total_minutes": 130.1,
+   "per_sample_download_minutes_mean": 2.42,
+   "download_hidden_behind_forward": false,
+   "forward_passes_within_budget": 27,
+   "runs_needed_at_budget": 2
+  },
+  "compute_only": {
+   "s3_MB_per_s": Infinity,
+   "hf_MB_per_s": Infinity,
+   "total_minutes": 120.5,
+   "per_sample_download_minutes_mean": 0.0,
+   "download_hidden_behind_forward": true,
+   "forward_passes_within_budget": 29,
+   "runs_needed_at_budget": 2
+  }
  },
  "disk": {
   "checkpoint_bytes": 1794022584,
@@ -1289,6 +1334,38 @@
    ]
   },
   "note": "Eq. 21-23 fix the confusion matrix up to scale; the Table 4 triple has a unique solution."
+ },
+ "pipeline_self_test": {
+  "planner_fresh": {
+   "pending": 40,
+   "first_classes": [
+    "pos",
+    "neg",
+    "pos",
+    "neg",
+    "pos",
+    "neg"
+   ],
+   "cap_respected": true
+  },
+  "planner_resume": {
+   "complete": 5,
+   "pending": 35,
+   "failed_primary_replaced_by_reserve": true
+  },
+  "summarize_synthetic": {
+   "n_scored": 40,
+   "tss": 0.25,
+   "tss_ci95": [
+    -0.050000000000000044,
+    0.55
+   ],
+   "hss_reweighted": 0.19679699166332307,
+   "f1_reweighted": 0.5110342614709972,
+   "max_abs_diff_vs_direct_and_repo": 1.9868214962137642e-08,
+   "extra_reserve_record_ignored": true
+  },
+  "passed": true
  },
  "forward_passes_planned": 40,
  "checkpoint": "nasa-ibm-ai4science/solar_flares_surya@ec7c42ab22fbf126c4bfffadb420f6e45a669832/solar_flare_weights.pth",

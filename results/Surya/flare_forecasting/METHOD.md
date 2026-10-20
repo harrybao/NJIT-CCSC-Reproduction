@@ -2,7 +2,7 @@
 
 This is a partial reproduction. It scores the released fine-tuned flare model on a small sample of the benchmark, on a CPU. It does not re-train anything and it does not use the full evaluation split.
 
-The script is `scripts/Surya/downstream/flare_forecasting_subset_eval.py`. The dry run writes `sample_<split>.csv`, `sampling_<split>.json` and `metric_check.json` (the metric self-test) to this folder. A real run adds `per_sample_<split>.jsonl`, `environment.json` and `summary.json`.
+The script is `scripts/Surya/downstream/flare_forecasting_subset_eval.py`. The dry run writes `sample_<split>.csv`, `sampling_<split>.json`, `excluded_<split>.csv` (every label row left out, with the reason) and `metric_check.json` (the metric self-test) to this folder. A real run adds `per_sample_<split>.jsonl`, `environment.json` and `summary.json`.
 
 ## What is evaluated
 
@@ -28,6 +28,8 @@ A label row at time t is a candidate only if three conditions hold. First, the r
 |---|---|---|---|---|---|
 | Test | 43,848 | 40,260 | 11,945 | 0.2967 | 0.2943 |
 | Validation | 3,672 | 3,243 | 350 | 0.1079 | 0.1089 |
+
+Every excluded row is listed with its reason in `excluded_<split>.csv`. In the test split, 2 rows sit at the edge of the split and the other 3,586 lack at least one of their three frames in the bucket. In the validation split, 18 rows sit at the edge, and every other excluded row is missing both from the core-sdo index and from the bucket. The excluded hours have about the same flare fraction as the kept ones (0.267 against 0.297 for test, 0.117 against 0.108 for validation), so the exclusions hardly move the prevalence.
 
 The sample is stratified by class: half positives and half negatives, 20 + 20 for test and 10 + 10 for validation. Within each class, the samples are spread over years in proportion to that class's candidates per year (largest-remainder rule), so the sample is self-weighting within each class. For the test split this gives positives 0, 1, 4, 6 and 9 for 2020 to 2024 (2020 has only 48 positive candidates) and negatives 6, 5, 4, 3 and 2.
 
@@ -69,20 +71,23 @@ A simulation in `metric_check.json` shows what 20 + 20 samples can resolve. The 
 
 ## Status, cost and how to run
 
-Both dry runs are done. They covered sample selection, the HEAD checks, the authors' dataset built for every sampled hour, the checkpoint pickle check, a bandwidth probe and the metric self-test. For every sampled hour the dataset yields exactly that hour and its CSV label. No weights or frames have been downloaded and no model has been run, so `summary.json` does not exist yet.
+Both dry runs were last repeated on 2026-10-20 with the current script, and both drew the same sample as before. A dry run selects the sample, makes the HEAD checks, builds the authors' dataset for every sampled hour, checks the checkpoint pickle, probes the bandwidth and runs the metric self-test. For every sampled hour the dataset yields exactly that hour and its CSV label.
 
-The estimates assume the measured bandwidth (12–17 MB/s from S3), 136 s per forward pass and about 12 s to read one frame:
+The dry run also runs a pipeline self-test on synthetic logits, covering the code that only a real run would otherwise reach. It checks that the run planner alternates positives and negatives, that a capped run takes a prefix, and that a resumed run skips scored hours and replaces a failed primary with its reserve. It also checks `summarize()`: its TSS and re-weighted HSS and F1 agree with a direct computation, and with the repo's metric class, to within 2e-8. No weights or frames have been downloaded and no model has been run, so `summary.json` does not exist yet.
 
-| Split | Forward passes | Estimated time | Frames transferred |
-|---|---|---|---|
-| Test | 40 | about 124 min | 64 GB |
-| Validation | 20 | about 63 min | 35 GB |
+The time estimate assumes 136 s per forward pass, about 12 s to read one frame and 150 s to build the model. The next sample's frames download during the current forward pass, so the bandwidth matters little as long as it stays near its usual level. Single 16 MB probes vary a lot here: S3 read at 11.3, 2.3 and 13.9 MB/s in three dry runs within ten minutes. So the dry run reports a compute-only figure, a figure at typical bandwidth, and one at the bandwidth just measured:
 
-At most 1.8 GB of frames are on disk at once. Peak new disk use is 3.6 GB, including the 1.8 GB checkpoint.
+| Split | Forward passes | Compute only | At 11 MB/s (S3) and 17 MB/s (HF) | Passes that fit in 90 min | Frames transferred |
+|---|---|---|---|---|---|
+| Test | 40 | 121 min | 130 min | 27–29, so two runs | 64 GB |
+| Validation | 20 | 62 min | 70 min | all 20, one run | 35 GB |
+
+A run does not start a sample that would end after `--max-minutes` (default 90). The next call resumes from `per_sample_<split>.jsonl`. At most 1.8 GB of frames are on disk at once. Peak new disk use is 3.6 GB, including the 1.8 GB checkpoint. A run needs the machine to itself: the forward pass peaks near 13 GB of the 15 GB of RAM.
 
 ```
 python scripts/Surya/downstream/flare_forecasting_subset_eval.py --dry-run --split test --n 40 --seed 0
-python scripts/Surya/downstream/flare_forecasting_subset_eval.py --split test --n 40 --seed 0 --max-forward 20   # run twice; the second call resumes
+python scripts/Surya/downstream/flare_forecasting_subset_eval.py --split test --n 40 --seed 0         # twice: the first call stops at the 90-min budget, the second resumes
+python scripts/Surya/downstream/flare_forecasting_subset_eval.py --dry-run --split validation --n 20 --seed 0
 python scripts/Surya/downstream/flare_forecasting_subset_eval.py --split validation --n 20 --seed 0
 python scripts/Surya/downstream/flare_forecasting_subset_eval.py --summarize-only
 ```
