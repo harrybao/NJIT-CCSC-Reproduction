@@ -1,0 +1,24 @@
+file	sha1_12	verbatim_source
+surya_github_readme_HEAD-78b827e.bib	a30036000dec	/home/user/upstream/surya/Surya/README.md lines 246-251 (git HEAD 78b827e; identical block since commit 3d4d8dd, 2025-09-12)
+surya_github_readme_cff9f51-superseded.bib	cc4b757b5a21	git show cff9f51:README.md lines 223-228 (2025-08-18; replaced by 3d4d8dd)
+surya_hf_Surya-1.0_card.bib	c6ffb6ba2785	https://huggingface.co/nasa-ibm-ai4science/Surya-1.0/raw/main/README.md lines 89-97 (HF sha 5cc4b5386d5f78fda3896b1389589d4e173bf212; code fence never closed in card)
+surya_arxiv_2508.14112.bib	c642344569be	https://arxiv.org/bibtex/2508.14112 (fetched 2026-10-15; arXiv export of latest version)
+suryabench_arxiv_2508.14107.bib	19883c67adf4	https://arxiv.org/bibtex/2508.14107 (fetched 2026-10-15; arXiv export of latest version)
+spectformer_arxiv_2304.06446.bib	797dd68f2cd2	https://arxiv.org/bibtex/2304.06446 (fetched 2026-10-15; arXiv export of latest version)
+long-short-transformer_arxiv_2107.02192.bib	6ae1a8060036	https://arxiv.org/bibtex/2107.02192 (fetched 2026-10-15; arXiv export of latest version)
+terratorch_arxiv_2503.20563.bib	0f8653f839de	https://arxiv.org/bibtex/2503.20563 (fetched 2026-10-15; arXiv export of latest version)
+suryabench_github_readme_V1.0.bib	ab8412c6549d	https://raw.githubusercontent.com/NASA-IMPACT/SuryaBench/HEAD/README.md lines 53-77 (HEAD = tag V1.0 = ce8b841)
+suryabench_zenodo_software_17842820.bib	a3a9e66db218	https://zenodo.org/records/17842820/export/bibtex
+suryabench_zenodo_dataset_17872179.bib	ff46e587b03a	https://zenodo.org/records/17872179/export/bibtex
+suryabench_zenodo_presentation_17407005.bib	188392a6dc21	https://zenodo.org/records/17407005/export/bibtex
+hf_doi_core-sdo.bib	0cfdd84b78cd	curl -L -H "Accept: application/x-bibtex" https://doi.org/10.57967/hf/7273 (DataCite/crosscite; DOI version field = HF commit)
+hf_doi_surya-bench-flare-forecasting.bib	4b7addf39c62	curl -L -H "Accept: application/x-bibtex" https://doi.org/10.57967/hf/7274 (DataCite/crosscite; DOI version field = HF commit)
+hf_doi_surya-bench-coronal-extrapolation.bib	917577646ba3	curl -L -H "Accept: application/x-bibtex" https://doi.org/10.57967/hf/7275 (DataCite/crosscite; DOI version field = HF commit)
+hf_doi_Surya-bench-solarwind.bib	b9eb235f5a1b	curl -L -H "Accept: application/x-bibtex" https://doi.org/10.57967/hf/7276 (DataCite/crosscite; DOI version field = HF commit)
+hf_doi_surya-bench-ar-segmentation.bib	a974685e2dbb	curl -L -H "Accept: application/x-bibtex" https://doi.org/10.57967/hf/7278 (DataCite/crosscite; DOI version field = HF commit)
+hf_doi_ar_emergence.bib	31fd9f5196da	curl -L -H "Accept: application/x-bibtex" https://doi.org/10.57967/hf/7279 (DataCite/crosscite; DOI version field = HF commit)
+hf_doi_euv-spectra.bib	7e5d824d576d	curl -L -H "Accept: application/x-bibtex" https://doi.org/10.57967/hf/7280 (DataCite/crosscite; DOI version field = HF commit)
+spectformer_project_page.bib	507f08333694	https://badripatro.github.io/SpectFormers/ "Citation" section (<code> block, HTML-unescaped)
+spectformer_github_readme.bib	507f08333694	https://raw.githubusercontent.com/badripatro/SpectFormers/HEAD/README.md lines 46-51 (HEAD b6cf487)
+terratorch_docs_citation.bib	caa5152ff79a	https://raw.githubusercontent.com/torchgeo/terratorch/docs/docs/about/citation.md lines 7-12; rendered at https://torchgeo.org/terratorch/stable/about/citation/ (stable=1.2.13); identical file at tag v1.2.13 and main
+aws_registry_cited_arxiv_2410.10841.bib	764328ac19aa	https://arxiv.org/bibtex/2410.10841 (arXiv export of the paper that the AWS Open Data Registry "How to Cite" for surya-bench names in plain text; the registry itself gives no BibTeX)

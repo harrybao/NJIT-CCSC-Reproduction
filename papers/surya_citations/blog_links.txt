@@ -1,0 +1,12 @@
+IBM Research blog: https://research.ibm.com/blog/surya-heliophysics-ai-model-sun
+datePublished 2025-08-20T13:00:00.000Z, dateModified 2025-08-25T15:30:44.540Z (page JSON-LD), fetched 2026-10-15
+The page has no Citation button and no citation text. Links to tools and papers on the page:
+https://arxiv.org/abs/2304.06446
+https://arxiv.org/abs/2508.14107
+https://arxiv.org/abs/2508.14112
+https://arxiv.org/pdf/2107.02192
+https://github.com/IBM/terratorch
+https://github.com/NASA-IMPACT/Surya
+https://huggingface.co/collections/nasa-impact/suryabench-68265ce306fc2470c121af7b
+https://huggingface.co/nasa-ibm-ai4science
+https://ibm.github.io/terratorch/stable/
