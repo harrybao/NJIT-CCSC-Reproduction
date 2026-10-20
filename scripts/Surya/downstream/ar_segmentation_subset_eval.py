@@ -263,11 +263,15 @@ class ResumableHTTP(io.RawIOBase):
                 if self.it is None:
                     self._open()
                 self.buf = next(self.it)
-            except StopIteration:
+            except StopIteration:  # body ended early: reconnect from self.pos, but not forever
                 self.it = None
                 if self.pos >= self.size:
                     return 0
                 fails += 1
+                self.reconnects += 1
+                if fails > self.retries:
+                    raise IOError(f"stream ended at byte {self.pos} of {self.size} after {fails} reconnects")
+                time.sleep(min(60, 2 ** fails))
             except Exception:  # dropped connection, timeout, proxy reset
                 self.it = None
                 fails += 1
@@ -632,11 +636,18 @@ def ensure_masks(file_paths, manifest_path):
     """Stream data.tar.gz once (not stored), write only the wanted members, verify the archive's SHA-256."""
     manifest = json.load(open(manifest_path)) if os.path.exists(manifest_path) else {"members": {}}
     want = {fp[len("data/"):] if fp.startswith("data/") else fp: fp for fp in file_paths}
-    missing = [m for m, fp in want.items() if not os.path.exists(os.path.join(LABEL_DIR, fp))]
-    if not missing:
-        return manifest
-    if manifest.get("complete_listing") and all(m in manifest["not_in_tar"] for m in missing):
-        return manifest
+    verified = manifest.get("sha256_ok") is True  # masks on disk came from a stream whose SHA-256 matched
+    if verified:
+        missing = [m for m, fp in want.items() if not os.path.exists(os.path.join(LABEL_DIR, fp))]
+        if not missing:
+            return manifest
+        if manifest.get("complete_listing") and all(m in manifest["not_in_tar"] for m in missing):
+            return manifest
+    else:
+        # no verified stream yet (first run, or an earlier stream crashed or failed its SHA-256): any mask already
+        # on disk is unverified, so every wanted member is (re)written from a stream that is checked to the end
+        missing = list(want)
+        manifest = {"members": {}}
     log(f"streaming {TAR_NAME} ({TAR_SIZE / 1e9:.2f} GB) to extract {len(missing)} masks")
     t0 = time.time()
     reader = ResumableHTTP(hf_url(LABEL_REPO, LABEL_REV, TAR_NAME), TAR_SIZE)
@@ -713,7 +724,13 @@ def load_model(cfg_inf, ckpt_path):
         model = I.apply_peft_lora(model, cfg_inf)
     n_total = sum(p.numel() for p in model.parameters())
     n_trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    checkpoint = torch.load(ckpt_path, map_location="cpu", weights_only=True, mmap=True)
+    try:
+        checkpoint = torch.load(ckpt_path, map_location="cpu", weights_only=True, mmap=True)
+        mmap_used = True
+    except RuntimeError as e:  # mmap needs the new zip format with aligned records; the values are the same without
+        log(f"mmap load failed ({e!r}); loading into memory instead")
+        checkpoint = torch.load(ckpt_path, map_location="cpu", weights_only=True)
+        mmap_used = False
     if "model_state_dict" in checkpoint:
         model_state = checkpoint["model_state_dict"]
     elif "state_dict" in checkpoint:
@@ -724,13 +741,19 @@ def load_model(cfg_inf, ckpt_path):
         model_state = {k.replace("module.", ""): v for k, v in model_state.items()}
     model.load_state_dict(model_state, strict=True)
     n_keys = len(model_state)
+    n_lora = sum(v.numel() for k, v in model_state.items() if ".lora_" in k)
+    lora_ranks = sorted({int(v.shape[0]) for k, v in model_state.items() if ".lora_A." in k})
     del checkpoint, model_state
     gc.collect()
     model.to(torch.device("cpu"))
     model.eval()
     model.requires_grad_(False)  # no autograd state under no_grad anyway; avoids any parameter caching
+    if lora_ranks != [int(cfg_inf["model"]["lora_config"]["r"])]:
+        raise RuntimeError(f"checkpoint LoRA ranks {lora_ranks} differ from config r={cfg_inf['model']['lora_config']['r']}")
     return model, {"n_parameters": int(n_total), "n_trainable_after_peft": int(n_trainable),
-                   "state_dict_keys": int(n_keys), "load_state_dict_strict": True}
+                   "state_dict_keys": int(n_keys), "load_state_dict_strict": True, "torch_load_mmap": mmap_used,
+                   "checkpoint_lora_params": int(n_lora), "checkpoint_lora_ranks": lora_ranks,
+                   "lora_alpha_from_config_not_checkpoint": cfg_inf["model"]["lora_config"]["lora_alpha"]}
 
 
 # ---------------------------------------------------------------------------------------------- bookkeeping
@@ -749,6 +772,35 @@ def read_records(path):
     return recs
 
 
+def sample_key(r):
+    return (str(r["timestamp"]), int(r["stratum"]), int(r["block"]), str(r["role"]))
+
+
+def records_in_sample(recs, sample):
+    """Only the records whose (time, year, block, role) is a row of the current sample file. A jsonl left over from a
+    sample drawn with another --n/--seed (or redrawn after S3 changed) must neither mark blocks as done nor enter the
+    summary."""
+    keys = {sample_key(r) for r in sample.to_dict("records")}
+    kept = {t: r for t, r in recs.items() if sample_key(r) in keys}
+    return kept, len(recs) - len(kept)
+
+
+COMPACT_CHANNELS = ["aia131", "aia171", "aia193", "aia211", "aia304", "aia335"]
+
+
+def is_compact_frame(stored_mb_json):
+    """Frames whose AIA 131-335 channels are stored in well under half the usual ~60 MB each. Their values are
+    quantised (e.g. 2020-01-17 02:00 aia131 takes only ~10 distinct values in its top rows, the normal frames are
+    continuous) and they were produced later (production_date 2025-05-18 vs 2025-04-03); disk geometry and intensity
+    scale agree with normal frames. Reported as a sensitivity check, not excluded from the primary metric."""
+    try:
+        d = json.loads(stored_mb_json) if isinstance(stored_mb_json, str) else dict(stored_mb_json)
+        v = [d[c] for c in COMPACT_CHANNELS if d.get(c) is not None]
+        return bool(v) and float(np.median(v)) < 30.0
+    except Exception:
+        return None
+
+
 def summarize(out_dir, seed=0):
     cfg = yaml.safe_load(open(os.path.join(TASK_DIR, "config.yaml")))
     eps, smooth = float(cfg["model"]["iou"]["eps"]), float(cfg["model"]["dice"]["smooth"])
@@ -762,10 +814,19 @@ def summarize(out_dir, seed=0):
                                                             "interval": "percentile 95%"},
         "splits": {}}
     for split in ("test", "validation"):
-        recs = [r for r in read_records(per_sample_path(out_dir, split)).values() if r.get("status") == "ok"]
-        failed = [r for r in read_records(per_sample_path(out_dir, split)).values() if r.get("status") != "ok"]
+        sample_csv = os.path.join(out_dir, f"sample_{split}.csv")
+        all_recs = read_records(per_sample_path(out_dir, split))
+        if not all_recs:
+            continue
+        if not os.path.exists(sample_csv):
+            raise FileNotFoundError(f"{sample_csv} is missing; cannot tell which records belong to the sample")
+        sample = pd.read_csv(sample_csv)
+        all_recs, n_foreign = records_in_sample(all_recs, sample)
+        recs = [r for r in all_recs.values() if r.get("status") == "ok"]
+        failed = [r for r in all_recs.values() if r.get("status") != "ok"]
         if not recs:
             continue
+        planned = sorted({(int(r["stratum"]), int(r["block"])) for r in sample.to_dict("records")})
         by_block = {}  # one image per time block: the primary if it was scored, else the reserve
         for r in recs:
             k = (int(r["stratum"]), int(r["block"]))
@@ -802,8 +863,26 @@ def summarize(out_dir, seed=0):
         repo_diff = max(max(abs(r["repo_loss_check"]["soft_iou_from_IoULoss"] - si),
                             abs(r["repo_loss_check"]["soft_dice_from_DiceLoss"] - sd))
                         for r, si, sd in zip(recs, siou, sdice))
+        compact = np.array([bool(is_compact_frame(r.get("stored_mb_per_channel") or "{}")) for r in recs])
+        sens = {"n_compact_frames_scored": int(compact.sum()),
+                "compact_frames": [r["timestamp"] for r, c in zip(recs, compact) if c]}
+        if compact.any() and (~compact).sum() >= 2:
+            k = np.flatnonzero(~compact)
+            sens["hard_iou_mean_over_images_without_compact"] = {
+                "estimate": float(iou[k].mean()), "ci95": bootstrap(lambda i: iou[k][i].mean(1), len(k), N_BOOT, seed),
+                "n_images": int(len(k))}
+            sens["hard_dice_mean_over_images_without_compact"] = {
+                "estimate": float(dice[k].mean()), "ci95": bootstrap(lambda i: dice[k][i].mean(1), len(k), N_BOOT, seed),
+                "n_images": int(len(k))}
+        scored_blocks = {(int(r["stratum"]), int(r["block"])) for r in recs}
         summary["splits"][split] = {
             "n_images_scored": len(recs), "n_failed_records": len(failed),
+            "n_blocks_planned": len(planned), "n_blocks_scored": len(scored_blocks),
+            "blocks_not_scored": [list(b) for b in planned if b not in scored_blocks],
+            "records_ignored_not_in_current_sample": int(n_foreign),
+            "failed_records": [{"timestamp": r["timestamp"], "role": r["role"], "error": r.get("error", "")[:300]}
+                               for r in failed],
+            "compact_frame_sensitivity": sens,
             "roles": {k: int(v) for k, v in pd.Series([r["role"] for r in recs]).value_counts().items()},
             "time_range": [recs[0]["timestamp"], recs[-1]["timestamp"]],
             "empty_masks": int(((tp + fn) == 0).sum()), "empty_predictions": int(((tp + fp) == 0).sum()),
@@ -916,6 +995,16 @@ def run(args, out_dir):
     sample, meta = get_sample(args, out_dir, cfg, scalers)
     if not meta.get("dataset_join_all_ok", False):
         raise RuntimeError("dataset join check failed in the sample file; rerun --dry-run")
+    recs_path = per_sample_path(out_dir, args.split)
+    previous, n_foreign = records_in_sample(read_records(recs_path), sample)
+    if n_foreign:
+        log(f"ignoring {n_foreign} records in {recs_path} that are not rows of the current sample file")
+
+    # frames left behind by an interrupted run are not known to the new FrameCache objects and would never be
+    # deleted, so the two cache folders are emptied first (this keeps the bound of two frames on disk)
+    for sub in ("a", "b"):
+        shutil.rmtree(os.path.join(WORK, "frames", sub), ignore_errors=True)
+    check_resources(args, sample)
 
     # one pass over the archive serves every sample file present in out_dir (test and validation)
     wanted = list(sample["mask_file_path"])
