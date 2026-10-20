@@ -6,7 +6,8 @@ autocast use different op lists: on CUDA, layer_norm and softmax (among others) 
 float32; on CPU they run in the dtype of their input. The released model code also has the explicit
 softmax(..., dtype=torch.float32) calls commented out ("Changed when experimenting with mixed precision").
 
-For one validation sample this script runs batch_step (the authors' test function) in five variants:
+For one validation sample this script runs one 1-hour forward pass (the first step of the authors' batch_step,
+model(batch) on the inputs at t-60 and t, scored with MSE against the frame at t+60) in five variants:
   fp32           no autocast (what the test does on a CPU-only machine)
   bf16           CPU autocast, as is
   bf16_ln32      CPU autocast, layer_norm computed in float32 and returned as float32 (the CUDA policy)
@@ -15,9 +16,11 @@ For one validation sample this script runs batch_step (the authors' test functio
 Forward hooks on the model's modules (to depth 4 by default) record, for every call, the output dtype and a fixed strided
 subsample of 65,536 output values; each variant is compared with fp32 module by module (relative RMS error).
 
+Note: the comparison is for the 1-hour step only; the 2-step test losses are in results/Surya/validation_test.
+
 Usage: python diagnose_cpu_bf16.py --upstream ... --workdir ... --out results/Surya/bf16_diagnosis [--sample 1648]
 """
-import argparse, contextlib, json, os, sys, time
+import argparse, contextlib, gc, json, os, sys, time
 
 os.environ.setdefault("HF_HUB_DISABLE_XET", "1")
 
@@ -119,14 +122,18 @@ def main():
 
     def make_hook(name):
         def hook(m, i, o):
-            if not torch.is_tensor(o):
+            if not torch.is_tensor(o) or o.numel() == 0:
                 return
-            flat = o.detach().reshape(-1)
-            step = max(1, flat.numel() // 65536)
-            sub = flat[::step][:65536].float().clone()
+            o = o.detach()
+            # a fixed set of element positions, gathered without copying the whole tensor
+            n = o.numel()
+            k = min(65536, n)
+            flat_idx = torch.linspace(0, n - 1, k, dtype=torch.float64).round().long()
+            coords = torch.unravel_index(flat_idx, o.shape)
+            sub = o[coords].float().clone()
+            finite = bool(torch.isfinite(o.max()).item() and torch.isfinite(o.min()).item())
             rec["calls"].append({"name": name, "cls": type(m).__name__, "dtype": str(o.dtype),
-                                 "shape": list(o.shape), "sub": sub,
-                                 "nonfinite": int((~torch.isfinite(flat)).sum().item())})
+                                 "shape": list(o.shape), "sub": sub, "nonfinite": int(not finite)})
         return hook
 
     for name, m in model.named_modules():
@@ -135,16 +142,23 @@ def main():
 
     variants = a.variants.split(",")
     results, subs = {}, {}
+    # first step of batch_step only: same inputs and same loss, without keeping the second target in memory
+    inputs = {key: batch_data[key] for key in ["ts", "time_delta_input"]}
+    target = batch_data["forecast"][:, :, 0].clone()
+    del batch_data
+    gc.collect()
     for v in variants:
         rec["calls"] = []
         t0 = time.time()
         with variant_ctx(v):
             with torch.no_grad():
-                loss, _ = T.batch_step(model, batch_data, batch_metadata, "cpu", rollout=1)
-        results[v] = {"loss": loss, "reference_loss": float(T.REFERENCE_LOSS[k]),
-                      "delta_vs_reference": loss - float(T.REFERENCE_LOSS[k]), "seconds": round(time.time() - t0, 1)}
+                pred = model(inputs)
+                loss = F.mse_loss(pred, target).item()
+        results[v] = {"mse_lead_1h": loss, "output_dtype": str(pred.dtype), "seconds": round(time.time() - t0, 1)}
+        del pred
+        gc.collect()
         subs[v] = rec["calls"]
-        print(f"{v}: loss {loss:.6f} (reference {T.REFERENCE_LOSS[k]:.6f}) {results[v]['seconds']} s", flush=True)
+        print(f"{v}: 1-hour MSE {loss:.6f} ({results[v]['seconds']} s)", flush=True)
 
     # module-by-module comparison with fp32 (call order is identical across variants)
     base = subs.get("fp32")
