@@ -1,0 +1,13 @@
+GOES XRS flare report lines for 2014-01-07, from https://www.ngdc.noaa.gov/stp/space-weather/solar-data/solar-features/solar-flares/x-rays/goes/xrs/goes-xrs-report_2014.txt (fetched 2026-10-20).
+Columns: station/date, start, end, peak (UT), location, class letter and magnitude x10, satellite, integrated flux, NOAA AR.
+31777140107  0229 0239 0234 S14E18                         C 27    G15  1.1E-03 11944 140108.4                
+31777140107  0349 0356 0353 N07E08                         M 10    G15  2.7E-03 11946 140107.7                
+31777140107  0408 0416 0411 S10E13                         C 27    G15  8.9E-04 11944 140108.1                
+31777140107  0440 0520 0453 S09E13                         C 24    G15  4.8E-03 11944 140108.1                
+31777140107  0659 0710 0705 N08E06                         C 34    G15  1.4E-03 11946 140107.7                
+31777140107  0804 0818 0809 S14E15                         C 23    G15  1.5E-03 11944 140108.4                
+31777140107  1007 1037 1013 S13E11                         M 72    G15  9.2E-02 11944 140108.2                
+31777140107  1145 1159 1153 S12E11                         C 26    G15  1.7E-03 11944 140108.3                
+31777140107  1804 1858 1832                                X 12    G15  2.5E-01                               
+31777140107  2216 2239 2233 N13W84                         C 74    G15  5.9E-03 11947 140101.6                
+31777140107  2336 2348 2343 N13W84                         C 16    G15  9.1E-04 11947 140101.6                
