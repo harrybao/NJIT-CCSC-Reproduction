@@ -216,12 +216,19 @@ class RangeFile(io.RawIOBase):
 
 
 def remote_nc_channels(key):
-    """(worker) Shapes of the data variables of one S3 netCDF frame, read from its HDF5 header only."""
+    """(worker) Shapes and stored (compressed) chunk sizes of the data variables of one S3 netCDF frame, read from
+    its HDF5 header only (about 0.8 MB of range requests per frame)."""
     import h5py
     rf = RangeFile(f"{C.S3}/{key}")
     with h5py.File(io.BufferedReader(rf, 1 << 16), "r") as f:
         shapes = {k: tuple(f[k].shape) for k in f.keys() if isinstance(f[k], h5py.Dataset)}
-    return shapes, rf.nbytes
+        stored = {}
+        for k in C.CHANNELS:
+            try:
+                stored[k] = int(sum(f[k].id.get_chunk_info(i).size for i in range(f[k].id.get_num_chunks())))
+            except Exception:
+                stored[k] = None
+    return shapes, rf.nbytes, stored
 
 
 class ResumableHTTP(io.RawIOBase):
@@ -532,9 +539,11 @@ def select_sample(split, n, seed, check_channels=True, want_per_block=2, max_tri
                     if isinstance(r, Exception):
                         ok, why = False, f"could not read the netCDF header: {r!r}"
                     else:
-                        shapes, nread = r
+                        shapes, nread, stored = r
                         bad = [c for c in C.CHANNELS if shapes.get(c) != (4096, 4096)]
                         extra["header_bytes_read"] = nread
+                        extra["stored_mb_per_channel"] = json.dumps(
+                            {c: (round(v / 1e6, 1) if v is not None else None) for c, v in stored.items()})
                         if bad:
                             ok, why = False, f"input frame lacks channels {bad}"
                 if ok and len(state[bi]["found"]) < want_per_block:
@@ -552,7 +561,8 @@ def select_sample(split, n, seed, check_channels=True, want_per_block=2, max_tri
                          "frame_bytes": f["frame_bytes"],
                          "frame_t60_key": C.s3_key(pd.Timestamp(f["timestamp"]) + pd.Timedelta(minutes=60)),
                          "frame_t60_bytes": f["frame_t60_bytes"],
-                         "channels_checked": bool(check_channels)})
+                         "channels_checked": bool(check_channels),
+                         "stored_mb_per_channel": f.get("stored_mb_per_channel", "")})
     df = pd.DataFrame(rows)
     meta = {"split": split, "n": n, "seed": seed, "check_channels": bool(check_channels),
             "allocation_per_year": {int(k): int(v) for k, v in alloc.items()}, "candidate_info": info,
@@ -756,7 +766,12 @@ def summarize(out_dir, seed=0):
         failed = [r for r in read_records(per_sample_path(out_dir, split)).values() if r.get("status") != "ok"]
         if not recs:
             continue
-        recs.sort(key=lambda r: r["timestamp"])
+        by_block = {}  # one image per time block: the primary if it was scored, else the reserve
+        for r in recs:
+            k = (int(r["stratum"]), int(r["block"]))
+            if k not in by_block or r["role"] == "primary":
+                by_block[k] = r
+        recs = sorted(by_block.values(), key=lambda r: r["timestamp"])
         h = [r["counts"]["hard"]["0.5"] for r in recs]
         s = [r["counts"]["soft"] for r in recs]
         tp, fp, fn = (np.array([x[k] for x in h], float) for k in ("tp", "fp", "fn"))
@@ -912,12 +927,17 @@ def run(args, out_dir):
     have_mask = {fp: os.path.exists(os.path.join(LABEL_DIR, fp)) for fp in sample["mask_file_path"]}
 
     recs_path = per_sample_path(out_dir, args.split)
-    done = {t for t, r in read_records(recs_path).items() if r.get("status") == "ok"}
+    previous = read_records(recs_path)
+    done = {t for t, r in previous.items() if r.get("status") == "ok"}
+    ok_blocks = {(int(r["stratum"]), int(r["block"])) for r in previous.values() if r.get("status") == "ok"}
     blocks = {}
     for r in sample.to_dict("records"):
-        blocks.setdefault((r["stratum"], r["block"]), {})[r["role"]] = r
-    work, notes = [], []
+        blocks.setdefault((int(r["stratum"]), int(r["block"])), {})[r["role"]] = r
+    work, notes, complete = [], [], 0
     for key, b in sorted(blocks.items()):
+        if key in ok_blocks:  # one image per block: a block is finished once its primary or reserve is scored
+            complete += 1
+            continue
         prim, res = b.get("primary"), b.get("reserve")
         if prim is not None and have_mask[prim["mask_file_path"]]:
             work.append(prim)
@@ -928,8 +948,7 @@ def run(args, out_dir):
         else:
             notes.append({"block": list(key), "reason": "no mask in data.tar.gz for primary or reserve"})
     pending = [r for r in work if r["timestamp"] not in done][: args.max_forward]
-    log(f"{len(work)} images in the sample, {len(work) - len([r for r in work if r['timestamp'] not in done])} "
-        f"already scored, {len(pending)} to run now")
+    log(f"{len(blocks)} blocks in the sample, {complete} already scored, {len(pending)} images to run now")
     if not pending:
         summarize(out_dir, args.seed)
         return
@@ -957,8 +976,8 @@ def run(args, out_dir):
         row = pending[j]
         t = pd.Timestamp(row["timestamp"])
         cache = caches[j % 2]
-        rec = {k: row[k] for k in ("split", "role", "stratum", "block", "timestamp", "mask_file_path", "frame_key",
-                                   "frame_bytes")}
+        rec = {k: row.get(k) for k in ("split", "role", "stratum", "block", "timestamp", "mask_file_path",
+                                       "frame_key", "frame_bytes", "stored_mb_per_channel")}
         t_start = time.time()
         ds = loader = batch = x = logits = target = None
         try:
@@ -979,7 +998,14 @@ def run(args, out_dir):
             batch, metadata = next(iter(loader))
             t2 = time.time()
             x = batch["ts"]
-            rec["input"] = {"shape": list(x.shape), "dtype": str(x.dtype), "nonfinite": int((~torch.isfinite(x)).sum())}
+            rec["input"] = {"shape": list(x.shape), "dtype": str(x.dtype), "nonfinite": int((~torch.isfinite(x)).sum()),
+                            "per_channel_normalised": {}}
+            for ci, ch in enumerate(cfg["data"]["channels"]):  # mean / std / non-finite count after the scalers
+                v = x[0, ci, 0].double()
+                m = float(torch.nanmean(v))
+                rec["input"]["per_channel_normalised"][ch] = [
+                    round(m, 4), round(float(torch.nanmean((v - m) ** 2)) ** 0.5, 4), int((~torch.isfinite(v)).sum())]
+                del v
             with torch.no_grad():
                 logits = model(batch)
                 if logits.ndim == 5:
@@ -1020,7 +1046,7 @@ def run(args, out_dir):
             rec["status"] = "failed"
             rec["error"] = repr(e)[:2000]
             log(f"[{j + 1}/{len(pending)}] {row['timestamp']} FAILED: {e!r}")
-            res = blocks[(row["stratum"], row["block"])].get("reserve")
+            res = blocks[(int(row["stratum"]), int(row["block"]))].get("reserve")
             if (row["role"] == "primary" and res is not None and have_mask.get(res["mask_file_path"])
                     and res["timestamp"] not in done and all(p["timestamp"] != res["timestamp"] for p in pending)):
                 pending.append(res)

@@ -1,0 +1,243 @@
+{
+ "split": "validation",
+ "n": 10,
+ "seed": 0,
+ "check_channels": true,
+ "allocation_per_year": {
+  "2011": 1,
+  "2012": 1,
+  "2013": 1,
+  "2014": 1,
+  "2015": 1,
+  "2016": 1,
+  "2017": 1,
+  "2018": 2,
+  "2019": 1
+ },
+ "candidate_info": {
+  "rows_in_csv": 3672,
+  "rows_present_1": 3477,
+  "rows_with_t_and_t60_in_core_sdo_valid_index": 3357,
+  "candidates": 3357,
+  "candidates_per_year": {
+   "2011": 392,
+   "2012": 398,
+   "2013": 358,
+   "2014": 390,
+   "2015": 387,
+   "2016": 366,
+   "2017": 361,
+   "2018": 354,
+   "2019": 351
+  }
+ },
+ "n_blocks": 10,
+ "blocks_without_primary": [],
+ "blocks_without_reserve": 0,
+ "skipped": [],
+ "selection_rounds": 1,
+ "selection_seconds": 99.4,
+ "dataset_join_check": [
+  {
+   "timestamp": "2011-01-31 06:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2011/01/20110131_0600.h5",
+   "sdo_path_read_by_ArDSDataset": "2011/01/20110131_0600.nc"
+  },
+  {
+   "timestamp": "2011-01-24 09:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2011/01/20110124_0900.h5",
+   "sdo_path_read_by_ArDSDataset": "2011/01/20110124_0900.nc"
+  },
+  {
+   "timestamp": "2012-01-22 02:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2012/01/20120122_0200.h5",
+   "sdo_path_read_by_ArDSDataset": "2012/01/20120122_0200.nc"
+  },
+  {
+   "timestamp": "2012-01-27 23:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2012/01/20120127_2300.h5",
+   "sdo_path_read_by_ArDSDataset": "2012/01/20120127_2300.nc"
+  },
+  {
+   "timestamp": "2013-01-28 11:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2013/01/20130128_1100.h5",
+   "sdo_path_read_by_ArDSDataset": "2013/01/20130128_1100.nc"
+  },
+  {
+   "timestamp": "2013-01-31 10:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2013/01/20130131_1000.h5",
+   "sdo_path_read_by_ArDSDataset": "2013/01/20130131_1000.nc"
+  },
+  {
+   "timestamp": "2014-01-18 20:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2014/01/20140118_2000.h5",
+   "sdo_path_read_by_ArDSDataset": "2014/01/20140118_2000.nc"
+  },
+  {
+   "timestamp": "2014-01-19 00:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2014/01/20140119_0000.h5",
+   "sdo_path_read_by_ArDSDataset": "2014/01/20140119_0000.nc"
+  },
+  {
+   "timestamp": "2015-01-17 06:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2015/01/20150117_0600.h5",
+   "sdo_path_read_by_ArDSDataset": "2015/01/20150117_0600.nc"
+  },
+  {
+   "timestamp": "2015-01-16 06:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2015/01/20150116_0600.h5",
+   "sdo_path_read_by_ArDSDataset": "2015/01/20150116_0600.nc"
+  },
+  {
+   "timestamp": "2016-01-24 10:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2016/01/20160124_1000.h5",
+   "sdo_path_read_by_ArDSDataset": "2016/01/20160124_1000.nc"
+  },
+  {
+   "timestamp": "2016-01-25 10:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2016/01/20160125_1000.h5",
+   "sdo_path_read_by_ArDSDataset": "2016/01/20160125_1000.nc"
+  },
+  {
+   "timestamp": "2017-01-30 16:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2017/01/20170130_1600.h5",
+   "sdo_path_read_by_ArDSDataset": "2017/01/20170130_1600.nc"
+  },
+  {
+   "timestamp": "2017-01-19 17:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2017/01/20170119_1700.h5",
+   "sdo_path_read_by_ArDSDataset": "2017/01/20170119_1700.nc"
+  },
+  {
+   "timestamp": "2018-01-22 07:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2018/01/20180122_0700.h5",
+   "sdo_path_read_by_ArDSDataset": "2018/01/20180122_0700.nc"
+  },
+  {
+   "timestamp": "2018-01-15 02:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2018/01/20180115_0200.h5",
+   "sdo_path_read_by_ArDSDataset": "2018/01/20180115_0200.nc"
+  },
+  {
+   "timestamp": "2018-01-27 14:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2018/01/20180127_1400.h5",
+   "sdo_path_read_by_ArDSDataset": "2018/01/20180127_1400.nc"
+  },
+  {
+   "timestamp": "2018-01-26 00:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2018/01/20180126_0000.h5",
+   "sdo_path_read_by_ArDSDataset": "2018/01/20180126_0000.nc"
+  },
+  {
+   "timestamp": "2019-01-28 12:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2019/01/20190128_1200.h5",
+   "sdo_path_read_by_ArDSDataset": "2019/01/20190128_1200.nc"
+  },
+  {
+   "timestamp": "2019-01-15 15:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2019/01/20190115_1500.h5",
+   "sdo_path_read_by_ArDSDataset": "2019/01/20190115_1500.nc"
+  }
+ ],
+ "dataset_join_all_ok": true,
+ "dry_run": true,
+ "estimate": {
+  "assumptions_s": {
+   "forward": 136,
+   "frame_read_and_normalise": 30,
+   "scoring": 5,
+   "model_build_and_load": 120
+  },
+  "measured_bandwidth": {
+   "s3_frame": {
+    "bytes": 16777216,
+    "seconds": 1.16,
+    "MB_per_s": 14.5
+   },
+   "hf_tar": {
+    "bytes": 16777216,
+    "seconds": 1.1,
+    "MB_per_s": 15.3
+   }
+  },
+  "one_off_minutes_tar_checkpoint_model": 5.4,
+  "per_sample_minutes": 2.85,
+  "frame_download_minutes_each_mean": 0.68,
+  "frame_download_hidden_by_prefetch": true,
+  "total_minutes": 34.5
+ },
+ "disk": {
+  "frames_total_bytes_downloaded_over_run": 5889915169,
+  "frames_max_on_disk_bytes": 1184012673,
+  "checkpoint_bytes": 1784013352,
+  "checkpoint_head_x_linked_size": "1784013352",
+  "masks_bytes_approx": 900000,
+  "tar_streamed_not_stored_bytes": 1306605651,
+  "peak_disk_gb": 2.97
+ },
+ "config_model_diff_config_vs_config_infer": {},
+ "forward_passes_planned": 10,
+ "checkpoint": "nasa-ibm-ai4science/ar_segmentation_surya@73a6de53c4bea812f7bc2ac29b9351ae2f2fe5fe/ar_segmentation_weights.pth",
+ "labels": "nasa-ibm-ai4science/surya-bench-ar-segmentation@615a7df4ac3498c97d0d039e7b0654774ad86602",
+ "upstream_dir": "/home/user/upstream/surya/Surya"
+}

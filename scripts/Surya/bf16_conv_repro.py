@@ -40,8 +40,10 @@ def main():
             t = time.time(); y = F.conv2d(x, w, b, stride=16); case["t_bf16_autocast"] = round(time.time() - t, 2)
         case["bf16_autocast"] = rel(y, ref); case["bf16_autocast_out_dtype"] = str(y.dtype)
         case["bf16_explicit"] = rel(F.conv2d(x.bfloat16(), w.bfloat16(), b.bfloat16(), stride=16), ref)
-        with torch.backends.mkldnn.flags(enabled=False):
-            case["bf16_explicit_mkldnn_off"] = rel(F.conv2d(x.bfloat16(), w.bfloat16(), b.bfloat16(), stride=16), ref)
+        if H <= 2048:  # the non-oneDNN bf16 path is slow (about 6 minutes at 4096 here)
+            with torch.backends.mkldnn.flags(enabled=False):
+                case["bf16_explicit_mkldnn_off"] = rel(F.conv2d(x.bfloat16(), w.bfloat16(), b.bfloat16(), stride=16),
+                                                       ref)
         # rounding the inputs and weights to bf16 but convolving in float64: the error bf16 storage alone causes
         case["bf16_rounding_only"] = rel(F.conv2d(x.bfloat16().double(), w.bfloat16().double(), b.bfloat16().double(),
                                                   stride=16), ref)
