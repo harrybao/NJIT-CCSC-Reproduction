@@ -704,7 +704,31 @@ def head_check(t):
     return True, "", extra
 
 
+CHECK_CACHE = os.path.join(WORK, "meta", "frame_checks.json")
+
+
 def check_candidates(times, check_channels, tp, pp):
+    """Cached wrapper: a time stamp checked before (with the same check_channels) is not re-read."""
+    cache = {}
+    if os.path.exists(CHECK_CACHE):
+        try:
+            cache = json.load(open(CHECK_CACHE))
+        except Exception:
+            cache = {}
+    key = lambda t: f"{pd.Timestamp(t)}|{int(bool(check_channels))}"  # noqa: E731
+    todo = [t for t in times if key(t) not in cache]
+    if todo:
+        for t, r in zip(todo, _check_candidates(todo, check_channels, tp, pp)):
+            if r[0] or "not on S3" in r[1] or "lacks channels" in r[1]:  # do not cache transient read errors
+                cache[key(t)] = list(r)
+            else:
+                cache[key(t) + "|transient"] = list(r)
+        os.makedirs(os.path.dirname(CHECK_CACHE), exist_ok=True)
+        json.dump(cache, open(CHECK_CACHE, "w"))
+    return [tuple(cache.get(key(t)) or cache[key(t) + "|transient"]) for t in times]
+
+
+def _check_candidates(times, check_channels, tp, pp):
     """HEAD checks (threads) and 13-channel netCDF header checks of both frames (spawned processes: h5py holds a
     global lock, so header reads in threads would run one at a time). Returns [(ok, reason, extra)] in input order."""
     heads = list(tp.map(head_check, times))
@@ -1132,6 +1156,7 @@ def dry_run(args, out_dir, run_mode=False):
     dl_s = per_sample_bytes / 1e6 / mbps if mbps else None
     per_sample_s = max(SEC_FORWARD + 2 * SEC_LOAD_FRAME + SEC_SCORE, dl_s or 0)  # downloads overlap (prefetch)
     est_s_bw = SEC_MODEL + (dl_s or 0) + n_pass * per_sample_s
+    est_s_noprefetch = SEC_MODEL + n_pass * (SEC_FORWARD + 2 * SEC_LOAD_FRAME + SEC_SCORE + (dl_s or 0))
     ckpt_s = CKPT_SIZE / 1e6 / mbps if mbps and not os.path.exists(os.path.join(WORK, CKPT_NAME)) else None
     ckpt_present = os.path.exists(os.path.join(WORK, CKPT_NAME))
     free = free_gb()
@@ -1183,6 +1208,9 @@ def dry_run(args, out_dir, run_mode=False):
                  "peak_disk_gb_new": round(need_ckpt + (2 if prefetch_ok else 1) * per_sample_bytes / 1e9, 2),
                  "bandwidth_probe": bw, "est_minutes_compute_only": round(est_s / 60, 1),
                  "est_minutes_with_bandwidth": round((est_s_bw + (ckpt_s or 0)) / 60, 1),
+                 "est_minutes_with_bandwidth_no_prefetch": round((est_s_noprefetch + (ckpt_s or 0)) / 60, 1),
+                 "bandwidth_note": "the 8 MB probe under-states sustained throughput and shares the link with any "
+                                   "other job downloading at the same time",
                  "est_checkpoint_download_minutes": round(ckpt_s / 60, 1) if ckpt_s else None,
                  "max_forward_that_fits_90_min": fit90,
                  "timing_assumptions_s": {"forward": SEC_FORWARD, "load_frame": SEC_LOAD_FRAME, "score": SEC_SCORE,

@@ -1,0 +1,145 @@
+{
+ "what": "PARTIAL REPRODUCTION of arXiv 2508.14112 v2 Table 5 (EUV spectra, Surya row) on a small seeded sample, CPU float32",
+ "paper_table5": {
+  "Alexnet": {
+   "mse": 0.0001311409,
+   "mae": 0.0061858603,
+   "mape": 1.6834715604
+  },
+  "ResNet50": {
+   "mse": 0.0030414662,
+   "mae": 0.0529725812,
+   "mape": 8.8635520935
+  },
+  "Surya": {
+   "mse": 0.0001260741,
+   "mae": 0.0045114677,
+   "mape": 1.4792510271
+  }
+ },
+ "paper_text": {
+  "FISM_sec_2_6_4": {
+   "mape_pct": 1.5,
+   "mse": 0.00031
+  },
+  "conclusion_MAE": {
+   "Surya": 0.0043,
+   "AlexNet": 0.0065,
+   "ResNet50": 0.0256
+  },
+  "repo_README_MAPE": "1.48% (Surya) vs 1.68% (AlexNet)"
+ },
+ "metric_definitions": {
+  "mse": "mean of (yhat - y)^2 over all n_samples x 1343 elements, normalised targets y = (log10 E + 9) / 7.04 (pooling as finetune.evaluate_model)",
+  "mae": "mean of |yhat - y| over the same elements",
+  "mape_pct": "100 * mean of |yhat - y| / |y| over the same elements (percent; not in the repo; Table 5 / Sec. 2.6.4 name MAPE without a formula); no epsilon, min target 0.0024",
+  "mape_pct_targets_ge_0.05": "same, elements with y >= 0.05 only (variant)",
+  "mape_pct_physical_irradiance": "same on 10^(7.04 y - 9) W/m^2/nm (variant)",
+  "r2_infer_py": "1 - SSE / SST over all elements (infer.py and finetune.evaluate_model)",
+  "mean_spectral_corr_infer_py": "mean over samples of Pearson r across the 1343 bins (infer.py)",
+  "ci95": "percentile bootstrap over samples, 10000 resamples, seed 0"
+ },
+ "checkpoint": {
+  "current": {
+   "rev": "6ed3bc13eeece973653422cc83e583aabd31dae0",
+   "date": "2025-08-26T15:42:52Z",
+   "bytes": 1779722720,
+   "sha256": "f064836d449b52b5573603435cee87130bc9fc5cd89e8dec7581dd20dcb6159f"
+  },
+  "replaced": {
+   "rev": "253bf1091d3b71393591fd06899c244784ba1a44",
+   "date": "2025-08-18T22:41:44Z",
+   "bytes": 1776981576,
+   "sha256": "dd71f11b23f5c84ae661a96ad5bc30c4c5ebff3dbfc68f0aa65bcda1a81ae580"
+  },
+  "note": "arXiv v1 2025-08-18, v2 2025-08-21; Table 5 is identical in both. Which upload produced Table 5 is not stated; the notebook anchors were committed 2025-09-26, after the current upload."
+ },
+ "splits": {
+  "test": {
+   "ds_time_column": "test_time",
+   "n_candidates_full_split": 517,
+   "baseline_train_mean_on_all_candidates": {
+    "mse": 0.000721361901523131,
+    "rmse": 0.026858181277278084,
+    "mae": 0.020431063541665344,
+    "mape_pct": 4.471086939468086,
+    "mape_pct_targets_ge_0.05": 3.425013188124197,
+    "mape_pct_physical_irradiance": 61.809567132918055,
+    "r2_infer_py": 0.8751720689229423,
+    "mean_spectral_corr_infer_py": 0.9772622666662032,
+    "n_samples": 517,
+    "n_elements": 694331,
+    "fraction_elements_target_lt_0.05": 0.00040326587751371434,
+    "median_ape_pct_median_over_samples": 4.09570098569593,
+    "ci95": {
+     "mse": [
+      0.0006932570999193667,
+      0.0007483602698359833
+     ],
+     "rmse": [
+      0.02632977591767104,
+      0.02735617425428495
+     ],
+     "mae": [
+      0.01962875407358228,
+      0.021234308435934143
+     ],
+     "mape_pct": [
+      4.312929408743109,
+      4.631407182076162
+     ],
+     "mape_pct_targets_ge_0.05": [
+      3.2968263304979932,
+      3.551165071497448
+     ],
+     "mape_pct_physical_irradiance": [
+      58.98798180341962,
+      64.65316344856889
+     ],
+     "r2_infer_py": [
+      0.8690394507310127,
+      0.881328493249043
+     ],
+     "mean_spectral_corr_infer_py": [
+      0.9766885013657646,
+      0.9778462091232195
+     ]
+    },
+    "bootstrap_sd": {
+     "mse": 1.423645517364004e-05,
+     "rmse": 0.000265136774913733,
+     "mae": 0.0004135389118052308,
+     "mape_pct": 0.08167363678600498,
+     "mape_pct_targets_ge_0.05": 0.0656710239087636,
+     "mape_pct_physical_irradiance": 1.4604357887594444,
+     "r2_infer_py": 0.0031730975162629982,
+     "mean_spectral_corr_infer_py": 0.0002925094799532036
+    }
+   },
+   "sample_design": {
+    "n_requested": 30,
+    "seed": 0,
+    "allocation": {
+     "2011": 17,
+     "2014": 13
+    },
+    "n_primary": 30,
+    "n_reserve": 30,
+    "n_skipped": 0
+   },
+   "n_records": 0,
+   "n_failed": 0,
+   "failed": [],
+   "n_samples_scored": 0,
+   "status": "no samples scored yet"
+  },
+  "validation": {
+   "ds_time_column": "val_time",
+   "n_records": 0,
+   "n_failed": 0,
+   "failed": [],
+   "n_samples_scored": 0,
+   "status": "no samples scored yet"
+  }
+ }
+}

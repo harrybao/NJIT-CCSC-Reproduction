@@ -54,9 +54,11 @@ the authors' `custom_collate_fn`, batch size 1 and no workers.
 The model is built as infer.py builds it. `finetune.get_model` with config_infer.yaml (which first loads the
 foundation weights `surya.366m.v1.pt`) is followed by `apply_peft_lora` (rank 64, alpha 32) and
 `load_state_dict(strict=True)` of the checkpoint. It runs in eval mode, float32, on the CPU, without autocast, under
-`torch.no_grad()`. One forward pass took about 135 s on this machine in the base-model test. The dry run estimates
-[[TEST_MIN]] minutes for the 30 test samples and [[VAL_MIN]] minutes for the validation run including the anchors
-below. Each run resumes from its jsonl file, so `--max-forward` can split a run into pieces of about 90 minutes.
+`torch.no_grad()`. One forward pass took about 135 s on this machine in the base-model test. Reading the two frames
+is assumed (not measured) to take 30 s each. On that basis the dry run estimates 106 minutes for the 30 test samples
+and 49 minutes for the 13 validation forward passes (10 samples plus the 3 anchors below). Each needs about 4.2 GB of
+new disk at the peak (checkpoint plus two samples' frames). A run resumes from its jsonl file, so the test run can be
+done as `--max-forward 25` and then the same command again.
 
 ## De-normalisation
 
@@ -132,8 +134,9 @@ on S3 plus the header check plays the role of the index. For the validation spli
 required.
 
 The repo builds one dataset over a whole index; here a one-sample dataset is built per time stamp, so its duplicate
-removal between neighbouring times never applies. The frames are the S3 copies, which decode bit-for-bit like the
-Hugging Face ones.
+removal between neighbouring times never applies. The frames are the S3 copies. For the one frame compared
+(2014-01-07 16:00, results/Surya/s3_vs_hf_frames.json) these decode bit-for-bit like the Hugging Face copy. The
+notebook anchors, whose inputs are Hugging Face infer_data files in the notebook, test this again end to end.
 
 The forward pass runs in float32 on a CPU without autocast. Both repo configs set dtype float32, and CPU bfloat16
 breaks Surya (results/Surya/bf16_diagnosis). Small float32 differences from a GPU are expected; the anchors measure

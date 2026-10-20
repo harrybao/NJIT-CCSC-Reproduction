@@ -39,7 +39,8 @@
   }
  ],
  "selection_rounds": 2,
- "selection_seconds": 575.0,
+ "anchors": false,
+ "selection_seconds": 1132.1,
  "dataset_join_check": [
   {
    "timestamp": "2020-01-18 18:00:00",
@@ -955,22 +956,23 @@
   "measured_bandwidth": {
    "s3_frame": {
     "bytes": 16777216,
-    "seconds": 1.17,
-    "MB_per_s": 14.4
+    "seconds": 1.7,
+    "MB_per_s": 9.9
    },
    "hf_checkpoint": {
     "bytes": 16777216,
-    "seconds": 1.05,
-    "MB_per_s": 16.0
+    "seconds": 1.23,
+    "MB_per_s": 13.6
    }
   },
   "checkpoint_already_on_disk": false,
-  "one_off_minutes_checkpoint_and_model": 4.4,
+  "one_off_minutes_checkpoint_and_model": 4.7,
   "per_sample_minutes": 3.3,
-  "frame_download_minutes_per_sample_mean": 1.22,
+  "frame_download_minutes_per_sample_mean": 1.77,
   "prefetch": true,
   "download_hidden_by_prefetch": true,
-  "total_minutes": 104.7
+  "total_minutes": 105.7,
+  "max_forward_per_90_min_run": 25
  },
  "disk": {
   "frames_total_bytes_downloaded_over_run": 31544877149,
@@ -1156,6 +1158,92 @@
    }
   }
  },
+ "baselines_on_sample_with_reserves_csv_only": {
+  "n": 60,
+  "V_target_mean": 399.75,
+  "V_target_std": 80.96370071416779,
+  "persistence_4d_V_at_t": {
+   "rmse": 98.01917801766784,
+   "mae": 79.20370370370371,
+   "mse": 9607.75925925926,
+   "bias": 33.2037037037037,
+   "r2": -0.3755301561540141,
+   "pearson_r": 0.41596206123625157,
+   "n": 54,
+   "ci95": {
+    "rmse": [
+     81.05039297632253,
+     114.75430073387817
+    ],
+    "mae": [
+     64.24027777777779,
+     95.07453703703703
+    ],
+    "mse": [
+     6569.166203703703,
+     13168.549537037037
+    ],
+    "bias": [
+     9.11111111111111,
+     57.9449074074074
+    ]
+   }
+  },
+  "recurrence_27d_V_at_T_minus_27d": {
+   "rmse": 87.55185476463232,
+   "mae": 65.8,
+   "mse": 7665.327272727272,
+   "bias": 10.854545454545455,
+   "r2": -0.14266831180519945,
+   "pearson_r": 0.4741528669653984,
+   "n": 55,
+   "ci95": {
+    "rmse": [
+     69.96243454603102,
+     105.29647534290221
+    ],
+    "mae": [
+     51.472727272727276,
+     81.63636363636364
+    ],
+    "mse": [
+     4894.742272727273,
+     11087.347727272725
+    ],
+    "bias": [
+     -12.309545454545454,
+     33.327727272727266
+    ]
+   }
+  },
+  "climatology_train_mean": {
+   "rmse": 83.12819737016062,
+   "mae": 69.69485755535543,
+   "mse": 6910.29719801238,
+   "bias": 18.84612333290448,
+   "r2": -0.054183038529655336,
+   "pearson_r": 0.0,
+   "n": 60,
+   "ci95": {
+    "rmse": [
+     72.14556379270223,
+     93.93642939749716
+    ],
+    "mae": [
+     58.454229580313616,
+     81.31223428320251
+    ],
+    "mse": [
+     5204.982376086053,
+     8824.052768005378
+    ],
+    "bias": [
+     -2.3547100004288497,
+     38.79612333290448
+    ]
+   }
+  }
+ },
  "baselines_full_split_csv_only": {
   "pairs": 39893,
   "definition": "all (t, T = t + 4 d) pairs of the split as in the sampling frame (test: t >= 2020-01-01; validation: t, t+60 in core-sdo valid index), S3 not checked",
@@ -1188,6 +1276,80 @@
    "pearson_r": NaN,
    "n": 39893,
    "value_km_s": 418.5961233329045
+  }
+ },
+ "sample_representativeness_csv_only": {
+  "primaries": {
+   "design": "30 blocks x 1 pair(s), 2000 draws (coverage: 500 draws x 2000 bootstrap resamples)",
+   "persistence_4d_V_at_t": {
+    "full_split_rmse": 111.59608924412711,
+    "design_rmse_median": 109.79259438217076,
+    "design_rmse_2.5_97.5": [
+     79.7301889423043,
+     143.17556777822162
+    ],
+    "drawn_sample_rmse": 75.07467546750851,
+    "drawn_sample_percentile": 1.0,
+    "bootstrap95_coverage_of_full_split_rmse": 0.9
+   },
+   "recurrence_27d_V_at_T_minus_27d": {
+    "full_split_rmse": 102.43505508100957,
+    "design_rmse_median": 100.31998722265928,
+    "design_rmse_2.5_97.5": [
+     68.56159349020993,
+     137.47377167615628
+    ],
+    "drawn_sample_rmse": 79.23172765165901,
+    "drawn_sample_percentile": 9.700000000000001,
+    "bootstrap95_coverage_of_full_split_rmse": 0.858
+   },
+   "climatology_train_mean": {
+    "full_split_rmse": 87.03826655657213,
+    "design_rmse_median": 84.64968566151553,
+    "design_rmse_2.5_97.5": [
+     65.21485801719503,
+     113.7277338574867
+    ],
+    "drawn_sample_rmse": 94.88839452221129,
+    "drawn_sample_percentile": 81.75,
+    "bootstrap95_coverage_of_full_split_rmse": 0.872
+   }
+  },
+  "primaries_and_reserves": {
+   "design": "30 blocks x 2 pair(s), 2000 draws (coverage: 500 draws x 2000 bootstrap resamples)",
+   "persistence_4d_V_at_t": {
+    "full_split_rmse": 111.59608924412711,
+    "design_rmse_median": 110.98535659416727,
+    "design_rmse_2.5_97.5": [
+     89.80314174341284,
+     134.14943766238724
+    ],
+    "drawn_sample_rmse": 98.01917801766784,
+    "drawn_sample_percentile": 12.950000000000001,
+    "bootstrap95_coverage_of_full_split_rmse": 0.91
+   },
+   "recurrence_27d_V_at_T_minus_27d": {
+    "full_split_rmse": 102.43505508100957,
+    "design_rmse_median": 101.5498544359676,
+    "design_rmse_2.5_97.5": [
+     78.44790521905436,
+     129.34051906770208
+    ],
+    "drawn_sample_rmse": 87.55185476463232,
+    "drawn_sample_percentile": 11.899999999999999,
+    "bootstrap95_coverage_of_full_split_rmse": 0.912
+   },
+   "climatology_train_mean": {
+    "full_split_rmse": 87.03826655657213,
+    "design_rmse_median": 86.00722015730219,
+    "design_rmse_2.5_97.5": [
+     71.1593449351377,
+     105.5992604852872
+    ],
+    "drawn_sample_rmse": 83.12819737016062,
+    "drawn_sample_percentile": 37.1,
+    "bootstrap95_coverage_of_full_split_rmse": 0.892
+   }
   }
  }
 }
