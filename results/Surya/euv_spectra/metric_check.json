@@ -1,0 +1,64 @@
+{
+ "n_synthetic_samples": 7,
+ "bins": 1343,
+ "sample_stats_vs_direct_max_rel_diff": 1.8597062793881653e-16,
+ "finetune_evaluate_model": {
+  "repo": {
+   "mae": 0.006528414712156619,
+   "rmse": 0.011153839058274733,
+   "r2": 0.9971461136601045,
+   "avg_MSELoss": 0.00012440812185689407
+  },
+  "mine": {
+   "mae": 0.006528415376445899,
+   "rmse": 0.011153839032225756,
+   "r2": 0.9971461147821183,
+   "mse": 0.0001244081251568028
+  }
+ },
+ "finetune_evaluate_model_max_rel_diff": 1.0175352540072031e-07,
+ "infer_infer_samples": {
+  "repo_printed_6dp": {
+   "mae": 0.006717,
+   "rmse": 0.014324,
+   "r2": 0.995276,
+   "avg_corr": 0.997661
+  },
+  "mine": {
+   "mae": 0.006716526122349986,
+   "rmse": 0.014323542639467238,
+   "r2": 0.9952763381337878,
+   "avg_corr": 0.9976614594730133
+  },
+  "max_abs_diff": 4.738776500142622e-07,
+  "printed_ranges_max_abs_diff": 4.814565181732178e-05,
+  "returned_arrays_equal_inputs": true
+ },
+ "hand_example": {
+  "mape_pct": 15.000000000000002,
+  "mse": 0.0025000000000000014,
+  "mae": 0.05000000000000002,
+  "expected": {
+   "mape_pct": 15.0,
+   "mse": 0.0025,
+   "mae": 0.05
+  }
+ },
+ "mape_loop": {
+  "loop": 3.6595361599515948,
+  "mine": 3.6595361599515814,
+  "rel_diff": 3.640536864015602e-15
+ },
+ "bootstrap_sanity_ok": true,
+ "target_transform_vs_EVEDSDataset": {
+  "dataset_len": 3,
+  "eve_times_match": true,
+  "max_abs_diff_normalised": 0.0,
+  "denorm_max_rel_diff_nonzero": 2.813710755731819e-06,
+  "zero_replaced_by_per_wavelength_min": true,
+  "target_dtype": "float32",
+  "ok": true
+ },
+ "passed": true,
+ "mape_definition": "MAPE = 100/N * sum |yhat - y| / |y| over all N = n_samples x 1343 elements, normalised targets, percent; not in the repo; Table 5 / Sec. 2.6.4 of arXiv 2508.14112 v2 name it without a formula"
+}

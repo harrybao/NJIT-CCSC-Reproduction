@@ -1253,21 +1253,30 @@ def run(args, out_dir):
     if not args.no_anchors:  # notebook anchors first (an early end-to-end check), once overall
         work = [a for a in anchors if a["timestamp"] not in done_anc] + work
     pending = [r for r in work if not (r["role"] != "anchor" and r["timestamp"] in done)]
-    # a time that is both an anchor and a validation sample is run once; the record is copied to the other file
-    reuse = {}
+
+    def dest(r):
+        return anc_path if r["role"] == "anchor" else recs_path
+
+    def copy_record(src, r):
+        rec = dict(src, role=r["role"], stratum=r["stratum"], block=r["block"],
+                   block_candidates=r["block_candidates"], copied_from_existing_record=True)
+        with open(dest(r), "a") as fp:
+            fp.write(json.dumps(rec, default=float) + "\n")
+
+    # a time that is both an anchor and a validation sample needs one forward pass: reuse a record from an earlier run,
+    # or run it once and write the record to both files (rows with the same time are merged into one pending item)
+    uniq, seen = [], {}
     for r in pending:
-        if r["role"] == "anchor" and r["timestamp"] in done and args.split == "validation":
-            reuse[r["timestamp"]] = previous[r["timestamp"]]
-        if r["role"] != "anchor" and r["timestamp"] in done_anc and args.split == "validation":
-            reuse[r["timestamp"]] = prev_anc[r["timestamp"]]
-    for t, src in reuse.items():
-        for r in [p for p in pending if p["timestamp"] == t]:
-            rec = dict(src, role=r["role"], stratum=r["stratum"], block=r["block"],
-                       block_candidates=r["block_candidates"], copied_from_existing_record=True)
-            with open(anc_path if r["role"] == "anchor" else recs_path, "a") as fp:
-                fp.write(json.dumps(rec, default=float) + "\n")
-            pending.remove(r)
-    pending = pending[: args.max_forward]
+        t = r["timestamp"]
+        src = prev_anc.get(t) if r["role"] != "anchor" else previous.get(t) if args.split == "validation" else None
+        if src is not None and src.get("status") == "ok":
+            copy_record(src, r)
+        elif t in seen:
+            seen[t]["also"].append(r)
+        else:
+            seen[t] = dict(r, also=[])
+            uniq.append(seen[t])
+    pending = uniq[: args.max_forward]
     log(f"{len(blocks)} blocks, {len(ok_blocks)} already scored; {len(pending)} forward passes to run now")
     if not pending:
         s = summarize(out_dir, args.seed)
@@ -1324,6 +1333,7 @@ def run(args, out_dir):
         try:
             if err is not None:
                 raise err
+            cache.ensure(frames_of(row))  # no-op when the prefetch fetched this sample's frames (it always should)
             t1 = time.time()
             verify_frames([os.path.join(cache.root, C.s3_key(ts)) for ts in frames_of(row)], cfg["data"]["channels"])
             F = full_split(cfg, scalers, split)
@@ -1390,22 +1400,16 @@ def run(args, out_dir):
                 if row["role"] == "primary" else None
             if res is not None and res["timestamp"] not in done and all(p["timestamp"] != res["timestamp"]
                                                                         for p in pending):
-                pending.append(res)
+                pending.append(dict(res, also=[]))
                 if prefetch and j + 1 == len(pending) - 1:  # nothing was prefetched for it yet
                     fut = pool.submit(caches[(j + 1) % 2].ensure, frames_of(res))
         finally:
             ds = loader = batch = x = out = None  # release the input tensors before the next sample
         rec["peak_rss_gb"] = C.peak_rss_gb()
-        with open(anc_path if row["role"] == "anchor" else recs_path, "a") as fp:
+        with open(dest(row), "a") as fp:
             fp.write(json.dumps(rec, default=float) + "\n")
-        if row["role"] == "anchor" and rec["status"] == "ok" and args.split == "validation":
-            same = [p for p in sample.to_dict("records") if p["timestamp"] == row["timestamp"] and p["role"] != "anchor"]
-            for p in same:  # also a stratified sample of this split: record it there without a second pass
-                with open(recs_path, "a") as fp:
-                    fp.write(json.dumps(dict(rec, role=p["role"], stratum=p["stratum"], block=p["block"],
-                                             block_candidates=p["block_candidates"],
-                                             copied_from_existing_record=True), default=float) + "\n")
-                pending = [q for q in pending if not (q["timestamp"] == p["timestamp"] and q["role"] != "anchor")]
+        for other in row["also"]:  # same time stamp in another role (anchor and validation sample): no second pass
+            copy_record(rec, other)
         gc.collect()
         j += 1
         if not prefetch and j < len(pending):
