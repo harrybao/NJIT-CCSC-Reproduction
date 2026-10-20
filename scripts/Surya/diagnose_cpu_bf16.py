@@ -13,6 +13,7 @@ model(batch) on the inputs at t-60 and t, scored with MSE against the frame at t
   bf16_ln32      CPU autocast, layer_norm computed in float32 and returned as float32 (the CUDA policy)
   bf16_sm32      CPU autocast, Tensor.softmax computed in float32 and returned as float32 (the CUDA policy)
   bf16_ln32_sm32 both
+  bf16_conv32    CPU autocast, but the patch-embedding convolution alone in float32 (see bf16_conv_shapes.py)
 Forward hooks on the model's modules (to depth 4 by default) record, for every call, the output dtype and a fixed strided
 subsample of 65,536 output values; each variant is compared with fp32 module by module (relative RMS error).
 
@@ -32,6 +33,23 @@ import yaml
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import run_validation_test_grouped as R  # noqa: E402  (download/build helpers of the main runner)
+
+
+@contextlib.contextmanager
+def fp32_patch_conv(model):
+    """Run only the patch-embedding Conv2d in float32 (the layer that bf16_conv_shapes.py shows is computed
+    wrongly by oneDNN in bfloat16 for this shape); everything else stays under bfloat16 autocast."""
+    conv = model.embedding.patch_embed.proj
+    orig = conv.forward
+
+    def fwd(x):
+        with torch.autocast(device_type="cpu", enabled=False):
+            return orig(x.float())
+    conv.forward = fwd
+    try:
+        yield
+    finally:
+        conv.forward = orig
 
 
 @contextlib.contextmanager
@@ -63,10 +81,12 @@ def fp32_softmax():
         torch.Tensor.softmax = orig
 
 
-def variant_ctx(name):
+def variant_ctx(name, model=None):
     stack = contextlib.ExitStack()
     if name != "fp32":
         stack.enter_context(torch.autocast(device_type="cpu", dtype=torch.bfloat16))
+    if "conv32" in name:
+        stack.enter_context(fp32_patch_conv(model))
     if "ln32" in name:
         stack.enter_context(fp32_layer_norm())
     if "sm32" in name:
@@ -150,7 +170,7 @@ def main():
     for v in variants:
         rec["calls"] = []
         t0 = time.time()
-        with variant_ctx(v):
+        with variant_ctx(v, model):
             with torch.no_grad():
                 pred = model(inputs)
                 loss = F.mse_loss(pred, target).item()

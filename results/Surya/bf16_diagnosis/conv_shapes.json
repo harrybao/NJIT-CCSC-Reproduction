@@ -1,0 +1,87 @@
+{
+ "torch": "2.10.0+cpu",
+ "cpu_capability": "AVX512",
+ "cpu_model": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+ "cases": [
+  {
+   "in_channels": 26,
+   "out_channels": 1280,
+   "kernel": 16,
+   "stride": 16,
+   "rel_error_bf16_onednn": 1.354799165468288,
+   "rel_error_bf16_without_onednn": 0.002871177326236975
+  },
+  {
+   "in_channels": 32,
+   "out_channels": 1280,
+   "kernel": 16,
+   "stride": 16,
+   "rel_error_bf16_onednn": 0.0028570113303756583,
+   "rel_error_bf16_without_onednn": 0.0028569111250167944
+  },
+  {
+   "in_channels": 13,
+   "out_channels": 1280,
+   "kernel": 16,
+   "stride": 16,
+   "rel_error_bf16_onednn": 0.002895012052209744,
+   "rel_error_bf16_without_onednn": 0.002895062001486544
+  },
+  {
+   "in_channels": 26,
+   "out_channels": 64,
+   "kernel": 16,
+   "stride": 16,
+   "rel_error_bf16_onednn": 1.3146292134173534,
+   "rel_error_bf16_without_onednn": 0.0028935548381116547
+  },
+  {
+   "in_channels": 16,
+   "out_channels": 16,
+   "kernel": 16,
+   "stride": 16,
+   "rel_error_bf16_onednn": 1.15018447039733,
+   "rel_error_bf16_without_onednn": 0.002779458363605644
+  },
+  {
+   "in_channels": 3,
+   "out_channels": 64,
+   "kernel": 16,
+   "stride": 16,
+   "rel_error_bf16_onednn": 0.002908001176500325,
+   "rel_error_bf16_without_onednn": 0.0029074186651189523
+  },
+  {
+   "in_channels": 26,
+   "out_channels": 1280,
+   "kernel": 8,
+   "stride": 8,
+   "rel_error_bf16_onednn": 0.002875815881540847,
+   "rel_error_bf16_without_onednn": 0.0028757952680277055
+  },
+  {
+   "in_channels": 26,
+   "out_channels": 1280,
+   "kernel": 4,
+   "stride": 4,
+   "rel_error_bf16_onednn": 0.0028752171289182834,
+   "rel_error_bf16_without_onednn": 0.002875203507451055
+  },
+  {
+   "in_channels": 26,
+   "out_channels": 1280,
+   "kernel": 2,
+   "stride": 2,
+   "rel_error_bf16_onednn": 0.002870021647325729,
+   "rel_error_bf16_without_onednn": 0.002870022675413693
+  },
+  {
+   "in_channels": 26,
+   "out_channels": 1280,
+   "kernel": 3,
+   "stride": 1,
+   "rel_error_bf16_onednn": 0.0028672028058075215,
+   "rel_error_bf16_without_onednn": 0.0028672032976786166
+  }
+ ]
+}
