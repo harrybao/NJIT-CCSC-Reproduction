@@ -1,0 +1,52 @@
+{
+ "n_synthetic": 37,
+ "finetune_evaluate_model_normalised_units": {
+  "repo": {
+   "mae": 0.1097181681040171,
+   "rmse": 0.12934872654462043,
+   "r2": 0.7401126388883674,
+   "avg_loss_MSELoss": 0.016731091650242853
+  },
+  "mine": {
+   "mae": 0.10971817212972002,
+   "rmse": 0.12934872110014406,
+   "r2": 0.7401126185771175,
+   "mse": 0.016731091650242853
+  }
+ },
+ "finetune_evaluate_model_max_rel_diff": 4.209145883651479e-08,
+ "infer_single_sample_km_s": {
+  "repo_printed_4dp": {
+   "mae": 61.4422,
+   "rmse": 72.4353,
+   "r2": 0.7401
+  },
+  "mine": {
+   "mae": 61.4421763926432,
+   "rmse": 72.43528381608066,
+   "r2": 0.7401126185771176
+  }
+ },
+ "infer_single_sample_max_abs_diff": 2.360735680184689e-05,
+ "un_norm_output_vs_mine_max_abs_diff": 0.0,
+ "hand_example": {
+  "mae": {
+   "got": 3.5,
+   "expected": 3.5
+  },
+  "mse": {
+   "got": 12.5,
+   "expected": 12.5
+  },
+  "rmse": {
+   "got": 3.5355339059327378,
+   "expected": 3.5355339059327378
+  },
+  "bias": {
+   "got": -0.5,
+   "expected": -0.5
+  }
+ },
+ "bootstrap_sanity_ok": true,
+ "passed": true
+}

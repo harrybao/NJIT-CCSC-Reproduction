@@ -1,0 +1,1193 @@
+{
+ "split": "test",
+ "n": 30,
+ "seed": 0,
+ "check_channels": true,
+ "allocation_per_year": {
+  "2020": 6,
+  "2021": 6,
+  "2022": 6,
+  "2023": 6,
+  "2024": 6
+ },
+ "candidate_info": {
+  "rows_in_csv": 39975,
+  "rows_with_t_in_test_period": 39893,
+  "candidates": 39893,
+  "candidates_per_year": {
+   "2020": 8537,
+   "2021": 7775,
+   "2022": 8167,
+   "2023": 7857,
+   "2024": 7557
+  },
+  "candidates_with_V_t": 36431,
+  "candidates_with_V_T27": 36510
+ },
+ "n_blocks": 30,
+ "blocks_without_primary": [],
+ "blocks_without_reserve": 0,
+ "skipped": [
+  {
+   "t": "2024-10-15 18:00:00",
+   "T": "2024-10-19 18:00:00",
+   "V_T": 443.0,
+   "V_t": 379.0,
+   "V_T27": NaN,
+   "stratum": 2024,
+   "reason": "frame at t+60 min not on S3 (the authors' dataset indexes and reads t+60)"
+  }
+ ],
+ "selection_rounds": 2,
+ "selection_seconds": 575.0,
+ "dataset_join_check": [
+  {
+   "timestamp": "2020-01-18 18:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2020-01-22 18:00:00",
+   "V_norm_from_dataset": 0.11733333333333333,
+   "V_unnorm_from_dataset": 344.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2020/01/20200118_1800.nc",
+    "2020/01/20200118_1900.nc"
+   ]
+  },
+  {
+   "timestamp": "2020-01-05 19:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2020-01-09 19:00:00",
+   "V_norm_from_dataset": 0.28933333333333333,
+   "V_unnorm_from_dataset": 473.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2020/01/20200105_1900.nc",
+    "2020/01/20200105_2000.nc"
+   ]
+  },
+  {
+   "timestamp": "2020-04-21 15:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2020-04-25 15:00:00",
+   "V_norm_from_dataset": 0.20533333333333334,
+   "V_unnorm_from_dataset": 410.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2020/04/20200421_1500.nc",
+    "2020/04/20200421_1600.nc"
+   ]
+  },
+  {
+   "timestamp": "2020-03-29 03:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2020-04-02 03:00:00",
+   "V_norm_from_dataset": 0.216,
+   "V_unnorm_from_dataset": 418.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2020/03/20200329_0300.nc",
+    "2020/03/20200329_0400.nc"
+   ]
+  },
+  {
+   "timestamp": "2020-06-01 12:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2020-06-05 12:00:00",
+   "V_norm_from_dataset": 0.09066666666666667,
+   "V_unnorm_from_dataset": 324.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2020/06/20200601_1200.nc",
+    "2020/06/20200601_1300.nc"
+   ]
+  },
+  {
+   "timestamp": "2020-06-07 08:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2020-06-11 08:00:00",
+   "V_norm_from_dataset": 0.21333333333333335,
+   "V_unnorm_from_dataset": 416.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2020/06/20200607_0800.nc",
+    "2020/06/20200607_0900.nc"
+   ]
+  },
+  {
+   "timestamp": "2020-08-13 04:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2020-08-17 04:00:00",
+   "V_norm_from_dataset": 0.084,
+   "V_unnorm_from_dataset": 319.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2020/08/20200813_0400.nc",
+    "2020/08/20200813_0500.nc"
+   ]
+  },
+  {
+   "timestamp": "2020-08-15 15:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2020-08-19 15:00:00",
+   "V_norm_from_dataset": 0.096,
+   "V_unnorm_from_dataset": 328.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2020/08/20200815_1500.nc",
+    "2020/08/20200815_1600.nc"
+   ]
+  },
+  {
+   "timestamp": "2020-09-05 04:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2020-09-09 04:00:00",
+   "V_norm_from_dataset": 0.06933333333333333,
+   "V_unnorm_from_dataset": 308.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2020/09/20200905_0400.nc",
+    "2020/09/20200905_0500.nc"
+   ]
+  },
+  {
+   "timestamp": "2020-09-30 05:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2020-10-04 05:00:00",
+   "V_norm_from_dataset": 0.15866666666666668,
+   "V_unnorm_from_dataset": 375.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2020/09/20200930_0500.nc",
+    "2020/09/20200930_0600.nc"
+   ]
+  },
+  {
+   "timestamp": "2020-11-04 13:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2020-11-08 13:00:00",
+   "V_norm_from_dataset": 0.24266666666666667,
+   "V_unnorm_from_dataset": 438.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2020/11/20201104_1300.nc",
+    "2020/11/20201104_1400.nc"
+   ]
+  },
+  {
+   "timestamp": "2020-12-17 10:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2020-12-21 10:00:00",
+   "V_norm_from_dataset": 0.16266666666666665,
+   "V_unnorm_from_dataset": 378.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2020/12/20201217_1000.nc",
+    "2020/12/20201217_1100.nc"
+   ]
+  },
+  {
+   "timestamp": "2021-01-07 06:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2021-01-11 06:00:00",
+   "V_norm_from_dataset": 0.04133333333333333,
+   "V_unnorm_from_dataset": 287.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2021/01/20210107_0600.nc",
+    "2021/01/20210107_0700.nc"
+   ]
+  },
+  {
+   "timestamp": "2021-02-17 22:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2021-02-21 22:00:00",
+   "V_norm_from_dataset": 0.404,
+   "V_unnorm_from_dataset": 559.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2021/02/20210217_2200.nc",
+    "2021/02/20210217_2300.nc"
+   ]
+  },
+  {
+   "timestamp": "2021-04-11 21:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2021-04-15 21:00:00",
+   "V_norm_from_dataset": 0.12933333333333333,
+   "V_unnorm_from_dataset": 353.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2021/04/20210411_2100.nc",
+    "2021/04/20210411_2200.nc"
+   ]
+  },
+  {
+   "timestamp": "2021-03-09 00:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2021-03-13 00:00:00",
+   "V_norm_from_dataset": 0.128,
+   "V_unnorm_from_dataset": 352.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2021/03/20210309_0000.nc",
+    "2021/03/20210309_0100.nc"
+   ]
+  },
+  {
+   "timestamp": "2021-06-12 19:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2021-06-16 19:00:00",
+   "V_norm_from_dataset": 0.43466666666666665,
+   "V_unnorm_from_dataset": 582.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2021/06/20210612_1900.nc",
+    "2021/06/20210612_2000.nc"
+   ]
+  },
+  {
+   "timestamp": "2021-06-14 02:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2021-06-18 02:00:00",
+   "V_norm_from_dataset": 0.328,
+   "V_unnorm_from_dataset": 502.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2021/06/20210614_0200.nc",
+    "2021/06/20210614_0300.nc"
+   ]
+  },
+  {
+   "timestamp": "2021-07-22 12:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2021-07-26 12:00:00",
+   "V_norm_from_dataset": 0.07733333333333334,
+   "V_unnorm_from_dataset": 314.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2021/07/20210722_1200.nc",
+    "2021/07/20210722_1300.nc"
+   ]
+  },
+  {
+   "timestamp": "2021-07-28 19:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2021-08-01 19:00:00",
+   "V_norm_from_dataset": 0.17466666666666666,
+   "V_unnorm_from_dataset": 387.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2021/07/20210728_1900.nc",
+    "2021/07/20210728_2000.nc"
+   ]
+  },
+  {
+   "timestamp": "2021-09-17 20:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2021-09-21 20:00:00",
+   "V_norm_from_dataset": 0.09333333333333334,
+   "V_unnorm_from_dataset": 326.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2021/09/20210917_2000.nc",
+    "2021/09/20210917_2100.nc"
+   ]
+  },
+  {
+   "timestamp": "2021-09-15 21:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2021-09-19 21:00:00",
+   "V_norm_from_dataset": 0.088,
+   "V_unnorm_from_dataset": 322.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2021/09/20210915_2100.nc",
+    "2021/09/20210915_2200.nc"
+   ]
+  },
+  {
+   "timestamp": "2021-11-17 05:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2021-11-21 05:00:00",
+   "V_norm_from_dataset": 0.4493333333333333,
+   "V_unnorm_from_dataset": 593.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2021/11/20211117_0500.nc",
+    "2021/11/20211117_0600.nc"
+   ]
+  },
+  {
+   "timestamp": "2021-11-28 04:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2021-12-02 04:00:00",
+   "V_norm_from_dataset": 0.324,
+   "V_unnorm_from_dataset": 499.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2021/11/20211128_0400.nc",
+    "2021/11/20211128_0500.nc"
+   ]
+  },
+  {
+   "timestamp": "2022-02-15 01:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2022-02-19 01:00:00",
+   "V_norm_from_dataset": 0.09466666666666666,
+   "V_unnorm_from_dataset": 327.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2022/02/20220215_0100.nc",
+    "2022/02/20220215_0200.nc"
+   ]
+  },
+  {
+   "timestamp": "2022-02-10 18:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2022-02-14 18:00:00",
+   "V_norm_from_dataset": 0.21333333333333335,
+   "V_unnorm_from_dataset": 416.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2022/02/20220210_1800.nc",
+    "2022/02/20220210_1900.nc"
+   ]
+  },
+  {
+   "timestamp": "2022-03-17 20:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2022-03-21 20:00:00",
+   "V_norm_from_dataset": 0.10133333333333333,
+   "V_unnorm_from_dataset": 332.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2022/03/20220317_2000.nc",
+    "2022/03/20220317_2100.nc"
+   ]
+  },
+  {
+   "timestamp": "2022-04-16 15:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2022-04-20 15:00:00",
+   "V_norm_from_dataset": 0.188,
+   "V_unnorm_from_dataset": 397.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2022/04/20220416_1500.nc",
+    "2022/04/20220416_1600.nc"
+   ]
+  },
+  {
+   "timestamp": "2022-05-17 12:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2022-05-21 12:00:00",
+   "V_norm_from_dataset": 0.364,
+   "V_unnorm_from_dataset": 529.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2022/05/20220517_1200.nc",
+    "2022/05/20220517_1300.nc"
+   ]
+  },
+  {
+   "timestamp": "2022-06-14 18:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2022-06-18 18:00:00",
+   "V_norm_from_dataset": 0.436,
+   "V_unnorm_from_dataset": 583.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2022/06/20220614_1800.nc",
+    "2022/06/20220614_1900.nc"
+   ]
+  },
+  {
+   "timestamp": "2022-08-14 04:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2022-08-18 04:00:00",
+   "V_norm_from_dataset": 0.41333333333333333,
+   "V_unnorm_from_dataset": 566.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2022/08/20220814_0400.nc",
+    "2022/08/20220814_0500.nc"
+   ]
+  },
+  {
+   "timestamp": "2022-07-07 06:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2022-07-11 06:00:00",
+   "V_norm_from_dataset": 0.104,
+   "V_unnorm_from_dataset": 334.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2022/07/20220707_0600.nc",
+    "2022/07/20220707_0700.nc"
+   ]
+  },
+  {
+   "timestamp": "2022-09-06 21:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2022-09-10 21:00:00",
+   "V_norm_from_dataset": 0.30266666666666664,
+   "V_unnorm_from_dataset": 483.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2022/09/20220906_2100.nc",
+    "2022/09/20220906_2200.nc"
+   ]
+  },
+  {
+   "timestamp": "2022-10-07 20:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2022-10-11 20:00:00",
+   "V_norm_from_dataset": 0.21333333333333335,
+   "V_unnorm_from_dataset": 416.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2022/10/20221007_2000.nc",
+    "2022/10/20221007_2100.nc"
+   ]
+  },
+  {
+   "timestamp": "2022-12-26 19:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2022-12-30 19:00:00",
+   "V_norm_from_dataset": 0.4053333333333333,
+   "V_unnorm_from_dataset": 560.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2022/12/20221226_1900.nc",
+    "2022/12/20221226_2000.nc"
+   ]
+  },
+  {
+   "timestamp": "2022-12-23 18:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2022-12-27 18:00:00",
+   "V_norm_from_dataset": 0.3333333333333333,
+   "V_unnorm_from_dataset": 506.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2022/12/20221223_1800.nc",
+    "2022/12/20221223_1900.nc"
+   ]
+  },
+  {
+   "timestamp": "2023-01-15 17:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2023-01-19 17:00:00",
+   "V_norm_from_dataset": 0.15733333333333333,
+   "V_unnorm_from_dataset": 374.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2023/01/20230115_1700.nc",
+    "2023/01/20230115_1800.nc"
+   ]
+  },
+  {
+   "timestamp": "2023-02-07 15:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2023-02-11 15:00:00",
+   "V_norm_from_dataset": 0.2813333333333333,
+   "V_unnorm_from_dataset": 467.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2023/02/20230207_1500.nc",
+    "2023/02/20230207_1600.nc"
+   ]
+  },
+  {
+   "timestamp": "2023-03-10 01:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2023-03-14 01:00:00",
+   "V_norm_from_dataset": 0.08266666666666667,
+   "V_unnorm_from_dataset": 318.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2023/03/20230310_0100.nc",
+    "2023/03/20230310_0200.nc"
+   ]
+  },
+  {
+   "timestamp": "2023-03-05 16:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2023-03-09 16:00:00",
+   "V_norm_from_dataset": 0.21733333333333332,
+   "V_unnorm_from_dataset": 419.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2023/03/20230305_1600.nc",
+    "2023/03/20230305_1700.nc"
+   ]
+  },
+  {
+   "timestamp": "2023-05-14 09:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2023-05-18 09:00:00",
+   "V_norm_from_dataset": 0.132,
+   "V_unnorm_from_dataset": 355.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2023/05/20230514_0900.nc",
+    "2023/05/20230514_1000.nc"
+   ]
+  },
+  {
+   "timestamp": "2023-05-30 00:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2023-06-03 00:00:00",
+   "V_norm_from_dataset": 0.12933333333333333,
+   "V_unnorm_from_dataset": 353.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2023/05/20230530_0000.nc",
+    "2023/05/20230530_0100.nc"
+   ]
+  },
+  {
+   "timestamp": "2023-08-02 01:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2023-08-06 01:00:00",
+   "V_norm_from_dataset": 0.14533333333333334,
+   "V_unnorm_from_dataset": 365.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2023/08/20230802_0100.nc",
+    "2023/08/20230802_0200.nc"
+   ]
+  },
+  {
+   "timestamp": "2023-07-08 07:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2023-07-12 07:00:00",
+   "V_norm_from_dataset": 0.07466666666666667,
+   "V_unnorm_from_dataset": 312.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2023/07/20230708_0700.nc",
+    "2023/07/20230708_0800.nc"
+   ]
+  },
+  {
+   "timestamp": "2023-09-18 01:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2023-09-22 01:00:00",
+   "V_norm_from_dataset": 0.176,
+   "V_unnorm_from_dataset": 388.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2023/09/20230918_0100.nc",
+    "2023/09/20230918_0200.nc"
+   ]
+  },
+  {
+   "timestamp": "2023-10-14 10:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2023-10-18 10:00:00",
+   "V_norm_from_dataset": 0.116,
+   "V_unnorm_from_dataset": 343.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2023/10/20231014_1000.nc",
+    "2023/10/20231014_1100.nc"
+   ]
+  },
+  {
+   "timestamp": "2023-12-10 23:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2023-12-14 23:00:00",
+   "V_norm_from_dataset": 0.06133333333333333,
+   "V_unnorm_from_dataset": 302.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2023/12/20231210_2300.nc",
+    "2023/12/20231211_0000.nc"
+   ]
+  },
+  {
+   "timestamp": "2023-11-11 01:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2023-11-15 01:00:00",
+   "V_norm_from_dataset": 0.14533333333333334,
+   "V_unnorm_from_dataset": 365.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2023/11/20231111_0100.nc",
+    "2023/11/20231111_0200.nc"
+   ]
+  },
+  {
+   "timestamp": "2024-02-06 21:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2024-02-10 21:00:00",
+   "V_norm_from_dataset": 0.12133333333333333,
+   "V_unnorm_from_dataset": 347.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2024/02/20240206_2100.nc",
+    "2024/02/20240206_2200.nc"
+   ]
+  },
+  {
+   "timestamp": "2024-01-01 16:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2024-01-05 16:00:00",
+   "V_norm_from_dataset": 0.19866666666666666,
+   "V_unnorm_from_dataset": 405.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2024/01/20240101_1600.nc",
+    "2024/01/20240101_1700.nc"
+   ]
+  },
+  {
+   "timestamp": "2024-04-02 01:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2024-04-06 01:00:00",
+   "V_norm_from_dataset": 0.18933333333333333,
+   "V_unnorm_from_dataset": 398.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2024/04/20240402_0100.nc",
+    "2024/04/20240402_0200.nc"
+   ]
+  },
+  {
+   "timestamp": "2024-03-28 22:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2024-04-01 22:00:00",
+   "V_norm_from_dataset": 0.2773333333333333,
+   "V_unnorm_from_dataset": 464.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2024/03/20240328_2200.nc",
+    "2024/03/20240328_2300.nc"
+   ]
+  },
+  {
+   "timestamp": "2024-04-28 11:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2024-05-02 11:00:00",
+   "V_norm_from_dataset": 0.136,
+   "V_unnorm_from_dataset": 358.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2024/04/20240428_1100.nc",
+    "2024/04/20240428_1200.nc"
+   ]
+  },
+  {
+   "timestamp": "2024-06-17 07:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2024-06-21 07:00:00",
+   "V_norm_from_dataset": 0.216,
+   "V_unnorm_from_dataset": 418.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2024/06/20240617_0700.nc",
+    "2024/06/20240617_0800.nc"
+   ]
+  },
+  {
+   "timestamp": "2024-08-16 15:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2024-08-20 15:00:00",
+   "V_norm_from_dataset": 0.084,
+   "V_unnorm_from_dataset": 319.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2024/08/20240816_1500.nc",
+    "2024/08/20240816_1600.nc"
+   ]
+  },
+  {
+   "timestamp": "2024-07-12 18:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2024-07-16 18:00:00",
+   "V_norm_from_dataset": 0.17066666666666666,
+   "V_unnorm_from_dataset": 384.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2024/07/20240712_1800.nc",
+    "2024/07/20240712_1900.nc"
+   ]
+  },
+  {
+   "timestamp": "2024-10-15 03:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2024-10-19 03:00:00",
+   "V_norm_from_dataset": 0.20533333333333334,
+   "V_unnorm_from_dataset": 410.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2024/10/20241015_0300.nc",
+    "2024/10/20241015_0400.nc"
+   ]
+  },
+  {
+   "timestamp": "2024-10-11 02:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2024-10-15 02:00:00",
+   "V_norm_from_dataset": 0.212,
+   "V_unnorm_from_dataset": 415.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2024/10/20241011_0200.nc",
+    "2024/10/20241011_0300.nc"
+   ]
+  },
+  {
+   "timestamp": "2024-12-08 19:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2024-12-12 19:00:00",
+   "V_norm_from_dataset": 0.09733333333333333,
+   "V_unnorm_from_dataset": 329.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2024/12/20241208_1900.nc",
+    "2024/12/20241208_2000.nc"
+   ]
+  },
+  {
+   "timestamp": "2024-12-09 22:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2024-12-13 22:00:00",
+   "V_norm_from_dataset": 0.08666666666666667,
+   "V_unnorm_from_dataset": 321.0,
+   "dataset_un_norm_min": 256.0,
+   "dataset_un_norm_ptp": 750.0,
+   "sdo_paths_read_by_dataset": [
+    "2024/12/20241209_2200.nc",
+    "2024/12/20241209_2300.nc"
+   ]
+  }
+ ],
+ "dataset_join_all_ok": true,
+ "dry_run": true,
+ "estimate": {
+  "assumptions_s": {
+   "forward": 136,
+   "frame_read_and_normalise_each": 30,
+   "frames_per_sample": 2,
+   "scoring": 2,
+   "model_build_and_load": 150
+  },
+  "measured_bandwidth": {
+   "s3_frame": {
+    "bytes": 16777216,
+    "seconds": 1.17,
+    "MB_per_s": 14.4
+   },
+   "hf_checkpoint": {
+    "bytes": 16777216,
+    "seconds": 1.05,
+    "MB_per_s": 16.0
+   }
+  },
+  "checkpoint_already_on_disk": false,
+  "one_off_minutes_checkpoint_and_model": 4.4,
+  "per_sample_minutes": 3.3,
+  "frame_download_minutes_per_sample_mean": 1.22,
+  "prefetch": true,
+  "download_hidden_by_prefetch": true,
+  "total_minutes": 104.7
+ },
+ "disk": {
+  "frames_total_bytes_downloaded_over_run": 31544877149,
+  "frames_max_on_disk_bytes": 2351915624,
+  "checkpoint_bytes": 1805655558,
+  "checkpoint_head_x_linked_size": "1805655558",
+  "foundation_weights_already_on_disk_linked_not_copied": "/home/user/work/surya_run/data/Surya-1.0/surya.366m.v1.pt",
+  "peak_disk_gb_new": 4.16
+ },
+ "config_diff_config_vs_config_infer": {
+  "data.sdo_data_root_path": [
+   "/nobackupnfs1/sroy14/processed_data/Helio/nc",
+   "./assets/infer_data"
+  ],
+  "data.solarwind_train_index": [
+   "./assets/Surya-bench-solarwind/train.csv",
+   "./assets/Surya-bench-solarwind/validation.csv"
+  ],
+  "data.solarwind_valid_index": [
+   "./assets/Surya-bench-solarwind/validation.csv",
+   null
+  ],
+  "data.train_data_path": [
+   "./assets/train_index_surya_1_0.csv",
+   "./assets/infer_data/infer_index_surya_1_0.csv"
+  ],
+  "data.valid_data_path": [
+   "./assets/valid_index_surya_1_0.csv",
+   null
+  ],
+  "optimizer": [
+   {
+    "warm_up_steps": 0,
+    "max_epochs": 20,
+    "learning_rate": 0.001,
+    "min_lr": 1e-06
+   },
+   {
+    "warm_up_steps": 0,
+    "max_epochs": 2,
+    "learning_rate": 0.001,
+    "min_lr": 1e-06
+   }
+  ]
+ },
+ "forward_passes_planned": 30,
+ "checkpoint": "nasa-ibm-ai4science/solar_wind_surya@6ac4aa79a96f8785a1ab300842d13727e52b58a5/solar_wind_weights.pth",
+ "checkpoint_sha256": "7ff8c19024fc8a8c4cb5c73278081ba242ba7e871b832e1caab11be8e3166a17",
+ "labels": "nasa-ibm-ai4science/Surya-bench-solarwind@20547a25cbd3aaa359e9cda18be913b94c225e7b",
+ "label_files": {
+  "train.csv": {
+   "bytes": 3054147,
+   "git_blob_sha1": "0bd3047d8a57b6e81dd37c3576da08bf9a18baae"
+  },
+  "validation.csv": {
+   "bytes": 149865,
+   "git_blob_sha1": "472f3cc74a72c64cc14eba5c30b4ced6d45c657d"
+  },
+  "test.csv": {
+   "bytes": 1746629,
+   "git_blob_sha1": "4b894121b91c27b5facd890507f265bb03304a81"
+  },
+  "leaky_validation.csv": {
+   "bytes": 256013,
+   "git_blob_sha1": "c622eec6b79bb8d81a75f1cb46e15072b6a8f19e"
+  }
+ },
+ "normalisation_constants": {
+  "train": {
+   "min": 240.0,
+   "ptp": 560.0,
+   "max": 800.0,
+   "mean": 418.5961233329045,
+   "rows": 69957
+  },
+  "validation": {
+   "min": 259.0,
+   "ptp": 494.0,
+   "max": 753.0,
+   "mean": 397.1122776319627,
+   "rows": 3429
+  },
+  "test": {
+   "min": 256.0,
+   "ptp": 750.0,
+   "max": 1006.0,
+   "mean": 410.8015009380863,
+   "rows": 39975
+  },
+  "leaky_validation": {
+   "min": 266.0,
+   "ptp": 612.0,
+   "max": 878.0,
+   "mean": 426.7680763983629,
+   "rows": 5864
+  }
+ },
+ "upstream_dir": "/home/user/upstream/surya/Surya",
+ "upstream_head": "78b827e",
+ "baselines_on_sample_csv_only": {
+  "n": 30,
+  "V_target_mean": 388.6,
+  "V_target_std": 90.0224416465139,
+  "persistence_4d_V_at_t": {
+   "rmse": 75.07467546750851,
+   "mae": 59.793103448275865,
+   "mse": 5636.206896551724,
+   "bias": 30.275862068965516,
+   "r2": 0.3261045300367965,
+   "pearson_r": 0.6920123400337953,
+   "n": 29,
+   "ci95": {
+    "rmse": [
+     56.37845477466702,
+     92.90876132540491
+    ],
+    "mae": [
+     43.99913793103448,
+     76.72499999999998
+    ],
+    "mse": [
+     3178.530172413793,
+     8632.037931034483
+    ],
+    "bias": [
+     4.964655172413794,
+     54.24224137931033
+    ]
+   }
+  },
+  "recurrence_27d_V_at_T_minus_27d": {
+   "rmse": 79.23172765165901,
+   "mae": 53.4,
+   "mse": 6277.666666666667,
+   "bias": -0.4666666666666667,
+   "r2": 0.2253657846374566,
+   "pearson_r": 0.5347850378716088,
+   "n": 30,
+   "ci95": {
+    "rmse": [
+     48.30809094521134,
+     107.67585997042609
+    ],
+    "mae": [
+     34.26583333333333,
+     75.33416666666665
+    ],
+    "mse": [
+     2333.6716666666666,
+     11594.090833333332
+    ],
+    "bias": [
+     -29.90083333333333,
+     26.566666666666666
+    ]
+   }
+  },
+  "climatology_train_mean": {
+   "rmse": 94.88839452221129,
+   "mae": 84.71793244421572,
+   "mse": 9003.807415002817,
+   "bias": 29.99612333290447,
+   "r2": -0.11102702047408664,
+   "pearson_r": 2.385425241280273e-16,
+   "n": 30,
+   "ci95": {
+    "rmse": [
+     80.23505498757538,
+     109.13591557190551
+    ],
+    "mae": [
+     69.38314668296238,
+     100.21313685549694
+    ],
+    "mse": [
+     6437.664049399658,
+     11910.648067903887
+    ],
+    "bias": [
+     -3.6388766670955155,
+     60.7294566662378
+    ]
+   }
+  }
+ },
+ "baselines_full_split_csv_only": {
+  "pairs": 39893,
+  "definition": "all (t, T = t + 4 d) pairs of the split as in the sampling frame (test: t >= 2020-01-01; validation: t, t+60 in core-sdo valid index), S3 not checked",
+  "V_target_mean": 410.94384979821024,
+  "V_target_std": 86.701225798273,
+  "persistence_4d_V_at_t": {
+   "rmse": 111.59608924412711,
+   "mae": 86.98311877247399,
+   "mse": 12453.687134583184,
+   "bias": -0.11122395761851171,
+   "r2": -0.6595963282858643,
+   "pearson_r": 0.1682806680340833,
+   "n": 36431
+  },
+  "recurrence_27d_V_at_T_minus_27d": {
+   "rmse": 102.43505508100957,
+   "mae": 76.87565050671049,
+   "mse": 10492.940509449465,
+   "bias": -0.9388112845795672,
+   "r2": -0.3730239507482189,
+   "pearson_r": 0.30648129733351764,
+   "n": 36510
+  },
+  "climatology_train_mean": {
+   "rmse": 87.03826655657213,
+   "mae": 70.28368126687513,
+   "mse": 7575.659845172901,
+   "bias": 7.652273534694254,
+   "r2": -0.007789875131001267,
+   "pearson_r": NaN,
+   "n": 39893,
+   "value_km_s": 418.5961233329045
+  }
+ }
+}

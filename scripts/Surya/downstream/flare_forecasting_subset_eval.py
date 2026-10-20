@@ -49,19 +49,20 @@ positives and half from the negatives. Inside each class the sample is allocated
 class's candidates per year (largest remainder, ties broken with the seed), so the sample is self-weighting within
 each class; inside a (class, year) stratum the candidates are cut into equal consecutive time blocks, one sample per
 block, drawn in a seeded random order. A draw is skipped (and the next one in the block tried) if a HEAD request does
-not find one of its three frames on S3, or if the netCDF header of one of them lacks a 4096x4096 channel (read with
-HTTP range requests); every skip is recorded with its reason. Each block also gets a reserve, used only if the primary
-fails at run time.
+not find one of its three frames on S3 or finds a size different from the listing, and, with --header-check, if the
+netCDF header of one of them (read with HTTP range requests, about 1.6 MB and 16 s per frame) lacks a 4096x4096
+channel; every skip is recorded with its reason. Each block also gets a reserve, used only if the primary fails at run
+time. At run time every downloaded frame is opened locally and checked for the 13 channels before the authors' dataset
+reads it (its __getitem__ would otherwise retry a failing sample up to 100 times).
 
 Data. Frames come from the public bucket s3://nasa-surya-bench (bitwise-identical to the HF copies, see
 results/Surya/s3_vs_hf_frames.json) through surya_common.FrameCache. At most one sample's three frames (about 1.8 GB)
 are on disk: once a sample has been read into memory its frames are deleted and the next sample's are downloaded while
-the model runs. --alias-target-frame points the unused t+60 index row at the t file (after the HEAD check of t+60) to
-save a third of the traffic; it is off by default.
+the model runs (at the measured 12-17 MB/s the download is hidden behind the forward pass).
 
 Usage (from the repository root):
   python scripts/Surya/downstream/flare_forecasting_subset_eval.py --dry-run --split test --n 40 --seed 0
-  python scripts/Surya/downstream/flare_forecasting_subset_eval.py --split test --n 40 --seed 0
+  python scripts/Surya/downstream/flare_forecasting_subset_eval.py --split test --n 40 --seed 0 --max-forward 20  (twice)
   python scripts/Surya/downstream/flare_forecasting_subset_eval.py --split validation --n 20 --seed 0
   python scripts/Surya/downstream/flare_forecasting_subset_eval.py --summarize-only
 A rerun skips time stamps already in per_sample_<split>.jsonl, so an interrupted run resumes; --max-forward caps the
@@ -138,8 +139,9 @@ N_BOOT = 10000
 HOUR = pd.Timedelta(minutes=60)
 # Timing assumptions for the estimate (the dry run cannot time the model): one fp32 forward pass of the 4096x4096
 # backbone took about 136 s on this machine (results/Surya/validation_test, 271.9 s for two passes); reading and
-# normalising one 13-channel frame is taken as 25 s, input statistics as 5 s, building and loading the model as 150 s.
-SEC_FORWARD, SEC_LOAD_FRAME, SEC_STATS, SEC_MODEL = 136, 25, 5, 150
+# normalising one 13-channel frame took 5-11 s (21 s for the first) in the authors' dataset logs of that run
+# (/home/user/work/surya_run/logs/data), taken as 12 s; input statistics 5 s; building and loading the model 150 s.
+SEC_FORWARD, SEC_LOAD_FRAME, SEC_STATS, SEC_MODEL = 136, 12, 5, 150
 
 
 # ----------------------------------------------------------------------------------------------- small utilities
@@ -746,7 +748,7 @@ def head_check(t):
     return True, "", sizes
 
 
-def select_sample(split, n, seed, use_listing=True, header_check=True, want_per_block=2, max_tries=30):
+def select_sample(split, n, seed, use_listing=True, header_check=False, want_per_block=2, max_tries=30):
     cands, info, listed_sizes = candidates(split, use_listing)
     alloc, blocks = plan_blocks(cands, split, n, seed)
     state = [{"pos": 0, "found": [], "skipped": []} for _ in blocks]
@@ -847,22 +849,11 @@ def load_configs():
     return cfg, {"config_infer_vs_config_yaml": diff, "path_overrides": overrides}
 
 
-def write_sample_index(t, path, alias_target=False):
-    """Per-sample frame index (core-sdo format) with the three frames the dataset needs. With alias_target the t+60
-    row points at the t file (the classifier never reads the target frame)."""
-    C.write_index(frame_times(t), path)
-    if alias_target:
-        df = pd.read_csv(path, index_col=0)
-        df.loc[df["timestep"] == (pd.Timestamp(t) + HOUR).strftime("%Y-%m-%d %H:%M:%S"), "path"] = C.s3_key(t)
-        df.to_csv(path)
-    return path
-
-
-def build_flare_dataset(cfg, scalers, split, t, sdo_root, SolarFlareDataset, alias_target=False):
+def build_flare_dataset(cfg, scalers, split, t, sdo_root, SolarFlareDataset):
     """The authors' SolarFlareDataset for one reference time, with exactly the arguments of infer.get_dataloader."""
     index_path = os.path.join(WORK, "index", f"{split}_{stamp(t)}.csv")
     os.makedirs(os.path.dirname(index_path), exist_ok=True)
-    write_sample_index(t, index_path, alias_target)
+    C.write_index(frame_times(t), index_path)  # core-sdo index format: the three frames the dataset needs
     return SolarFlareDataset(
         sdo_data_root_path=sdo_root,
         index_path=index_path,
@@ -882,7 +873,7 @@ def build_flare_dataset(cfg, scalers, split, t, sdo_root, SolarFlareDataset, ali
     )
 
 
-def check_joins(sample, cfg, scalers, split, alias_target=False):
+def check_joins(sample, cfg, scalers, split):
     """Build the authors' dataset for every sampled time (no frame is read) and confirm that it yields exactly that
     time, keeps all three frame rows after its inner join with the labels, and attaches the CSV's label_max."""
     add_task_dir()
@@ -890,7 +881,7 @@ def check_joins(sample, cfg, scalers, split, alias_target=False):
     out = []
     for r in sample.itertuples():
         t = pd.Timestamp(r.timestamp)
-        ds = build_flare_dataset(cfg, scalers, split, t, os.path.join(WORK, "frames"), SolarFlareDataset, alias_target)
+        ds = build_flare_dataset(cfg, scalers, split, t, os.path.join(WORK, "frames"), SolarFlareDataset)
         rows_ok = all(np.datetime64(ft) in ds.index.index for ft in frame_times(t))
         ok = (len(ds) == 1 and pd.Timestamp(ds.valid_indices[0]) == t and rows_ok
               and int(ds.index.loc[t, "label_max"]) == int(r.label_max))
@@ -1048,7 +1039,7 @@ def summarize(out_dir, seed=0, n_boot=N_BOOT):
 def get_sample(args, out_dir, cfg, scalers, force=False):
     sample_csv = os.path.join(out_dir, f"sample_{args.split}.csv")
     meta_json = os.path.join(out_dir, f"sampling_{args.split}.json")
-    want = (args.n, args.seed, not args.no_listing, not args.no_header_check)
+    want = (args.n, args.seed, not args.no_listing, bool(args.header_check))
     if not force and os.path.exists(sample_csv) and os.path.exists(meta_json):
         meta = json.load(open(meta_json))
         if (meta["n"], meta["seed"], meta["use_listing"], meta["header_check"]) == want:
@@ -1059,18 +1050,18 @@ def get_sample(args, out_dir, cfg, scalers, force=False):
                            "rerun --dry-run with the new settings (and move the old per-sample file away)")
     t0 = time.time()
     sample, meta = select_sample(args.split, args.n, args.seed, use_listing=not args.no_listing,
-                                 header_check=not args.no_header_check)
+                                 header_check=args.header_check)
     meta["selection_seconds"] = round(time.time() - t0, 1)
-    meta["dataset_join_check"] = check_joins(sample, cfg, scalers, args.split, args.alias_target_frame)
+    meta["dataset_join_check"] = check_joins(sample, cfg, scalers, args.split)
     meta["dataset_join_all_ok"] = all(x["ok"] for x in meta["dataset_join_check"])
     sample.to_csv(sample_csv, index=False)
     json.dump(meta, open(meta_json, "w"), indent=1, default=str)
     return sample, meta
 
 
-def estimate(sample, bw, alias_target):
+def estimate(sample, bw):
     prim = sample[sample.role == "primary"]
-    cols = ["frame_tm60_bytes", "frame_t_bytes"] + ([] if alias_target else ["frame_tp60_bytes"])
+    cols = ["frame_tm60_bytes", "frame_t_bytes", "frame_tp60_bytes"]
     fb = prim[cols].to_numpy(float).sum(1)
     s3, hf = bw["s3_frame"]["MB_per_s"] * 1e6, bw["hf_cdn_csv"]["MB_per_s"] * 1e6
     d = fb / s3
@@ -1106,17 +1097,15 @@ def dry_run(args, out_dir):
     pk = checkpoint_pickle_check()
     est = {"assumptions_s": {"forward": SEC_FORWARD, "read_and_normalise_per_frame": SEC_LOAD_FRAME,
                              "input_statistics": SEC_STATS, "model_build_and_load": SEC_MODEL},
-           "measured_bandwidth": bw,
-           "download_target_frame (default)": estimate(sample, bw, False),
-           "alias_target_frame": estimate(sample, bw, True)}
-    chosen = est["alias_target_frame" if args.alias_target_frame else "download_target_frame (default)"]
+           "measured_bandwidth": bw, **estimate(sample, bw)}
+    chosen = est
     disk = {"checkpoint_bytes": CKPT_SIZE, "checkpoint_head_x_linked_size": ck.headers.get("x-linked-size"),
             "frames_max_on_disk_bytes": chosen["frames_max_on_disk_bytes"],
             "frames_total_bytes_over_run": chosen["frames_total_bytes"],
             "peak_disk_gb_new_files": round((CKPT_SIZE + chosen["frames_max_on_disk_bytes"]) / 1e9, 2),
             "foundation_model_file_already_on_disk_bytes": os.path.getsize(FM_CKPT)}
     meta.update({"dry_run": True, "estimate": est, "disk": disk, "checkpoint_pickle": pk, "config": cfg_info,
-                 "paper_implied": imp, "alias_target_frame": bool(args.alias_target_frame),
+                 "paper_implied": imp,
                  "forward_passes_planned": int(len(prim)), "checkpoint": f"{CKPT_REPO}@{CKPT_REV}/{CKPT_NAME}",
                  "labels": f"{LABEL_REPO}@{LABEL_REV}", "upstream_dir": UPSTREAM,
                  "upstream_head": os.popen(f"git -C {UPSTREAM} rev-parse --short HEAD").read().strip(),
@@ -1132,9 +1121,19 @@ def dry_run(args, out_dir):
     log(f"frames over the run {chosen['frames_total_bytes'] / 1e9:.1f} GB (at most "
         f"{chosen['frames_max_on_disk_bytes'] / 1e9:.2f} GB on disk); checkpoint {CKPT_SIZE / 1e9:.2f} GB; "
         f"peak new disk ~{disk['peak_disk_gb_new_files']} GB")
-    log(f"estimate: {chosen['total_minutes']} min for {chosen['forward_passes']} forward passes "
-        f"(alias-target-frame: {est['alias_target_frame']['total_minutes']} min); S3 {bw['s3_frame']['MB_per_s']} MB/s")
+    log(f"estimate: {chosen['total_minutes']} min for {chosen['forward_passes']} forward passes; "
+        f"S3 {bw['s3_frame']['MB_per_s']} MB/s, HF CDN {bw['hf_cdn_csv']['MB_per_s']} MB/s")
     print(sample[["role", "stratum", "block", "timestamp", "label_max", "max_goes_class"]].to_string(index=False))
+
+
+def local_channel_check(paths):
+    """Open each downloaded frame and confirm that the 13 channels are there with shape 4096x4096."""
+    import h5py
+    for p in paths:
+        with h5py.File(p, "r") as f:
+            bad = [c for c in C.CHANNELS if c not in f or tuple(f[c].shape) != (4096, 4096)]
+        if bad:
+            raise ValueError(f"{os.path.basename(p)} lacks 4096x4096 channels {bad}")
 
 
 def input_stats(x, channels):
@@ -1172,8 +1171,16 @@ def run(args, out_dir):
     blocks = {}
     for r in sample.to_dict("records"):
         blocks.setdefault((r["stratum"], int(r["block"])), {})[r["role"]] = r
+    # run order: positives and negatives alternate, each in a seeded random order of blocks, so that any prefix of
+    # the run (an interrupted run, or --max-forward below the sample size) is balanced and spread over the years
+    rng = np.random.default_rng(args.seed + 1)
+    by_cls = {c: [k for k in sorted(blocks) if k[0].startswith(c)] for c in ("pos", "neg")}
+    by_cls = {c: [ks[i] for i in rng.permutation(len(ks))] for c, ks in by_cls.items()}
+    order = [k for pair in zip(by_cls["pos"], by_cls["neg"]) for k in pair]
+    order += by_cls["pos"][len(by_cls["neg"]):] + by_cls["neg"][len(by_cls["pos"]):]
     work, complete = [], 0
-    for key, b in sorted(blocks.items()):
+    for key in order:
+        b = blocks[key]
         if key in ok_blocks:  # one sample per block
             complete += 1
             continue
@@ -1193,8 +1200,7 @@ def run(args, out_dir):
     pool = cf.ThreadPoolExecutor(1)
 
     def frames_for(row):
-        ft = frame_times(row["timestamp"])
-        return ft[:2] if args.alias_target_frame else ft
+        return frame_times(row["timestamp"])
 
     fut, fut_for = pool.submit(cache.ensure, frames_for(pending[0])), 0  # downloads while the model is prepared
     ckpt = ensure_checkpoint()
@@ -1205,7 +1211,7 @@ def run(args, out_dir):
            "grad": "torch.no_grad()", "upstream_head": os.popen(f"git -C {UPSTREAM} rev-parse --short HEAD").read().strip(),
            "checkpoint": f"{CKPT_REPO}@{CKPT_REV}/{CKPT_NAME}", "checkpoint_sha256": CKPT_SHA256,
            "foundation_model": FM_CKPT, "labels": f"{LABEL_REPO}@{LABEL_REV}", "scalers": SCALERS,
-           "scalers_sha256": sha256_file(SCALERS), "config": cfg_info, "alias_target_frame": bool(args.alias_target_frame),
+           "scalers_sha256": sha256_file(SCALERS), "config": cfg_info,
            "model": minfo, "peak_rss_gb_after_model_load": C.peak_rss_gb()}
     json.dump(env, open(os.path.join(out_dir, "environment.json"), "w"), indent=1, default=str)
     log(f"model ready in {minfo['seconds_build_and_load']} s, peak RSS {C.peak_rss_gb()} GB")
@@ -1217,7 +1223,6 @@ def run(args, out_dir):
         rec = {k: row.get(k) for k in ("split", "role", "class", "year", "stratum", "block", "timestamp", "label_max",
                                        "max_goes_class", "label_cum", "frame_tm60_key", "frame_t_key",
                                        "frame_tp60_key")}
-        rec["alias_target_frame"] = bool(args.alias_target_frame)
         t_start = time.time()
         ds = loader = batch = metadata = x = logit = None
         retry_with_reserve = False
@@ -1225,8 +1230,9 @@ def run(args, out_dir):
             if fut_for != j:
                 fut, fut_for = pool.submit(cache.ensure, frames_for(row)), j
             dl_s = fut.result()
+            local_channel_check([os.path.join(cache.root, C.s3_key(ft)) for ft in frames_for(row)])
             t1 = time.time()
-            ds = build_flare_dataset(cfg, scalers, args.split, t, cache.root, SolarFlareDataset, args.alias_target_frame)
+            ds = build_flare_dataset(cfg, scalers, args.split, t, cache.root, SolarFlareDataset)
             assert len(ds) == 1 and pd.Timestamp(ds.valid_indices[0]) == t, "dataset did not select the time stamp"
             loader = DataLoader(ds, batch_size=1, num_workers=0, shuffle=False, collate_fn=custom_collate_fn)
             batch, metadata = next(iter(loader))
@@ -1298,9 +1304,8 @@ def main():
     ap.add_argument("--out", default=os.path.join(REPO_ROOT, "results", "Surya", "flare_forecasting"))
     ap.add_argument("--max-forward", type=int, default=40, help="forward passes allowed in this run")
     ap.add_argument("--no-listing", action="store_true", help="do not list the S3 bucket (prevalence from the CSV)")
-    ap.add_argument("--no-header-check", action="store_true", help="skip the netCDF header check of each frame")
-    ap.add_argument("--alias-target-frame", action="store_true",
-                    help="do not download the t+60 frame; its index row points at the t file (never read by the model)")
+    ap.add_argument("--header-check", action="store_true",
+                    help="also read the netCDF header of every drawn frame over HTTP (slow: ~16 s per frame)")
     ap.add_argument("--delete-checkpoint", action="store_true", help="remove the 1.8 GB checkpoint at the end")
     ap.add_argument("--summarize-only", action="store_true", help="recompute summary.json from the jsonl files")
     args = ap.parse_args()

@@ -1,0 +1,762 @@
+{
+ "split": "validation",
+ "n": 20,
+ "seed": 0,
+ "use_listing": true,
+ "header_check": false,
+ "design": "class-stratified (n//2 positives), year-proportional within class, one draw per time block",
+ "allocation_per_class_and_year": {
+  "pos": {
+   "2011": 0,
+   "2012": 3,
+   "2014": 4,
+   "2015": 3
+  },
+  "neg": {
+   "2011": 2,
+   "2012": 1,
+   "2013": 1,
+   "2014": 1,
+   "2015": 1,
+   "2016": 1,
+   "2017": 1,
+   "2018": 1,
+   "2019": 1
+  }
+ },
+ "candidate_info": {
+  "rows_in_csv": 3672,
+  "positives_in_csv": 400,
+  "prevalence_csv": 0.10893246187363835,
+  "filters": [
+   {
+    "filter": "t-60 and t+60 rows also in the split CSV",
+    "rows_left": 3654
+   },
+   {
+    "filter": "t-60, t, t+60 present == 1 in core-sdo valid_index_surya_1_0.csv",
+    "rows_left": 3243
+   },
+   {
+    "filter": "t-60, t, t+60 frames in the S3 bucket listing",
+    "rows_left": 3243
+   }
+  ],
+  "s3_listing": {
+   "months": 9,
+   "on_the_hour_frames": 6368,
+   "listing_bytes_transferred_this_call": 10616002,
+   "seconds": 5.5
+  },
+  "candidates": 3243,
+  "candidate_positives": 350,
+  "prevalence_candidates": 0.10792476102374345,
+  "candidates_per_year": {
+   "2011": {
+    "neg": 375,
+    "pos": 13
+   },
+   "2012": {
+    "neg": 288,
+    "pos": 107
+   },
+   "2013": {
+    "neg": 340,
+    "pos": 0
+   },
+   "2014": {
+    "neg": 263,
+    "pos": 121
+   },
+   "2015": {
+    "neg": 272,
+    "pos": 109
+   },
+   "2016": {
+    "neg": 348,
+    "pos": 0
+   },
+   "2017": {
+    "neg": 343,
+    "pos": 0
+   },
+   "2018": {
+    "neg": 335,
+    "pos": 0
+   },
+   "2019": {
+    "neg": 329,
+    "pos": 0
+   }
+  }
+ },
+ "n_blocks": 20,
+ "blocks_without_primary": [],
+ "blocks_without_reserve": 0,
+ "skipped": [],
+ "n_skipped": 0,
+ "selection_rounds": 1,
+ "header_bytes_read": 0,
+ "selection_seconds": 13.5,
+ "dataset_join_check": [
+  {
+   "timestamp": "2012-01-16 16:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2012/01/20120116_1500.nc",
+    "2012/01/20120116_1600.nc",
+    "2012/01/20120116_1700.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2012-01-17 23:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2012/01/20120117_2200.nc",
+    "2012/01/20120117_2300.nc",
+    "2012/01/20120118_0000.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2012-01-22 10:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2012/01/20120122_0900.nc",
+    "2012/01/20120122_1000.nc",
+    "2012/01/20120122_1100.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2012-01-22 08:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2012/01/20120122_0700.nc",
+    "2012/01/20120122_0800.nc",
+    "2012/01/20120122_0900.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2012-01-27 14:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2012/01/20120127_1300.nc",
+    "2012/01/20120127_1400.nc",
+    "2012/01/20120127_1500.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2012-01-27 07:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2012/01/20120127_0600.nc",
+    "2012/01/20120127_0700.nc",
+    "2012/01/20120127_0800.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2014-01-26 12:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2014/01/20140126_1100.nc",
+    "2014/01/20140126_1200.nc",
+    "2014/01/20140126_1300.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2014-01-26 23:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2014/01/20140126_2200.nc",
+    "2014/01/20140126_2300.nc",
+    "2014/01/20140127_0000.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2014-01-27 22:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2014/01/20140127_2100.nc",
+    "2014/01/20140127_2200.nc",
+    "2014/01/20140127_2300.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2014-01-28 10:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2014/01/20140128_0900.nc",
+    "2014/01/20140128_1000.nc",
+    "2014/01/20140128_1100.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2014-01-29 08:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2014/01/20140129_0700.nc",
+    "2014/01/20140129_0800.nc",
+    "2014/01/20140129_0900.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2014-01-30 06:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2014/01/20140130_0500.nc",
+    "2014/01/20140130_0600.nc",
+    "2014/01/20140130_0700.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2014-01-31 07:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2014/01/20140131_0600.nc",
+    "2014/01/20140131_0700.nc",
+    "2014/01/20140131_0800.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2014-01-31 08:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2014/01/20140131_0700.nc",
+    "2014/01/20140131_0800.nc",
+    "2014/01/20140131_0900.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2015-01-21 17:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2015/01/20150121_1600.nc",
+    "2015/01/20150121_1700.nc",
+    "2015/01/20150121_1800.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2015-01-26 01:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2015/01/20150126_0000.nc",
+    "2015/01/20150126_0100.nc",
+    "2015/01/20150126_0200.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2015-01-28 10:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2015/01/20150128_0900.nc",
+    "2015/01/20150128_1000.nc",
+    "2015/01/20150128_1100.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2015-01-27 11:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2015/01/20150127_1000.nc",
+    "2015/01/20150127_1100.nc",
+    "2015/01/20150127_1200.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2015-01-28 15:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2015/01/20150128_1400.nc",
+    "2015/01/20150128_1500.nc",
+    "2015/01/20150128_1600.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2015-01-29 12:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 1,
+   "label_csv": 1,
+   "paths": [
+    "2015/01/20150129_1100.nc",
+    "2015/01/20150129_1200.nc",
+    "2015/01/20150129_1300.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2011-01-21 08:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2011/01/20110121_0700.nc",
+    "2011/01/20110121_0800.nc",
+    "2011/01/20110121_0900.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2011-01-18 10:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2011/01/20110118_0900.nc",
+    "2011/01/20110118_1000.nc",
+    "2011/01/20110118_1100.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2011-01-28 16:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2011/01/20110128_1500.nc",
+    "2011/01/20110128_1600.nc",
+    "2011/01/20110128_1700.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2011-01-26 16:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2011/01/20110126_1500.nc",
+    "2011/01/20110126_1600.nc",
+    "2011/01/20110126_1700.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2012-01-25 15:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2012/01/20120125_1400.nc",
+    "2012/01/20120125_1500.nc",
+    "2012/01/20120125_1600.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2012-01-27 19:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2012/01/20120127_1800.nc",
+    "2012/01/20120127_1900.nc",
+    "2012/01/20120127_2000.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2013-01-26 23:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2013/01/20130126_2200.nc",
+    "2013/01/20130126_2300.nc",
+    "2013/01/20130127_0000.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2013-01-29 23:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2013/01/20130129_2200.nc",
+    "2013/01/20130129_2300.nc",
+    "2013/01/20130130_0000.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2014-01-19 20:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2014/01/20140119_1900.nc",
+    "2014/01/20140119_2000.nc",
+    "2014/01/20140119_2100.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2014-01-19 01:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2014/01/20140119_0000.nc",
+    "2014/01/20140119_0100.nc",
+    "2014/01/20140119_0200.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2015-01-19 18:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2015/01/20150119_1700.nc",
+    "2015/01/20150119_1800.nc",
+    "2015/01/20150119_1900.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2015-01-31 10:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2015/01/20150131_0900.nc",
+    "2015/01/20150131_1000.nc",
+    "2015/01/20150131_1100.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2016-01-22 06:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2016/01/20160122_0500.nc",
+    "2016/01/20160122_0600.nc",
+    "2016/01/20160122_0700.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2016-01-16 08:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2016/01/20160116_0700.nc",
+    "2016/01/20160116_0800.nc",
+    "2016/01/20160116_0900.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2017-01-28 17:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2017/01/20170128_1600.nc",
+    "2017/01/20170128_1700.nc",
+    "2017/01/20170128_1800.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2017-01-29 18:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2017/01/20170129_1700.nc",
+    "2017/01/20170129_1800.nc",
+    "2017/01/20170129_1900.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2018-01-25 00:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2018/01/20180124_2300.nc",
+    "2018/01/20180125_0000.nc",
+    "2018/01/20180125_0100.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2018-01-29 10:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2018/01/20180129_0900.nc",
+    "2018/01/20180129_1000.nc",
+    "2018/01/20180129_1100.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2019-01-19 23:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2019/01/20190119_2200.nc",
+    "2019/01/20190119_2300.nc",
+    "2019/01/20190120_0000.nc"
+   ],
+   "ok": true
+  },
+  {
+   "timestamp": "2019-01-15 06:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "frame_rows_after_join": 1,
+   "label_from_dataset_index": 0,
+   "label_csv": 0,
+   "paths": [
+    "2019/01/20190115_0500.nc",
+    "2019/01/20190115_0600.nc",
+    "2019/01/20190115_0700.nc"
+   ],
+   "ok": true
+  }
+ ],
+ "dataset_join_all_ok": true,
+ "dry_run": true,
+ "estimate": {
+  "assumptions_s": {
+   "forward": 136,
+   "read_and_normalise_per_frame": 12,
+   "input_statistics": 5,
+   "model_build_and_load": 150
+  },
+  "measured_bandwidth": {
+   "s3_frame": {
+    "bytes": 16777216,
+    "seconds": 1.17,
+    "MB_per_s": 14.3
+   },
+   "hf_cdn_csv": {
+    "bytes": 16777216,
+    "seconds": 0.87,
+    "MB_per_s": 19.2
+   }
+  },
+  "frames_per_sample": 3,
+  "frames_total_bytes": 35448200760,
+  "frames_max_on_disk_bytes": 1779207138,
+  "per_sample_download_minutes_mean": 2.07,
+  "per_sample_compute_minutes": 2.95,
+  "download_hidden_behind_forward": true,
+  "total_minutes": 63.1,
+  "forward_passes": 20
+ },
+ "disk": {
+  "checkpoint_bytes": 1794022584,
+  "checkpoint_head_x_linked_size": "1794022584",
+  "frames_max_on_disk_bytes": 1779207138,
+  "frames_total_bytes_over_run": 35448200760,
+  "peak_disk_gb_new_files": 3.57,
+  "foundation_model_file_already_on_disk_bytes": 1800384309
+ },
+ "checkpoint_pickle": {
+  "zip_signature_ok": true,
+  "first_entry": "epoch_5_loss_0.189/data.pkl",
+  "pickle_bytes": 64296,
+  "bytes_read": 131072,
+  "globals": {
+   "collections OrderedDict": 1,
+   "torch._utils _rebuild_tensor_v2": 1,
+   "torch FloatStorage": 1
+  },
+  "only_tensor_globals": true,
+  "n_reduce_ops": 406,
+  "n_weight_bias_keys_seen": 199,
+  "has_cls_token": true,
+  "has_unembed": true,
+  "has_lora": true
+ },
+ "config": {
+  "config_infer_vs_config_yaml": {},
+  "path_overrides": {
+   "pretrained_path": [
+    "./assets/surya.366m.v1.pt",
+    "/home/user/work/surya_run/data/Surya-1.0/surya.366m.v1.pt"
+   ],
+   "data.scalers_path": [
+    "../../data/Surya-1.0/scalers.yaml",
+    "/home/user/work/surya_run/data/Surya-1.0/scalers.yaml"
+   ]
+  }
+ },
+ "paper_implied": {
+  "solutions": [
+   {
+    "prevalence": 0.10594130555746348,
+    "tpr": 0.45615060457659895,
+    "fpr": 0.02015060457659895
+   }
+  ],
+  "unique": true,
+  "range_over_rounding_box": {
+   "prevalence": [
+    0.10314803394293229,
+    0.10874268771392234
+   ],
+   "tpr": [
+    0.4549752208022782,
+    0.45733581487931685
+   ],
+   "fpr": [
+    0.019475220802278204,
+    0.02083581487931685
+   ]
+  },
+  "note": "Eq. 21-23 fix the confusion matrix up to scale; the Table 4 triple has a unique solution."
+ },
+ "forward_passes_planned": 20,
+ "checkpoint": "nasa-ibm-ai4science/solar_flares_surya@ec7c42ab22fbf126c4bfffadb420f6e45a669832/solar_flare_weights.pth",
+ "labels": "nasa-ibm-ai4science/surya-bench-flare-forecasting@bf474bc1e7752bd529e9707650f9310db8693763",
+ "upstream_dir": "/home/user/upstream/surya/Surya",
+ "upstream_head": "78b827e",
+ "scalers_sha256": "a944e8f1bcdc2e5ed9b30cb53e0525ec40625515d09cc8745647111015b2b487"
+}

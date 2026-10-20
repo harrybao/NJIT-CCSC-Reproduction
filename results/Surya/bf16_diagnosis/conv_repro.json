@@ -1,0 +1,71 @@
+{
+ "torch": "2.10.0+cpu",
+ "mkldnn_available": true,
+ "weight_shape": [
+  1280,
+  26,
+  16,
+  16
+ ],
+ "weight_dtype_in_checkpoint": null,
+ "cases": [
+  {
+   "H": 64,
+   "fp32": 1.0323377821977992e-06,
+   "t_fp32": 0.01,
+   "t_bf16_autocast": 0.01,
+   "bf16_autocast": 1.336440713923399,
+   "bf16_autocast_out_dtype": "torch.bfloat16",
+   "bf16_explicit": 1.336440713923399,
+   "bf16_explicit_mkldnn_off": 0.0028470587884101106,
+   "bf16_rounding_only": 0.002329266516580173
+  },
+  {
+   "H": 256,
+   "fp32": 1.0297570625954645e-06,
+   "t_fp32": 0.03,
+   "t_bf16_autocast": 0.01,
+   "bf16_autocast": 1.3425474168716398,
+   "bf16_autocast_out_dtype": "torch.bfloat16",
+   "bf16_explicit": 1.3425474168716398,
+   "bf16_explicit_mkldnn_off": 0.0028657155460566526,
+   "bf16_rounding_only": 0.0023363282150194826
+  },
+  {
+   "H": 1024,
+   "fp32": 1.0270110396081813e-06,
+   "t_fp32": 0.32,
+   "t_bf16_autocast": 0.08,
+   "bf16_autocast": 1.3440235976890018,
+   "bf16_autocast_out_dtype": "torch.bfloat16",
+   "bf16_explicit": 1.3440235976890018,
+   "bf16_explicit_mkldnn_off": 0.002872305462876918,
+   "bf16_rounding_only": 0.002344851761063255
+  },
+  {
+   "H": 2048,
+   "fp32": 1.0282109750517824e-06,
+   "t_fp32": 1.48,
+   "t_bf16_autocast": 0.25,
+   "bf16_autocast": 1.3439238949846648,
+   "bf16_autocast_out_dtype": "torch.bfloat16",
+   "bf16_explicit": 1.3439238949846648,
+   "bf16_explicit_mkldnn_off": 0.0028705689624055094,
+   "bf16_rounding_only": 0.0023443430206701796
+  },
+  {
+   "H": 4096,
+   "fp32": 1.0277884999813466e-06,
+   "t_fp32": 6.92,
+   "t_bf16_autocast": 0.95,
+   "bf16_autocast": 1.3443617942846928,
+   "bf16_autocast_out_dtype": "torch.bfloat16",
+   "bf16_explicit": 1.3443617942846928,
+   "bf16_rounding_only": 0.0023453019707462596
+  }
+ ],
+ "onednn_line": [
+  "- CPU capability usage: AVX512",
+  "- Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, COMMIT_SHA=449b1768410104d3ed79d3bcfe4ba1d65c7f22c0, CXX_COMPILER=/opt/rh/gcc-toolset-13/root/usr/bin/c++, CXX_FLAGS= -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOCUPTI -DLIBKINETO_NOROCTRACER -DLIBKINETO_NOXPUPTI=ON -DUSE_FBGEMM -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -O2 -fPIC -DC10_NODEPRECATED -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=range-loop-construct -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-unknown-pragmas -Wno-unused-parameter -Wno-strict-overflow -Wno-strict-aliasing -Wno-stringop-overflow -Wsuggest-override -Wno-psabi -Wno-error=old-style-cast -faligned-new -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-dangling-reference -Wno-error=dangling-reference -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, TORCH_VERSION=2.10.0, USE_CUDA=0, USE_CUDNN=OFF, USE_CUSPARSELT=OFF, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=OFF, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, USE_XCCL=OFF, USE_XPU=OFF,"
+ ]
+}
