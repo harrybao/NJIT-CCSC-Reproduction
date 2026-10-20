@@ -319,7 +319,18 @@ def metric_self_test(out_dir):
     boot_ok = all(s["ci95"][k][0] <= s[k] <= s["ci95"][k][1] for k in ("rmse", "mae", "mse")) and \
         pd0["estimate"] == 0 and pd0["ci95"] == [0.0, 0.0]
     report["bootstrap_sanity_ok"] = bool(boot_ok)
-    report["passed"] = bool(rel < 1e-5 and absd < 6e-5 and unnorm_diff < 1e-9 and hand < 1e-12 and boot_ok)
+
+    # (e) my regression (control-variate) estimator: exact when the target is linear in the control variates, and
+    #     equal to the plain mean when the sample means of the control variates equal their full-split means
+    Xe = rng.gamma(2.0, 1000.0, (30, 2))
+    ra1 = regression_adjusted(3.0 + 2.0 * Xe[:, 0] - 0.5 * Xe[:, 1], Xe, np.array([1500.0, 2500.0]), n_boot=200)
+    se0 = rng.gamma(2.0, 3000.0, 30)
+    ra2 = regression_adjusted(se0, Xe, Xe.mean(0), n_boot=200)
+    reg = {"linear_target_rel_err": abs(ra1["mse"] - (3.0 + 2.0 * 1500.0 - 0.5 * 2500.0)) / 1750.0,
+           "no_shift_equals_mean_rel_err": abs(ra2["mse"] - se0.mean()) / se0.mean()}
+    report["regression_estimator_checks"] = reg
+    report["passed"] = bool(rel < 1e-5 and absd < 6e-5 and unnorm_diff < 1e-9 and hand < 1e-12 and boot_ok
+                            and max(reg.values()) < 1e-9)
     json.dump(report, open(os.path.join(out_dir, "metric_check.json"), "w"), indent=1)
     if not report["passed"]:
         raise AssertionError(f"metric self-test failed: {json.dumps(report)[:2000]}")
@@ -474,7 +485,8 @@ def regression_adjusted(se_model, X, x_full_mean, n_boot=N_BOOT, seed=0):
     def est(idx):
         S, Xs = se_model[idx], X[idx]
         Xc, Sc = Xs - Xs.mean(1, keepdims=True), S - S.mean(1, keepdims=True)
-        b = np.linalg.solve(np.einsum("bnk,bnl->bkl", Xc, Xc) + 1e-9 * np.eye(k), np.einsum("bnk,bn->bk", Xc, Sc))
+        b = np.linalg.solve(np.einsum("bnk,bnl->bkl", Xc, Xc) + 1e-9 * np.eye(k),
+                            np.einsum("bnk,bn->bk", Xc, Sc)[..., None])[..., 0]
         return S.mean(1) - np.einsum("bk,bk->b", b, Xs.mean(1) - x_full_mean), b
 
     m, b = est(np.arange(n)[None])
@@ -1019,9 +1031,9 @@ def bandwidth_probe(sample):
     return out
 
 
-def sample_baselines(sample, consts, seed):
+def sample_baselines(sample, consts, seed, roles=("primary",)):
     """My baselines on the sampled primaries (CSV only): lets the dry run show how typical the sample is."""
-    prim = sample[sample.role == "primary"]
+    prim = sample[sample.role.isin(roles)]
     obs = prim["V_target_km_s"].to_numpy(float)
     out = {"n": int(len(prim)), "V_target_mean": float(obs.mean()), "V_target_std": float(obs.std())}
     for name, col in (("persistence_4d_V_at_t", "V_at_input_time_km_s"),
@@ -1042,8 +1054,8 @@ def dry_run(args, out_dir, label_info):
         f"infer.py printout abs diff {check['infer_single_sample_max_abs_diff']:.1e})")
     sample, meta = get_sample(args, out_dir, cfg, scalers, force=True)
     # what a run executes: anchors first (validation split), then one primary per block
-    prim = pd.concat([sample[sample.role == "anchor"], sample[sample.role == "primary"]], ignore_index=True)
-    prim = prim.drop_duplicates("timestamp")
+    roles = ["anchor", "primary"] + (["reserve"] if args.include_reserves else [])
+    prim = pd.concat([sample[sample.role == r] for r in roles], ignore_index=True).drop_duplicates("timestamp")
     consts = norm_constants()
     bw = bandwidth_probe(sample)
     ck = requests.head(hf_url(CKPT_REPO, CKPT_REV, CKPT_NAME, kind="models"), allow_redirects=False, timeout=60)
@@ -1084,7 +1096,16 @@ def dry_run(args, out_dir, label_info):
                  "normalisation_constants": consts, "upstream_dir": UPSTREAM,
                  "upstream_head": os.popen(f"git -C {UPSTREAM} rev-parse --short HEAD").read().strip(),
                  "baselines_on_sample_csv_only": sample_baselines(sample, consts, args.seed),
+                 "baselines_on_sample_with_reserves_csv_only": sample_baselines(sample, consts, args.seed,
+                                                                                ("primary", "reserve")),
                  "baselines_full_split_csv_only": csv_baselines(args.split, consts, args.seed)})
+    rep = {}
+    for key, pb in (("primaries", 1), ("primaries_and_reserves", 2)):
+        sb_ = meta["baselines_on_sample_csv_only" if pb == 1 else "baselines_on_sample_with_reserves_csv_only"]
+        rep[key] = design_spread(args.split, args.n, args.seed,
+                                 {k: v["rmse"] for k, v in sb_.items() if isinstance(v, dict) and "rmse" in v},
+                                 per_block=pb)
+    meta["sample_representativeness_csv_only"] = rep
     json.dump(meta, open(os.path.join(out_dir, f"sampling_{args.split}.json"), "w"), indent=1, default=str)
     sb, fs = meta["baselines_on_sample_csv_only"], meta["baselines_full_split_csv_only"]
     log(f"split {args.split}: {meta['candidate_info']['candidates']} candidate pairs, {len(prim)} primaries + "
@@ -1093,6 +1114,13 @@ def dry_run(args, out_dir, label_info):
     p4s, p4f = sb["persistence_4d_V_at_t"], fs["persistence_4d_V_at_t"]
     log(f"my 4-day persistence RMSE: sample {p4s['rmse']:.1f} km/s {[round(v, 1) for v in p4s['ci95']['rmse']]} "
         f"(n={p4s['n']}), full split {p4f['rmse']:.1f} km/s (n={p4f['n']}); paper Surya 75.92")
+    for key, r in rep.items():
+        for name in ("persistence_4d_V_at_t", "climatology_train_mean"):
+            x = r[name]
+            if x["drawn_sample_rmse"] is not None:
+                log(f"  {key}: {name} RMSE {x['drawn_sample_rmse']:.1f} is at the {x['drawn_sample_percentile']:.1f} "
+                    f"percentile of same-design samples (median {x['design_rmse_median']:.1f}, full split "
+                    f"{x['full_split_rmse']:.1f}); bootstrap 95% coverage {x['bootstrap95_coverage_of_full_split_rmse']:.2f}")
     log(f"frames to download over the run: {fb.sum() / 1e9:.2f} GB (at most {frames_max / 1e9:.2f} GB on disk at "
         f"once); checkpoint {CKPT_SIZE / 1e9:.2f} GB")
     log(f"estimated {est['total_minutes']} min ({len(prim)} forward passes); new disk at peak "
@@ -1164,6 +1192,16 @@ def run(args, out_dir):
         summarize(out_dir, args.seed)
         return
 
+    # disk pre-flight: checkpoint (if absent) + frames of one sample (--no-prefetch) or two, plus 0.5 GB margin
+    import shutil
+    ck_local = os.path.join(WORK, CKPT_NAME)
+    need_ck = 0 if (os.path.exists(ck_local) and os.path.getsize(ck_local) == CKPT_SIZE) else CKPT_SIZE
+    fr = sorted((float(r["frame_bytes"]) + float(r["frame_t60_bytes"]) for r in pending), reverse=True)
+    need = need_ck + sum(fr[: 1 if args.no_prefetch else 2]) + 0.5e9
+    free = shutil.disk_usage(WORK).free
+    if free < need:
+        raise RuntimeError(f"{free / 1e9:.1f} GB free in {WORK}, need ~{need / 1e9:.1f} GB"
+                           + ("" if args.no_prefetch else "; --no-prefetch keeps only one sample's frames"))
     ckpt = ensure_checkpoint()
     ensure_pretrained_link(cfg_inf)
     t0 = time.time()
@@ -1312,6 +1350,9 @@ def main():
     ap.add_argument("--no-channel-check", action="store_true", help="skip the netCDF header check of each frame")
     ap.add_argument("--header-workers", type=int, default=4,
                     help="processes reading netCDF headers during sample selection (each ~0.2 GB of RAM)")
+    ap.add_argument("--include-reserves", action="store_true",
+                    help="also score every block's reserve (two random pairs per block, about twice the forward "
+                         "passes; spread over several runs with --max-forward)")
     ap.add_argument("--no-anchors", action="store_true",
                     help="validation split: leave out the three notebook anchor samples (3 extra forward passes)")
     ap.add_argument("--no-prefetch", action="store_true", help="keep only one sample's frames on disk (~1.2 GB)")

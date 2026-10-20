@@ -1,0 +1,13 @@
+{
+ "init_time": "2014-01-07 16:48:00",
+ "surya_mse_lead_1h": 0.2311243861913681,
+ "surya_mse_lead_2h": 0.3873497247695923,
+ "mean_of_two_steps_as_in_test": 0.3092370554804802,
+ "persistence_mse_lead_1h": 0.8603341579437256,
+ "persistence_mse_lead_2h": 7.4535908699035645,
+ "seconds_forward": 325.1,
+ "seconds_download": 60.1,
+ "peak_rss_gb": 10.45,
+ "batch_step_loss_on_hf_files": 0.3092370554804802,
+ "abs_difference": 0.0
+}

@@ -94,7 +94,7 @@
  "n_skipped": 0,
  "selection_rounds": 1,
  "header_bytes_read": 0,
- "selection_seconds": 19.1,
+ "selection_seconds": 19.0,
  "dataset_join_check": [
   {
    "timestamp": "2021-12-04 18:00:00",
@@ -1229,8 +1229,8 @@
   "measured_bandwidth": {
    "s3_frame": {
     "bytes": 16777216,
-    "seconds": 1.2,
-    "MB_per_s": 14.0
+    "seconds": 1.28,
+    "MB_per_s": 13.1
    },
    "hf_cdn_csv": {
     "bytes": 16777216,
@@ -1245,10 +1245,10 @@
   "per_sample_compute_minutes": 2.95,
   "budget_minutes_per_run": 90,
   "at_measured_bandwidth": {
-   "s3_MB_per_s": 14.0,
+   "s3_MB_per_s": 13.1,
    "hf_MB_per_s": 20.7,
    "total_minutes": 121.9,
-   "per_sample_download_minutes_mean": 1.9,
+   "per_sample_download_minutes_mean": 2.03,
    "download_hidden_behind_forward": true,
    "forward_passes_within_budget": 29,
    "runs_needed_at_budget": 2

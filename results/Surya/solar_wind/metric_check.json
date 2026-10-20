@@ -48,5 +48,9 @@
   }
  },
  "bootstrap_sanity_ok": true,
+ "regression_estimator_checks": {
+  "linear_target_rel_err": 7.7956688723393845e-16,
+  "no_shift_equals_mean_rel_err": 0.0
+ },
  "passed": true
 }
