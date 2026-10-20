@@ -1,0 +1,815 @@
+{
+ "split": "validation",
+ "n": 10,
+ "seed": 0,
+ "check_channels": true,
+ "allocation_per_year": {
+  "2011": 1,
+  "2012": 1,
+  "2013": 1,
+  "2014": 1,
+  "2015": 1,
+  "2016": 1,
+  "2017": 1,
+  "2018": 2,
+  "2019": 1
+ },
+ "candidate_info": {
+  "rows_in_csv": 3429,
+  "rows_with_t_and_t60_in_core_sdo_valid_index": 2393,
+  "candidates": 2393,
+  "candidates_per_year": {
+   "2011": 260,
+   "2012": 249,
+   "2013": 245,
+   "2014": 304,
+   "2015": 291,
+   "2016": 237,
+   "2017": 274,
+   "2018": 258,
+   "2019": 275
+  },
+  "candidates_with_V_t": 2175,
+  "candidates_with_V_T27": 2322
+ },
+ "n_blocks": 10,
+ "blocks_without_primary": [],
+ "blocks_without_reserve": 0,
+ "skipped": [],
+ "selection_rounds": 1,
+ "anchors": true,
+ "anchor_info": {
+  "source": "solar_wind_tutorial.ipynb cell 9 saved output (infer.py, CPU, float32, torch 2.8.0+cu126)",
+  "tolerance_km_s": 0.5,
+  "requested": [
+   "2011-01-20 01:00:00",
+   "2019-01-23 02:00:00",
+   "2011-01-20 02:00:00"
+  ],
+  "kept": [
+   "2011-01-20 01:00:00",
+   "2019-01-23 02:00:00",
+   "2011-01-20 02:00:00"
+  ],
+  "skipped": [],
+  "coincide_with_stratified_sample": [],
+  "notebook_ground_truth_equals_csv_all": true
+ },
+ "selection_seconds": 496.0,
+ "dataset_join_check": [
+  {
+   "timestamp": "2011-01-18 05:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2011-01-22 05:00:00",
+   "V_norm_from_dataset": 0.2732793522267207,
+   "V_unnorm_from_dataset": 394.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2011/01/20110118_0500.nc",
+    "2011/01/20110118_0600.nc"
+   ]
+  },
+  {
+   "timestamp": "2011-01-23 20:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2011-01-27 20:00:00",
+   "V_norm_from_dataset": 0.06072874493927125,
+   "V_unnorm_from_dataset": 289.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2011/01/20110123_2000.nc",
+    "2011/01/20110123_2100.nc"
+   ]
+  },
+  {
+   "timestamp": "2012-01-25 23:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2012-01-29 23:00:00",
+   "V_norm_from_dataset": 0.27530364372469635,
+   "V_unnorm_from_dataset": 395.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2012/01/20120125_2300.nc",
+    "2012/01/20120126_0000.nc"
+   ]
+  },
+  {
+   "timestamp": "2012-01-15 01:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2012-01-19 01:00:00",
+   "V_norm_from_dataset": 0.20647773279352227,
+   "V_unnorm_from_dataset": 361.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2012/01/20120115_0100.nc",
+    "2012/01/20120115_0200.nc"
+   ]
+  },
+  {
+   "timestamp": "2013-01-24 08:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2013-01-28 08:00:00",
+   "V_norm_from_dataset": 0.2894736842105263,
+   "V_unnorm_from_dataset": 402.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2013/01/20130124_0800.nc",
+    "2013/01/20130124_0900.nc"
+   ]
+  },
+  {
+   "timestamp": "2013-01-16 13:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2013-01-20 13:00:00",
+   "V_norm_from_dataset": 0.32388663967611336,
+   "V_unnorm_from_dataset": 419.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2013/01/20130116_1300.nc",
+    "2013/01/20130116_1400.nc"
+   ]
+  },
+  {
+   "timestamp": "2014-01-27 09:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2014-01-31 09:00:00",
+   "V_norm_from_dataset": 0.17611336032388664,
+   "V_unnorm_from_dataset": 346.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2014/01/20140127_0900.nc",
+    "2014/01/20140127_1000.nc"
+   ]
+  },
+  {
+   "timestamp": "2014-01-16 16:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2014-01-20 16:00:00",
+   "V_norm_from_dataset": 0.07692307692307693,
+   "V_unnorm_from_dataset": 297.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2014/01/20140116_1600.nc",
+    "2014/01/20140116_1700.nc"
+   ]
+  },
+  {
+   "timestamp": "2015-01-27 06:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2015-01-31 06:00:00",
+   "V_norm_from_dataset": 0.3441295546558704,
+   "V_unnorm_from_dataset": 429.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2015/01/20150127_0600.nc",
+    "2015/01/20150127_0700.nc"
+   ]
+  },
+  {
+   "timestamp": "2015-01-25 19:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2015-01-29 19:00:00",
+   "V_norm_from_dataset": 0.31376518218623484,
+   "V_unnorm_from_dataset": 414.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2015/01/20150125_1900.nc",
+    "2015/01/20150125_2000.nc"
+   ]
+  },
+  {
+   "timestamp": "2016-01-25 22:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2016-01-29 22:00:00",
+   "V_norm_from_dataset": 0.06680161943319839,
+   "V_unnorm_from_dataset": 292.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2016/01/20160125_2200.nc",
+    "2016/01/20160125_2300.nc"
+   ]
+  },
+  {
+   "timestamp": "2016-01-22 01:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2016-01-26 01:00:00",
+   "V_norm_from_dataset": 0.24696356275303644,
+   "V_unnorm_from_dataset": 381.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2016/01/20160122_0100.nc",
+    "2016/01/20160122_0200.nc"
+   ]
+  },
+  {
+   "timestamp": "2017-01-26 14:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2017-01-30 14:00:00",
+   "V_norm_from_dataset": 0.37449392712550605,
+   "V_unnorm_from_dataset": 444.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2017/01/20170126_1400.nc",
+    "2017/01/20170126_1500.nc"
+   ]
+  },
+  {
+   "timestamp": "2017-01-19 09:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2017-01-23 09:00:00",
+   "V_norm_from_dataset": 0.4331983805668016,
+   "V_unnorm_from_dataset": 473.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2017/01/20170119_0900.nc",
+    "2017/01/20170119_1000.nc"
+   ]
+  },
+  {
+   "timestamp": "2018-01-16 07:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2018-01-20 07:00:00",
+   "V_norm_from_dataset": 0.25101214574898784,
+   "V_unnorm_from_dataset": 383.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2018/01/20180116_0700.nc",
+    "2018/01/20180116_0800.nc"
+   ]
+  },
+  {
+   "timestamp": "2018-01-19 11:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2018-01-23 11:00:00",
+   "V_norm_from_dataset": 0.4251012145748988,
+   "V_unnorm_from_dataset": 469.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2018/01/20180119_1100.nc",
+    "2018/01/20180119_1200.nc"
+   ]
+  },
+  {
+   "timestamp": "2018-01-22 07:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2018-01-26 07:00:00",
+   "V_norm_from_dataset": 0.4048582995951417,
+   "V_unnorm_from_dataset": 459.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2018/01/20180122_0700.nc",
+    "2018/01/20180122_0800.nc"
+   ]
+  },
+  {
+   "timestamp": "2018-01-25 19:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2018-01-29 19:00:00",
+   "V_norm_from_dataset": 0.1417004048582996,
+   "V_unnorm_from_dataset": 329.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2018/01/20180125_1900.nc",
+    "2018/01/20180125_2000.nc"
+   ]
+  },
+  {
+   "timestamp": "2019-01-21 07:00:00",
+   "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2019-01-25 07:00:00",
+   "V_norm_from_dataset": 0.6882591093117408,
+   "V_unnorm_from_dataset": 599.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2019/01/20190121_0700.nc",
+    "2019/01/20190121_0800.nc"
+   ]
+  },
+  {
+   "timestamp": "2019-01-21 01:00:00",
+   "role": "reserve",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2019-01-25 01:00:00",
+   "V_norm_from_dataset": 0.680161943319838,
+   "V_unnorm_from_dataset": 595.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2019/01/20190121_0100.nc",
+    "2019/01/20190121_0200.nc"
+   ]
+  },
+  {
+   "timestamp": "2011-01-20 01:00:00",
+   "role": "anchor",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2011-01-24 01:00:00",
+   "V_norm_from_dataset": 0.1720647773279352,
+   "V_unnorm_from_dataset": 344.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2011/01/20110120_0100.nc",
+    "2011/01/20110120_0200.nc"
+   ]
+  },
+  {
+   "timestamp": "2019-01-23 02:00:00",
+   "role": "anchor",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2019-01-27 02:00:00",
+   "V_norm_from_dataset": 0.3522267206477733,
+   "V_unnorm_from_dataset": 433.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2019/01/20190123_0200.nc",
+    "2019/01/20190123_0300.nc"
+   ]
+  },
+  {
+   "timestamp": "2011-01-20 02:00:00",
+   "role": "anchor",
+   "dataset_len": 1,
+   "ok": true,
+   "target_time_from_dataset": "2011-01-24 02:00:00",
+   "V_norm_from_dataset": 0.1862348178137652,
+   "V_unnorm_from_dataset": 351.0,
+   "dataset_un_norm_min": 259.0,
+   "dataset_un_norm_ptp": 494.0,
+   "sdo_paths_read_by_dataset": [
+    "2011/01/20110120_0200.nc",
+    "2011/01/20110120_0300.nc"
+   ]
+  }
+ ],
+ "dataset_join_all_ok": true,
+ "dry_run": true,
+ "estimate": {
+  "assumptions_s": {
+   "forward": 136,
+   "frame_read_and_normalise_each": 30,
+   "frames_per_sample": 2,
+   "scoring": 2,
+   "model_build_and_load": 150
+  },
+  "measured_bandwidth": {
+   "s3_frame": {
+    "bytes": 16777216,
+    "seconds": 1.43,
+    "MB_per_s": 11.7
+   },
+   "hf_checkpoint": {
+    "bytes": 16777216,
+    "seconds": 1.16,
+    "MB_per_s": 14.4
+   }
+  },
+  "checkpoint_already_on_disk": false,
+  "one_off_minutes_checkpoint_and_model": 4.6,
+  "per_sample_minutes": 3.3,
+  "frame_download_minutes_per_sample_mean": 1.68,
+  "prefetch": true,
+  "download_hidden_by_prefetch": true,
+  "total_minutes": 49.2,
+  "max_forward_per_90_min_run": 25
+ },
+ "disk": {
+  "frames_total_bytes_downloaded_over_run": 15321141482,
+  "frames_max_on_disk_bytes": 2371224292,
+  "checkpoint_bytes": 1805655558,
+  "checkpoint_head_x_linked_size": "1805655558",
+  "foundation_weights_already_on_disk_linked_not_copied": "/home/user/work/surya_run/data/Surya-1.0/surya.366m.v1.pt",
+  "peak_disk_gb_new": 4.18
+ },
+ "config_diff_config_vs_config_infer": {
+  "data.sdo_data_root_path": [
+   "/nobackupnfs1/sroy14/processed_data/Helio/nc",
+   "./assets/infer_data"
+  ],
+  "data.solarwind_train_index": [
+   "./assets/Surya-bench-solarwind/train.csv",
+   "./assets/Surya-bench-solarwind/validation.csv"
+  ],
+  "data.solarwind_valid_index": [
+   "./assets/Surya-bench-solarwind/validation.csv",
+   null
+  ],
+  "data.train_data_path": [
+   "./assets/train_index_surya_1_0.csv",
+   "./assets/infer_data/infer_index_surya_1_0.csv"
+  ],
+  "data.valid_data_path": [
+   "./assets/valid_index_surya_1_0.csv",
+   null
+  ],
+  "optimizer": [
+   {
+    "warm_up_steps": 0,
+    "max_epochs": 20,
+    "learning_rate": 0.001,
+    "min_lr": 1e-06
+   },
+   {
+    "warm_up_steps": 0,
+    "max_epochs": 2,
+    "learning_rate": 0.001,
+    "min_lr": 1e-06
+   }
+  ]
+ },
+ "forward_passes_planned": 13,
+ "checkpoint": "nasa-ibm-ai4science/solar_wind_surya@6ac4aa79a96f8785a1ab300842d13727e52b58a5/solar_wind_weights.pth",
+ "checkpoint_sha256": "7ff8c19024fc8a8c4cb5c73278081ba242ba7e871b832e1caab11be8e3166a17",
+ "labels": "nasa-ibm-ai4science/Surya-bench-solarwind@20547a25cbd3aaa359e9cda18be913b94c225e7b",
+ "label_files": {
+  "train.csv": {
+   "bytes": 3054147,
+   "git_blob_sha1": "0bd3047d8a57b6e81dd37c3576da08bf9a18baae"
+  },
+  "validation.csv": {
+   "bytes": 149865,
+   "git_blob_sha1": "472f3cc74a72c64cc14eba5c30b4ced6d45c657d"
+  },
+  "test.csv": {
+   "bytes": 1746629,
+   "git_blob_sha1": "4b894121b91c27b5facd890507f265bb03304a81"
+  },
+  "leaky_validation.csv": {
+   "bytes": 256013,
+   "git_blob_sha1": "c622eec6b79bb8d81a75f1cb46e15072b6a8f19e"
+  }
+ },
+ "normalisation_constants": {
+  "train": {
+   "min": 240.0,
+   "ptp": 560.0,
+   "max": 800.0,
+   "mean": 418.5961233329045,
+   "rows": 69957
+  },
+  "validation": {
+   "min": 259.0,
+   "ptp": 494.0,
+   "max": 753.0,
+   "mean": 397.1122776319627,
+   "rows": 3429
+  },
+  "test": {
+   "min": 256.0,
+   "ptp": 750.0,
+   "max": 1006.0,
+   "mean": 410.8015009380863,
+   "rows": 39975
+  },
+  "leaky_validation": {
+   "min": 266.0,
+   "ptp": 612.0,
+   "max": 878.0,
+   "mean": 426.7680763983629,
+   "rows": 5864
+  }
+ },
+ "upstream_dir": "/home/user/upstream/surya/Surya",
+ "upstream_head": "78b827e",
+ "baselines_on_sample_csv_only": {
+  "n": 10,
+  "V_target_mean": 414.3,
+  "V_target_std": 76.64730915041963,
+  "persistence_4d_V_at_t": {
+   "rmse": 108.94356337113267,
+   "mae": 82.5,
+   "mse": 11868.7,
+   "bias": -13.9,
+   "r2": -1.0202695916974336,
+   "pearson_r": -0.06878772697383231,
+   "n": 10,
+   "ci95": {
+    "rmse": [
+     54.289317400231646,
+     162.4933690852265
+    ],
+    "mae": [
+     45.0,
+     132.20249999999996
+    ],
+    "mse": [
+     2947.33,
+     26404.094999999998
+    ],
+    "bias": [
+     -87.0025,
+     47.0
+    ]
+   }
+  },
+  "recurrence_27d_V_at_T_minus_27d": {
+   "rmse": 84.25200294355025,
+   "mae": 65.6,
+   "mse": 7098.4,
+   "bias": 18.2,
+   "r2": -0.2082773740767785,
+   "pearson_r": 0.3526305342114506,
+   "n": 10,
+   "ci95": {
+    "rmse": [
+     44.22894979535462,
+     116.3092859499975
+    ],
+    "mae": [
+     35.4975,
+     100.20249999999997
+    ],
+    "mse": [
+     1956.2,
+     13527.849999999999
+    ],
+    "bias": [
+     -29.0,
+     71.5
+    ]
+   }
+  },
+  "climatology_train_mean": {
+   "rmse": 76.76761475838315,
+   "mae": 55.6192246665809,
+   "mse": 5893.266675691526,
+   "bias": 4.296123332904483,
+   "r2": -0.0031416634225660545,
+   "pearson_r": 1.483246300251802e-16,
+   "n": 10,
+   "ci95": {
+    "rmse": [
+     29.851631209463577,
+     114.98278884920734
+    ],
+    "mae": [
+     26.618744049916376,
+     91.83998809983272
+    ],
+    "mse": [
+     891.1199662485831,
+     13221.041732083313
+    ],
+    "bias": [
+     -46.90387666709552,
+     47.796123332904486
+    ]
+   }
+  }
+ },
+ "baselines_on_sample_with_reserves_csv_only": {
+  "n": 20,
+  "V_target_mean": 408.5,
+  "V_target_std": 83.02800732283053,
+  "persistence_4d_V_at_t": {
+   "rmse": 115.23431506465882,
+   "mae": 90.52631578947368,
+   "mse": 13278.947368421053,
+   "bias": 2.3157894736842106,
+   "r2": -0.8825533639493215,
+   "pearson_r": 0.019581153711922535,
+   "n": 19,
+   "ci95": {
+    "rmse": [
+     73.87126068688184,
+     151.85225243054833
+    ],
+    "mae": [
+     60.578947368421055,
+     124.57894736842105
+    ],
+    "mse": [
+     5456.9631578947365,
+     23059.106578947365
+    ],
+    "bias": [
+     -53.053947368421056,
+     50.31578947368421
+    ]
+   }
+  },
+  "recurrence_27d_V_at_T_minus_27d": {
+   "rmse": 73.9523495231896,
+   "mae": 58.25,
+   "mse": 5468.95,
+   "bias": 12.55,
+   "r2": 0.20666845575275794,
+   "pearson_r": 0.6084335528009808,
+   "n": 20,
+   "ci95": {
+    "rmse": [
+     50.05952699087785,
+     95.17073977458828
+    ],
+    "mae": [
+     39.3,
+     79.3
+    ],
+    "mse": [
+     2505.95625,
+     9057.469999999994
+    ],
+    "bias": [
+     -17.85,
+     45.15
+    ]
+   }
+  },
+  "climatology_train_mean": {
+   "rmse": 83.63959413072985,
+   "mae": 63.919224666580895,
+   "mse": 6995.581706353218,
+   "bias": 10.096123332904483,
+   "r2": -0.014786318764836714,
+   "pearson_r": 0.0,
+   "n": 20,
+   "ci95": {
+    "rmse": [
+     55.995120454557,
+     108.55283901935971
+    ],
+    "mae": [
+     41.62883699987135,
+     89.3598526416227
+    ],
+    "mse": [
+     3135.45351630433,
+     11783.719186734019
+    ],
+    "bias": [
+     -27.603876667095516,
+     44.74737333290446
+    ]
+   }
+  }
+ },
+ "baselines_full_split_csv_only": {
+  "pairs": 2393,
+  "definition": "all (t, T = t + 4 d) pairs of the split as in the sampling frame (test: t >= 2020-01-01; validation: t, t+60 in core-sdo valid index), S3 not checked",
+  "V_target_mean": 397.2277475971584,
+  "V_target_std": 83.89290547747397,
+  "persistence_4d_V_at_t": {
+   "rmse": 123.71506008548039,
+   "mae": 102.74390804597701,
+   "mse": 15305.416091954023,
+   "bias": 6.905747126436782,
+   "r2": -1.2167517915734702,
+   "pearson_r": -0.1359345619976968,
+   "n": 2175
+  },
+  "recurrence_27d_V_at_T_minus_27d": {
+   "rmse": 97.9059802294304,
+   "mae": 71.76614987080103,
+   "mse": 9585.580964685616,
+   "bias": 6.042635658914729,
+   "r2": -0.33760370908206805,
+   "pearson_r": 0.43034069398588315,
+   "n": 2322
+  },
+  "climatology_train_mean": {
+   "rmse": 86.57151420089869,
+   "mae": 72.45139549367144,
+   "mse": 7494.627071036403,
+   "bias": 21.368375735746096,
+   "r2": -0.06487726778543235,
+   "pearson_r": NaN,
+   "n": 2393,
+   "value_km_s": 418.5961233329045
+  }
+ },
+ "sample_representativeness_csv_only": {
+  "primaries": {
+   "design": "10 blocks x 1 pair(s), 2000 draws (coverage: 500 draws x 2000 bootstrap resamples)",
+   "persistence_4d_V_at_t": {
+    "full_split_rmse": 123.71506008548039,
+    "design_rmse_median": 118.53480454615004,
+    "design_rmse_2.5_97.5": [
+     74.90704175151026,
+     159.95868169079753
+    ],
+    "drawn_sample_rmse": 108.94356337113267,
+    "drawn_sample_percentile": 32.85,
+    "bootstrap95_coverage_of_full_split_rmse": 0.842
+   },
+   "recurrence_27d_V_at_T_minus_27d": {
+    "full_split_rmse": 97.9059802294304,
+    "design_rmse_median": 90.47067272342585,
+    "design_rmse_2.5_97.5": [
+     45.07959973069278,
+     141.93256141473992
+    ],
+    "drawn_sample_rmse": 84.25200294355025,
+    "drawn_sample_percentile": 40.5,
+    "bootstrap95_coverage_of_full_split_rmse": 0.808
+   },
+   "climatology_train_mean": {
+    "full_split_rmse": 86.57151420089869,
+    "design_rmse_median": 82.00452412189682,
+    "design_rmse_2.5_97.5": [
+     54.81769132410177,
+     118.2517456996063
+    ],
+    "drawn_sample_rmse": 76.76761475838315,
+    "drawn_sample_percentile": 35.85,
+    "bootstrap95_coverage_of_full_split_rmse": 0.86
+   }
+  },
+  "primaries_and_reserves": {
+   "design": "10 blocks x 2 pair(s), 2000 draws (coverage: 500 draws x 2000 bootstrap resamples)",
+   "persistence_4d_V_at_t": {
+    "full_split_rmse": 123.71506008548039,
+    "design_rmse_median": 120.06154216770281,
+    "design_rmse_2.5_97.5": [
+     89.88580852306802,
+     148.1233239954671
+    ],
+    "drawn_sample_rmse": 115.23431506465882,
+    "drawn_sample_percentile": 37.95,
+    "bootstrap95_coverage_of_full_split_rmse": 0.92
+   },
+   "recurrence_27d_V_at_T_minus_27d": {
+    "full_split_rmse": 97.9059802294304,
+    "design_rmse_median": 90.58352364998636,
+    "design_rmse_2.5_97.5": [
+     58.94922065733837,
+     126.9420808157579
+    ],
+    "drawn_sample_rmse": 73.9523495231896,
+    "drawn_sample_percentile": 15.5,
+    "bootstrap95_coverage_of_full_split_rmse": 0.846
+   },
+   "climatology_train_mean": {
+    "full_split_rmse": 86.57151420089869,
+    "design_rmse_median": 82.62692185882761,
+    "design_rmse_2.5_97.5": [
+     63.80537734882036,
+     107.08890849494043
+    ],
+    "drawn_sample_rmse": 83.63959413072985,
+    "drawn_sample_percentile": 54.0,
+    "bootstrap95_coverage_of_full_split_rmse": 0.888
+   }
+  }
+ }
+}

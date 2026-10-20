@@ -1,0 +1,1 @@
+{"init_time": "2011-01-19 02:00:00", "surya_mse_lead_1h": 0.19063006341457367, "surya_mse_lead_2h": 0.20879675447940826, "mean_of_two_steps_as_in_test": 0.19971340894699097, "persistence_mse_lead_1h": 0.4894218444824219, "persistence_mse_lead_2h": 0.5393562316894531, "seconds_forward": 300.9, "seconds_download": 60.1, "peak_rss_gb": 10.45}

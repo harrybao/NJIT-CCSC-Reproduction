@@ -1108,9 +1108,10 @@ def dry_run(args, out_dir, label_info):
     meta["sample_representativeness_csv_only"] = rep
     json.dump(meta, open(os.path.join(out_dir, f"sampling_{args.split}.json"), "w"), indent=1, default=str)
     sb, fs = meta["baselines_on_sample_csv_only"], meta["baselines_full_split_csv_only"]
-    log(f"split {args.split}: {meta['candidate_info']['candidates']} candidate pairs, {len(prim)} primaries + "
-        f"{int((sample.role == 'reserve').sum())} reserves, {len(meta['skipped'])} skipped, "
-        f"join check ok: {meta['dataset_join_all_ok']}")
+    log(f"split {args.split}: {meta['candidate_info']['candidates']} candidate pairs, "
+        f"{int((sample.role == 'primary').sum())} primaries + {int((sample.role == 'reserve').sum())} reserves + "
+        f"{int((sample.role == 'anchor').sum())} anchors, {len(meta['skipped'])} skipped, "
+        f"join check ok: {meta['dataset_join_all_ok']}; {len(prim)} forward passes planned")
     p4s, p4f = sb["persistence_4d_V_at_t"], fs["persistence_4d_V_at_t"]
     log(f"my 4-day persistence RMSE: sample {p4s['rmse']:.1f} km/s {[round(v, 1) for v in p4s['ci95']['rmse']]} "
         f"(n={p4s['n']}), full split {p4f['rmse']:.1f} km/s (n={p4f['n']}); paper Surya 75.92")

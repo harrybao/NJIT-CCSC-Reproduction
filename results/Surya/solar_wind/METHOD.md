@@ -36,9 +36,9 @@ It is run only if the primary fails, or as a second sample of the block with `--
 
 The secondary sample is from the validation split (validation.csv, 15 to 31 January of 2011 to 2019), the file that
 finetune.py evaluates on after every epoch. Here t and t + 60 must also be in core-sdo's `valid_index_surya_1_0.csv`,
-the SDO index finetune.py uses for validation, so inputs fall on 15 to 27 January. There are [[VAL_CANDIDATES]]
-candidate pairs. Ten samples are drawn, one per year, with the remaining one going to a year drawn with the seed.
-[[VAL_SKIPS]] This split is reported separately. It is not strictly held out, because finetune.py measured it every
+the SDO index finetune.py uses for validation, so inputs fall on 15 to 27 January. There are 2,393 candidate pairs.
+Ten samples are drawn, one per year, with the remaining one going to a year drawn with the seed (2018). No candidate
+had to be skipped. This split is reported separately. It is not strictly held out, because finetune.py measured it every
 epoch and may have been used to pick the released epoch (the archive inside the checkpoint is named
 `epoch_13_loss_0.001`).
 
@@ -87,7 +87,9 @@ resamples of the samples, seed 0). Model-minus-baseline differences use a paired
 Three baselines of my own, not in Table 6, are scored on the same samples and, from the CSV alone, on every candidate
 pair of the split. They are 4-day persistence V(t), 27-day recurrence V(T - 27 days) and the training-set mean (418.6
 km/s). Table 7 quotes a 27-day persistence RMSE of 89 km/s from Ahn et al. (2025) for another period, which is not
-comparable. On the whole test split the three give RMSEs of 111.6, 102.4 and 87.0 km/s.
+comparable. On the whole test split the three give RMSEs of 111.6, 102.4 and 87.0 km/s. On the validation
+candidates they give 123.7, 97.9 and 86.6 km/s. Climatology alone is therefore already within about 11 km/s of
+Table 6's 75.92 km/s, which sets the scale for judging the model.
 
 The seed-0 test sample turned out to be unusually easy for persistence. Its 29 pairs with V(t) give a persistence
 RMSE of 75.1 km/s. That is about the 1st percentile of 2000 samples drawn with the same design (median 110 km/s;
