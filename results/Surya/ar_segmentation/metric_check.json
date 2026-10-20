@@ -1,0 +1,88 @@
+{
+ "eps": 1e-06,
+ "smooth": 1e-05,
+ "cases": {
+  "random_logits_blob_mask": {
+   "soft_iou_mine": 0.07242107263321283,
+   "soft_iou_repo_1_minus_IoULoss": 0.07242107263321285,
+   "soft_dice_mine": 0.13506089201217106,
+   "soft_dice_repo_1_minus_DiceLoss": 0.13506089201217109,
+   "hard_iou_mine": 0.07128141738772147,
+   "hard_iou_numpy_sets": 0.07128141738772147,
+   "hard_dice_mine": 0.13307692307692306,
+   "hard_dice_numpy_sets": 0.13307692307692306,
+   "max_abs_diff": 2.7755575615628914e-17
+  },
+  "good_prediction_blob_mask": {
+   "soft_iou_mine": 0.7247032627746581,
+   "soft_iou_repo_1_minus_IoULoss": 0.7247032627746581,
+   "soft_dice_mine": 0.8403802313120181,
+   "soft_dice_repo_1_minus_DiceLoss": 0.8403802313120181,
+   "hard_iou_mine": 1.0,
+   "hard_iou_numpy_sets": 1.0,
+   "hard_dice_mine": 1.0,
+   "hard_dice_numpy_sets": 1.0,
+   "max_abs_diff": 0.0
+  },
+  "empty_mask_confident_empty_prediction": {
+   "soft_iou_mine": 1.7659821742701816e-05,
+   "soft_iou_repo_1_minus_IoULoss": 1.7659821742732618e-05,
+   "soft_dice_mine": 0.00017657015365007132,
+   "soft_dice_repo_1_minus_DiceLoss": 0.00017657015365002415,
+   "hard_iou_mine": 1.0,
+   "hard_iou_numpy_sets": 1.0,
+   "hard_dice_mine": 1.0,
+   "hard_dice_numpy_sets": 1.0,
+   "max_abs_diff": 4.716279450311944e-17
+  },
+  "empty_mask_some_false_positives": {
+   "soft_iou_mine": 1.5060320129909894e-09,
+   "soft_iou_repo_1_minus_IoULoss": 1.506031965803345e-09,
+   "soft_dice_mine": 1.506031992577798e-08,
+   "soft_dice_repo_1_minus_DiceLoss": 1.5060319880078055e-08,
+   "hard_iou_mine": 0.0,
+   "hard_iou_numpy_sets": 0.0,
+   "hard_dice_mine": 0.0,
+   "hard_dice_numpy_sets": 0.0,
+   "max_abs_diff": 4.718764445628661e-17
+  },
+  "nonempty_mask_empty_prediction": {
+   "soft_iou_mine": 6.1451478348601e-06,
+   "soft_iou_repo_1_minus_IoULoss": 6.145147834812903e-06,
+   "soft_dice_mine": 1.2301696832734767e-05,
+   "soft_dice_repo_1_minus_DiceLoss": 1.2301696832750508e-05,
+   "hard_iou_mine": 0.0,
+   "hard_iou_numpy_sets": 0.0,
+   "hard_dice_mine": 0.0,
+   "hard_dice_numpy_sets": 0.0,
+   "max_abs_diff": 4.7196675821009615e-17
+  }
+ },
+ "batch_of_2": {
+  "repo_IoULoss": 0.3985621677039355,
+  "mean_of_per_image_soft_iou": 0.3985621677039355,
+  "repo_DiceLoss": 0.3010230441090753,
+  "pooled_soft_dice": 0.3010230441090753,
+  "note": "IoULoss averages per-image IoU over the batch; DiceLoss pools all pixels of the batch. With batch_size 1 (config.yaml) both are per-image."
+ },
+ "hand_example": {
+  "hard_iou_mean_over_images": {
+   "got": 0.625,
+   "expected": 0.625
+  },
+  "hard_iou_pooled_pixels": {
+   "got": 0.6666666666666666,
+   "expected": 0.6666666666666666
+  },
+  "hard_dice_mean_over_images": {
+   "got": 0.7619047619047619,
+   "expected": 0.7619047619047619
+  },
+  "hard_dice_pooled_pixels": {
+   "got": 0.8,
+   "expected": 0.8
+  }
+ },
+ "max_abs_diff_overall": 4.7196675821009615e-17,
+ "passed": true
+}

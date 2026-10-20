@@ -1,0 +1,3113 @@
+{
+ "sample": "1648",
+ "results": {
+  "fp32": {
+   "mse_lead_1h": 0.2311243861913681,
+   "output_dtype": "torch.float32",
+   "seconds": 125.3
+  },
+  "bf16": {
+   "mse_lead_1h": 1.4198215007781982,
+   "output_dtype": "torch.bfloat16",
+   "seconds": 47.5
+  },
+  "bf16_ln32": {
+   "mse_lead_1h": 1.4198365211486816,
+   "output_dtype": "torch.bfloat16",
+   "seconds": 56.6
+  },
+  "bf16_sm32": {
+   "mse_lead_1h": 1.419801115989685,
+   "output_dtype": "torch.bfloat16",
+   "seconds": 57.9
+  },
+  "bf16_ln32_sm32": {
+   "mse_lead_1h": 1.4198354482650757,
+   "output_dtype": "torch.bfloat16",
+   "seconds": 84.4
+  }
+ },
+ "module_comparison": [
+  {
+   "variant": "bf16",
+   "call": 0,
+   "module": "embedding.patch_embed.proj",
+   "cls": "Conv2d",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 1.0494599342346191,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 1,
+   "module": "embedding.patch_embed",
+   "cls": "PatchEmbed3D",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 1.0642471313476562,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 2,
+   "module": "embedding.pos_drop",
+   "cls": "Dropout",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0220508575439453,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 3,
+   "module": "embedding",
+   "cls": "LinearEmbedding",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0220508575439453,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 4,
+   "module": "backbone.blocks_spectral_gating.0.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.121072769165039,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 5,
+   "module": "backbone.blocks_spectral_gating.0.filter",
+   "cls": "SpectralGatingNetwork",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9648562669754028,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 6,
+   "module": "backbone.blocks_spectral_gating.0.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.1386321783065796,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 7,
+   "module": "backbone.blocks_spectral_gating.0.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.7991901636123657,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 8,
+   "module": "backbone.blocks_spectral_gating.0.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.7991901636123657,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 9,
+   "module": "backbone.blocks_spectral_gating.0",
+   "cls": "BlockSpectralGating",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9343655109405518,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 10,
+   "module": "backbone.blocks_spectral_gating.1.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.017439365386963,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 11,
+   "module": "backbone.blocks_spectral_gating.1.filter",
+   "cls": "SpectralGatingNetwork",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.6419739723205566,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 12,
+   "module": "backbone.blocks_spectral_gating.1.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.6923267245292664,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 13,
+   "module": "backbone.blocks_spectral_gating.1.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6916934251785278,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 14,
+   "module": "backbone.blocks_spectral_gating.1.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6916934251785278,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 15,
+   "module": "backbone.blocks_spectral_gating.1",
+   "cls": "BlockSpectralGating",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9266999363899231,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 16,
+   "module": "backbone.blocks_attention.0.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9371755123138428,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 17,
+   "module": "backbone.blocks_attention.0.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8949814438819885,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 18,
+   "module": "backbone.blocks_attention.0.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8949814438819885,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 19,
+   "module": "backbone.blocks_attention.0.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9663321375846863,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 20,
+   "module": "backbone.blocks_attention.0.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8867745995521545,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 21,
+   "module": "backbone.blocks_attention.0.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8867745995521545,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 22,
+   "module": "backbone.blocks_attention.0",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9889441728591919,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 23,
+   "module": "backbone.blocks_attention.1.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0543593168258667,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 24,
+   "module": "backbone.blocks_attention.1.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6193879246711731,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 25,
+   "module": "backbone.blocks_attention.1.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6193879246711731,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 26,
+   "module": "backbone.blocks_attention.1.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9039525389671326,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 27,
+   "module": "backbone.blocks_attention.1.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8661898374557495,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 28,
+   "module": "backbone.blocks_attention.1.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8661898374557495,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 29,
+   "module": "backbone.blocks_attention.1",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9562950730323792,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 30,
+   "module": "backbone.blocks_attention.2.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.027284026145935,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 31,
+   "module": "backbone.blocks_attention.2.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 1.0852304697036743,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 32,
+   "module": "backbone.blocks_attention.2.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 1.0852304697036743,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 33,
+   "module": "backbone.blocks_attention.2.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.006524920463562,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 34,
+   "module": "backbone.blocks_attention.2.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9115197062492371,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 35,
+   "module": "backbone.blocks_attention.2.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9115197062492371,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 36,
+   "module": "backbone.blocks_attention.2",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9455342292785645,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 37,
+   "module": "backbone.blocks_attention.3.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0684831142425537,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 38,
+   "module": "backbone.blocks_attention.3.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8651602268218994,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 39,
+   "module": "backbone.blocks_attention.3.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8651602268218994,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 40,
+   "module": "backbone.blocks_attention.3.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9883657693862915,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 41,
+   "module": "backbone.blocks_attention.3.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8846864700317383,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 42,
+   "module": "backbone.blocks_attention.3.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8846864700317383,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 43,
+   "module": "backbone.blocks_attention.3",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9254432320594788,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 44,
+   "module": "backbone.blocks_attention.4.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.033696174621582,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 45,
+   "module": "backbone.blocks_attention.4.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.61595219373703,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 46,
+   "module": "backbone.blocks_attention.4.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.61595219373703,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 47,
+   "module": "backbone.blocks_attention.4.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9717805981636047,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 48,
+   "module": "backbone.blocks_attention.4.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.856715977191925,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 49,
+   "module": "backbone.blocks_attention.4.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.856715977191925,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 50,
+   "module": "backbone.blocks_attention.4",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.8987299203872681,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 51,
+   "module": "backbone.blocks_attention.5.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0489261150360107,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 52,
+   "module": "backbone.blocks_attention.5.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.562978208065033,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 53,
+   "module": "backbone.blocks_attention.5.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.562978208065033,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 54,
+   "module": "backbone.blocks_attention.5.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9228295087814331,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 55,
+   "module": "backbone.blocks_attention.5.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6623856425285339,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 56,
+   "module": "backbone.blocks_attention.5.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6623856425285339,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 57,
+   "module": "backbone.blocks_attention.5",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.8728619813919067,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 58,
+   "module": "backbone.blocks_attention.6.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.1179277896881104,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 59,
+   "module": "backbone.blocks_attention.6.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5319617390632629,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 60,
+   "module": "backbone.blocks_attention.6.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5319617390632629,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 61,
+   "module": "backbone.blocks_attention.6.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.7987189888954163,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 62,
+   "module": "backbone.blocks_attention.6.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5666326880455017,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 63,
+   "module": "backbone.blocks_attention.6.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5666326880455017,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 64,
+   "module": "backbone.blocks_attention.6",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9131459593772888,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 65,
+   "module": "backbone.blocks_attention.7.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.2115429639816284,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 66,
+   "module": "backbone.blocks_attention.7.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.41847795248031616,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 67,
+   "module": "backbone.blocks_attention.7.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.41847795248031616,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 68,
+   "module": "backbone.blocks_attention.7.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.7415328621864319,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 69,
+   "module": "backbone.blocks_attention.7.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6656619310379028,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 70,
+   "module": "backbone.blocks_attention.7.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6656619310379028,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 71,
+   "module": "backbone.blocks_attention.7",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.2299926280975342,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 72,
+   "module": "backbone",
+   "cls": "SpectFormer",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.2299926280975342,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 73,
+   "module": "unembed.unembed.0",
+   "cls": "Conv2d",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9294762015342712,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 74,
+   "module": "unembed.unembed.1",
+   "cls": "PixelShuffle",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9300066828727722,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 75,
+   "module": "unembed.unembed",
+   "cls": "Sequential",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9300066828727722,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16",
+   "call": 76,
+   "module": "unembed",
+   "cls": "LinearDecoder",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9300066828727722,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 0,
+   "module": "embedding.patch_embed.proj",
+   "cls": "Conv2d",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 1.0494599342346191,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 1,
+   "module": "embedding.patch_embed",
+   "cls": "PatchEmbed3D",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 1.0642471313476562,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 2,
+   "module": "embedding.pos_drop",
+   "cls": "Dropout",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0220508575439453,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 3,
+   "module": "embedding",
+   "cls": "LinearEmbedding",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0220508575439453,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 4,
+   "module": "backbone.blocks_spectral_gating.0.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.121072769165039,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 5,
+   "module": "backbone.blocks_spectral_gating.0.filter",
+   "cls": "SpectralGatingNetwork",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9648562669754028,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 6,
+   "module": "backbone.blocks_spectral_gating.0.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.1386321783065796,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 7,
+   "module": "backbone.blocks_spectral_gating.0.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.7991901636123657,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 8,
+   "module": "backbone.blocks_spectral_gating.0.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.7991901636123657,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 9,
+   "module": "backbone.blocks_spectral_gating.0",
+   "cls": "BlockSpectralGating",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9343655109405518,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 10,
+   "module": "backbone.blocks_spectral_gating.1.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.017439365386963,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 11,
+   "module": "backbone.blocks_spectral_gating.1.filter",
+   "cls": "SpectralGatingNetwork",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.6419739723205566,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 12,
+   "module": "backbone.blocks_spectral_gating.1.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.6923267245292664,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 13,
+   "module": "backbone.blocks_spectral_gating.1.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6916934251785278,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 14,
+   "module": "backbone.blocks_spectral_gating.1.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6916934251785278,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 15,
+   "module": "backbone.blocks_spectral_gating.1",
+   "cls": "BlockSpectralGating",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9266999363899231,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 16,
+   "module": "backbone.blocks_attention.0.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9371755123138428,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 17,
+   "module": "backbone.blocks_attention.0.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8949812054634094,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 18,
+   "module": "backbone.blocks_attention.0.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8949812054634094,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 19,
+   "module": "backbone.blocks_attention.0.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9663331508636475,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 20,
+   "module": "backbone.blocks_attention.0.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8867768049240112,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 21,
+   "module": "backbone.blocks_attention.0.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8867768049240112,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 22,
+   "module": "backbone.blocks_attention.0",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9889439940452576,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 23,
+   "module": "backbone.blocks_attention.1.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.054358720779419,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 24,
+   "module": "backbone.blocks_attention.1.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6193878650665283,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 25,
+   "module": "backbone.blocks_attention.1.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6193878650665283,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 26,
+   "module": "backbone.blocks_attention.1.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9039546847343445,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 27,
+   "module": "backbone.blocks_attention.1.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8661994338035583,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 28,
+   "module": "backbone.blocks_attention.1.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8661994338035583,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 29,
+   "module": "backbone.blocks_attention.1",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9562987685203552,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 30,
+   "module": "backbone.blocks_attention.2.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0272889137268066,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 31,
+   "module": "backbone.blocks_attention.2.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 1.0851179361343384,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 32,
+   "module": "backbone.blocks_attention.2.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 1.0851179361343384,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 33,
+   "module": "backbone.blocks_attention.2.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0065001249313354,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 34,
+   "module": "backbone.blocks_attention.2.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9115119576454163,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 35,
+   "module": "backbone.blocks_attention.2.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9115119576454163,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 36,
+   "module": "backbone.blocks_attention.2",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9455329179763794,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 37,
+   "module": "backbone.blocks_attention.3.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0684787034988403,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 38,
+   "module": "backbone.blocks_attention.3.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8652028441429138,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 39,
+   "module": "backbone.blocks_attention.3.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8652028441429138,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 40,
+   "module": "backbone.blocks_attention.3.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9883558750152588,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 41,
+   "module": "backbone.blocks_attention.3.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8846920728683472,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 42,
+   "module": "backbone.blocks_attention.3.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8846920728683472,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 43,
+   "module": "backbone.blocks_attention.3",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9254371523857117,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 44,
+   "module": "backbone.blocks_attention.4.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0336846113204956,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 45,
+   "module": "backbone.blocks_attention.4.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6159452199935913,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 46,
+   "module": "backbone.blocks_attention.4.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6159452199935913,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 47,
+   "module": "backbone.blocks_attention.4.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9717743396759033,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 48,
+   "module": "backbone.blocks_attention.4.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8566974401473999,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 49,
+   "module": "backbone.blocks_attention.4.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8566974401473999,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 50,
+   "module": "backbone.blocks_attention.4",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.8987280130386353,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 51,
+   "module": "backbone.blocks_attention.5.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0489327907562256,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 52,
+   "module": "backbone.blocks_attention.5.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5630248785018921,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 53,
+   "module": "backbone.blocks_attention.5.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5630248785018921,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 54,
+   "module": "backbone.blocks_attention.5.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9228662848472595,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 55,
+   "module": "backbone.blocks_attention.5.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6623468995094299,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 56,
+   "module": "backbone.blocks_attention.5.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6623468995094299,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 57,
+   "module": "backbone.blocks_attention.5",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.8728898763656616,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 58,
+   "module": "backbone.blocks_attention.6.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.1179925203323364,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 59,
+   "module": "backbone.blocks_attention.6.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5319554805755615,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 60,
+   "module": "backbone.blocks_attention.6.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5319554805755615,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 61,
+   "module": "backbone.blocks_attention.6.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.7987490892410278,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 62,
+   "module": "backbone.blocks_attention.6.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5666577816009521,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 63,
+   "module": "backbone.blocks_attention.6.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5666577816009521,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 64,
+   "module": "backbone.blocks_attention.6",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.913112223148346,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 65,
+   "module": "backbone.blocks_attention.7.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.2115049362182617,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 66,
+   "module": "backbone.blocks_attention.7.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.4185737669467926,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 67,
+   "module": "backbone.blocks_attention.7.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.4185737669467926,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 68,
+   "module": "backbone.blocks_attention.7.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.7415211796760559,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 69,
+   "module": "backbone.blocks_attention.7.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6656917333602905,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 70,
+   "module": "backbone.blocks_attention.7.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6656917333602905,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 71,
+   "module": "backbone.blocks_attention.7",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.229867935180664,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 72,
+   "module": "backbone",
+   "cls": "SpectFormer",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.229867935180664,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 73,
+   "module": "unembed.unembed.0",
+   "cls": "Conv2d",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9294308423995972,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 74,
+   "module": "unembed.unembed.1",
+   "cls": "PixelShuffle",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9300025701522827,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 75,
+   "module": "unembed.unembed",
+   "cls": "Sequential",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9300025701522827,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32",
+   "call": 76,
+   "module": "unembed",
+   "cls": "LinearDecoder",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9300025701522827,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 0,
+   "module": "embedding.patch_embed.proj",
+   "cls": "Conv2d",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 1.0494599342346191,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 1,
+   "module": "embedding.patch_embed",
+   "cls": "PatchEmbed3D",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 1.0642471313476562,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 2,
+   "module": "embedding.pos_drop",
+   "cls": "Dropout",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0220508575439453,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 3,
+   "module": "embedding",
+   "cls": "LinearEmbedding",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0220508575439453,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 4,
+   "module": "backbone.blocks_spectral_gating.0.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.121072769165039,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 5,
+   "module": "backbone.blocks_spectral_gating.0.filter",
+   "cls": "SpectralGatingNetwork",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9648562669754028,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 6,
+   "module": "backbone.blocks_spectral_gating.0.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.1386321783065796,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 7,
+   "module": "backbone.blocks_spectral_gating.0.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.7991901636123657,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 8,
+   "module": "backbone.blocks_spectral_gating.0.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.7991901636123657,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 9,
+   "module": "backbone.blocks_spectral_gating.0",
+   "cls": "BlockSpectralGating",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9343655109405518,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 10,
+   "module": "backbone.blocks_spectral_gating.1.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.017439365386963,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 11,
+   "module": "backbone.blocks_spectral_gating.1.filter",
+   "cls": "SpectralGatingNetwork",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.6419739723205566,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 12,
+   "module": "backbone.blocks_spectral_gating.1.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.6923267245292664,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 13,
+   "module": "backbone.blocks_spectral_gating.1.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6916934251785278,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 14,
+   "module": "backbone.blocks_spectral_gating.1.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6916934251785278,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 15,
+   "module": "backbone.blocks_spectral_gating.1",
+   "cls": "BlockSpectralGating",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9266999363899231,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 16,
+   "module": "backbone.blocks_attention.0.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9371755123138428,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 17,
+   "module": "backbone.blocks_attention.0.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8949815034866333,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 18,
+   "module": "backbone.blocks_attention.0.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8949815034866333,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 19,
+   "module": "backbone.blocks_attention.0.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.966332197189331,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 20,
+   "module": "backbone.blocks_attention.0.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8867745995521545,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 21,
+   "module": "backbone.blocks_attention.0.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8867745995521545,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 22,
+   "module": "backbone.blocks_attention.0",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9889444708824158,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 23,
+   "module": "backbone.blocks_attention.1.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0543595552444458,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 24,
+   "module": "backbone.blocks_attention.1.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6193868517875671,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 25,
+   "module": "backbone.blocks_attention.1.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6193868517875671,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 26,
+   "module": "backbone.blocks_attention.1.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9039502143859863,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 27,
+   "module": "backbone.blocks_attention.1.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.866207480430603,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 28,
+   "module": "backbone.blocks_attention.1.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.866207480430603,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 29,
+   "module": "backbone.blocks_attention.1",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9562936425209045,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 30,
+   "module": "backbone.blocks_attention.2.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0272881984710693,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 31,
+   "module": "backbone.blocks_attention.2.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 1.0850756168365479,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 32,
+   "module": "backbone.blocks_attention.2.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 1.0850756168365479,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 33,
+   "module": "backbone.blocks_attention.2.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.006486415863037,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 34,
+   "module": "backbone.blocks_attention.2.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9115059971809387,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 35,
+   "module": "backbone.blocks_attention.2.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9115059971809387,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 36,
+   "module": "backbone.blocks_attention.2",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9455074071884155,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 37,
+   "module": "backbone.blocks_attention.3.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0684585571289062,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 38,
+   "module": "backbone.blocks_attention.3.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8652095794677734,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 39,
+   "module": "backbone.blocks_attention.3.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8652095794677734,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 40,
+   "module": "backbone.blocks_attention.3.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9883438944816589,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 41,
+   "module": "backbone.blocks_attention.3.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8846552968025208,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 42,
+   "module": "backbone.blocks_attention.3.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8846552968025208,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 43,
+   "module": "backbone.blocks_attention.3",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9254041314125061,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 44,
+   "module": "backbone.blocks_attention.4.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0336573123931885,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 45,
+   "module": "backbone.blocks_attention.4.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6159223318099976,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 46,
+   "module": "backbone.blocks_attention.4.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6159223318099976,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 47,
+   "module": "backbone.blocks_attention.4.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9717451333999634,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 48,
+   "module": "backbone.blocks_attention.4.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8566874265670776,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 49,
+   "module": "backbone.blocks_attention.4.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8566874265670776,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 50,
+   "module": "backbone.blocks_attention.4",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.8987075090408325,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 51,
+   "module": "backbone.blocks_attention.5.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0488866567611694,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 52,
+   "module": "backbone.blocks_attention.5.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5630047917366028,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 53,
+   "module": "backbone.blocks_attention.5.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5630047917366028,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 54,
+   "module": "backbone.blocks_attention.5.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9228364825248718,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 55,
+   "module": "backbone.blocks_attention.5.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6623222827911377,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 56,
+   "module": "backbone.blocks_attention.5.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6623222827911377,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 57,
+   "module": "backbone.blocks_attention.5",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.8728602528572083,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 58,
+   "module": "backbone.blocks_attention.6.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.1179463863372803,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 59,
+   "module": "backbone.blocks_attention.6.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5319269299507141,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 60,
+   "module": "backbone.blocks_attention.6.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5319269299507141,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 61,
+   "module": "backbone.blocks_attention.6.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.7987568974494934,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 62,
+   "module": "backbone.blocks_attention.6.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5666210055351257,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 63,
+   "module": "backbone.blocks_attention.6.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5666210055351257,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 64,
+   "module": "backbone.blocks_attention.6",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9130975604057312,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 65,
+   "module": "backbone.blocks_attention.7.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.2115447521209717,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 66,
+   "module": "backbone.blocks_attention.7.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.41851362586021423,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 67,
+   "module": "backbone.blocks_attention.7.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.41851362586021423,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 68,
+   "module": "backbone.blocks_attention.7.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.7415127754211426,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 69,
+   "module": "backbone.blocks_attention.7.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6657318472862244,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 70,
+   "module": "backbone.blocks_attention.7.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6657318472862244,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 71,
+   "module": "backbone.blocks_attention.7",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.2299225330352783,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 72,
+   "module": "backbone",
+   "cls": "SpectFormer",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.2299225330352783,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 73,
+   "module": "unembed.unembed.0",
+   "cls": "Conv2d",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9294405579566956,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 74,
+   "module": "unembed.unembed.1",
+   "cls": "PixelShuffle",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9300029277801514,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 75,
+   "module": "unembed.unembed",
+   "cls": "Sequential",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9300029277801514,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_sm32",
+   "call": 76,
+   "module": "unembed",
+   "cls": "LinearDecoder",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9300029277801514,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 0,
+   "module": "embedding.patch_embed.proj",
+   "cls": "Conv2d",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 1.0494599342346191,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 1,
+   "module": "embedding.patch_embed",
+   "cls": "PatchEmbed3D",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 1.0642471313476562,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 2,
+   "module": "embedding.pos_drop",
+   "cls": "Dropout",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0220508575439453,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 3,
+   "module": "embedding",
+   "cls": "LinearEmbedding",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0220508575439453,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 4,
+   "module": "backbone.blocks_spectral_gating.0.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.121072769165039,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 5,
+   "module": "backbone.blocks_spectral_gating.0.filter",
+   "cls": "SpectralGatingNetwork",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9648562669754028,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 6,
+   "module": "backbone.blocks_spectral_gating.0.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.1386321783065796,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 7,
+   "module": "backbone.blocks_spectral_gating.0.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.7991901636123657,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 8,
+   "module": "backbone.blocks_spectral_gating.0.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.7991901636123657,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 9,
+   "module": "backbone.blocks_spectral_gating.0",
+   "cls": "BlockSpectralGating",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9343655109405518,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 10,
+   "module": "backbone.blocks_spectral_gating.1.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.017439365386963,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 11,
+   "module": "backbone.blocks_spectral_gating.1.filter",
+   "cls": "SpectralGatingNetwork",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.6419739723205566,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 12,
+   "module": "backbone.blocks_spectral_gating.1.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.6923267245292664,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 13,
+   "module": "backbone.blocks_spectral_gating.1.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6916934251785278,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 14,
+   "module": "backbone.blocks_spectral_gating.1.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6916934251785278,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 15,
+   "module": "backbone.blocks_spectral_gating.1",
+   "cls": "BlockSpectralGating",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9266999363899231,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 16,
+   "module": "backbone.blocks_attention.0.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9371755123138428,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 17,
+   "module": "backbone.blocks_attention.0.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8949812650680542,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 18,
+   "module": "backbone.blocks_attention.0.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8949812650680542,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 19,
+   "module": "backbone.blocks_attention.0.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9663332104682922,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 20,
+   "module": "backbone.blocks_attention.0.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8867768049240112,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 21,
+   "module": "backbone.blocks_attention.0.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8867768049240112,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 22,
+   "module": "backbone.blocks_attention.0",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9889442920684814,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 23,
+   "module": "backbone.blocks_attention.1.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0543590784072876,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 24,
+   "module": "backbone.blocks_attention.1.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6193866729736328,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 25,
+   "module": "backbone.blocks_attention.1.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6193866729736328,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 26,
+   "module": "backbone.blocks_attention.1.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9039533734321594,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 27,
+   "module": "backbone.blocks_attention.1.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8661873936653137,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 28,
+   "module": "backbone.blocks_attention.1.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8661873936653137,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 29,
+   "module": "backbone.blocks_attention.1",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9562991261482239,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 30,
+   "module": "backbone.blocks_attention.2.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0272886753082275,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 31,
+   "module": "backbone.blocks_attention.2.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 1.0851107835769653,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 32,
+   "module": "backbone.blocks_attention.2.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 1.0851107835769653,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 33,
+   "module": "backbone.blocks_attention.2.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0065031051635742,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 34,
+   "module": "backbone.blocks_attention.2.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9114922285079956,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 35,
+   "module": "backbone.blocks_attention.2.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9114922285079956,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 36,
+   "module": "backbone.blocks_attention.2",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9455240964889526,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 37,
+   "module": "backbone.blocks_attention.3.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.0684709548950195,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 38,
+   "module": "backbone.blocks_attention.3.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8652267456054688,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 39,
+   "module": "backbone.blocks_attention.3.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8652267456054688,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 40,
+   "module": "backbone.blocks_attention.3.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9883502721786499,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 41,
+   "module": "backbone.blocks_attention.3.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8846491575241089,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 42,
+   "module": "backbone.blocks_attention.3.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8846491575241089,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 43,
+   "module": "backbone.blocks_attention.3",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9254656434059143,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 44,
+   "module": "backbone.blocks_attention.4.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.033704161643982,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 45,
+   "module": "backbone.blocks_attention.4.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6159211993217468,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 46,
+   "module": "backbone.blocks_attention.4.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6159211993217468,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 47,
+   "module": "backbone.blocks_attention.4.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9717772603034973,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 48,
+   "module": "backbone.blocks_attention.4.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8567485213279724,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 49,
+   "module": "backbone.blocks_attention.4.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.8567485213279724,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 50,
+   "module": "backbone.blocks_attention.4",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.8987365365028381,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 51,
+   "module": "backbone.blocks_attention.5.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.048912525177002,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 52,
+   "module": "backbone.blocks_attention.5.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5630377531051636,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 53,
+   "module": "backbone.blocks_attention.5.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5630377531051636,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 54,
+   "module": "backbone.blocks_attention.5.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.9228522181510925,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 55,
+   "module": "backbone.blocks_attention.5.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6623610258102417,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 56,
+   "module": "backbone.blocks_attention.5.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6623610258102417,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 57,
+   "module": "backbone.blocks_attention.5",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.8728793263435364,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 58,
+   "module": "backbone.blocks_attention.6.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.1179388761520386,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 59,
+   "module": "backbone.blocks_attention.6.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5320093631744385,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 60,
+   "module": "backbone.blocks_attention.6.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.5320093631744385,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 61,
+   "module": "backbone.blocks_attention.6.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.7987177968025208,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 62,
+   "module": "backbone.blocks_attention.6.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.566602885723114,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 63,
+   "module": "backbone.blocks_attention.6.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.566602885723114,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 64,
+   "module": "backbone.blocks_attention.6",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.913133978843689,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 65,
+   "module": "backbone.blocks_attention.7.norm1",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.2114983797073364,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 66,
+   "module": "backbone.blocks_attention.7.attn",
+   "cls": "AttentionLS",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.41852015256881714,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 67,
+   "module": "backbone.blocks_attention.7.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.41852015256881714,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 68,
+   "module": "backbone.blocks_attention.7.norm2",
+   "cls": "LayerNorm",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 0.7414788603782654,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 69,
+   "module": "backbone.blocks_attention.7.mlp",
+   "cls": "Mlp",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6656377911567688,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 70,
+   "module": "backbone.blocks_attention.7.drop_path",
+   "cls": "Identity",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.6656377911567688,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 71,
+   "module": "backbone.blocks_attention.7",
+   "cls": "BlockAttention",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.2298305034637451,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 72,
+   "module": "backbone",
+   "cls": "SpectFormer",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.float32",
+   "rel_rms_error_vs_fp32": 1.2298305034637451,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 73,
+   "module": "unembed.unembed.0",
+   "cls": "Conv2d",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9294629693031311,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 74,
+   "module": "unembed.unembed.1",
+   "cls": "PixelShuffle",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9299196600914001,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 75,
+   "module": "unembed.unembed",
+   "cls": "Sequential",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9299196600914001,
+   "nonfinite_variant": 0
+  },
+  {
+   "variant": "bf16_ln32_sm32",
+   "call": 76,
+   "module": "unembed",
+   "cls": "LinearDecoder",
+   "dtype_fp32_run": "torch.float32",
+   "dtype_variant": "torch.bfloat16",
+   "rel_rms_error_vs_fp32": 0.9299196600914001,
+   "nonfinite_variant": 0
+  }
+ ],
+ "torch": "2.10.0+cpu"
+}
