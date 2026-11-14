@@ -81,12 +81,15 @@ import io
 import json
 import multiprocessing as mp
 import os
+import pickle
 import pickletools
 import re
+import shutil
 import struct
 import sys
 import time
 import xml.etree.ElementTree as ET
+import zipfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
@@ -304,12 +307,76 @@ def checkpoint_pickle_check(max_bytes=4 * 2 ** 20):
     allowed = {"collections OrderedDict", "torch._utils _rebuild_tensor_v2", "torch FloatStorage"}
     tensor_keys = sorted({s for s in strings if re.match(r"^base_model\.model\..+\.(weight|bias)$", s)
                           or s in ("base_model.model.cls_token",)})
+    shapes = ShapeUnpickler(io.BytesIO(b[30 + nl + el:])).load()
     return {"zip_signature_ok": sig == 0x04034B50, "first_entry": name, "pickle_bytes": bio.tell(),
             "bytes_read": len(b), "globals": dict(g), "only_tensor_globals": set(g) <= allowed,
             "n_reduce_ops": n_reduce, "n_weight_bias_keys_seen": len(tensor_keys),
             "has_cls_token": "base_model.model.cls_token" in strings,
             "has_unembed": "base_model.model.unembed.weight" in strings,
-            "has_lora": any("lora_A" in s for s in strings)}
+            "has_lora": any("lora_A" in s for s in strings), "_shapes": shapes}
+
+
+class ShapeUnpickler(pickle.Unpickler):
+    """Unpickles a torch state-dict pickle (data.pkl) into {key: shape} without reading any tensor bytes and without
+    executing anything but the few rebuild functions a state dict uses (anything else is refused)."""
+
+    def find_class(self, mod, name):
+        if mod == "torch" and name.endswith("Storage"):
+            return name
+        f = {("collections", "OrderedDict"): collections.OrderedDict,
+             ("torch._utils", "_rebuild_tensor_v2"): lambda storage, offset, size, *a: tuple(size),
+             ("torch._utils", "_rebuild_parameter"): lambda data, *a: data,
+             ("torch._tensor", "_rebuild_from_type_v2"): lambda fn, typ, args, state: fn(*args),
+             ("torch", "Size"): tuple, ("torch", "Tensor"): "Tensor"}.get((mod, name))
+        if f is None:
+            raise pickle.UnpicklingError(f"unexpected global {mod}.{name}")
+        return f
+
+    def persistent_load(self, pid):
+        return pid
+
+
+def state_dict_structure_check(ft, cfg):
+    """Whether infer.load_model's load_state_dict(strict=True) can succeed, judged from the two pickles alone (no
+    model is built): the checkpoint must hold exactly the foundation model's keys and shapes (minus its decoder
+    'unembed.*', which finetune=True does not build) under PEFT's 'base_model.model.' prefix, with every Linear whose
+    name ends in a LoRA target module split into base_layer + lora_A/lora_B of rank r, plus the head config_infer.yaml
+    asks for (class token, penultimate Linear, a one-output unembed). lora_alpha cannot be checked this way."""
+    m, lc = cfg["model"], cfg["model"]["lora_config"]
+    E, r, P = m["embed_dim"], lc["r"], "base_model.model."
+    with zipfile.ZipFile(FM_CKPT) as z:
+        fm = ShapeUnpickler(io.BytesIO(z.read(next(n for n in z.namelist() if n.endswith("/data.pkl"))))).load()
+    exp, lora_modules = {}, set()
+    for k, s in fm.items():
+        if m["finetune"] and k.startswith("unembed."):
+            continue
+        mod, leaf = k.rsplit(".", 1)
+        if m["use_lora"] and mod.split(".")[-1] in lc["target_modules"]:
+            exp[f"{P}{mod}.base_layer.{leaf}"] = tuple(s)
+            if leaf == "weight":
+                lora_modules.add(mod)
+                exp[f"{P}{mod}.lora_A.default.weight"] = (r, s[1])
+                exp[f"{P}{mod}.lora_B.default.weight"] = (s[0], r)
+        else:
+            exp[P + k] = tuple(s)
+    if m["global_class_token"]:
+        exp[P + "cls_token"] = (1, 1, E)
+    if m["penultimate_linear_layer"]:
+        exp.update({P + "linear.weight": (E, E), P + "linear.bias": (E,)})
+    exp.update({P + "unembed.weight": (1, E), P + "unembed.bias": (1,)})  # num_outputs=1 in finetune.get_model
+    ft = {k: tuple(v) for k, v in ft.items()}
+    pe = (E, m["in_channels"] * m["time_embedding"]["time_dim"], m["patch_size"], m["patch_size"])
+    res = {"n_checkpoint_keys": len(ft), "n_expected_keys": len(exp),
+           "missing_in_checkpoint": sorted(set(exp) - set(ft)), "unexpected_in_checkpoint": sorted(set(ft) - set(exp)),
+           "shape_mismatches": {k: [ft[k], exp[k]] for k in sorted(set(ft) & set(exp)) if ft[k] != exp[k]},
+           "lora_wrapped_linears": len(lora_modules),
+           "lora_target_suffixes_present": sorted({x.split(".")[-1] for x in lora_modules}),
+           "lora_targets_absent_from_model": sorted(set(lc["target_modules"]) - {x.split(".")[-1] for x in lora_modules}),
+           "patch_embed_shape": list(ft.get(P + "embedding.patch_embed.proj.weight", ())),
+           "patch_embed_expected_13ch_x_time_dim": list(pe)}
+    res["ok"] = bool(not res["missing_in_checkpoint"] and not res["unexpected_in_checkpoint"]
+                     and not res["shape_mismatches"] and tuple(res["patch_embed_shape"]) == pe)
+    return res
 
 
 def bandwidth_probe(s3_key):
@@ -745,6 +812,7 @@ def plan_blocks(cands, split, n, seed):
         cnt = {y: int((sub_c["timestamp"].dt.year == y).sum()) for y in STRATA_YEARS[split]}
         cnt = {y: v for y, v in cnt.items() if v > 0}
         a = largest_remainder(cnt, k, rng)
+        assert sum(a.values()) == k, f"class {cls}: allocated {sum(a.values())} of {k} (a year has too few candidates)"
         alloc["pos" if cls else "neg"] = a
         for y in sorted(a):
             if a[y] == 0:
@@ -894,11 +962,33 @@ def build_flare_dataset(cfg, scalers, split, t, sdo_root, SolarFlareDataset):
     )
 
 
+def import_task_module(name):
+    """Import one of the authors' task modules (dataset, metrics, models, finetune, infer) and make sure it is the
+    file in the clone, not a same-named module from elsewhere on sys.path."""
+    import importlib
+    add_task_dir()
+    mod = importlib.import_module(name)
+    assert os.path.dirname(os.path.abspath(mod.__file__)) == TASK_DIR, mod.__file__
+    return mod
+
+
+def import_check():
+    """Import everything the real run imports (infer -> finetune -> models, peft, wandb, torchvision, timm, numba),
+    so that a missing package fails the dry run rather than the real run after the downloads; no model is built."""
+    mods = {n: import_task_module(n) for n in ("dataset", "metrics", "models", "finetune", "infer")}
+    import peft
+    import torch
+    from surya.utils.distributed import set_global_seed  # noqa: F401  (infer.main / load_model)
+    I, F = mods["infer"], mods["finetune"]
+    assert I.get_model is F.get_model and I.apply_peft_lora is F.apply_peft_lora
+    assert I.custom_collate_fn is F.custom_collate_fn and I.SolarFlareDataset is mods["dataset"].SolarFlareDataset
+    return {"modules": {n: m.__file__ for n, m in mods.items()}, "torch": torch.__version__, "peft": peft.__version__}
+
+
 def check_joins(sample, cfg, scalers, split):
     """Build the authors' dataset for every sampled time (no frame is read) and confirm that it yields exactly that
     time, keeps all three frame rows after its inner join with the labels, and attaches the CSV's label_max."""
-    add_task_dir()
-    from dataset import SolarFlareDataset
+    SolarFlareDataset = import_task_module("dataset").SolarFlareDataset
     out = []
     for r in sample.itertuples():
         t = pd.Timestamp(r.timestamp)
@@ -930,8 +1020,7 @@ def load_model(cfg, ckpt_path):
     """infer.load_model step by step (get_model -> apply_peft_lora -> load_state_dict(strict=True) -> eval), with a
     weights-only unpickler and memory-mapped weights."""
     import torch
-    add_task_dir()
-    import infer as I  # authors' module; get_model / apply_peft_lora come from finetune.py
+    I = import_task_module("infer")  # authors' module; get_model / apply_peft_lora come from finetune.py
     from surya.utils.distributed import set_global_seed
     set_global_seed(42)  # as infer.main
     model = I.get_model(cfg, wandb_logger=None)  # also loads the foundation weights from cfg["pretrained_path"]
@@ -976,13 +1065,28 @@ def read_records(path):
     return recs
 
 
+def sample_roles(sample):
+    """timestamp -> (stratum, block, role) of every row of a sample file."""
+    return {str(r["timestamp"]): (str(r["stratum"]), int(r["block"]), str(r["role"])) for r in sample.to_dict("records")}
+
+
+def drop_stale(recs, sample):
+    """Keep only the per-sample records that belong to this sample file (same time stamp in the same block and role);
+    records left over from another sample would otherwise be counted. Returns (kept, dropped time stamps)."""
+    roles = sample_roles(sample)
+    key = lambda r: (str(r.get("stratum")), int(r["block"]) if r.get("block") is not None else None, str(r.get("role")))
+    stale = sorted(t for t, r in recs.items() if roles.get(t) != key(r))
+    return {t: r for t, r in recs.items() if t not in stale}, stale
+
+
 def plan_work(sample, previous, seed, max_forward):
     """What a (re)run scores, given the sample file and the records already in per_sample_<split>.jsonl.
 
     One sample per time block: blocks with an 'ok' record are complete; otherwise the primary is run, or the
-    reserve if the primary has a 'failed' record. Positives and negatives alternate, each in a seeded random order of
-    blocks, so any prefix of the run (an interrupted run, or a cap below the sample size) is balanced and spread over
-    the years. Returns (blocks, pending, number of complete blocks)."""
+    reserve if the primary has a 'failed' record. A block whose primary and reserve have both failed is not retried
+    (summary.json lists it under blocks_without_ok_record; delete its records to retry it). Positives and negatives
+    alternate, each in a seeded random order of blocks, so any prefix of the run (an interrupted run, or a cap below
+    the sample size) is balanced and spread over the years. Returns (blocks, pending, number of complete blocks)."""
     done = {t for t, r in previous.items() if r.get("status") == "ok"}
     ok_blocks = {(r["stratum"], int(r["block"])) for r in previous.values() if r.get("status") == "ok"}
     blocks = {}
@@ -999,10 +1103,11 @@ def plan_work(sample, previous, seed, max_forward):
         if key in ok_blocks:
             complete += 1
             continue
-        failed_before = b.get("primary") and previous.get(b["primary"]["timestamp"], {}).get("status") == "failed"
-        if b.get("primary") and not failed_before:
+        failed = {role: b.get(role) is not None and previous.get(b[role]["timestamp"], {}).get("status") == "failed"
+                  for role in ("primary", "reserve")}
+        if b.get("primary") and not failed["primary"]:
             work.append(b["primary"])
-        elif b.get("reserve"):
+        elif b.get("reserve") and not failed["reserve"]:
             work.append(b["reserve"])
     return blocks, [r for r in work if r["timestamp"] not in done][:max_forward], complete
 

@@ -53,16 +53,21 @@ Usage (from the repository root):
 A rerun skips time stamps already in per_sample_<split>.jsonl, so an interrupted run resumes.
 """
 import argparse
+import collections
 import concurrent.futures as cf
 import gc
+import glob
 import hashlib
 import io
 import json
 import multiprocessing as mp
 import os
+import pickle
+import shutil
 import sys
 import tarfile
 import time
+import zipfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
@@ -76,7 +81,6 @@ import yaml  # noqa: E402
 REPO_ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 UPSTREAM = "/home/user/upstream/surya/Surya"
 TASK_DIR = os.path.join(UPSTREAM, "downstream_examples", "ar_segmentation")
-FM_DIR = "/home/user/work/surya_run/data/Surya-1.0"
 WORK = "/home/user/work/surya_ft/ar_segmentation"
 # dataset.py ArDSDataset.__getitem__ hard-codes os.path.join("./assets/surya-bench-ar-segmentation", file_path) and
 # config.yaml's ar_index_* / scalers_path are relative too, so the script runs with WORK as the working directory and
@@ -92,6 +96,10 @@ CKPT_REPO, CKPT_REV = "nasa-ibm-ai4science/ar_segmentation_surya", "73a6de53c4be
 CKPT_NAME, CKPT_SIZE = "ar_segmentation_weights.pth", 1784013352
 CKPT_SHA256 = "ad391831f340c4f894a23bd269e7c4b75dea58090c825278513d36f0f85456ad"  # HF LFS oid
 CORE_SDO_REPO, CORE_SDO_REV = "nasa-ibm-ai4science/core-sdo", "9c10abe52c1f206d1b66715745229e29ef543cc6"
+# core-sdo's scalers.yaml (what download_data.sh puts at config.yaml's scalers_path); byte-identical to Surya-1.0's
+SCALERS_SHA256 = "a944e8f1bcdc2e5ed9b30cb53e0525ec40625515d09cc8745647111015b2b487"
+# what the checkpoint's pickle header must hold (read by range requests in the dry run, checked again at load time)
+CKPT_EXPECT = {"n_keys": 199, "n_lora_tensors": 40, "lora_params": 4096000, "dtypes": ["FloatStorage"]}
 
 PAPER_TABLE3 = {  # arXiv 2508.14112 v2, Sec. 2.6.2, Table 3 (copied exactly)
     "Surya": {"params": "4.1 M", "iou": 0.768, "dice": 0.853},
@@ -106,8 +114,12 @@ HARD_THRESHOLD = 0.5
 N_BOOT = 10000
 # Timing assumptions for the estimate (the dry run cannot time the model): one fp32 forward pass of the 4096x4096
 # Surya backbone took 136 s on this machine (results/Surya/validation_test, 271.9 s for two passes); reading and
-# normalising one 13-channel frame is taken as 30 s; scoring as 5 s; building and loading the model as 120 s.
+# normalising one 13-channel frame is taken as 30 s; scoring as 5 s; building and loading the model as 120 s. Later
+# runs on this machine took 2-5 min per forward pass, so a slow-case estimate with 300 s is reported too.
 SEC_FORWARD, SEC_LOAD, SEC_SCORE, SEC_MODEL = 136, 30, 5, 120
+SEC_FORWARD_SLOW = 300
+# pre-flight: a float32 forward pass with one 4096x4096 sample peaked at 10-13 GB RSS on this machine
+MIN_AVAILABLE_RAM_GB = 12.0
 
 
 # ----------------------------------------------------------------------------------------------- small utilities
@@ -163,10 +175,11 @@ class RangeFile(io.RawIOBase):
     """Read-only file object over HTTP range requests, with a block cache; enough for h5py to read a header."""
 
     def __init__(self, url, block=1 << 16):
-        self.url, self.block, self.pos, self.cache, self.nbytes = url, block, 0, {}, 0
-        r = requests.head(url, timeout=60)
+        self.block, self.pos, self.cache, self.nbytes = block, 0, {}, 0
+        # follow redirects: a HF resolve URL answers HEAD with a 302 whose Content-Length is that of the redirect body
+        r = requests.head(url, timeout=60, allow_redirects=True)
         r.raise_for_status()
-        self.size = int(r.headers["Content-Length"])
+        self.url, self.size = r.url, int(r.headers["Content-Length"])
 
     def readable(self):
         return True
@@ -229,6 +242,58 @@ def remote_nc_channels(key):
             except Exception:
                 stored[k] = None
     return shapes, rf.nbytes, stored
+
+
+def checkpoint_header(url):
+    """Key names, shapes and storage types of the checkpoint's state dict, read from its zip directory and data.pkl
+    with HTTP range requests (about 1 MB) and an unpickler that builds no tensor and accepts nothing else."""
+    class Stub:
+        def __init__(self, shape, storage):
+            self.shape, self.storage = tuple(shape), storage
+
+    class Unpickler(pickle.Unpickler):
+        def find_class(self, mod, name):
+            if (mod, name) == ("torch._utils", "_rebuild_tensor_v2"):
+                return lambda storage, offset, size, *a: Stub(size, storage)
+            if (mod, name) == ("collections", "OrderedDict"):
+                return collections.OrderedDict
+            if mod == "torch" and name.endswith("Storage"):
+                return name
+            raise pickle.UnpicklingError(f"unexpected global {mod}.{name} in the checkpoint pickle")
+
+        def persistent_load(self, pid):  # ('storage', storage type, key, location, numel)
+            return pid[1]
+
+    rf = RangeFile(url, block=1 << 18)
+    with zipfile.ZipFile(io.BufferedReader(rf, 1 << 18)) as z:
+        pkl = [n for n in z.namelist() if n.endswith("/data.pkl")]
+        sd = Unpickler(io.BytesIO(z.read(pkl[0]))).load()
+    return {k: (v.shape, v.storage) for k, v in sd.items()}, rf.nbytes
+
+
+def check_checkpoint_header(cfg_inf):
+    """Dry-run check that the released file is what infer.load_model + PEFT expect, before 1.8 GB is downloaded."""
+    keys, nread = checkpoint_header(hf_url(CKPT_REPO, CKPT_REV, CKPT_NAME, kind="models"))
+    lora = {k: s for k, (s, _) in keys.items() if ".lora_" in k}
+    targets = sorted({k.split(".lora_")[0].rsplit(".", 1)[-1] for k in lora})
+    out = {"bytes_read": nread, "n_keys": len(keys), "n_lora_tensors": len(lora),
+           "lora_params": int(sum(int(np.prod(s)) for s in lora.values())),
+           "lora_ranks": sorted({s[0] for k, s in lora.items() if ".lora_A." in k}),
+           "lora_target_modules_present": targets,
+           "all_keys_start_base_model_model": all(k.startswith("base_model.model.") for k in keys),
+           "lora_wrapped_layers_use_base_layer_names": all(
+               k.replace(".lora_A.default.weight", ".base_layer.weight") in keys for k in lora if ".lora_A." in k),
+           "dtypes": sorted({st for _, st in keys.values()}),
+           "unembed_conv_shape": list(keys.get("base_model.model.unembed.unembed.0.weight", ((),))[0])}
+    want_rank = int(cfg_inf["model"]["lora_config"]["r"])
+    out["ok"] = bool(out["all_keys_start_base_model_model"] and out["lora_wrapped_layers_use_base_layer_names"]
+                     and out["lora_ranks"] == [want_rank] and out["dtypes"] == CKPT_EXPECT["dtypes"]
+                     and set(targets) <= set(cfg_inf["model"]["lora_config"]["target_modules"])
+                     and out["unembed_conv_shape"] == [cfg_inf["model"]["patch_size"] ** 2
+                                                       * cfg_inf["model"]["ft_out_chans"],
+                                                       cfg_inf["model"]["embed_dim"], 1, 1]
+                     and all(out[k] == CKPT_EXPECT[k] for k in ("n_keys", "n_lora_tensors", "lora_params")))
+    return out
 
 
 class ResumableHTTP(io.RawIOBase):
@@ -443,14 +508,15 @@ def metric_self_test(out_dir):
 
 # -------------------------------------------------------------------------------------------- data and labels
 def ensure_small_inputs(split):
-    """Labels CSV (pinned revision), core-sdo validation index, scalers.yaml copied where config.yaml expects it."""
+    """Labels CSV (pinned revision), core-sdo validation index, and core-sdo's scalers.yaml where config.yaml expects
+    it (download_data.sh fetches it from core-sdo; Surya-1.0's copy is byte-identical), its SHA-256 checked."""
     os.makedirs(LABEL_DIR, exist_ok=True)
     fetch_small(hf_url(LABEL_REPO, LABEL_REV, SPLIT_CSV[split]), os.path.join(LABEL_DIR, SPLIT_CSV[split]))
     sc_dst = os.path.join(ASSETS, "scalers.yaml")
-    if not os.path.exists(sc_dst):
-        # core-sdo's scalers.yaml (config.yaml scalers_path) and Surya-1.0's are byte-identical (sha256 a944e8f1...)
-        with open(os.path.join(FM_DIR, "scalers.yaml"), "rb") as a, open(sc_dst, "wb") as b:
-            b.write(a.read())
+    fetch_small(hf_url(CORE_SDO_REPO, CORE_SDO_REV, "scalers.yaml"), sc_dst)
+    if sha256_file(sc_dst) != SCALERS_SHA256:
+        os.remove(sc_dst)
+        raise IOError(f"{sc_dst}: SHA-256 differs from {SCALERS_SHA256}; removed, rerun to fetch it again")
     if split == "validation":
         fetch_small(hf_url(CORE_SDO_REPO, CORE_SDO_REV, "valid_index_surya_1_0.csv"),
                     os.path.join(ASSETS, "valid_index_surya_1_0.csv"))
@@ -710,6 +776,44 @@ def ensure_checkpoint():
             raise IOError(f"{path}: sha256 {sha}, expected {CKPT_SHA256}")
         open(marker, "w").write(f"{CKPT_SHA256} {os.path.getmtime(path)}")
     return path
+
+
+def available_ram_gb():
+    with open("/proc/meminfo") as fp:
+        for line in fp:
+            if line.startswith("MemAvailable:"):
+                return int(line.split()[1]) / 2 ** 20
+    return float("nan")
+
+
+def check_resources(args, pending):
+    """Pre-flight before anything large is fetched: disk for the checkpoint (if not yet on disk) plus the two largest
+    pending frames (current + prefetched) and a margin; RAM for one float32 forward pass."""
+    ck_local = os.path.join(WORK, CKPT_NAME)
+    need_ck = 0 if (os.path.exists(ck_local) and os.path.getsize(ck_local) == CKPT_SIZE) else CKPT_SIZE
+    fr = sorted((float(r["frame_bytes"]) for r in pending), reverse=True)
+    need = need_ck + sum(fr[:2]) + 0.5e9
+    free = shutil.disk_usage(WORK).free
+    ram = available_ram_gb()
+    log(f"pre-flight: {free / 1e9:.1f} GB disk free (need ~{need / 1e9:.1f}), {ram:.1f} GB RAM available "
+        f"(need ~{args.min_ram_gb:.0f})")
+    if free < need:
+        raise RuntimeError(f"{free / 1e9:.1f} GB free in {WORK}, need ~{need / 1e9:.1f} GB")
+    if ram < args.min_ram_gb:
+        raise RuntimeError(f"only {ram:.1f} GB RAM available; one float32 forward pass peaks at 10-13 GB. Stop the "
+                           f"other jobs or lower --min-ram-gb at the risk of the OOM killer")
+    return {"disk_free_gb": round(free / 1e9, 1), "disk_needed_gb": round(need / 1e9, 1),
+            "ram_available_gb": round(ram, 1)}
+
+
+def purge_partials(root):
+    """fetch_s3 leaves its .part file behind when every retry fails; FrameCache does not track it, so remove it to
+    keep the disk bound of two frames."""
+    for p in glob.glob(os.path.join(root, "**", "*.part"), recursive=True):
+        try:
+            os.remove(p)
+        except FileNotFoundError:
+            pass
 
 
 def load_model(cfg_inf, ckpt_path):
@@ -996,15 +1100,26 @@ def run(args, out_dir):
     if not meta.get("dataset_join_all_ok", False):
         raise RuntimeError("dataset join check failed in the sample file; rerun --dry-run")
     recs_path = per_sample_path(out_dir, args.split)
+    # only records of the current sample count as done (a jsonl from another --n/--seed must not mark blocks done)
     previous, n_foreign = records_in_sample(read_records(recs_path), sample)
     if n_foreign:
         log(f"ignoring {n_foreign} records in {recs_path} that are not rows of the current sample file")
+    done = {t for t, r in previous.items() if r.get("status") == "ok"}
+    ok_blocks = {(int(r["stratum"]), int(r["block"])) for r in previous.values() if r.get("status") == "ok"}
+    blocks = {}
+    for r in sample.to_dict("records"):
+        blocks.setdefault((int(r["stratum"]), int(r["block"])), {})[r["role"]] = r
+    todo_rows = [r for k, b in blocks.items() if k not in ok_blocks for r in b.values()]
+    if not todo_rows:
+        log(f"all {len(blocks)} blocks already scored")
+        summarize(out_dir, args.seed)
+        return
+    resources = check_resources(args, todo_rows)
 
     # frames left behind by an interrupted run are not known to the new FrameCache objects and would never be
     # deleted, so the two cache folders are emptied first (this keeps the bound of two frames on disk)
     for sub in ("a", "b"):
         shutil.rmtree(os.path.join(WORK, "frames", sub), ignore_errors=True)
-    check_resources(args, sample)
 
     # one pass over the archive serves every sample file present in out_dir (test and validation)
     wanted = list(sample["mask_file_path"])
@@ -1015,13 +1130,6 @@ def run(args, out_dir):
     manifest = ensure_masks(sorted(set(wanted)), os.path.join(WORK, "meta", "masks_manifest.json"))
     have_mask = {fp: os.path.exists(os.path.join(LABEL_DIR, fp)) for fp in sample["mask_file_path"]}
 
-    recs_path = per_sample_path(out_dir, args.split)
-    previous = read_records(recs_path)
-    done = {t for t, r in previous.items() if r.get("status") == "ok"}
-    ok_blocks = {(int(r["stratum"]), int(r["block"])) for r in previous.values() if r.get("status") == "ok"}
-    blocks = {}
-    for r in sample.to_dict("records"):
-        blocks.setdefault((int(r["stratum"]), int(r["block"])), {})[r["role"]] = r
     work, notes, complete = [], [], 0
     for key, b in sorted(blocks.items()):
         if key in ok_blocks:  # one image per block: a block is finished once its primary or reserve is scored
@@ -1051,7 +1159,8 @@ def run(args, out_dir):
            "checkpoint": f"{CKPT_REPO}@{CKPT_REV}/{CKPT_NAME}", "checkpoint_sha256": CKPT_SHA256,
            "labels": f"{LABEL_REPO}@{LABEL_REV}", "tar_manifest": {k: v for k, v in manifest.items()
                                                                      if k not in ("members",)},
-           "reserve_substitutions": notes, "model": minfo, "peak_rss_gb_after_model_load": C.peak_rss_gb()}
+           "reserve_substitutions": notes, "model": minfo, "preflight": resources,
+           "peak_rss_gb_after_model_load": C.peak_rss_gb()}
     json.dump(env, open(os.path.join(out_dir, "environment.json"), "w"), indent=1, default=str)
     log(f"model ready in {minfo['seconds_build_and_load']} s, peak RSS {C.peak_rss_gb()} GB")
 

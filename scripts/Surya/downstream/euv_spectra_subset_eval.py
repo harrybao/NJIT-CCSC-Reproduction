@@ -133,6 +133,7 @@ CKPT_HISTORY = {  # HF commit list of the model repo (fetched 2026-10-20)
     "note": "arXiv v1 2025-08-18, v2 2025-08-21; Table 5 is identical in both. Which upload produced Table 5 is not "
             "stated; the notebook anchors were committed 2025-09-26, after the current upload."}
 CORE_SDO_REPO, CORE_SDO_REV = "nasa-ibm-ai4science/core-sdo", "9c10abe52c1f206d1b66715745229e29ef543cc6"
+SCALERS_SHA256 = "a944e8f1bcdc2e5ed9b30cb53e0525ec40625515d09cc8745647111015b2b487"  # core-sdo = Surya-1.0 scalers.yaml
 
 PAPER_TABLE5 = {  # arXiv 2508.14112 v2, Sec. 2.6.4, Table 5 (copied exactly)
     "Alexnet": {"mse": 0.0001311409, "mae": 0.0061858603, "mape": 1.6834715604},
@@ -192,6 +193,56 @@ def free_gb(path=WORK):
     return shutil.disk_usage(path).free / 1e9
 
 
+def mem_available_gb():
+    """MemAvailable from /proc/meminfo (what the kernel can hand out without swapping; there is no swap here)."""
+    with open("/proc/meminfo") as fp:
+        for line in fp:
+            if line.startswith("MemAvailable:"):
+                return int(line.split()[1]) / 2 ** 20
+    return float("nan")
+
+
+def current_rss_gb():
+    with open("/proc/self/status") as fp:
+        for line in fp:
+            if line.startswith("VmRSS:"):
+                return int(line.split()[1]) / 2 ** 20
+    return float("nan")
+
+
+class FailFast(BaseException):
+    """Raised from inside the authors' __getitem__ retry loop. HelioNetCDFDataset.__getitem__ catches every Exception
+    and retries (idx + 1) % len up to 100 times; with our one-sample dataset that re-reads the same two 0.9 GB frames
+    100 times (more than an hour) before failing. A BaseException passes through its `except Exception`."""
+
+
+def fail_fast(ds):
+    """Make the first failure of ds._get_index_data end __getitem__ at once (instance attribute; the authors' class
+    and its loading code are unchanged)."""
+    orig = ds._get_index_data
+
+    def once(idx):
+        try:
+            return orig(idx)
+        except Exception as e:  # noqa: BLE001
+            raise FailFast(f"_get_index_data({idx}) failed: {e!r}") from e
+
+    ds._get_index_data = once
+    return ds
+
+
+def adopt_cached_frames(cache):
+    """Register frames a crashed run left in cache.root (so ensure() reuses or deletes them) and drop partial
+    downloads; without this they would stay on disk for good, since FrameCache only deletes what it holds."""
+    for d, _, files in os.walk(cache.root):
+        for f in files:
+            p = os.path.join(d, f)
+            if f.endswith(".part"):
+                os.remove(p)
+            elif f.endswith(".nc"):
+                cache.held[os.path.relpath(p, cache.root)] = p
+
+
 def denorm(y):
     """Normalised target -> irradiance in W/m^2/nm (inverse of dataset.py's (log10(E) - LOG_MIN) / (LOG_MAX - LOG_MIN))."""
     return 10.0 ** (np.asarray(y, dtype=np.float64) * (LOG_MAX - LOG_MIN) + LOG_MIN)
@@ -201,6 +252,10 @@ def denorm(y):
 def sample_stats(p, y, wavelengths=None):
     """Per-sample sums from which every pooled metric is built (so pooling over elements = the authors' pooling)."""
     p, y = np.asarray(p, dtype=np.float64).ravel(), np.asarray(y, dtype=np.float64).ravel()
+    if not np.all(np.isfinite(y)) or np.any(y == 0):
+        # MAPE has no epsilon (none is needed: the smallest normalised target in the file is 0.0025); a zero or
+        # non-finite target would make it infinite or NaN, so stop instead of reporting such a number
+        raise ValueError(f"target has {int(np.sum(y == 0))} zeros and {int(np.sum(~np.isfinite(y)))} non-finite values")
     e = p - y
     ape = np.abs(e) / np.abs(y)
     keep = y >= NEAR_ZERO
@@ -485,9 +540,12 @@ def ensure_small_inputs(allow_eve_download=True):
     os.makedirs(ASSETS, exist_ok=True)
     sc_dst = os.path.join(ASSETS, "scalers.yaml")
     if not os.path.exists(sc_dst):
-        # core-sdo's scalers.yaml (config.yaml scalers_path) and Surya-1.0's are byte-identical (sha256 a944e8f1...)
+        # core-sdo's scalers.yaml (config.yaml scalers_path, fetched by download_data.sh) and Surya-1.0's are
+        # byte-identical (both sha256 SCALERS_SHA256, checked 2026-11-14 at CORE_SDO_REV); the hash is enforced below
         with open(os.path.join(FM_DIR, "scalers.yaml"), "rb") as a, open(sc_dst, "wb") as b:
             b.write(a.read())
+    if sha256_file(sc_dst) != SCALERS_SHA256:
+        raise IOError(f"{sc_dst} is not core-sdo's scalers.yaml (sha256 {SCALERS_SHA256})")
     fetch_small(hf_url(CORE_SDO_REPO, CORE_SDO_REV, "valid_index_surya_1_0.csv"),
                 os.path.join(ASSETS, "valid_index_surya_1_0.csv"))
     return ensure_eve_file(allow_eve_download)
@@ -881,11 +939,17 @@ def load_model(cfg_inf, ckpt_path, allow_full_unpickle=False):
     import torch
     sys.path.insert(0, TASK_DIR)
     import infer as I  # authors' get_model (imported by infer.py from finetune.py)
+    for mod in ("infer", "finetune", "models", "dataset"):  # no same-named module from another task directory
+        f = os.path.dirname(os.path.abspath(sys.modules[mod].__file__))
+        if f != TASK_DIR:
+            raise ImportError(f"module {mod!r} resolved to {f}, not {TASK_DIR}")
     from surya.utils.distributed import set_global_seed
     set_global_seed(42)  # as infer.main
     buf = io.StringIO()
     with contextlib.redirect_stdout(buf):
         model = I.get_model(cfg_inf, wandb_logger=None)
+    if type(model).__name__ != "HelioSpectformer1D":
+        raise TypeError(f"get_model built {type(model).__name__}, expected HelioSpectformer1D")
     n_total = sum(p.numel() for p in model.parameters())
     n_trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
     try:
@@ -905,8 +969,13 @@ def load_model(cfg_inf, ckpt_path, allow_full_unpickle=False):
         model_state = checkpoint
     if any(k.startswith("module.") for k in model_state.keys()):
         model_state = {k.replace("module.", ""): v for k, v in model_state.items()}
+    # Strict load, no fallback (infer.load_model falls back to strict=False and carries on with whatever matched).
+    # Expected keys (checked on the checkpoint's pickle header, 2026-11-14): the 157 foundation backbone/embedding
+    # keys with patch_embed.proj.weight [1280, 13, 16, 16] (foundation: [1280, 26, 16, 16], two input times), plus
+    # cls_token, linear.{weight,bias} and unembed.{weight [1343, 1280], bias}: 162 float32 tensors, no LoRA keys.
     model.load_state_dict(model_state, strict=True)
     n_keys = len(model_state)
+    diag = patch_embed_diagnostic(model_state["embedding.patch_embed.proj.weight"])
     del checkpoint, model_state
     gc.collect()
     model.to(torch.device("cpu"))
@@ -914,7 +983,39 @@ def load_model(cfg_inf, ckpt_path, allow_full_unpickle=False):
     model.requires_grad_(False)
     return model, {"n_parameters": int(n_total), "n_trainable_after_get_model": int(n_trainable),
                    "state_dict_keys": int(n_keys), "load_state_dict_strict": True, "torch_load": how,
-                   "get_model_stdout": buf.getvalue()[-2000:]}
+                   "patch_embedding_diagnostic": diag, "get_model_stdout": buf.getvalue()[-2000:]}
+
+
+def patch_embed_diagnostic(w):
+    """Information only (does not change the model). config.yaml has time_dim 1, so the 13-channel patch embedding
+    cannot take the foundation model's 26-channel one (get_model skips shape mismatches), and freeze_backbone True
+    freezes every parameter whose name contains "embedding". If the released weights were trained with that config,
+    their patch embedding is a random initialisation. finetune.py seeds torch with 42 (set_global_seed(0)) and the
+    patch-embedding Conv2d is the first module HelioSpectformer1D creates, so equality with a fresh Conv2d drawn
+    right after torch.manual_seed(42) would confirm it; inequality is inconclusive."""
+    import torch
+    w = w.detach().float()
+    state = torch.get_rng_state()
+    try:
+        torch.manual_seed(42)
+        ref = torch.nn.Conv2d(13, 1280, kernel_size=16, stride=16).weight.detach()
+    finally:
+        torch.set_rng_state(state)
+    out = {"shape": list(w.shape), "mean": float(w.mean()), "std": float(w.std()),
+           "kaiming_uniform_bound_for_fan_in_3328": float(1 / np.sqrt(13 * 16 * 16)),
+           "abs_max": float(w.abs().max()),
+           "equals_fresh_conv2d_after_manual_seed_42": bool(ref.shape == w.shape and torch.equal(ref, w))}
+    try:  # the foundation model's patch embedding, per input time (channel index c * 2 + t; t = 1 is time 0)
+        fm = torch.load(os.path.join(FM_DIR, "surya.366m.v1.pt"), map_location="cpu", weights_only=True, mmap=True)
+        f = fm["embedding.patch_embed.proj.weight"].float()
+        for t in (0, 1):
+            ft = f[:, t::2]
+            out[f"corr_with_foundation_time_slot_{t}"] = float(torch.corrcoef(torch.stack([ft.flatten(),
+                                                                                           w.flatten()]))[0, 1])
+        del fm, f
+    except Exception as e:  # noqa: BLE001
+        out["foundation_comparison_error"] = repr(e)[:300]
+    return out
 
 
 def verify_frames(paths, channels):
@@ -940,12 +1041,28 @@ def anchors_path(out_dir):
 def read_records(path):
     recs = {}
     if os.path.exists(path):
-        for line in open(path):
+        for n, line in enumerate(open(path), 1):
             line = line.strip()
-            if line:
+            if not line:
+                continue
+            try:
                 r = json.loads(line)
-                recs[r["timestamp"]] = r  # the last record for a time stamp wins
+            except json.JSONDecodeError:  # a line cut off by a crash mid-write: that sample is simply run again
+                log(f"WARNING: {os.path.basename(path)} line {n} is not valid JSON (interrupted write?); ignored")
+                continue
+            recs[r["timestamp"]] = r  # the last record for a time stamp wins
     return recs
+
+
+def sample_roles(out_dir, split):
+    """{timestamp: (role, stratum, block, block_candidates)} of the primaries and reserves in sample_<split>.csv,
+    so that records left over from another seed or --n are neither scored nor taken as finished blocks."""
+    p = sample_csv(out_dir, split)
+    if not os.path.exists(p):
+        return None
+    s = pd.read_csv(p)
+    s = s[s["role"].isin(["primary", "reserve"])]
+    return {str(r.timestamp): (r.role, int(r.stratum), int(r.block), int(r.block_candidates)) for r in s.itertuples()}
 
 
 def anchor_check(arecs):
@@ -1029,6 +1146,12 @@ def summarize(out_dir, seed=0):
             sp["sample_design"] = {k: sjd.get(k) for k in ("n_requested", "seed", "allocation", "n_primary",
                                                            "n_reserve", "n_skipped")}
         recs = read_records(per_sample_path(out_dir, split))
+        roles = sample_roles(out_dir, split)
+        n_all = len(recs)
+        if roles is not None:  # only records of the current sample design (same seed and --n as sample_<split>.csv)
+            recs = {t: dict(r, role=roles[t][0], stratum=roles[t][1], block=roles[t][2], block_candidates=roles[t][3])
+                    for t, r in recs.items() if t in roles}
+        sp["n_records_ignored_not_in_current_sample"] = n_all - len(recs)
         ok = [r for r in recs.values() if r.get("status") == "ok" and r.get("role") in ("primary", "reserve")]
         # one sample per block: the primary if it was scored, else the reserve
         by_block = {}
@@ -1037,9 +1160,12 @@ def summarize(out_dir, seed=0):
         use = sorted(by_block.values(), key=lambda r: r["timestamp"])
         sp["n_records"] = len(recs)
         sp["n_failed"] = sum(1 for r in recs.values() if r.get("status") != "ok")
-        sp["failed"] = [{"timestamp": r["timestamp"], "error": r.get("error", "")[:300]}
+        sp["failed"] = [{"timestamp": r["timestamp"], "role": r.get("role"), "error": r.get("error", "")[:300]}
                         for r in recs.values() if r.get("status") != "ok"]
+        sp["n_blocks_in_design"] = len({(v[1], v[2]) for v in roles.values()}) if roles else None
+        sp["n_reserves_used"] = sum(1 for r in use if r["role"] == "reserve")
         sp["n_samples_scored"] = len(use)
+        sp["n_samples_with_nonfinite_prediction"] = sum(1 for r in use if r.get("output", {}).get("nonfinite", 0))
         if not use:
             sp["status"] = "no samples scored yet"
             summary["splits"][split] = sp
@@ -1258,16 +1384,18 @@ def run(args, out_dir):
 
     recs_path, anc_path = per_sample_path(out_dir, args.split), anchors_path(out_dir)
     previous, prev_anc = read_records(recs_path), read_records(anc_path)
-    done = {t for t, r in previous.items() if r.get("status") == "ok"}
-    done_anc = {t for t, r in prev_anc.items() if r.get("status") == "ok"}
-    blocks, anchors = {}, []
+    blocks, anchors, role_of = {}, [], {}
     for r in sample.to_dict("records"):
         if r["role"] == "anchor":
             anchors.append(r)
         else:
             blocks.setdefault((int(r["stratum"]), int(r["block"])), {})[r["role"]] = r
-    ok_blocks = {(int(r["stratum"]), int(r["block"])) for r in previous.values()
-                 if r.get("status") == "ok" and r.get("role") in ("primary", "reserve")}
+            role_of[r["timestamp"]] = (int(r["stratum"]), int(r["block"]))
+    # A record counts only if its time stamp is in the current sample (records of another --seed / --n in the same
+    # file must not mark this design's blocks as finished); the block is taken from the sample, not the record.
+    done = {t for t, r in previous.items() if r.get("status") == "ok" and t in role_of}
+    done_anc = {t for t, r in prev_anc.items() if r.get("status") == "ok"}
+    ok_blocks = {role_of[t] for t in done}
     work = []
     for key, b in sorted(blocks.items()):
         if key in ok_blocks:  # one sample per block: a block is finished once its primary or reserve is scored
@@ -1311,14 +1439,27 @@ def run(args, out_dir):
         report(s, args.split)
         return
 
+    caches = [C.FrameCache(os.path.join(WORK, "frames", "a")), C.FrameCache(os.path.join(WORK, "frames", "b"))]
+    for c in caches:  # frames left by an interrupted run: reuse them if wanted, otherwise ensure() deletes them
+        adopt_cached_frames(c)
+    left_gb = sum(os.path.getsize(p) for c in caches for p in c.held.values()) / 1e9
     per_sample_gb = max((r["frame_bytes"] + r["frame_t60_bytes"]) for r in pending) / 1e9
     ckpt_present = os.path.exists(os.path.join(WORK, CKPT_NAME))
-    free = free_gb() - (0 if ckpt_present else CKPT_SIZE / 1e9)
+    free = free_gb() + left_gb - (0 if ckpt_present else CKPT_SIZE / 1e9)
+    # RAM: one float32 forward pass of this model peaks at about 10-13 GB RSS on this 15 GB machine (no swap). Refuse
+    # to start while something else holds the memory (the OOM killer could pick the other job), unless overridden.
+    avail = mem_available_gb()
+    log(f"MemAvailable {avail:.1f} GB (need {args.min_free_ram_gb} GB to start)")
+    if avail < args.min_free_ram_gb:
+        raise MemoryError(f"only {avail:.1f} GB RAM available; the forward pass needs about {args.peak_rss_gb} GB. "
+                          "Stop the other job or pass --min-free-ram-gb with a lower value at your own risk.")
     prefetch = not args.no_prefetch and free - 2 * per_sample_gb >= DISK_MARGIN_GB and \
         2 * per_sample_gb <= FRAME_BUDGET_GB
     if free - per_sample_gb < DISK_MARGIN_GB * 0.5:
         raise IOError(f"not enough disk: {free:.1f} GB free after the checkpoint, one sample needs {per_sample_gb:.1f}")
     log(f"free disk after checkpoint {free:.1f} GB; prefetch {'on' if prefetch else 'off'}")
+    if not prefetch:
+        caches[1].clear()  # only cache "a" is used without prefetch
 
     ckpt = ensure_checkpoint()
     ensure_pretrained_link(cfg_inf)
@@ -1333,7 +1474,6 @@ def run(args, out_dir):
     json.dump(env, open(os.path.join(out_dir, "environment.json"), "w"), indent=1, default=str)
     log(f"model ready in {minfo['seconds_build_and_load']} s, peak RSS {C.peak_rss_gb()} GB")
 
-    caches = [C.FrameCache(os.path.join(WORK, "frames", "a")), C.FrameCache(os.path.join(WORK, "frames", "b"))]
     pool = cf.ThreadPoolExecutor(1)
 
     def frames_of(row):
