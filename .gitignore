@@ -3,3 +3,4 @@ __pycache__/
 .ipynb_checkpoints/
 # upstream clones, envs and large working copies live outside this repo
 logs/
+results/Surya/zero_shot/index_current.csv

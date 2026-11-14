@@ -151,7 +151,7 @@ def main():
     def evaluate(t):
         need = [t + pd.Timedelta(minutes=d) for d in DELTAS]
         t_dl = cache.ensure(need)
-        idx_path = C.write_index(need, os.path.join(out, "index_current.csv"))
+        idx_path = C.write_index(need, os.path.join(os.path.dirname(a.cache), "index_current.csv"))
         ds = HelioNetCDFDataset(
             index_path=idx_path, time_delta_input_minutes=config["data"]["time_delta_input_minutes"],
             time_delta_target_minutes=config["data"]["time_delta_target_minutes"],
