@@ -37,7 +37,7 @@ The test split (all of 2020–2024) is the primary sample, because it was used n
 - Test: 30 images, 6 per year, so each block covers about two months.
 - Validation: 10 images, one per year plus a second in 2018.
 
-**Checks and reserves.** A candidate is accepted only if it passes three checks. The frame at t must exist on S3, and so must the frame at t+60 min. The second check exists because the authors' dataset accepts t only when t+60 is in its SDO index, although it never reads that frame. Third, the HDF5 header of the frame at t, read with HTTP range requests, must list all 13 channels at 4096×4096. Each block also gets a reserve, chosen in the same way. The reserve is used only if the primary's mask is missing from the archive, or the primary fails at run time.
+**Checks and reserves.** A candidate is accepted only if it passes three checks. The frame at t must exist on S3, and so must the frame at t+60 min. The second check exists because the authors' dataset accepts t only when t+60 is in its SDO index, although it never reads that frame. Third, the HDF5 header of the frame at t, read with HTTP range requests, must list all 13 channels at 4096×4096. Each block also gets a reserve, chosen in the same way. The reserve is used only if the primary's mask is missing from the archive, or the primary fails at run time. Network errors during these checks are retried and then stop the selection; they never count as a skip, so the sample depends only on the seed and the files.
 
 **Dry-run outcome (seed 0).** No candidate was skipped in either split. All 80 sampled times (primaries and reserves) passed the join check: the authors' dataset, built for that time alone, returned exactly that time and the expected mask path. The dry run also reads the checkpoint's zip directory and pickle header with range requests (about 1 MB, nothing is built from it) and checks it against `config_infer.yaml` and PEFT's naming: 199 float32 tensors, all under `base_model.model.`, LoRA-wrapped layers stored as `…base_layer.weight` (the PEFT ≥ 0.7 layout that the installed PEFT 0.17 produces), 40 LoRA tensors of rank 32 on `fc1` and `fc2` only (the `q_proj`/`k_proj`/`v_proj`/`out_proj` names in the config match nothing in Surya, whose attention uses `qkv` and `proj`), 4,096,000 LoRA parameters, and a 256-channel 1×1 unembedding convolution (16×16 patch, one output channel). A mismatch stops the dry run.
 
@@ -78,14 +78,14 @@ The bootstrap ignores the year stratification, which makes it slightly conservat
 
 ## What has and has not been run
 
-Done during this session:
-- the dry run for both splits: sample selection, S3 HEAD checks, header reads, label and dataset joins, byte totals and time estimates;
+Done:
+- the dry run for both splits: sample selection, S3 HEAD checks, header reads, label and dataset joins, the checkpoint header check, byte totals and time estimates (the test split was rerun on the rebuilt machine after the review, see `REVIEW.md`);
 - the metric self-test;
-- a test of the run-mode code path. It used a stand-in model (not Surya), 256×256 synthetic frames, and a synthetic archive served by a local server that dropped the connection once. It covered archive streaming with reconnect and SHA check, reserve substitution after a failed image, the per-image records, resume, and the summary.
+- a test of the run-mode code path. It used a stand-in model (not Surya), 256×256 synthetic frames, and a synthetic archive served by a local server that dropped the connection once. It covered archive streaming with reconnect and SHA check, reserve substitution after a failed image, the per-image records, resume, and the summary. The review repeated it with 64×64 synthetic frames (failed download → reserve, `.part` cleanup, a stale record from another sample ignored, resume).
 
-Not done: the real model was not built or run, and no SDO frame, real archive or checkpoint was downloaded, because a 13 GB job was using the machine.
+Not done: the real model was not built or run, and no SDO frame, real archive or checkpoint was downloaded, because another large job was using the machine.
 
-**Estimates.** The test run is estimated at about 92 minutes for 30 forward passes. The validation run is about 35 minutes for 10, or about 5 minutes less if the test run has already left the checkpoint and the masks on disk. Peak disk is about 3.0 GB: the 1.78 GB checkpoint plus at most two frames.
+**Estimates.** The test run is estimated at about 92 minutes for 30 forward passes at 136 s each, or about 175 minutes if a pass takes 300 s (2–5 min per pass have been seen on this machine). The validation run is about a third of that. Peak disk is about 3.0 GB: the 1.78 GB checkpoint plus at most two frames (the 1.31 GB mask archive is streamed, not stored). The real run refuses to start with less than 12 GB of RAM available (`--min-ram-gb`), because one float32 forward pass peaks at 10–13 GB, or with too little disk.
 
 Commands, from the repository root:
 

@@ -53,15 +53,26 @@ not find one of its three frames on S3 or finds a size different from the listin
 netCDF header of one of them (read with HTTP range requests, about 1.6 MB and 16 s per frame) lacks a 4096x4096
 channel; every skip is recorded with its reason. Each block also gets a reserve, used only if the primary fails at run
 time. At run time every downloaded frame is opened locally and checked for the 13 channels before the authors' dataset
-reads it (its __getitem__ would otherwise retry a failing sample up to 100 times).
+reads it (its __getitem__ would otherwise retry a failing sample up to 100 times), the frame times the dataset returns
+are checked against t-60, t, t+60, and a non-finite logit is recorded as a failure (sigmoid(nan) > 0.5 is False, so it
+would otherwise count silently as a "no flare" forecast). summary.json lists every block without a scored sample, every
+failed record and the reserves used, and ignores records whose time stamp is not in the current sample file; a dry run
+refuses to replace a sample file that already has records with a different sample.
+
+Checks without a model. The dry run unpickles only the key names and shapes of the checkpoint (byte-range read of
+data.pkl) and of the local foundation-model file, and checks that they are exactly what get_model + apply_peft_lora
+build from config_infer.yaml (class token, penultimate Linear, one output, LoRA rank 8 on fc1/fc2: the attention blocks
+have no q/k/v/out_proj modules), i.e. that load_state_dict(strict=True) can succeed; it also imports infer.py and
+finetune.py (wandb, torchvision, peft, timm) so a missing package fails the dry run, not the real run.
 
 Data. Frames come from the public bucket s3://nasa-surya-bench (bitwise-identical to the HF copies, see
 results/Surya/s3_vs_hf_frames.json) through surya_common.FrameCache. At most one sample's three frames (about 1.8 GB)
 are on disk: once a sample has been read into memory its frames are deleted and the next sample's are downloaded while
 the model runs (at about 11 MB/s or more from S3 the download is mostly hidden behind the forward pass).
 
-Budget. One run does at most --max-forward forward passes (default 40) and starts no sample that would end after
---max-minutes (default 90) of wall clock. A rerun skips time stamps already in per_sample_<split>.jsonl, so a run that
+Budget. One run does at most --max-forward forward passes (default 40, reserves included) and starts no sample that
+would end after --max-minutes (default 90) of wall clock. A real run refuses to start with less than --min-free-gb
+(default 12) GiB of RAM available, since the forward pass peaks near 13 GB of the 15 GB, or with too little disk. A rerun skips time stamps already in per_sample_<split>.jsonl, so a run that
 stops at the budget, or is interrupted, resumes where it left off. The dry run reports how many forward passes fit in
 the budget at the measured bandwidth, at the bandwidth typical of this machine, and compute-only.
 

@@ -14,7 +14,8 @@ The task (paper Sec. 2.6.5) is to predict the hourly solar wind speed V at L1 fo
 frame (13 channels at 4096x4096). The model is the checkpoint `nasa-ibm-ai4science/solar_wind_surya`,
 `solar_wind_weights.pth` (revision 6ac4aa79, sha256 7ff8c190...6a17, checked after download), run with the authors'
 code at commit 78b827e. The labels are the SuryaBench CSVs `nasa-ibm-ai4science/Surya-bench-solarwind` (revision
-20547a25, checked by git blob id).
+20547a25, checked by git blob id). The input scalers (`scalers.yaml`, config.yaml's `scalers_path`) and the
+validation SDO index come from `nasa-ibm-ai4science/core-sdo` (revision 9c10abe5), also checked by git blob id.
 
 The reference is Table 6: Surya RMSE 75.92 km/s, MAE 58.06 km/s, "Validation MSE" 5698.62 km^2/s^2 (ResNet50 93.76,
 74.65 and 8547.924; AlexNet 118.6, "95.7 km" and 13839.49). The paper does not say which split, how many samples or
@@ -33,6 +34,14 @@ channels at 4096x4096. This is checked with a HEAD request and a read of the net
 Otherwise the next candidate in the block is tried, and the skip and its reason are recorded. The test sample had
 one skip (2024-10-15 18:00, frame at t + 60 missing). Each block also gets a reserve, the next accepted candidate.
 It is run only if the primary fails, or as a second sample of the block with `--include-reserves`.
+
+Some 2020 to 2024 frames on S3 are "compact": the six AIA channels from 131 to 335 Å are stored in 8 to 25 MB each
+instead of about 60 MB (the whole file is about 0.32 GB instead of 0.58 GB), and the AR-segmentation evaluation found
+their values quantised. Seven of the 30 test primaries have a compact input frame at t (2021-06-12 19:00,
+2023-03-10 01:00, and five of the six 2024 primaries). No training-period input in these samples is compact. These
+samples are scored like the others, because they are part of the benchmark as released, but summary.json also gives
+the model's metrics without them (`compact_input_frame_sensitivity`), so that the 2024 results are not read as a
+pure solar-maximum effect. The sample file records each frame's stored size per channel.
 
 The secondary sample is from the validation split (validation.csv, 15 to 31 January of 2011 to 2019), the file that
 finetune.py evaluates on after every epoch. Here t and t + 60 must also be in core-sdo's `valid_index_surya_1_0.csv`,
@@ -54,11 +63,23 @@ the authors' `custom_collate_fn`, batch size 1 and no workers.
 The model is built as infer.py builds it. `finetune.get_model` with config_infer.yaml (which first loads the
 foundation weights `surya.366m.v1.pt`) is followed by `apply_peft_lora` (rank 64, alpha 32) and
 `load_state_dict(strict=True)` of the checkpoint. It runs in eval mode, float32, on the CPU, without autocast, under
-`torch.no_grad()`. One forward pass took about 135 s on this machine in the base-model test. Reading the two frames
+`torch.no_grad()`. The dry run checks the precondition of the strict load without building the model or downloading
+the weights: it reads only the checkpoint's tensor list (its `data.pkl`, by HTTP range requests) and compares it
+with the keys and shapes that config_infer.yaml implies. These are the foundation checkpoint's tensors, renamed as
+PEFT wraps the LoRA targets, with the patch embedding at 13 x 1 input planes (time_dim 1) and the 1-D head
+(class token, penultimate linear layer, one output). All 202 tensors match. The checkpoint has 367,501,313
+parameters, 8,192,000 of them LoRA (rank 64), the same numbers the notebook printed for this checkpoint. LoRA sits
+only on `fc1` and `fc2`: the configured targets `q_proj`, `k_proj`, `v_proj` and `out_proj` name no module of this
+backbone (its attention uses `qkv` and `proj`), as in training. LoRA alpha is not stored in the weights; the notebook
+anchors below test it. The real run records the parameter counts again after building the model, asserts that each
+batch holds exactly the input time t and the SDO target t + 60 min, and refuses to start unless 12 GB of RAM are
+available (`--min-ram-gb`), because a forward pass peaks at 10 to 13 GB. One forward pass took about 135 s on this machine in the base-model test. Reading the two frames
 is assumed (not measured) to take 30 s each. On that basis the dry run estimates 106 minutes for the 30 test samples
 and 49 minutes for the 13 validation forward passes (10 samples plus the 3 anchors below). Each needs about 4.2 GB of
 new disk at the peak (checkpoint plus two samples' frames). A run resumes from its jsonl file, so the test run can be
-done as `--max-forward 25` and then the same command again.
+done as `--max-forward 25` and then the same command again. Records that are not rows of the current sample file
+(for example from another seed) are ignored by both the run and the summary. The validation split should be run
+first, because its anchors are the only end-to-end check against the authors' own run.
 
 ## De-normalisation
 

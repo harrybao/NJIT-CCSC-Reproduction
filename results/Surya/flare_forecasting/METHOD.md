@@ -71,9 +71,13 @@ A simulation in `metric_check.json` shows what 20 + 20 samples can resolve. The 
 
 ## Status, cost and how to run
 
-Both dry runs were last repeated on 2026-10-20 with the current script, and both drew the same sample as before. A dry run selects the sample, makes the HEAD checks, builds the authors' dataset for every sampled hour, checks the checkpoint pickle, probes the bandwidth and runs the metric self-test. For every sampled hour the dataset yields exactly that hour and its CSV label.
+Both dry runs were last repeated on 2026-11-14 on the rebuilt machine, after the review in `REVIEW.md`, and both drew the same sample as before (the dry run now says so, and refuses to replace a sample that already has scored records). A dry run selects the sample, makes the HEAD checks, builds the authors' dataset for every sampled hour, checks the checkpoint pickle, probes the bandwidth and runs the metric self-test. For every sampled hour the dataset yields exactly that hour and its CSV label.
 
 The dry run also runs a pipeline self-test on synthetic logits, covering the code that only a real run would otherwise reach. It checks that the run planner alternates positives and negatives, that a capped run takes a prefix, and that a resumed run skips scored hours and replaces a failed primary with its reserve. It also checks `summarize()`: its TSS and re-weighted HSS and F1 agree with a direct computation, and with the repo's metric class, to within 2e-8. No weights or frames have been downloaded and no model has been run, so `summary.json` does not exist yet.
+
+Two more checks need no model. The dry run reads only the key names and shapes from the checkpoint's `data.pkl` (byte-range read) and from the local foundation-model file. It checks that they are exactly what `get_model` and `apply_peft_lora` build from `config_infer.yaml`, so `load_state_dict(strict=True)` can succeed. The checkpoint has 202 keys under `base_model.model.`: the foundation model without its decoder, a class token, a 1280×1280 penultimate layer, a one-output head and LoRA of rank 8. The LoRA sits on the 20 `fc1`/`fc2` layers only, because the attention blocks have no `q/k/v/out_proj` modules. The dry run also imports `infer.py` and `finetune.py` (wandb, torchvision, peft, timm), so a missing package shows up there and not in the real run.
+
+A real run guards against silent losses. It checks that the frame times the dataset returns are t−60, t and t+60. It records a non-finite logit as a failure, because `sigmoid(nan) > 0.5` is false and would count as a "no flare" forecast. `summary.json` lists every block without a scored sample, every failed record and the reserves used. It also ignores records whose time stamp is not in the current sample file. A block whose primary and reserve have both failed is not retried; it is listed instead. These paths were exercised with a stub model and stub data (no Surya model, no frames).
 
 The time estimate assumes 136 s per forward pass, about 12 s to read one frame and 150 s to build the model. The next sample's frames download during the current forward pass, so the bandwidth matters little as long as it stays near its usual level. Single 16 MB probes vary a lot here: S3 read at 11.3, 2.3 and 13.9 MB/s in three dry runs within ten minutes. So the dry run reports a compute-only figure, a figure at typical bandwidth, and one at the bandwidth just measured:
 
@@ -82,7 +86,7 @@ The time estimate assumes 136 s per forward pass, about 12 s to read one frame a
 | Test | 40 | 121 min | 130 min | 27–29, so two runs | 64 GB |
 | Validation | 20 | 62 min | 70 min | all 20, one run | 35 GB |
 
-A run does not start a sample that would end after `--max-minutes` (default 90). The next call resumes from `per_sample_<split>.jsonl`. At most 1.8 GB of frames are on disk at once. Peak new disk use is 3.6 GB, including the 1.8 GB checkpoint. A run needs the machine to itself: the forward pass peaks near 13 GB of the 15 GB of RAM.
+A run does not start a sample that would end after `--max-minutes` (default 90). The next call resumes from `per_sample_<split>.jsonl`. At most 1.8 GB of frames are on disk at once. Peak new disk use is 3.6 GB, including the 1.8 GB checkpoint. A run needs the machine to itself: the forward pass peaks near 13 GB of the 15 GB of RAM. The run refuses to start with less than 12 GiB available (`--min-free-gb`) or too little disk, and it clears its own frame folder of anything an interrupted run left behind.
 
 ```
 python scripts/Surya/downstream/flare_forecasting_subset_eval.py --dry-run --split test --n 40 --seed 0
