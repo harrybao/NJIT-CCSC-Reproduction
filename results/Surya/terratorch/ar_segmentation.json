@@ -1,0 +1,44 @@
+{
+ "registry_name": "terratorch_heliofm_backbone_surya_ar_segmentation",
+ "terratorch": "1.2.13",
+ "terratorch_surya": "0.1.0",
+ "torch": "2.10.0+cpu",
+ "checkpoint_requested_from_hf": [
+  {
+   "repo_id": "nasa-ibm-ai4science/ar_segmentation_surya",
+   "filename": "ar_segmentation_weights.pth"
+  }
+ ],
+ "local_checkpoint": "/home/user/work/surya_ft/ar_segmentation/ar_segmentation_weights.pth",
+ "model_class": "HelioSpectformer2D",
+ "n_model_tensors": 159,
+ "n_model_tensors_changed_by_loading": 0,
+ "n_checkpoint_tensors": 199,
+ "strict": false,
+ "n_missing_keys": 159,
+ "n_unexpected_keys": 199,
+ "missing_keys_first10": [
+  "embedding.pos_embed",
+  "embedding.patch_embed.proj.weight",
+  "embedding.patch_embed.proj.bias",
+  "backbone.blocks_spectral_gating.0.norm1.weight",
+  "backbone.blocks_spectral_gating.0.norm1.bias",
+  "backbone.blocks_spectral_gating.0.filter.complex_weight",
+  "backbone.blocks_spectral_gating.0.norm2.weight",
+  "backbone.blocks_spectral_gating.0.norm2.bias",
+  "backbone.blocks_spectral_gating.0.mlp.fc1.weight",
+  "backbone.blocks_spectral_gating.0.mlp.fc1.bias"
+ ],
+ "unexpected_keys_first10": [
+  "base_model.model.embedding.pos_embed",
+  "base_model.model.embedding.patch_embed.proj.weight",
+  "base_model.model.embedding.patch_embed.proj.bias",
+  "base_model.model.backbone.blocks_spectral_gating.0.norm1.weight",
+  "base_model.model.backbone.blocks_spectral_gating.0.norm1.bias",
+  "base_model.model.backbone.blocks_spectral_gating.0.filter.complex_weight",
+  "base_model.model.backbone.blocks_spectral_gating.0.norm2.weight",
+  "base_model.model.backbone.blocks_spectral_gating.0.norm2.bias",
+  "base_model.model.backbone.blocks_spectral_gating.0.mlp.fc1.base_layer.weight",
+  "base_model.model.backbone.blocks_spectral_gating.0.mlp.fc1.base_layer.bias"
+ ]
+}
