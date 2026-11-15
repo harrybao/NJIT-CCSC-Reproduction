@@ -1,0 +1,58 @@
+{
+ "torch": "2.10.0+cpu",
+ "threads": 4,
+ "precision": "float32, no autocast",
+ "upstream_head": "78b827e",
+ "checkpoint": "nasa-ibm-ai4science/ar_segmentation_surya@73a6de53c4bea812f7bc2ac29b9351ae2f2fe5fe/ar_segmentation_weights.pth",
+ "checkpoint_sha256": "ad391831f340c4f894a23bd269e7c4b75dea58090c825278513d36f0f85456ad",
+ "labels": "nasa-ibm-ai4science/surya-bench-ar-segmentation@615a7df4ac3498c97d0d039e7b0654774ad86602",
+ "tar_manifest": {
+  "archive": "nasa-ibm-ai4science/surya-bench-ar-segmentation@615a7df4ac3498c97d0d039e7b0654774ad86602/data.tar.gz",
+  "bytes_streamed": 1306605651,
+  "sha256": "d49e88e102f200d27037d76eb429e57b5fa461c703a7288d871d1b0c9afb3034",
+  "sha256_expected": "d49e88e102f200d27037d76eb429e57b5fa461c703a7288d871d1b0c9afb3034",
+  "sha256_ok": true,
+  "reconnects": 2,
+  "seconds": 675.8,
+  "n_file_members": 121963,
+  "file_members_per_year": {
+   "2010": 5291,
+   "2011": 8316,
+   "2012": 8409,
+   "2013": 8144,
+   "2014": 8372,
+   "2015": 8367,
+   "2016": 8177,
+   "2017": 8320,
+   "2018": 8315,
+   "2019": 8342,
+   "2020": 8345,
+   "2021": 8393,
+   "2022": 8402,
+   "2023": 8350,
+   "2024": 8420
+  },
+  "complete_listing": true,
+  "not_in_tar": []
+ },
+ "reserve_substitutions": [],
+ "model": {
+  "n_parameters": 362091008,
+  "n_trainable_after_peft": 4096000,
+  "state_dict_keys": 199,
+  "load_state_dict_strict": true,
+  "torch_load_mmap": true,
+  "checkpoint_lora_params": 4096000,
+  "checkpoint_lora_ranks": [
+   32
+  ],
+  "lora_alpha_from_config_not_checkpoint": 64,
+  "seconds_build_and_load": 4.2
+ },
+ "preflight": {
+  "disk_free_gb": 22.2,
+  "disk_needed_gb": 3.5,
+  "ram_available_gb": 13.9
+ },
+ "peak_rss_gb_after_model_load": 4.02
+}
