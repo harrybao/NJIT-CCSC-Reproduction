@@ -65,7 +65,13 @@ Usage (from the repository root):
   python scripts/Surya/downstream/solar_wind_subset_eval.py --split validation --n 10 --seed 0
   python scripts/Surya/downstream/solar_wind_subset_eval.py --summarize-only
 A rerun skips time stamps already in per_sample_<split>.jsonl, so an interrupted run resumes; --max-forward K limits
-one invocation to K forward passes (the dry run prints the K that fits in about 90 minutes).
+one invocation to K forward passes (the dry run prints the K that fits in about 90 minutes). Records that are not rows
+of the current sample file (another --n/--seed) are ignored by the run and the summary. Run the validation split
+first: its three notebook anchors are the only end-to-end check of the pipeline against the authors' own run. The
+real run refuses to start with less than --min-ram-gb (12) of MemAvailable (one fp32 forward pass peaks at 10-13 GB).
+
+Compact frames: some 2020-2024 frames on S3 store AIA 131-335 in well under half the usual bytes (quantised values).
+They are scored like any other input; summary.json adds the metrics without them as a sensitivity check.
 """
 import argparse
 import collections
@@ -1353,7 +1359,32 @@ def dry_run(args, out_dir, label_info):
     check = metric_self_test(out_dir)
     log(f"metric self-test passed (evaluate_model rel diff {check['finetune_evaluate_model_max_rel_diff']:.1e}, "
         f"infer.py printout abs diff {check['infer_single_sample_max_abs_diff']:.1e})")
+    try:
+        ck_struct = checkpoint_structure_check(cfg_inf)
+    except Exception as e:  # network trouble must not hide the rest of the dry run
+        ck_struct = {"ok": None, "error": repr(e)[:500]}
+    log(f"checkpoint tensor list vs the model config_infer.yaml builds (strict-load precondition): ok "
+        f"{ck_struct['ok']}; {ck_struct.get('n_tensors')} tensors, {ck_struct.get('parameters_excluding_pos_embed_buffer')}"
+        f" parameters, {ck_struct.get('lora_parameters')} LoRA (notebook {NOTEBOOK_PARAMS_ALL} / {NOTEBOOK_PARAMS_LORA})"
+        f", LoRA on {ck_struct.get('lora_targets_present')}, absent targets {ck_struct.get('lora_targets_absent')}"
+        + ("" if ck_struct["ok"] else f"  WARNING: {json.dumps(ck_struct)[:800]}"))
+    old_sample_csv = os.path.join(out_dir, f"sample_{args.split}.csv")
+    old_keys = {sample_key(r) for r in pd.read_csv(old_sample_csv).to_dict("records")} \
+        if os.path.exists(old_sample_csv) else None
     sample, meta = get_sample(args, out_dir, cfg, scalers, force=True)
+    meta["checkpoint_structure_check"] = ck_struct
+    recs_old = read_records(per_sample_path(out_dir, args.split))
+    if recs_old:
+        _, n_foreign = records_in_sample(recs_old, sample)
+        changed = old_keys is not None and old_keys != {sample_key(r) for r in sample.to_dict("records")}
+        meta["existing_records_not_in_this_sample"] = int(n_foreign)
+        if n_foreign or changed:
+            log(f"WARNING: the redrawn sample differs from the previous sample file ({n_foreign} of {len(recs_old)} "
+                f"existing records in {per_sample_path(out_dir, args.split)} are not rows of it); those records "
+                f"will be ignored by the run and the summary")
+    ci = meta.get("compact_input_frames", {})
+    log(f"compact input frames (quantised AIA 131-335; scored, with a sensitivity check): "
+        f"{len(ci.get('primary', []))} primaries {ci.get('primary', [])}, {len(ci.get('reserve', []))} reserves")
     # what a run executes: anchors first (validation split), then one primary per block
     roles = ["anchor", "primary"] + (["reserve"] if args.include_reserves else [])
     prim = pd.concat([sample[sample.role == r] for r in roles], ignore_index=True).drop_duplicates("timestamp")
@@ -1689,6 +1720,8 @@ def main():
                     help="validation split: leave out the three notebook anchor samples (3 extra forward passes)")
     ap.add_argument("--no-prefetch", action="store_true", help="keep only one sample's frames on disk (~1.2 GB)")
     ap.add_argument("--delete-checkpoint", action="store_true", help="remove the 1.8 GB checkpoint at the end")
+    ap.add_argument("--min-ram-gb", type=float, default=MIN_RAM_GB,
+                    help="refuse to start the real run with less RAM available (MemAvailable)")
     ap.add_argument("--summarize-only", action="store_true", help="recompute summary.json from the jsonl files")
     args = ap.parse_args()
     args.n = args.n or DEFAULT_N[args.split]

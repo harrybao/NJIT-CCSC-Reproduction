@@ -103,7 +103,7 @@ def main():
             ax[i, 0].set_ylabel(f"t = {hhmm[:2]}:{hhmm[2:]}", fontsize=9)
         fig.suptitle("Surya-1.0 on the repository's validation samples, AIA 94 (normalised units, 2014-01-07)",
                      fontsize=10)
-        fig.tight_layout()
+        fig.tight_layout(rect=(0, 0, 1, 0.985))
         fig.savefig(os.path.join(d, "aia94_validation.png"), dpi=90)
 
 

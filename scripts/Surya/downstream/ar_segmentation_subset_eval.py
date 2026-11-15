@@ -228,20 +228,38 @@ class RangeFile(io.RawIOBase):
         return n
 
 
-def remote_nc_channels(key):
+def is_network_error(e):
+    """True if e, or an exception it was raised from, is a requests error (h5py wraps errors of the file object)."""
+    while e is not None:
+        if isinstance(e, requests.RequestException):
+            return True
+        e = e.__cause__ or e.__context__
+    return False
+
+
+def remote_nc_channels(key, tries=4):
     """(worker) Shapes and stored (compressed) chunk sizes of the data variables of one S3 netCDF frame, read from
-    its HDF5 header only (about 0.8 MB of range requests per frame)."""
+    its HDF5 header only (about 0.8 MB of range requests per frame). Network errors are retried and then raised,
+    never turned into a skip: a skip changes the seeded sample, so it must depend on the file, not on the proxy."""
     import h5py
-    rf = RangeFile(f"{C.S3}/{key}")
-    with h5py.File(io.BufferedReader(rf, 1 << 16), "r") as f:
-        shapes = {k: tuple(f[k].shape) for k in f.keys() if isinstance(f[k], h5py.Dataset)}
-        stored = {}
-        for k in C.CHANNELS:
-            try:
-                stored[k] = int(sum(f[k].id.get_chunk_info(i).size for i in range(f[k].id.get_num_chunks())))
-            except Exception:
-                stored[k] = None
-    return shapes, rf.nbytes, stored
+    for attempt in range(tries):
+        try:
+            rf = RangeFile(f"{C.S3}/{key}")
+            with h5py.File(io.BufferedReader(rf, 1 << 16), "r") as f:
+                shapes = {k: tuple(f[k].shape) for k in f.keys() if isinstance(f[k], h5py.Dataset)}
+                stored = {}
+                for k in C.CHANNELS:
+                    try:
+                        stored[k] = int(sum(f[k].id.get_chunk_info(i).size for i in range(f[k].id.get_num_chunks())))
+                    except Exception:
+                        stored[k] = None
+            return shapes, rf.nbytes, stored
+        except Exception as e:
+            if not is_network_error(e):
+                raise
+            if attempt == tries - 1:  # re-raised as a plain requests error: the cause chain is lost across processes
+                raise requests.ConnectionError(f"header read failed {tries} times: {e!r}") from None
+            time.sleep(2 ** (attempt + 2))
 
 
 def checkpoint_header(url):
@@ -600,6 +618,9 @@ def select_sample(split, n, seed, check_channels=True, want_per_block=2, max_tri
                     try:
                         chan[j] = f.result()
                     except Exception as e:  # unreadable header
+                        if is_network_error(e):  # still failing after the retries: stop rather than skip
+                            raise RuntimeError(f"network error reading the header of {C.s3_key(batch[j][1])}; "
+                                               f"rerun the dry run") from e
                         chan[j] = e
             for j, (bi, t, fpth) in enumerate(batch):  # assignment in permutation order -> deterministic
                 ok, why, extra = heads[j]
