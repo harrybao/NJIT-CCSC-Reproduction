@@ -1,0 +1,36 @@
+{
+ "torch": "2.10.0+cpu",
+ "threads": 4,
+ "precision": "float32, no autocast",
+ "grad": "torch.no_grad()",
+ "upstream_head": "78b827e",
+ "checkpoint": "nasa-ibm-ai4science/solar_flares_surya@ec7c42ab22fbf126c4bfffadb420f6e45a669832/solar_flare_weights.pth",
+ "checkpoint_sha256": "a907da5f994f20bdf76914cccb8bafb4d12e56d04ff400c407e0de98d13d2f69",
+ "foundation_model": "/home/user/work/surya_run/data/Surya-1.0/surya.366m.v1.pt",
+ "labels": "nasa-ibm-ai4science/surya-bench-flare-forecasting@bf474bc1e7752bd529e9707650f9310db8693763",
+ "scalers": "/home/user/work/surya_run/data/Surya-1.0/scalers.yaml",
+ "scalers_sha256": "a944e8f1bcdc2e5ed9b30cb53e0525ec40625515d09cc8745647111015b2b487",
+ "config": {
+  "config_infer_vs_config_yaml": {},
+  "path_overrides": {
+   "pretrained_path": [
+    "./assets/surya.366m.v1.pt",
+    "/home/user/work/surya_run/data/Surya-1.0/surya.366m.v1.pt"
+   ],
+   "data.scalers_path": [
+    "../../data/Surya-1.0/scalers.yaml",
+    "/home/user/work/surya_run/data/Surya-1.0/scalers.yaml"
+   ]
+  }
+ },
+ "model": {
+  "n_parameters": 364593153,
+  "n_trainable_after_peft": 1024000,
+  "state_dict_keys": 202,
+  "load_state_dict_strict": true,
+  "model_class": "PeftModel",
+  "training_flag": false,
+  "seconds_build_and_load": 6.3
+ },
+ "peak_rss_gb_after_model_load": 3.97
+}
