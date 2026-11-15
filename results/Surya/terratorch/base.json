@@ -1,0 +1,32 @@
+{
+ "registry_name": "terratorch_heliofm_backbone_surya",
+ "terratorch": "1.2.13",
+ "terratorch_surya": "0.1.0",
+ "torch": "2.10.0+cpu",
+ "checkpoint_requested_from_hf": [
+  {
+   "repo_id": "nasa-ibm-ai4science/Surya-1.0",
+   "filename": "surya.366m.v1.pt"
+  },
+  {
+   "repo_id": "nasa-ibm-ai4science/Surya-1.0",
+   "filename": "surya.366m.v1.pt"
+  }
+ ],
+ "local_checkpoint": "/home/user/work/surya_run/data/Surya-1.0/surya.366m.v1.pt",
+ "model_class": "HelioSpectFormer",
+ "n_model_tensors": 159,
+ "n_model_tensors_changed_by_loading": 159,
+ "n_checkpoint_tensors": 159,
+ "strict": false,
+ "n_missing_keys": 0,
+ "n_unexpected_keys": 0,
+ "missing_keys_first10": [],
+ "unexpected_keys_first10": [],
+ "forward_sample": "2014-01-07 16:48:00",
+ "mse_lead_1h_registry_defaults": 0.26406776905059814,
+ "seconds_registry_defaults": 105.0,
+ "mse_lead_1h_config_yaml_heads": 0.2311272770166397,
+ "seconds_config_yaml_heads": 103.9,
+ "upstream_float32_reference": 0.2311243861913681
+}
