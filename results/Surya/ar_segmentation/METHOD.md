@@ -85,7 +85,7 @@ Done:
 
 Not done: the real model was not built or run, and no SDO frame, real archive or checkpoint was downloaded, because another large job was using the machine.
 
-**Estimates.** The test run is estimated at about 92 minutes for 30 forward passes at 136 s each, or about 175 minutes if a pass takes 300 s (2–5 min per pass have been seen on this machine). The validation run is about a third of that. Peak disk is about 3.0 GB: the 1.78 GB checkpoint plus at most two frames (the 1.31 GB mask archive is streamed, not stored). The real run refuses to start with less than 12 GB of RAM available (`--min-ram-gb`), because one float32 forward pass peaks at 10–13 GB, or with too little disk.
+**Estimates.** The test run is estimated at about 90–105 minutes for 30 forward passes at 136 s each (depending on the measured bandwidth), or about 175–190 minutes if a pass takes 300 s (2–5 min per pass have been seen on this machine). The validation run is about a third of that. Peak disk is about 3.0 GB: the 1.78 GB checkpoint plus at most two frames (the 1.31 GB mask archive is streamed, not stored). The real run refuses to start with less than 12 GB of RAM available (`--min-ram-gb`), because one float32 forward pass peaks at 10–13 GB, or with too little disk.
 
 Commands, from the repository root:
 

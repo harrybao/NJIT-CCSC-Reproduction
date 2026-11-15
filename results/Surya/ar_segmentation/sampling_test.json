@@ -25,16 +25,9 @@
  "n_blocks": 30,
  "blocks_without_primary": [],
  "blocks_without_reserve": 0,
- "skipped": [
-  {
-   "timestamp": "2024-05-18 19:00:00",
-   "mask_file_path": "data/2024/05/20240518_1900.h5",
-   "stratum": 2024,
-   "reason": "could not read the netCDF header: ProxyError(MaxRetryError(\"None: Max retries exceeded with url: /2024/05/20240518_1900.nc (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))\"))"
-  }
- ],
- "selection_rounds": 2,
- "selection_seconds": 263.7,
+ "skipped": [],
+ "selection_rounds": 1,
+ "selection_seconds": 284.6,
  "dataset_join_check": [
   {
    "timestamp": "2020-01-24 05:00:00",
@@ -453,20 +446,20 @@
    "sdo_path_read_by_ArDSDataset": "2024/04/20240427_1500.nc"
   },
   {
-   "timestamp": "2024-06-14 01:00:00",
+   "timestamp": "2024-05-18 19:00:00",
    "role": "primary",
+   "dataset_len": 1,
+   "ok": true,
+   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2024/05/20240518_1900.h5",
+   "sdo_path_read_by_ArDSDataset": "2024/05/20240518_1900.nc"
+  },
+  {
+   "timestamp": "2024-06-14 01:00:00",
+   "role": "reserve",
    "dataset_len": 1,
    "ok": true,
    "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2024/06/20240614_0100.h5",
    "sdo_path_read_by_ArDSDataset": "2024/06/20240614_0100.nc"
-  },
-  {
-   "timestamp": "2024-06-30 07:00:00",
-   "role": "reserve",
-   "dataset_len": 1,
-   "ok": true,
-   "mask_path_read_by_ArDSDataset": "/home/user/work/surya_ft/ar_segmentation/assets/surya-bench-ar-segmentation/data/2024/06/20240630_0700.h5",
-   "sdo_path_read_by_ArDSDataset": "2024/06/20240630_0700.nc"
   },
   {
    "timestamp": "2024-07-28 04:00:00",
@@ -530,24 +523,24 @@
   "measured_bandwidth": {
    "s3_frame": {
     "bytes": 16777216,
-    "seconds": 1.56,
-    "MB_per_s": 10.7
+    "seconds": 1.41,
+    "MB_per_s": 11.9
    },
    "hf_tar": {
     "bytes": 16777216,
-    "seconds": 1.17,
-    "MB_per_s": 14.3
+    "seconds": 5.82,
+    "MB_per_s": 2.9
    }
   },
-  "one_off_minutes_tar_checkpoint_model": 5.6,
+  "one_off_minutes_tar_checkpoint_model": 19.8,
   "per_sample_minutes": 2.85,
-  "frame_download_minutes_each_mean": 0.88,
+  "frame_download_minutes_each_mean": 0.78,
   "frame_download_hidden_by_prefetch": true,
-  "total_minutes": 92.0,
-  "total_minutes_slow_case": 174.0
+  "total_minutes": 106.1,
+  "total_minutes_slow_case": 188.1
  },
  "disk": {
-  "frames_total_bytes_downloaded_over_run": 16966547793,
+  "frames_total_bytes_downloaded_over_run": 16704369912,
   "frames_max_on_disk_bytes": 1174710636,
   "checkpoint_bytes": 1784013352,
   "checkpoint_head_x_linked_size": "1784013352",
@@ -581,7 +574,7 @@
   ],
   "ok": true
  },
- "ram_available_gb_now": 5.1,
+ "ram_available_gb_now": 4.0,
  "forward_passes_planned": 30,
  "checkpoint": "nasa-ibm-ai4science/ar_segmentation_surya@73a6de53c4bea812f7bc2ac29b9351ae2f2fe5fe/ar_segmentation_weights.pth",
  "labels": "nasa-ibm-ai4science/surya-bench-ar-segmentation@615a7df4ac3498c97d0d039e7b0654774ad86602",

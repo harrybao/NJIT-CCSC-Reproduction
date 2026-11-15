@@ -37,6 +37,10 @@
  "blocks_without_reserve": 0,
  "skipped": [],
  "selection_rounds": 1,
+ "compact_input_frames": {
+  "primary": [],
+  "reserve": []
+ },
  "anchors": true,
  "anchor_info": {
   "source": "solar_wind_tutorial.ipynb cell 9 saved output (infer.py, CPU, float32, torch 2.8.0+cu126)",
@@ -55,7 +59,7 @@
   "coincide_with_stratified_sample": [],
   "notebook_ground_truth_equals_csv_all": true
  },
- "selection_seconds": 496.0,
+ "selection_seconds": 304.8,
  "dataset_join_check": [
   {
    "timestamp": "2011-01-18 05:00:00",
@@ -404,6 +408,38 @@
   }
  ],
  "dataset_join_all_ok": true,
+ "checkpoint_structure_check": {
+  "ok": true,
+  "container": "OrderedDict",
+  "n_tensors": 202,
+  "missing_in_checkpoint": [],
+  "unexpected_in_checkpoint": [],
+  "shape_mismatch": {},
+  "parameters_excluding_pos_embed_buffer": 367501313,
+  "lora_parameters": 8192000,
+  "notebook_printout": {
+   "all": 367501313,
+   "trainable_lora": 8192000
+  },
+  "lora_targets_present": [
+   "fc1",
+   "fc2"
+  ],
+  "lora_targets_absent": [
+   "k_proj",
+   "out_proj",
+   "q_proj",
+   "v_proj"
+  ],
+  "patch_embed_weight": [
+   1280,
+   13,
+   16,
+   16
+  ],
+  "bytes_fetched": 138758,
+  "note": "LoRA alpha (scaling alpha/r) is not stored in the weights; the notebook anchors test it"
+ },
  "dry_run": true,
  "estimate": {
   "assumptions_s": {
@@ -416,23 +452,23 @@
   "measured_bandwidth": {
    "s3_frame": {
     "bytes": 16777216,
-    "seconds": 1.43,
-    "MB_per_s": 11.7
+    "seconds": 3.72,
+    "MB_per_s": 4.5
    },
    "hf_checkpoint": {
     "bytes": 16777216,
-    "seconds": 1.16,
-    "MB_per_s": 14.4
+    "seconds": 10.46,
+    "MB_per_s": 1.6
    }
   },
   "checkpoint_already_on_disk": false,
-  "one_off_minutes_checkpoint_and_model": 4.6,
+  "one_off_minutes_checkpoint_and_model": 21.3,
   "per_sample_minutes": 3.3,
-  "frame_download_minutes_per_sample_mean": 1.68,
+  "frame_download_minutes_per_sample_mean": 4.36,
   "prefetch": true,
-  "download_hidden_by_prefetch": true,
-  "total_minutes": 49.2,
-  "max_forward_per_90_min_run": 25
+  "download_hidden_by_prefetch": false,
+  "total_minutes": 81.4,
+  "max_forward_per_90_min_run": 19
  },
  "disk": {
   "frames_total_bytes_downloaded_over_run": 15321141482,
@@ -498,6 +534,14 @@
   "leaky_validation.csv": {
    "bytes": 256013,
    "git_blob_sha1": "c622eec6b79bb8d81a75f1cb46e15072b6a8f19e"
+  },
+  "core-sdo/valid_index_surya_1_0.csv": {
+   "bytes": 961993,
+   "git_blob_sha1": "af09bd78d394c975876e051bbb4fb24f225f68a8"
+  },
+  "core-sdo/scalers.yaml": {
+   "bytes": 3835,
+   "git_blob_sha1": "0b9b6e315277e1736326515e5d098dd13cd66ada"
   }
  },
  "normalisation_constants": {
@@ -705,6 +749,7 @@
   }
  },
  "baselines_full_split_csv_only": {
+  "label": "MY BASELINES (applicant's own, not in Table 6 or the authors' code)",
   "pairs": 2393,
   "definition": "all (t, T = t + 4 d) pairs of the split as in the sampling frame (test: t >= 2020-01-01; validation: t, t+60 in core-sdo valid index), S3 not checked",
   "V_target_mean": 397.2277475971584,
