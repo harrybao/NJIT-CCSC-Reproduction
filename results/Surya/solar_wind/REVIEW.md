@@ -61,3 +61,15 @@ are unusually easy for persistence (1st percentile), so `--include-reserves` is 
 anchors test LoRA alpha and the pipeline end to end, so run validation first. A frame that is corrupt but has the
 right length would make the authors' `__getitem__` retry 100 times before failing. The timings are taken from the
 base-model run and are not yet measured for this model.
+
+## Dry-run outcome after the fixes (seed 0)
+
+Both dry runs finished without errors. They drew the same samples as before, row for row (test: 30 primaries and
+30 reserves, one skip; validation: 10 + 10 plus the 3 anchors). Every join check passed, and so did the checkpoint
+tensor-list check. Seven test primaries and six reserves have compact input frames; no validation sample does. The
+dry run estimates about 106 min for the 30 test forward passes, in two invocations of `--max-forward 25`. For the 13
+validation passes, the estimate on a quiet network was about 49 min. Today's dry run said 81 min, but its bandwidth
+probe was taken while four other dry runs were downloading. Each run needs about 4.2 GB of new disk at the peak:
+1.8 GB of checkpoint plus at most two samples' frames, 2.4 GB. Frames are downloaded and deleted as the run goes,
+31.5 GB in total for test and 15.3 GB for validation. A synthetic-record test of `summarize` covered one scored
+sample, a foreign record and the compact-frame sensitivity check.
