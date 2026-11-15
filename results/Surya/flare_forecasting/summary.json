@@ -60,17 +60,15 @@
  },
  "splits": {
   "test": {
-   "n_scored": 39,
+   "n_scored": 40,
    "n_failed_records": 0,
    "failed_records": [],
    "n_blocks_in_sample": 40,
-   "blocks_without_ok_record": [
-    "neg_2021#2"
-   ],
+   "blocks_without_ok_record": [],
    "n_stale_records_ignored": 0,
    "stale_records_ignored": [],
    "roles": {
-    "primary": 39
+    "primary": 40
    },
    "time_range": [
     "2020-02-29 07:00:00",
@@ -106,7 +104,7 @@
    },
    "metrics": {
     "n_pos": 20,
-    "n_neg": 19,
+    "n_neg": 20,
     "rules": {
      "infer_py_sigmoid_gt_0.5": {
       "description": "infer.py: int(sigmoid(logit) > 0.5), i.e. logit > 0 (primary)",
@@ -114,7 +112,7 @@
        "tp": 6,
        "fn": 14,
        "fp": 0,
-       "tn": 19
+       "tn": 20
       },
       "tpr": {
        "estimate": 0.3,
@@ -137,7 +135,7 @@
        "bootstrap_se": 0.0,
        "ci95_wilson": [
         0.0,
-        0.16817922625956366
+        0.16112516018512965
        ]
       },
       "tss": {
@@ -292,7 +290,7 @@
        }
       },
       "raw_sample": {
-       "note": "as drawn: prevalence 0.513; HSS and F1 here are NOT comparable with the paper",
+       "note": "as drawn: prevalence 0.500; HSS and F1 here are NOT comparable with the paper",
        "tss": {
         "estimate": 0.3,
         "ci95": [
@@ -302,12 +300,12 @@
         "bootstrap_se": 0.10364081905793682
        },
        "hss": {
-        "estimate": 0.29457364341085274,
+        "estimate": 0.3,
         "ci95": [
-         0.09768637532133675,
-         0.4935064935064935
+         0.1,
+         0.5
         ],
-        "bootstrap_se": 0.10261982482211973
+        "bootstrap_se": 0.10364081905793682
        },
        "f1": {
         "estimate": 0.46153846153846156,
@@ -334,20 +332,20 @@
         "bootstrap_se": 0.10364081905793682
        },
        "accuracy": {
-        "estimate": 0.6410256410256411,
+        "estimate": 0.65,
         "ci95": [
-         0.5384615384615384,
-         0.7435897435897436
+         0.55,
+         0.75
         ],
-        "bootstrap_se": 0.053149137978429135
+        "bootstrap_se": 0.05182040952896841
        },
        "repo_DistributedClassificationMetrics": {
         "fed": "sigmoid probabilities",
         "tss": 0.30000001192092896,
-        "hss": 0.2945736348628998,
+        "hss": 0.30000001192092896,
         "f1": 0.4615384638309479,
         "tp": 6.0,
-        "tn": 19.0,
+        "tn": 20.0,
         "fp": 0.0,
         "fn": 14.0,
         "max_abs_diff_vs_ours": 1.1920928966180355e-08
@@ -360,7 +358,7 @@
        "tp": 4,
        "fn": 16,
        "fp": 0,
-       "tn": 19
+       "tn": 20
       },
       "tpr": {
        "estimate": 0.2,
@@ -383,7 +381,7 @@
        "bootstrap_se": 0.0,
        "ci95_wilson": [
         0.0,
-        0.16817922625956366
+        0.16112516018512965
        ]
       },
       "tss": {
@@ -538,7 +536,7 @@
        }
       },
       "raw_sample": {
-       "note": "as drawn: prevalence 0.513; HSS and F1 here are NOT comparable with the paper",
+       "note": "as drawn: prevalence 0.500; HSS and F1 here are NOT comparable with the paper",
        "tss": {
         "estimate": 0.2,
         "ci95": [
@@ -548,12 +546,12 @@
         "bootstrap_se": 0.08986075839875823
        },
        "hss": {
-        "estimate": 0.1958762886597938,
+        "estimate": 0.2,
         "ci95": [
-         0.04878048780487805,
-         0.39378238341968913
+         0.05,
+         0.4
         ],
-        "bootstrap_se": 0.08853153746892263
+        "bootstrap_se": 0.08986075839875823
        },
        "f1": {
         "estimate": 0.3333333333333333,
@@ -580,20 +578,20 @@
         "bootstrap_se": 0.08986075839875823
        },
        "accuracy": {
-        "estimate": 0.5897435897435898,
+        "estimate": 0.6,
         "ci95": [
-         0.5128205128205128,
-         0.6923076923076923
+         0.525,
+         0.7
         ],
-        "bootstrap_se": 0.04608244020449142
+        "bootstrap_se": 0.044930379199379124
        },
        "repo_DistributedClassificationMetrics": {
         "fed": "raw logits",
         "tss": 0.20000000298023224,
-        "hss": 0.19587628543376923,
+        "hss": 0.20000000298023224,
         "f1": 0.3333333432674408,
         "tp": 4.0,
-        "tn": 19.0,
+        "tn": 20.0,
         "fp": 0.0,
         "fn": 16.0,
         "max_abs_diff_vs_ours": 9.934107481068821e-09
@@ -602,12 +600,12 @@
      }
     },
     "roc_auc_context_not_in_paper": {
-     "estimate": 0.8315789473684211,
+     "estimate": 0.8375,
      "ci95": [
-      0.6842105263157895,
-      0.9526315789473684
+      0.69,
+      0.955
      ],
-     "bootstrap_se": 0.06922944303219893
+     "bootstrap_se": 0.06745135031821083
     }
    },
    "per_year": {
@@ -619,7 +617,7 @@
     },
     "2021": {
      "n_pos": 1,
-     "n_neg": 4,
+     "n_neg": 5,
      "hits_pos": 0,
      "false_alarms_neg": 0
     },
@@ -643,10 +641,10 @@
     }
    },
    "timing": {
-    "forward_s_mean": 105.76153846153848,
+    "forward_s_mean": 105.9425,
     "forward_s_max": 117.3,
-    "load_s_mean": 26.705128205128204,
-    "sample_s_mean": 135.28205128205127,
+    "load_s_mean": 26.8825,
+    "sample_s_mean": 136.0325,
     "peak_rss_gb_max": 8.98
    },
    "per_sample": [
@@ -743,6 +741,18 @@
      "max_goes_class": "C2.6",
      "logit": -5.779353141784668,
      "prob": 0.0030811908654868603,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2021-07-17 23:00:00",
+     "year": 2021,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "B9.7",
+     "logit": -5.543334484100342,
+     "prob": 0.0038982003461569548,
      "pred_infer_py_sigmoid_gt_0.5": 0,
      "pred_finetune_eval_logit_gt_0.5": 0
     },
@@ -1153,8 +1163,8 @@
    "load_state_dict_strict": true,
    "model_class": "PeftModel",
    "training_flag": false,
-   "seconds_build_and_load": 6.3
+   "seconds_build_and_load": 5.5
   },
-  "peak_rss_gb_after_model_load": 3.97
+  "peak_rss_gb_after_model_load": 4.01
  }
 }
