@@ -50,9 +50,9 @@
   "seconds_build_and_load": 4.2
  },
  "preflight": {
-  "disk_free_gb": 22.2,
-  "disk_needed_gb": 3.5,
-  "ram_available_gb": 13.9
+  "disk_free_gb": 20.4,
+  "disk_needed_gb": 1.7,
+  "ram_available_gb": 14.4
  },
- "peak_rss_gb_after_model_load": 4.02
+ "peak_rss_gb_after_model_load": 3.9
 }
