@@ -1,0 +1,48 @@
+{
+ "torch": "2.10.0+cpu",
+ "threads": 4,
+ "precision": "float32, no autocast",
+ "upstream_head": "78b827e",
+ "checkpoint": "nasa-ibm-ai4science/solar_wind_surya@6ac4aa79a96f8785a1ab300842d13727e52b58a5/solar_wind_weights.pth",
+ "checkpoint_sha256": "7ff8c19024fc8a8c4cb5c73278081ba242ba7e871b832e1caab11be8e3166a17",
+ "labels": "nasa-ibm-ai4science/Surya-bench-solarwind@20547a25cbd3aaa359e9cda18be913b94c225e7b",
+ "model": {
+  "n_parameters": 367501313,
+  "n_trainable_after_peft": 8192000,
+  "state_dict_keys": 202,
+  "load_state_dict_strict": true,
+  "parameter_counts_match_notebook": true,
+  "seconds_build_and_load": 4.8
+ },
+ "normalisation_constants": {
+  "train": {
+   "min": 240.0,
+   "ptp": 560.0,
+   "max": 800.0,
+   "mean": 418.5961233329045,
+   "rows": 69957
+  },
+  "validation": {
+   "min": 259.0,
+   "ptp": 494.0,
+   "max": 753.0,
+   "mean": 397.1122776319627,
+   "rows": 3429
+  },
+  "test": {
+   "min": 256.0,
+   "ptp": 750.0,
+   "max": 1006.0,
+   "mean": 410.8015009380863,
+   "rows": 39975
+  },
+  "leaky_validation": {
+   "min": 266.0,
+   "ptp": 612.0,
+   "max": 878.0,
+   "mean": 426.7680763983629,
+   "rows": 5864
+  }
+ },
+ "peak_rss_gb_after_model_load": 3.9
+}
