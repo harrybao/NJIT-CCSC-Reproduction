@@ -1,0 +1,1160 @@
+{
+ "label": "PARTIAL REPRODUCTION: released fine-tuned weights (solar_flares_surya) scored on a small, seeded, class-stratified sample of the SuryaBench flare split named below, on CPU in float32. Not the paper's (unstated) evaluation set.",
+ "paper_reference": {
+  "source": "arXiv 2508.14112 v2, Sec. 2.6.3, Table 4; metrics Eq. 21-23",
+  "values": {
+   "AlexNet": {
+    "tss": 0.358,
+    "hss": 0.398,
+    "f1": 0.454
+   },
+   "ResNet50": {
+    "tss": 0.018,
+    "hss": 0.028,
+    "f1": 0.055
+   },
+   "Surya": {
+    "tss": 0.436,
+    "hss": 0.522,
+    "f1": 0.561
+   }
+  },
+  "split_in_paper": "not stated",
+  "implied_by_table4": {
+   "solutions": [
+    {
+     "prevalence": 0.10594130555746348,
+     "tpr": 0.45615060457659895,
+     "fpr": 0.02015060457659895
+    }
+   ],
+   "unique": true,
+   "range_over_rounding_box": {
+    "prevalence": [
+     0.10314803394293229,
+     0.10874268771392234
+    ],
+    "tpr": [
+     0.4549752208022782,
+     0.45733581487931685
+    ],
+    "fpr": [
+     0.019475220802278204,
+     0.02083581487931685
+    ]
+   },
+   "note": "Eq. 21-23 fix the confusion matrix up to scale; the Table 4 triple has a unique solution."
+  }
+ },
+ "primary_rule": "infer_py_sigmoid_gt_0.5",
+ "rules": {
+  "infer_py_sigmoid_gt_0.5": "infer.py: int(sigmoid(logit) > 0.5), i.e. logit > 0 (primary)",
+  "finetune_eval_logit_gt_0.5": "finetune.evaluate_model: DistributedClassificationMetrics(threshold=0.5) fed raw logits, i.e. logit > 0.5 (probability > 0.6225)"
+ },
+ "reweighting_formula": "TP = pi*TPR, FN = pi*(1-TPR), FP = (1-pi)*FPR, TN = (1-pi)*(1-FPR); HSS and F1 = Eq. 22 and 23 of these counts. Closed forms: F1 = 2*pi*TPR / (pi*(1+TPR) + (1-pi)*FPR); HSS = 2*pi*(1-pi)*(TPR-FPR) / (pi*(pi*(1-TPR) + (1-pi)*(1-FPR)) + (1-pi)*(pi*TPR + (1-pi)*FPR)). TSS = TPR - FPR needs no re-weighting.",
+ "bootstrap": {
+  "resamples": 10000,
+  "seed": 0,
+  "scheme": "positives and negatives resampled separately",
+  "interval": "percentile 95%"
+ },
+ "splits": {
+  "test": {
+   "n_scored": 39,
+   "n_failed_records": 0,
+   "failed_records": [],
+   "n_blocks_in_sample": 40,
+   "blocks_without_ok_record": [
+    "neg_2021#2"
+   ],
+   "n_stale_records_ignored": 0,
+   "stale_records_ignored": [],
+   "roles": {
+    "primary": 39
+   },
+   "time_range": [
+    "2020-02-29 07:00:00",
+    "2024-12-07 05:00:00"
+   ],
+   "prevalences_used_for_reweighting": {
+    "candidate_set_of_split (primary)": 0.2966964729259811,
+    "whole_split_csv": 0.2942665571975917,
+    "paper_table4_implied": 0.10594130555746348
+   },
+   "sample_design": {
+    "n": 40,
+    "seed": 0,
+    "design": "class-stratified (n//2 positives), year-proportional within class, one draw per time block",
+    "allocation_per_class_and_year": {
+     "pos": {
+      "2020": 0,
+      "2021": 1,
+      "2022": 4,
+      "2023": 6,
+      "2024": 9
+     },
+     "neg": {
+      "2020": 6,
+      "2021": 5,
+      "2022": 4,
+      "2023": 3,
+      "2024": 2
+     }
+    },
+    "use_listing": true,
+    "header_check": false
+   },
+   "metrics": {
+    "n_pos": 20,
+    "n_neg": 19,
+    "rules": {
+     "infer_py_sigmoid_gt_0.5": {
+      "description": "infer.py: int(sigmoid(logit) > 0.5), i.e. logit > 0 (primary)",
+      "sample_counts": {
+       "tp": 6,
+       "fn": 14,
+       "fp": 0,
+       "tn": 19
+      },
+      "tpr": {
+       "estimate": 0.3,
+       "ci95": [
+        0.1,
+        0.5
+       ],
+       "bootstrap_se": 0.10364081905793682,
+       "ci95_wilson": [
+        0.14547724402157294,
+        0.518972820052479
+       ]
+      },
+      "fpr": {
+       "estimate": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ],
+       "bootstrap_se": 0.0,
+       "ci95_wilson": [
+        0.0,
+        0.16817922625956366
+       ]
+      },
+      "tss": {
+       "estimate": 0.3,
+       "ci95": [
+        0.1,
+        0.5
+       ],
+       "bootstrap_se": 0.10364081905793682,
+       "paper_surya": 0.436,
+       "paper_inside_ci": true,
+       "estimate_minus_paper": -0.136
+      },
+      "reweighted": {
+       "candidate_set_of_split (primary)": {
+        "prevalence": 0.2966964729259811,
+        "hss": {
+         "estimate": 0.3761041376104137,
+         "ci95": [
+          0.13516480893620067,
+          0.5844772422334605
+         ],
+         "bootstrap_se": 0.115442730427091,
+         "paper_surya": 0.522,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": -0.1458958623895863
+        },
+        "f1": {
+         "estimate": 0.46153846153846156,
+         "ci95": [
+          0.18181818181818182,
+          0.6666666666666666
+         ],
+         "bootstrap_se": 0.12339038437700166,
+         "paper_surya": 0.561,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": -0.09946153846153849
+        },
+        "precision": {
+         "estimate": 1.0,
+         "ci95": [
+          1.0,
+          1.0
+         ],
+         "bootstrap_se": 0.0
+        },
+        "expected_counts_per_unit": {
+         "tp": 0.08900894187779433,
+         "tn": 0.7033035270740189,
+         "fp": 0.0,
+         "fn": 0.20768753104818677
+        },
+        "repo_formulas_on_expected_counts": {
+         "precision": 1.0,
+         "recall": 0.3,
+         "f1": 0.46153846153846156,
+         "tss": 0.3,
+         "hss": 0.3761041376104137
+        }
+       },
+       "whole_split_csv": {
+        "prevalence": 0.2942665571975917,
+        "hss": {
+         "estimate": 0.3769138012935287,
+         "ci95": [
+          0.1355684939608606,
+          0.5853146456335471
+         ],
+         "bootstrap_se": 0.11554382044099691,
+         "paper_surya": 0.522,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": -0.14508619870647133
+        },
+        "f1": {
+         "estimate": 0.46153846153846156,
+         "ci95": [
+          0.18181818181818182,
+          0.6666666666666667
+         ],
+         "bootstrap_se": 0.12339038437700166,
+         "paper_surya": 0.561,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": -0.09946153846153849
+        },
+        "precision": {
+         "estimate": 1.0,
+         "ci95": [
+          1.0,
+          1.0
+         ],
+         "bootstrap_se": 0.0
+        },
+        "expected_counts_per_unit": {
+         "tp": 0.08827996715927751,
+         "tn": 0.7057334428024082,
+         "fp": 0.0,
+         "fn": 0.20598659003831418
+        },
+        "repo_formulas_on_expected_counts": {
+         "precision": 1.0,
+         "recall": 0.3,
+         "f1": 0.46153846153846156,
+         "tss": 0.3,
+         "hss": 0.3769138012935287
+        }
+       },
+       "paper_table4_implied": {
+        "prevalence": 0.10594130555746348,
+        "hss": {
+         "estimate": 0.43385630677214637,
+         "ci95": [
+          0.16574878863733528,
+          0.6413350442178171
+         ],
+         "bootstrap_se": 0.12141049725240928,
+         "paper_surya": 0.522,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": -0.08814369322785365
+        },
+        "f1": {
+         "estimate": 0.46153846153846156,
+         "ci95": [
+          0.18181818181818182,
+          0.6666666666666667
+         ],
+         "bootstrap_se": 0.12339038437700166,
+         "paper_surya": 0.561,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": -0.09946153846153849
+        },
+        "precision": {
+         "estimate": 1.0,
+         "ci95": [
+          1.0,
+          1.0
+         ],
+         "bootstrap_se": 0.0
+        },
+        "expected_counts_per_unit": {
+         "tp": 0.03178239166723904,
+         "tn": 0.8940586944425365,
+         "fp": 0.0,
+         "fn": 0.07415891389022443
+        },
+        "repo_formulas_on_expected_counts": {
+         "precision": 1.0,
+         "recall": 0.3,
+         "f1": 0.46153846153846156,
+         "tss": 0.3,
+         "hss": 0.43385630677214637
+        }
+       }
+      },
+      "raw_sample": {
+       "note": "as drawn: prevalence 0.513; HSS and F1 here are NOT comparable with the paper",
+       "tss": {
+        "estimate": 0.3,
+        "ci95": [
+         0.1,
+         0.5
+        ],
+        "bootstrap_se": 0.10364081905793682
+       },
+       "hss": {
+        "estimate": 0.29457364341085274,
+        "ci95": [
+         0.09768637532133675,
+         0.4935064935064935
+        ],
+        "bootstrap_se": 0.10261982482211973
+       },
+       "f1": {
+        "estimate": 0.46153846153846156,
+        "ci95": [
+         0.18181818181818182,
+         0.6666666666666666
+        ],
+        "bootstrap_se": 0.12339038437700164
+       },
+       "precision": {
+        "estimate": 1.0,
+        "ci95": [
+         1.0,
+         1.0
+        ],
+        "bootstrap_se": 0.0
+       },
+       "recall": {
+        "estimate": 0.3,
+        "ci95": [
+         0.1,
+         0.5
+        ],
+        "bootstrap_se": 0.10364081905793682
+       },
+       "accuracy": {
+        "estimate": 0.6410256410256411,
+        "ci95": [
+         0.5384615384615384,
+         0.7435897435897436
+        ],
+        "bootstrap_se": 0.053149137978429135
+       },
+       "repo_DistributedClassificationMetrics": {
+        "fed": "sigmoid probabilities",
+        "tss": 0.30000001192092896,
+        "hss": 0.2945736348628998,
+        "f1": 0.4615384638309479,
+        "tp": 6.0,
+        "tn": 19.0,
+        "fp": 0.0,
+        "fn": 14.0,
+        "max_abs_diff_vs_ours": 1.1920928966180355e-08
+       }
+      }
+     },
+     "finetune_eval_logit_gt_0.5": {
+      "description": "finetune.evaluate_model: DistributedClassificationMetrics(threshold=0.5) fed raw logits, i.e. logit > 0.5 (probability > 0.6225)",
+      "sample_counts": {
+       "tp": 4,
+       "fn": 16,
+       "fp": 0,
+       "tn": 19
+      },
+      "tpr": {
+       "estimate": 0.2,
+       "ci95": [
+        0.05,
+        0.4
+       ],
+       "bootstrap_se": 0.08986075839875823,
+       "ci95_wilson": [
+        0.08065766201776073,
+        0.41601743409331715
+       ]
+      },
+      "fpr": {
+       "estimate": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ],
+       "bootstrap_se": 0.0,
+       "ci95_wilson": [
+        0.0,
+        0.16817922625956366
+       ]
+      },
+      "tss": {
+       "estimate": 0.2,
+       "ci95": [
+        0.05,
+        0.4
+       ],
+       "bootstrap_se": 0.08986075839875823,
+       "paper_surya": 0.436,
+       "paper_inside_ci": false,
+       "estimate_minus_paper": -0.236
+      },
+      "reweighted": {
+       "candidate_set_of_split (primary)": {
+        "prevalence": 0.2966964729259811,
+        "hss": {
+         "estimate": 0.260164469150549,
+         "ci95": [
+          0.06892900178925716,
+          0.48393437019312935
+         ],
+         "bootstrap_se": 0.10735916302805858,
+         "paper_surya": 0.522,
+         "paper_inside_ci": false,
+         "estimate_minus_paper": -0.261835530849451
+        },
+        "f1": {
+         "estimate": 0.3333333333333333,
+         "ci95": [
+          0.09523809523809523,
+          0.5714285714285715
+         ],
+         "bootstrap_se": 0.12430614273214781,
+         "paper_surya": 0.561,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": -0.22766666666666674
+        },
+        "precision": {
+         "estimate": 1.0,
+         "ci95": [
+          1.0,
+          1.0
+         ],
+         "bootstrap_se": 0.0
+        },
+        "expected_counts_per_unit": {
+         "tp": 0.059339294585196226,
+         "tn": 0.7033035270740189,
+         "fp": 0.0,
+         "fn": 0.2373571783407849
+        },
+        "repo_formulas_on_expected_counts": {
+         "precision": 1.0,
+         "recall": 0.2,
+         "f1": 0.3333333333333333,
+         "tss": 0.2,
+         "hss": 0.260164469150549
+        }
+       },
+       "whole_split_csv": {
+        "prevalence": 0.2942665571975917,
+        "hss": {
+         "estimate": 0.2608288871469391,
+         "ci95": [
+          0.06915068346215987,
+          0.48479578888001135
+         ],
+         "bootstrap_se": 0.10753357973391867,
+         "paper_surya": 0.522,
+         "paper_inside_ci": false,
+         "estimate_minus_paper": -0.26117111285306094
+        },
+        "f1": {
+         "estimate": 0.3333333333333333,
+         "ci95": [
+          0.09523809523809525,
+          0.5714285714285714
+         ],
+         "bootstrap_se": 0.1243061427321478,
+         "paper_surya": 0.561,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": -0.22766666666666674
+        },
+        "precision": {
+         "estimate": 1.0,
+         "ci95": [
+          1.0,
+          1.0
+         ],
+         "bootstrap_se": 0.0
+        },
+        "expected_counts_per_unit": {
+         "tp": 0.058853311439518344,
+         "tn": 0.7057334428024082,
+         "fp": 0.0,
+         "fn": 0.23541324575807338
+        },
+        "repo_formulas_on_expected_counts": {
+         "precision": 1.0,
+         "recall": 0.2,
+         "f1": 0.3333333333333333,
+         "tss": 0.2,
+         "hss": 0.2608288871469391
+        }
+       },
+       "paper_table4_implied": {
+        "prevalence": 0.10594130555746348,
+        "hss": {
+         "estimate": 0.3089290124486412,
+         "ci95": [
+          0.08601632150880283,
+          0.5438119073636187
+         ],
+         "bootstrap_se": 0.11914676449624063,
+         "paper_surya": 0.522,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": -0.21307098755135884
+        },
+        "f1": {
+         "estimate": 0.3333333333333333,
+         "ci95": [
+          0.09523809523809525,
+          0.5714285714285714
+         ],
+         "bootstrap_se": 0.12430614273214781,
+         "paper_surya": 0.561,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": -0.22766666666666674
+        },
+        "precision": {
+         "estimate": 1.0,
+         "ci95": [
+          1.0,
+          1.0
+         ],
+         "bootstrap_se": 0.0
+        },
+        "expected_counts_per_unit": {
+         "tp": 0.021188261111492697,
+         "tn": 0.8940586944425365,
+         "fp": 0.0,
+         "fn": 0.08475304444597079
+        },
+        "repo_formulas_on_expected_counts": {
+         "precision": 1.0,
+         "recall": 0.2,
+         "f1": 0.3333333333333333,
+         "tss": 0.2,
+         "hss": 0.3089290124486412
+        }
+       }
+      },
+      "raw_sample": {
+       "note": "as drawn: prevalence 0.513; HSS and F1 here are NOT comparable with the paper",
+       "tss": {
+        "estimate": 0.2,
+        "ci95": [
+         0.05,
+         0.4
+        ],
+        "bootstrap_se": 0.08986075839875823
+       },
+       "hss": {
+        "estimate": 0.1958762886597938,
+        "ci95": [
+         0.04878048780487805,
+         0.39378238341968913
+        ],
+        "bootstrap_se": 0.08853153746892263
+       },
+       "f1": {
+        "estimate": 0.3333333333333333,
+        "ci95": [
+         0.09523809523809523,
+         0.5714285714285714
+        ],
+        "bootstrap_se": 0.12430614273214781
+       },
+       "precision": {
+        "estimate": 1.0,
+        "ci95": [
+         1.0,
+         1.0
+        ],
+        "bootstrap_se": 0.0
+       },
+       "recall": {
+        "estimate": 0.2,
+        "ci95": [
+         0.05,
+         0.4
+        ],
+        "bootstrap_se": 0.08986075839875823
+       },
+       "accuracy": {
+        "estimate": 0.5897435897435898,
+        "ci95": [
+         0.5128205128205128,
+         0.6923076923076923
+        ],
+        "bootstrap_se": 0.04608244020449142
+       },
+       "repo_DistributedClassificationMetrics": {
+        "fed": "raw logits",
+        "tss": 0.20000000298023224,
+        "hss": 0.19587628543376923,
+        "f1": 0.3333333432674408,
+        "tp": 4.0,
+        "tn": 19.0,
+        "fp": 0.0,
+        "fn": 16.0,
+        "max_abs_diff_vs_ours": 9.934107481068821e-09
+       }
+      }
+     }
+    },
+    "roc_auc_context_not_in_paper": {
+     "estimate": 0.8315789473684211,
+     "ci95": [
+      0.6842105263157895,
+      0.9526315789473684
+     ],
+     "bootstrap_se": 0.06922944303219893
+    }
+   },
+   "per_year": {
+    "2020": {
+     "n_pos": 0,
+     "n_neg": 6,
+     "hits_pos": 0,
+     "false_alarms_neg": 0
+    },
+    "2021": {
+     "n_pos": 1,
+     "n_neg": 4,
+     "hits_pos": 0,
+     "false_alarms_neg": 0
+    },
+    "2022": {
+     "n_pos": 4,
+     "n_neg": 4,
+     "hits_pos": 1,
+     "false_alarms_neg": 0
+    },
+    "2023": {
+     "n_pos": 6,
+     "n_neg": 3,
+     "hits_pos": 2,
+     "false_alarms_neg": 0
+    },
+    "2024": {
+     "n_pos": 9,
+     "n_neg": 2,
+     "hits_pos": 3,
+     "false_alarms_neg": 0
+    }
+   },
+   "timing": {
+    "forward_s_mean": 105.76153846153848,
+    "forward_s_max": 117.3,
+    "load_s_mean": 26.705128205128204,
+    "sample_s_mean": 135.28205128205127,
+    "peak_rss_gb_max": 8.98
+   },
+   "per_sample": [
+    {
+     "timestamp": "2020-02-29 07:00:00",
+     "year": 2020,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "FQ",
+     "logit": -6.924976825714111,
+     "prob": 0.000981960678473115,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2020-03-19 15:00:00",
+     "year": 2020,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "FQ",
+     "logit": -7.129493236541748,
+     "prob": 0.0008004839764907956,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2020-06-18 04:00:00",
+     "year": 2020,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "FQ",
+     "logit": -7.073155403137207,
+     "prob": 0.0008468367741443217,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2020-08-09 21:00:00",
+     "year": 2020,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "FQ",
+     "logit": -5.4269022941589355,
+     "prob": 0.004377448000013828,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2020-10-29 05:00:00",
+     "year": 2020,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "C4.3",
+     "logit": -0.9947351813316345,
+     "prob": 0.2699778079986572,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2020-11-30 15:00:00",
+     "year": 2020,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "C3.8",
+     "logit": -3.502269983291626,
+     "prob": 0.029247712343931198,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2021-02-27 22:00:00",
+     "year": 2021,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "C3.9",
+     "logit": -6.131865978240967,
+     "prob": 0.0021678137127310038,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2021-04-24 11:00:00",
+     "year": 2021,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "C2.6",
+     "logit": -5.779353141784668,
+     "prob": 0.0030811908654868603,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2021-09-04 19:00:00",
+     "year": 2021,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "B6.3",
+     "logit": -5.9255475997924805,
+     "prob": 0.002663233084604144,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2021-10-27 06:00:00",
+     "year": 2021,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "C2.8",
+     "logit": -2.94254207611084,
+     "prob": 0.05009017884731293,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2021-12-04 18:00:00",
+     "year": 2021,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M1.4",
+     "logit": -6.524576663970947,
+     "prob": 0.0014647913631051779,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2022-02-10 15:00:00",
+     "year": 2022,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "C1.2",
+     "logit": -4.188920497894287,
+     "prob": 0.014936171472072601,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2022-03-14 14:00:00",
+     "year": 2022,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M1.4",
+     "logit": -2.100048542022705,
+     "prob": 0.1090921089053154,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2022-05-09 16:00:00",
+     "year": 2022,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "X1.5",
+     "logit": -3.1577699184417725,
+     "prob": 0.04078621417284012,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2022-06-08 23:00:00",
+     "year": 2022,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "C2.6",
+     "logit": -4.467004776000977,
+     "prob": 0.011351322755217552,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2022-09-10 15:00:00",
+     "year": 2022,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "C5.2",
+     "logit": -4.042187690734863,
+     "prob": 0.01725601777434349,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2022-09-30 10:00:00",
+     "year": 2022,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M2.9",
+     "logit": 1.945218563079834,
+     "prob": 0.8749243021011353,
+     "pred_infer_py_sigmoid_gt_0.5": 1,
+     "pred_finetune_eval_logit_gt_0.5": 1
+    },
+    {
+     "timestamp": "2022-12-03 05:00:00",
+     "year": 2022,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M1.2",
+     "logit": -3.257148027420044,
+     "prob": 0.037070877850055695,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2022-12-08 13:00:00",
+     "year": 2022,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "C4.1",
+     "logit": -3.2724504470825195,
+     "prob": 0.036528490483760834,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2023-01-11 22:00:00",
+     "year": 2023,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M1.5",
+     "logit": -1.8593199253082275,
+     "prob": 0.1347823441028595,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2023-03-16 23:00:00",
+     "year": 2023,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M1.0",
+     "logit": -1.2104263305664062,
+     "prob": 0.2296256273984909,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2023-03-22 03:00:00",
+     "year": 2023,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "C2.5",
+     "logit": -1.1930383443832397,
+     "prob": 0.23271596431732178,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2023-05-09 12:00:00",
+     "year": 2023,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M5.0",
+     "logit": 1.7681175470352173,
+     "prob": 0.8542234301567078,
+     "pred_infer_py_sigmoid_gt_0.5": 1,
+     "pred_finetune_eval_logit_gt_0.5": 1
+    },
+    {
+     "timestamp": "2023-06-24 08:00:00",
+     "year": 2023,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M1.1",
+     "logit": -2.533022403717041,
+     "prob": 0.07357537001371384,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2023-07-03 10:00:00",
+     "year": 2023,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "C8.9",
+     "logit": -1.4852080345153809,
+     "prob": 0.18464206159114838,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2023-09-22 03:00:00",
+     "year": 2023,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M1.9",
+     "logit": 0.34982773661613464,
+     "prob": 0.5865758061408997,
+     "pred_infer_py_sigmoid_gt_0.5": 1,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2023-10-21 17:00:00",
+     "year": 2023,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "B9.2",
+     "logit": -4.102927207946777,
+     "prob": 0.01625562272965908,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2023-11-17 08:00:00",
+     "year": 2023,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M1.2",
+     "logit": -2.4727377891540527,
+     "prob": 0.07779160141944885,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2024-02-12 00:00:00",
+     "year": 2024,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M6.5",
+     "logit": -2.0306637287139893,
+     "prob": 0.11602083593606949,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2024-03-18 21:00:00",
+     "year": 2024,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M1.4",
+     "logit": -1.9238778352737427,
+     "prob": 0.1274297684431076,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2024-04-01 12:00:00",
+     "year": 2024,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "FQ",
+     "logit": -3.61580228805542,
+     "prob": 0.026190925389528275,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2024-05-14 13:00:00",
+     "year": 2024,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "X8.7",
+     "logit": 0.02981717512011528,
+     "prob": 0.5074537396430969,
+     "pred_infer_py_sigmoid_gt_0.5": 1,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2024-06-01 23:00:00",
+     "year": 2024,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M2.0",
+     "logit": 1.6900945901870728,
+     "prob": 0.8442365527153015,
+     "pred_infer_py_sigmoid_gt_0.5": 1,
+     "pred_finetune_eval_logit_gt_0.5": 1
+    },
+    {
+     "timestamp": "2024-07-04 00:00:00",
+     "year": 2024,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M1.4",
+     "logit": -1.1582672595977783,
+     "prob": 0.23898226022720337,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2024-07-11 20:00:00",
+     "year": 2024,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "C6.5",
+     "logit": -0.25829559564590454,
+     "prob": 0.43578270077705383,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2024-08-23 10:00:00",
+     "year": 2024,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M5.1",
+     "logit": -0.5637637376785278,
+     "prob": 0.36267703771591187,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2024-09-14 05:00:00",
+     "year": 2024,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "X4.5",
+     "logit": -1.9906368255615234,
+     "prob": 0.12018950283527374,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2024-10-24 10:00:00",
+     "year": 2024,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M1.2",
+     "logit": -1.6362357139587402,
+     "prob": 0.1629779189825058,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2024-12-07 05:00:00",
+     "year": 2024,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M3.2",
+     "logit": 1.4760628938674927,
+     "prob": 0.8139771819114685,
+     "pred_infer_py_sigmoid_gt_0.5": 1,
+     "pred_finetune_eval_logit_gt_0.5": 1
+    }
+   ]
+  }
+ },
+ "environment": {
+  "torch": "2.10.0+cpu",
+  "threads": 4,
+  "precision": "float32, no autocast",
+  "grad": "torch.no_grad()",
+  "upstream_head": "78b827e",
+  "checkpoint": "nasa-ibm-ai4science/solar_flares_surya@ec7c42ab22fbf126c4bfffadb420f6e45a669832/solar_flare_weights.pth",
+  "checkpoint_sha256": "a907da5f994f20bdf76914cccb8bafb4d12e56d04ff400c407e0de98d13d2f69",
+  "foundation_model": "/home/user/work/surya_run/data/Surya-1.0/surya.366m.v1.pt",
+  "labels": "nasa-ibm-ai4science/surya-bench-flare-forecasting@bf474bc1e7752bd529e9707650f9310db8693763",
+  "scalers": "/home/user/work/surya_run/data/Surya-1.0/scalers.yaml",
+  "scalers_sha256": "a944e8f1bcdc2e5ed9b30cb53e0525ec40625515d09cc8745647111015b2b487",
+  "config": {
+   "config_infer_vs_config_yaml": {},
+   "path_overrides": {
+    "pretrained_path": [
+     "./assets/surya.366m.v1.pt",
+     "/home/user/work/surya_run/data/Surya-1.0/surya.366m.v1.pt"
+    ],
+    "data.scalers_path": [
+     "../../data/Surya-1.0/scalers.yaml",
+     "/home/user/work/surya_run/data/Surya-1.0/scalers.yaml"
+    ]
+   }
+  },
+  "model": {
+   "n_parameters": 364593153,
+   "n_trainable_after_peft": 1024000,
+   "state_dict_keys": 202,
+   "load_state_dict_strict": true,
+   "model_class": "PeftModel",
+   "training_flag": false,
+   "seconds_build_and_load": 6.3
+  },
+  "peak_rss_gb_after_model_load": 3.97
+ }
+}
