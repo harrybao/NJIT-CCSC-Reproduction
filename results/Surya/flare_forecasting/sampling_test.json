@@ -39,7 +39,7 @@
    "months": 60,
    "on_the_hour_frames": 41910,
    "listing_bytes_transferred_this_call": 0,
-   "seconds": 0.1
+   "seconds": 2.4
   },
   "excluded_rows": 3588,
   "excluded_by_reason_and_label": {
@@ -95,7 +95,7 @@
  "selection_rounds": 1,
  "header_bytes_read": 0,
  "identical_to_previous_sample_file": true,
- "selection_seconds": 14.0,
+ "selection_seconds": 35.1,
  "dataset_join_check": [
   {
    "timestamp": "2021-12-04 18:00:00",
@@ -1230,13 +1230,13 @@
   "measured_bandwidth": {
    "s3_frame": {
     "bytes": 16777216,
-    "seconds": 1.96,
-    "MB_per_s": 8.6
+    "seconds": 1.32,
+    "MB_per_s": 12.8
    },
    "hf_cdn_csv": {
     "bytes": 16777216,
-    "seconds": 1.03,
-    "MB_per_s": 16.3
+    "seconds": 1.89,
+    "MB_per_s": 8.9
    }
   },
   "forward_passes": 40,
@@ -1246,12 +1246,12 @@
   "per_sample_compute_minutes": 2.95,
   "budget_minutes_per_run": 90,
   "at_measured_bandwidth": {
-   "s3_MB_per_s": 8.6,
-   "hf_MB_per_s": 16.3,
-   "total_minutes": 153.0,
-   "per_sample_download_minutes_mean": 3.1,
-   "download_hidden_behind_forward": false,
-   "forward_passes_within_budget": 23,
+   "s3_MB_per_s": 12.8,
+   "hf_MB_per_s": 8.9,
+   "total_minutes": 123.9,
+   "per_sample_download_minutes_mean": 2.08,
+   "download_hidden_behind_forward": true,
+   "forward_passes_within_budget": 28,
    "runs_needed_at_budget": 2
   },
   "at_typical_bandwidth": {
