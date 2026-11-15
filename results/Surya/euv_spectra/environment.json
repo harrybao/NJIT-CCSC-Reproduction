@@ -28,9 +28,9 @@
    "corr_with_foundation_time_slot_1": -3.66929016308859e-05
   },
   "get_model_stdout": "Initializing HelioSpectformer1D.\nLoading pretrained model from ./assets/surya.366m.v1.pt.\n5 parameters require gradients: cls_token, linear.weight, linear.bias, unembed.weight, unembed.bias.\n",
-  "seconds_build_and_load": 5.1
+  "seconds_build_and_load": 5.4
  },
  "model_training_flag": false,
  "prefetch": true,
- "peak_rss_gb_after_model_load": 4.08
+ "peak_rss_gb_after_model_load": 3.96
 }
