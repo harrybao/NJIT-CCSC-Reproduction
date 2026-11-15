@@ -1265,28 +1265,32 @@
   "peak_frames_on_disk_gb_with_prefetch": 2.37,
   "checkpoint_bytes": 1779722720,
   "checkpoint_present": false,
-  "free_disk_gb_now": 2.56,
-  "prefetch_possible_now": false,
-  "peak_disk_gb_new": 2.97,
+  "free_disk_gb_now": 22.27,
+  "prefetch_possible_now": true,
+  "peak_disk_gb_new": 4.15,
   "bandwidth_probe": {
    "s3_frame": {
     "bytes": 8388608,
-    "seconds": 1.03,
-    "MB_per_s": 8.1
+    "seconds": 1.08,
+    "MB_per_s": 7.7
    }
   },
   "est_minutes_compute_only": 75.1,
-  "est_minutes_with_bandwidth": 81.2,
-  "est_minutes_with_bandwidth_no_prefetch": 132.4,
+  "est_minutes_with_bandwidth": 81.5,
+  "est_minutes_with_bandwidth_slow_forward": 141.7,
+  "mem_available_gb_now": 3.78,
+  "peak_disk_gb_new_note": "checkpoint (if absent) + frames of one sample (two with prefetch); the 0.93 GB EVE file and the foundation weights are already on disk",
+  "est_minutes_with_bandwidth_no_prefetch": 135.4,
   "bandwidth_note": "the 8 MB probe under-states sustained throughput and shares the link with any other job downloading at the same time",
-  "est_checkpoint_download_minutes": 3.7,
+  "est_checkpoint_download_minutes": 3.9,
   "max_forward_that_fits_90_min": 25,
   "timing_assumptions_s": {
    "forward": 136,
+   "forward_slow": 300,
    "load_frame": 30,
    "score": 2,
    "model_build_and_load": 150
   }
  },
- "dry_run_seconds": 410.2
+ "dry_run_seconds": 428.4
 }
