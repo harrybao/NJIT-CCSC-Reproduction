@@ -87,6 +87,41 @@ def fetch_s3(ts, root, retries=4, workers=8, chunk=32 << 20):
             time.sleep(2 ** (attempt + 1))
 
 
+def fetch_hf_file(repo_id, filename, revision, local_dir, repo_type="model", workers=8, chunk=32 << 20,
+                  retries=4):
+    """Download one file of a Hugging Face repo at a pinned revision to local_dir/filename, as parallel byte ranges.
+
+    huggingface_hub downloads large files in a single stream, which this machine's proxy has cut off part-way
+    (IncompleteRead on a 1.8 GB checkpoint). Callers verify the SHA-256 themselves; here only the length is checked.
+    """
+    prefix = "" if repo_type == "model" else f"{repo_type}s/"
+    url = f"https://huggingface.co/{prefix}{repo_id}/resolve/{revision}/{filename}"
+    dest = os.path.join(local_dir, filename)
+    os.makedirs(os.path.dirname(dest), exist_ok=True)
+    for attempt in range(retries):
+        try:
+            h = requests.head(url, allow_redirects=True, timeout=60)
+            h.raise_for_status()
+            expected = int(h.headers.get("x-linked-size") or h.headers["Content-Length"])
+            if os.path.exists(dest) and os.path.getsize(dest) == expected:
+                return dest
+            tmp = dest + ".part"
+            with open(tmp, "wb") as fp:
+                fp.truncate(expected)
+            ranges = [(s, min(s + chunk, expected) - 1) for s in range(0, expected, chunk)]
+            with ThreadPoolExecutor(max_workers=workers) as ex:
+                for f in [ex.submit(_get_range, url, tmp, s, e) for s, e in ranges]:
+                    f.result()
+            if os.path.getsize(tmp) != expected:
+                raise IOError(f"size mismatch for {filename}: {os.path.getsize(tmp)} of {expected}")
+            os.replace(tmp, dest)
+            return dest
+        except Exception:
+            if attempt == retries - 1:
+                raise
+            time.sleep(2 ** (attempt + 1))
+
+
 class FrameCache:
     """Keeps only the frames the current sample needs on disk.
 

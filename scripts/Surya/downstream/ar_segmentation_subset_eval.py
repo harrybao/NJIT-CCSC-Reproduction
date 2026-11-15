@@ -786,8 +786,8 @@ def mask_info(fp):
 
 
 def ensure_checkpoint():
-    from huggingface_hub import hf_hub_download
-    path = hf_hub_download(repo_id=CKPT_REPO, filename=CKPT_NAME, revision=CKPT_REV, local_dir=WORK)
+    # parallel byte ranges: huggingface_hub's single-stream download was cut off by this machine's proxy
+    path = C.fetch_hf_file(CKPT_REPO, CKPT_NAME, CKPT_REV, WORK)
     if os.path.getsize(path) != CKPT_SIZE:
         raise IOError(f"{path}: {os.path.getsize(path)} bytes, expected {CKPT_SIZE}")
     marker = path + ".sha256_ok"
