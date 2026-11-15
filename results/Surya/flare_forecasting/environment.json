@@ -30,7 +30,7 @@
   "load_state_dict_strict": true,
   "model_class": "PeftModel",
   "training_flag": false,
-  "seconds_build_and_load": 5.5
+  "seconds_build_and_load": 6.2
  },
- "peak_rss_gb_after_model_load": 4.01
+ "peak_rss_gb_after_model_load": 4.02
 }
