@@ -12,7 +12,7 @@
   "state_dict_keys": 202,
   "load_state_dict_strict": true,
   "parameter_counts_match_notebook": true,
-  "seconds_build_and_load": 13.6
+  "seconds_build_and_load": 5.0
  },
  "normalisation_constants": {
   "train": {

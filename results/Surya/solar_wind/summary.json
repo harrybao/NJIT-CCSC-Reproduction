@@ -63,6 +63,987 @@
  },
  "baselines_note": "persistence_4d, recurrence_27d and climatology_train_mean are MY baselines, not in Table 6",
  "splits": {
+  "test": {
+   "n_samples_scored": 40,
+   "n_failed_records": 0,
+   "max_samples_per_block": 2,
+   "failed": [],
+   "roles": {
+    "primary": 30,
+    "reserve": 10
+   },
+   "time_range_input": [
+    "2020-01-05 19:00:00",
+    "2024-12-08 19:00:00"
+   ],
+   "V_target_sample_mean": 400.7,
+   "V_target_sample_std": 85.06973609927329,
+   "metrics": {
+    "model": {
+     "train_constants_primary": {
+      "rmse": 109.97023143182209,
+      "mae": 80.94203707575798,
+      "mse": 12093.45180116851,
+      "bias": -71.11760796308518,
+      "r2": -0.6710910258272937,
+      "pearson_r": 0.20382154819538684,
+      "n": 40,
+      "ci95": {
+       "rmse": [
+        81.17239343634564,
+        135.87195964382482
+       ],
+       "mae": [
+        58.90727435864508,
+        104.76271942257881
+       ],
+       "mse": [
+        6588.957457815315,
+        18461.189459317087
+       ],
+       "bias": [
+        -97.50977773398161,
+        -45.98291210234165
+       ]
+      }
+     },
+     "validation_csv_constants_infer_py_as_shipped": {
+      "rmse": 104.45139062250348,
+      "mae": 75.15240973457693,
+      "mse": 10910.093002974807,
+      "bias": -62.67553273886442,
+      "r2": -0.5075727598675124,
+      "pearson_r": 0.20382154819538661,
+      "n": 40,
+      "ci95": {
+       "rmse": [
+        75.73359941560736,
+        130.03668941410265
+       ],
+       "mae": [
+        53.6096596916765,
+        98.58657477059398
+       ],
+       "mse": [
+        5735.578083490665,
+        16909.54059419155
+       ],
+       "bias": [
+        -88.87637373774312,
+        -37.601600726321344
+       ]
+      }
+     },
+     "test_csv_constants_infer_py_on_this_split": {
+      "rmse": 88.98195429646674,
+      "mae": 62.55897790715098,
+      "mse": 7917.788190418496,
+      "bias": -24.723582093417644,
+      "r2": -0.09409166274026237,
+      "pearson_r": 0.2038215481953867,
+      "n": 40,
+      "ci95": {
+       "rmse": [
+        63.827294943917984,
+        111.22135911904972
+       ],
+       "mae": [
+        43.68675308146514,
+        82.86708967422135
+       ],
+       "mse": [
+        4073.923596492908,
+        12370.190724692386
+       ],
+       "bias": [
+        -51.742801470728594,
+        1.0763798794709114
+       ]
+      }
+     }
+    },
+    "baselines_on_same_samples": {
+     "persistence_4d_V_at_t": {
+      "label": "MY BASELINE (applicant's own, not in Table 6 or the authors' code)",
+      "rmse": 85.20594246635001,
+      "mae": 68.47368421052632,
+      "mse": 7260.0526315789475,
+      "bias": 27.210526315789473,
+      "r2": 0.041926252149345644,
+      "pearson_r": 0.5452642096216239,
+      "n": 38,
+      "ci95": {
+       "rmse": [
+        67.46251395137227,
+        101.62487771414138
+       ],
+       "mae": [
+        52.973684210526315,
+        84.76513157894733
+       ],
+       "mse": [
+        4551.190789473684,
+        10327.615789473683
+       ],
+       "bias": [
+        1.657236842105264,
+        53.07960526315789
+       ]
+      },
+      "model_minus_baseline_rmse_paired": {
+       "estimate": 27.184093556508927,
+       "ci95": [
+        -5.736187836098701,
+        59.66682763642705
+       ],
+       "n": 38
+      }
+     },
+     "recurrence_27d_V_at_T_minus_27d": {
+      "label": "MY BASELINE (applicant's own, not in Table 6 or the authors' code)",
+      "rmse": 86.37418595853741,
+      "mae": 63.2,
+      "mse": 7460.5,
+      "bias": 3.3,
+      "r2": -0.030902905403724645,
+      "pearson_r": 0.45762284229221833,
+      "n": 40,
+      "ci95": {
+       "rmse": [
+        63.069787533721595,
+        108.66050051678712
+       ],
+       "mae": [
+        45.724375,
+        82.675
+       ],
+       "mse": [
+        3977.7981250000003,
+        11807.104374999999
+       ],
+       "bias": [
+        -23.4,
+        30.250624999999992
+       ]
+      },
+      "model_minus_baseline_rmse_paired": {
+       "estimate": 23.596045473284676,
+       "ci95": [
+        -5.849063754078316,
+        52.45867524607019
+       ],
+       "n": 40
+      }
+     },
+     "climatology_train_mean": {
+      "label": "MY BASELINE (applicant's own, not in Table 6 or the authors' code)",
+      "rmse": 86.93176191902778,
+      "mae": 73.38844933316179,
+      "mse": 7557.131230346528,
+      "bias": 17.896123332904484,
+      "r2": -0.04425555148870197,
+      "pearson_r": -1.3363957963728443e-16,
+      "n": 40,
+      "ci95": {
+       "rmse": [
+        72.79071272538647,
+        100.15466274025997
+       ],
+       "mae": [
+        59.08806464149405,
+        87.76356948732791
+       ],
+       "mse": [
+        5298.487874418957,
+        10030.95647223619
+       ],
+       "bias": [
+        -9.079501667095517,
+        43.346748332904475
+       ]
+      },
+      "value_km_s": 418.5961233329045,
+      "model_minus_baseline_rmse_paired": {
+       "estimate": 23.038469512794308,
+       "ci95": [
+        1.143383783113654,
+        41.264759455755836
+       ],
+       "n": 40
+      }
+     }
+    },
+    "compact_input_frame_sensitivity": {
+     "definition": "input frame (at t) has AIA 131-335 stored in < 30 MB per channel (median); see is_compact_frame",
+     "n_compact_input_frames_scored": 8,
+     "compact_input_frames": [
+      "2021-06-12 19:00:00",
+      "2023-03-10 01:00:00",
+      "2024-02-06 21:00:00",
+      "2024-03-28 22:00:00",
+      "2024-04-28 11:00:00",
+      "2024-08-16 15:00:00",
+      "2024-10-15 03:00:00",
+      "2024-12-08 19:00:00"
+     ],
+     "model_train_constants_without_compact": {
+      "rmse": 112.19061925296126,
+      "mae": 83.02219438552856,
+      "mse": 12586.73504836292,
+      "bias": -71.97050950676203,
+      "r2": -0.7591814004729385,
+      "pearson_r": 0.10740437614543397,
+      "n": 32,
+      "ci95": {
+       "rmse": [
+        80.01907701070898,
+        141.55418389339926
+       ],
+       "mae": [
+        58.60883415210992,
+        110.2763491988182
+       ],
+       "mse": [
+        6403.052691489669,
+        20037.58705718295
+       ],
+       "bias": [
+        -102.94376565394923,
+        -43.19667057376356
+       ]
+      }
+     },
+     "model_train_constants_compact_only": {
+      "rmse": 100.59979529000476,
+      "mae": 72.62140783667564,
+      "mse": 10120.318812390866,
+      "bias": -67.70600178837776,
+      "r2": -0.359507001116687,
+      "pearson_r": 0.5749325511626525,
+      "n": 8
+     }
+    },
+    "sample_representativeness_csv_only": {
+     "design": "30 blocks x 2 pair(s), 2000 draws (coverage: 500 draws x 2000 bootstrap resamples)",
+     "persistence_4d_V_at_t": {
+      "full_split_rmse": 111.59608924412711,
+      "design_rmse_median": 110.98535659416727,
+      "design_rmse_2.5_97.5": [
+       89.80314174341284,
+       134.14943766238724
+      ],
+      "drawn_sample_rmse": 85.20594246635001,
+      "drawn_sample_percentile": 0.8,
+      "bootstrap95_coverage_of_full_split_rmse": 0.91
+     },
+     "recurrence_27d_V_at_T_minus_27d": {
+      "full_split_rmse": 102.43505508100957,
+      "design_rmse_median": 101.5498544359676,
+      "design_rmse_2.5_97.5": [
+       78.44790521905436,
+       129.34051906770208
+      ],
+      "drawn_sample_rmse": 86.37418595853741,
+      "drawn_sample_percentile": 9.75,
+      "bootstrap95_coverage_of_full_split_rmse": 0.912
+     },
+     "climatology_train_mean": {
+      "full_split_rmse": 87.03826655657213,
+      "design_rmse_median": 86.00722015730219,
+      "design_rmse_2.5_97.5": [
+       71.1593449351377,
+       105.5992604852872
+      ],
+      "drawn_sample_rmse": 86.93176191902778,
+      "drawn_sample_percentile": 54.300000000000004,
+      "bootstrap95_coverage_of_full_split_rmse": 0.892
+     }
+    },
+    "model_regression_adjusted_full_split": {
+     "mse": 10767.075543932073,
+     "rmse": 103.76451967764353,
+     "ci95_mse": [
+      5378.6492172393355,
+      16082.827906714256
+     ],
+     "ci95_rmse": [
+      73.339274725343,
+      126.81808982441841
+     ],
+     "b": [
+      -0.24557942972462166,
+      1.8810982236012177
+     ],
+     "n": 38,
+     "corr_with_model_sq_err": [
+      0.0035405593361559173,
+      0.7145609215360053
+     ],
+     "label": "MY ADJUSTMENT (not the paper's): estimate of the model's MSE/RMSE over every pair of the split that has V(t), using the squared errors of 4-day persistence and of the training-mean climatology as control variates",
+     "control_variates": [
+      "persistence_4d sq. error",
+      "climatology_train_mean sq. error"
+     ],
+     "full_split_means_of_control_variates": [
+      12453.687134583184,
+      7565.992113114114
+     ],
+     "sample_means_of_control_variates": [
+      7260.0526315789475,
+      7879.104340031202
+     ],
+     "unadjusted_on_same_rows": {
+      "mse": 12631.520197219528,
+      "rmse": 112.39003602285894
+     }
+    },
+    "repo_style_loss_normalised": {
+     "mean_MSELoss_output_vs_dataset_target": 0.014076067894077327,
+     "times_ptp_squared_km2_s2": 7917.788190418497,
+     "note": "targets scaled with test.csv constants (min 256.0, range 750.0) while the network was trained on train.csv constants; for the validation split this is what finetune.evaluate_model reports as valid/loss on these samples"
+    }
+   },
+   "comparison_with_paper_table6_surya": {
+    "rmse": {
+     "ours": 109.97023143182209,
+     "ci95": [
+      81.17239343634564,
+      135.87195964382482
+     ],
+     "paper_surya": 75.92,
+     "paper_inside_ci": false,
+     "ours_minus_paper": 34.050231431822084,
+     "paper_resnet50": 93.76,
+     "paper_alexnet": 118.6
+    },
+    "mae": {
+     "ours": 80.94203707575798,
+     "ci95": [
+      58.90727435864508,
+      104.76271942257881
+     ],
+     "paper_surya": 58.06,
+     "paper_inside_ci": false,
+     "ours_minus_paper": 22.882037075757978,
+     "paper_resnet50": 74.65,
+     "paper_alexnet": 95.7
+    },
+    "mse": {
+     "ours": 12093.45180116851,
+     "ci95": [
+      6588.957457815315,
+      18461.189459317087
+     ],
+     "paper_surya": 5698.62,
+     "paper_inside_ci": false,
+     "ours_minus_paper": 6394.8318011685105,
+     "paper_resnet50": 8547.924,
+     "paper_alexnet": 13839.49
+    }
+   },
+   "per_year": {
+    "2020": {
+     "n": 8,
+     "rmse": 74.07987009953413,
+     "mae": 61.5617810189724,
+     "bias": -38.995034128427505
+    },
+    "2021": {
+     "n": 8,
+     "rmse": 143.1983443210225,
+     "mae": 98.13045974075794,
+     "bias": -96.06311981379986
+    },
+    "2022": {
+     "n": 8,
+     "rmse": 159.19747659683685,
+     "mae": 128.2006447762251,
+     "bias": -128.2006447762251
+    },
+    "2023": {
+     "n": 8,
+     "rmse": 70.86333615135297,
+     "mae": 63.27392163872719,
+     "bias": -43.70126894116402
+    },
+    "2024": {
+     "n": 8,
+     "rmse": 64.09537479644314,
+     "mae": 53.543378204107285,
+     "bias": -48.6279721558094
+    }
+   },
+   "baselines_full_split_csv_only": {
+    "label": "MY BASELINES (applicant's own, not in Table 6 or the authors' code)",
+    "pairs": 39893,
+    "definition": "all (t, T = t + 4 d) pairs of the split as in the sampling frame (test: t >= 2020-01-01; validation: t, t+60 in core-sdo valid index), S3 not checked",
+    "V_target_mean": 410.94384979821024,
+    "V_target_std": 86.701225798273,
+    "persistence_4d_V_at_t": {
+     "rmse": 111.59608924412711,
+     "mae": 86.98311877247399,
+     "mse": 12453.687134583184,
+     "bias": -0.11122395761851171,
+     "r2": -0.6595963282858643,
+     "pearson_r": 0.1682806680340833,
+     "n": 36431
+    },
+    "recurrence_27d_V_at_T_minus_27d": {
+     "rmse": 102.43505508100957,
+     "mae": 76.87565050671049,
+     "mse": 10492.940509449465,
+     "bias": -0.9388112845795672,
+     "r2": -0.3730239507482189,
+     "pearson_r": 0.30648129733351764,
+     "n": 36510
+    },
+    "climatology_train_mean": {
+     "rmse": 87.03826655657213,
+     "mae": 70.28368126687513,
+     "mse": 7575.659845172901,
+     "bias": 7.652273534694254,
+     "r2": -0.007789875131001267,
+     "pearson_r": NaN,
+     "n": 39893,
+     "value_km_s": 418.5961233329045
+    }
+   },
+   "checks": {
+    "all_inputs_finite": true,
+    "all_outputs_finite": true,
+    "dataset_target_equals_csv_V": true,
+    "finetune_permute_noop_all": true
+   },
+   "timing": {
+    "forward_s_mean": 106.975,
+    "forward_s_max": 117.2,
+    "dataset_and_load_s_mean": 21.4925,
+    "sample_s_mean": 131.02,
+    "peak_rss_gb_max": 8.14
+   },
+   "per_sample": [
+    {
+     "timestamp": "2020-01-05 19:00:00",
+     "target_time": "2020-01-09 19:00:00",
+     "stratum": 2020,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 473.0,
+     "V_pred_train_constants": 362.7198398113251,
+     "V_pred_validation_csv_constants": 367.25643011927605,
+     "V_at_input_time": 422.0,
+     "V_T_minus_27d": 354.0,
+     "model_output_normalised": 0.21914257109165192
+    },
+    {
+     "timestamp": "2020-01-18 18:00:00",
+     "target_time": "2020-01-22 18:00:00",
+     "stratum": 2020,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 344.0,
+     "V_pred_train_constants": 329.73530650138855,
+     "V_pred_validation_csv_constants": 338.1593596637249,
+     "V_at_input_time": 338.0,
+     "V_T_minus_27d": 387.0,
+     "model_output_normalised": 0.16024161875247955
+    },
+    {
+     "timestamp": "2020-03-29 03:00:00",
+     "target_time": "2020-04-02 03:00:00",
+     "stratum": 2020,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 418.0,
+     "V_pred_train_constants": 329.7371006011963,
+     "V_pred_validation_csv_constants": 338.1609423160553,
+     "V_at_input_time": 394.0,
+     "V_T_minus_27d": 323.0,
+     "model_output_normalised": 0.16024482250213623
+    },
+    {
+     "timestamp": "2020-04-21 15:00:00",
+     "target_time": "2020-04-25 15:00:00",
+     "stratum": 2020,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 410.0,
+     "V_pred_train_constants": 346.9193696975708,
+     "V_pred_validation_csv_constants": 353.3181582689285,
+     "V_at_input_time": 402.0,
+     "V_T_minus_27d": 409.0,
+     "model_output_normalised": 0.1909274458885193
+    },
+    {
+     "timestamp": "2020-06-01 12:00:00",
+     "target_time": "2020-06-05 12:00:00",
+     "stratum": 2020,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 324.0,
+     "V_pred_train_constants": 310.71911692619324,
+     "V_pred_validation_csv_constants": 321.3843638598919,
+     "V_at_input_time": 380.0,
+     "V_T_minus_27d": 318.0,
+     "model_output_normalised": 0.1262841373682022
+    },
+    {
+     "timestamp": "2020-08-13 04:00:00",
+     "target_time": "2020-08-17 04:00:00",
+     "stratum": 2020,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 319.0,
+     "V_pred_train_constants": 401.11565351486206,
+     "V_pred_validation_csv_constants": 401.12702292203903,
+     "V_at_input_time": 289.0,
+     "V_T_minus_27d": 346.0,
+     "model_output_normalised": 0.28770652413368225
+    },
+    {
+     "timestamp": "2020-09-05 04:00:00",
+     "target_time": "2020-09-09 04:00:00",
+     "stratum": 2020,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 308.0,
+     "V_pred_train_constants": 316.1513340473175,
+     "V_pred_validation_csv_constants": 326.1763553917408,
+     "V_at_input_time": 392.0,
+     "V_T_minus_27d": 289.0,
+     "model_output_normalised": 0.13598452508449554
+    },
+    {
+     "timestamp": "2020-11-04 13:00:00",
+     "target_time": "2020-11-08 13:00:00",
+     "stratum": 2020,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 438.0,
+     "V_pred_train_constants": 324.94200587272644,
+     "V_pred_validation_csv_constants": 333.93098375201225,
+     "V_at_input_time": 297.0,
+     "V_T_minus_27d": 294.0,
+     "model_output_normalised": 0.15168215334415436
+    },
+    {
+     "timestamp": "2021-01-07 06:00:00",
+     "target_time": "2021-01-11 06:00:00",
+     "stratum": 2021,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 287.0,
+     "V_pred_train_constants": 294.57699596881866,
+     "V_pred_validation_csv_constants": 307.1447071582079,
+     "V_at_input_time": 472.0,
+     "V_T_minus_27d": 337.0,
+     "model_output_normalised": 0.09745892137289047
+    },
+    {
+     "timestamp": "2021-02-17 22:00:00",
+     "target_time": "2021-02-21 22:00:00",
+     "stratum": 2021,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 559.0,
+     "V_pred_train_constants": 366.6349744796753,
+     "V_pred_validation_csv_constants": 370.71013820171356,
+     "V_at_input_time": 389.0,
+     "V_T_minus_27d": 541.0,
+     "model_output_normalised": 0.22613388299942017
+    },
+    {
+     "timestamp": "2021-03-09 00:00:00",
+     "target_time": "2021-03-13 00:00:00",
+     "stratum": 2021,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 352.0,
+     "V_pred_train_constants": 318.41983556747437,
+     "V_pred_validation_csv_constants": 328.1774978041649,
+     "V_at_input_time": 532.0,
+     "V_T_minus_27d": 452.0,
+     "model_output_normalised": 0.14003542065620422
+    },
+    {
+     "timestamp": "2021-04-11 21:00:00",
+     "target_time": "2021-04-15 21:00:00",
+     "stratum": 2021,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 353.0,
+     "V_pred_train_constants": 299.37381386756897,
+     "V_pred_validation_csv_constants": 311.3761858046055,
+     "V_at_input_time": 357.0,
+     "V_T_minus_27d": 303.0,
+     "model_output_normalised": 0.10602466762065887
+    },
+    {
+     "timestamp": "2021-06-12 19:00:00",
+     "target_time": "2021-06-16 19:00:00",
+     "stratum": 2021,
+     "role": "primary",
+     "input_frame_compact": true,
+     "V_obs": 582.0,
+     "V_pred_train_constants": 350.97710609436035,
+     "V_pred_validation_csv_constants": 356.897661447525,
+     "V_at_input_time": 447.0,
+     "V_T_minus_27d": 529.0,
+     "model_output_normalised": 0.1981734037399292
+    },
+    {
+     "timestamp": "2021-07-22 12:00:00",
+     "target_time": "2021-07-26 12:00:00",
+     "stratum": 2021,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 314.0,
+     "V_pred_train_constants": 314.6923637390137,
+     "V_pred_validation_csv_constants": 324.88933515548706,
+     "V_at_input_time": 413.0,
+     "V_T_minus_27d": 329.0,
+     "model_output_normalised": 0.13337922096252441
+    },
+    {
+     "timestamp": "2021-09-17 20:00:00",
+     "target_time": "2021-09-21 20:00:00",
+     "stratum": 2021,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 326.0,
+     "V_pred_train_constants": 323.6445379257202,
+     "V_pred_validation_csv_constants": 332.7864316701889,
+     "V_at_input_time": 403.0,
+     "V_T_minus_27d": 382.0,
+     "model_output_normalised": 0.14936524629592896
+    },
+    {
+     "timestamp": "2021-11-17 05:00:00",
+     "target_time": "2021-11-21 05:00:00",
+     "stratum": 2021,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 593.0,
+     "V_pred_train_constants": 329.1754138469696,
+     "V_pred_validation_csv_constants": 337.6654543578625,
+     "V_at_input_time": 619.0,
+     "V_T_minus_27d": 336.0,
+     "model_output_normalised": 0.15924181044101715
+    },
+    {
+     "timestamp": "2022-02-10 18:00:00",
+     "target_time": "2022-02-14 18:00:00",
+     "stratum": 2022,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 416.0,
+     "V_pred_train_constants": 358.26407194137573,
+     "V_pred_validation_csv_constants": 363.3258063197136,
+     "V_at_input_time": null,
+     "V_T_minus_27d": 591.0,
+     "model_output_normalised": 0.21118584275245667
+    },
+    {
+     "timestamp": "2022-02-15 01:00:00",
+     "target_time": "2022-02-19 01:00:00",
+     "stratum": 2022,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 327.0,
+     "V_pred_train_constants": 294.8297095298767,
+     "V_pred_validation_csv_constants": 307.3676366209984,
+     "V_at_input_time": 412.0,
+     "V_T_minus_27d": 382.0,
+     "model_output_normalised": 0.09791019558906555
+    },
+    {
+     "timestamp": "2022-03-17 20:00:00",
+     "target_time": "2022-03-21 20:00:00",
+     "stratum": 2022,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 332.0,
+     "V_pred_train_constants": 305.7639801502228,
+     "V_pred_validation_csv_constants": 317.01322534680367,
+     "V_at_input_time": 329.0,
+     "V_T_minus_27d": 510.0,
+     "model_output_normalised": 0.11743567883968353
+    },
+    {
+     "timestamp": "2022-04-16 15:00:00",
+     "target_time": "2022-04-20 15:00:00",
+     "stratum": 2022,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 397.0,
+     "V_pred_train_constants": 360.6579852104187,
+     "V_pred_validation_csv_constants": 365.43757981061935,
+     "V_at_input_time": 542.0,
+     "V_T_minus_27d": 557.0,
+     "model_output_normalised": 0.21546068787574768
+    },
+    {
+     "timestamp": "2022-05-17 12:00:00",
+     "target_time": "2022-05-21 12:00:00",
+     "stratum": 2022,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 529.0,
+     "V_pred_train_constants": 333.75195384025574,
+     "V_pred_validation_csv_constants": 341.70261642336845,
+     "V_at_input_time": 602.0,
+     "V_T_minus_27d": 440.0,
+     "model_output_normalised": 0.16741420328617096
+    },
+    {
+     "timestamp": "2022-08-14 04:00:00",
+     "target_time": "2022-08-18 04:00:00",
+     "stratum": 2022,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 566.0,
+     "V_pred_train_constants": 311.48730874061584,
+     "V_pred_validation_csv_constants": 322.0620187819004,
+     "V_at_input_time": 496.0,
+     "V_T_minus_27d": 437.0,
+     "model_output_normalised": 0.12765590846538544
+    },
+    {
+     "timestamp": "2022-09-06 21:00:00",
+     "target_time": "2022-09-10 21:00:00",
+     "stratum": 2022,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 483.0,
+     "V_pred_train_constants": 315.2393388748169,
+     "V_pred_validation_csv_constants": 325.3718453645706,
+     "V_at_input_time": 578.0,
+     "V_T_minus_27d": 490.0,
+     "model_output_normalised": 0.13435596227645874
+    },
+    {
+     "timestamp": "2022-12-26 19:00:00",
+     "target_time": "2022-12-30 19:00:00",
+     "stratum": 2022,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 560.0,
+     "V_pred_train_constants": 304.4004935026169,
+     "V_pred_validation_csv_constants": 315.81043533980846,
+     "V_at_input_time": 528.0,
+     "V_T_minus_27d": 539.0,
+     "model_output_normalised": 0.115000881254673
+    },
+    {
+     "timestamp": "2023-01-15 17:00:00",
+     "target_time": "2023-01-19 17:00:00",
+     "stratum": 2023,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 374.0,
+     "V_pred_train_constants": 292.0090925693512,
+     "V_pred_validation_csv_constants": 304.8794495165348,
+     "V_at_input_time": 415.0,
+     "V_T_minus_27d": 505.0,
+     "model_output_normalised": 0.09287337958812714
+    },
+    {
+     "timestamp": "2023-02-07 15:00:00",
+     "target_time": "2023-02-11 15:00:00",
+     "stratum": 2023,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 467.0,
+     "V_pred_train_constants": 340.9436821937561,
+     "V_pred_validation_csv_constants": 348.04674822092056,
+     "V_at_input_time": 520.0,
+     "V_T_minus_27d": 419.0,
+     "model_output_normalised": 0.18025657534599304
+    },
+    {
+     "timestamp": "2023-03-05 16:00:00",
+     "target_time": "2023-03-09 16:00:00",
+     "stratum": 2023,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 419.0,
+     "V_pred_train_constants": 370.116571187973,
+     "V_pred_validation_csv_constants": 373.7814038693905,
+     "V_at_input_time": 553.0,
+     "V_T_minus_27d": 520.0,
+     "model_output_normalised": 0.23235101997852325
+    },
+    {
+     "timestamp": "2023-03-10 01:00:00",
+     "target_time": "2023-03-14 01:00:00",
+     "stratum": 2023,
+     "role": "primary",
+     "input_frame_compact": true,
+     "V_obs": 318.0,
+     "V_pred_train_constants": 291.46833419799805,
+     "V_pred_validation_csv_constants": 304.4024233818054,
+     "V_at_input_time": 391.0,
+     "V_T_minus_27d": 347.0,
+     "model_output_normalised": 0.09190773963928223
+    },
+    {
+     "timestamp": "2023-05-14 09:00:00",
+     "target_time": "2023-05-18 09:00:00",
+     "stratum": 2023,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 355.0,
+     "V_pred_train_constants": 303.0932831764221,
+     "V_pred_validation_csv_constants": 314.65728908777237,
+     "V_at_input_time": 436.0,
+     "V_T_minus_27d": 376.0,
+     "model_output_normalised": 0.11266657710075378
+    },
+    {
+     "timestamp": "2023-08-02 01:00:00",
+     "target_time": "2023-08-06 01:00:00",
+     "stratum": 2023,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 365.0,
+     "V_pred_train_constants": 344.8290514945984,
+     "V_pred_validation_csv_constants": 351.4741989970207,
+     "V_at_input_time": null,
+     "V_T_minus_27d": 357.0,
+     "model_output_normalised": 0.18719473481178284
+    },
+    {
+     "timestamp": "2023-09-18 01:00:00",
+     "target_time": "2023-09-22 01:00:00",
+     "stratum": 2023,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 388.0,
+     "V_pred_train_constants": 315.6392228603363,
+     "V_pred_validation_csv_constants": 325.7246001660824,
+     "V_at_input_time": 425.0,
+     "V_T_minus_27d": 379.0,
+     "model_output_normalised": 0.1350700408220291
+    },
+    {
+     "timestamp": "2023-12-10 23:00:00",
+     "target_time": "2023-12-14 23:00:00",
+     "stratum": 2023,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 302.0,
+     "V_pred_train_constants": 380.2906107902527,
+     "V_pred_validation_csv_constants": 382.75636023283005,
+     "V_at_input_time": 325.0,
+     "V_T_minus_27d": 295.0,
+     "model_output_normalised": 0.25051894783973694
+    },
+    {
+     "timestamp": "2024-01-01 16:00:00",
+     "target_time": "2024-01-05 16:00:00",
+     "stratum": 2024,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 405.0,
+     "V_pred_train_constants": 367.9216277599335,
+     "V_pred_validation_csv_constants": 371.84515020251274,
+     "V_at_input_time": 348.0,
+     "V_T_minus_27d": 380.0,
+     "model_output_normalised": 0.22843147814273834
+    },
+    {
+     "timestamp": "2024-02-06 21:00:00",
+     "target_time": "2024-02-10 21:00:00",
+     "stratum": 2024,
+     "role": "primary",
+     "input_frame_compact": true,
+     "V_obs": 347.0,
+     "V_pred_train_constants": 301.62309765815735,
+     "V_pred_validation_csv_constants": 313.36037543416023,
+     "V_at_input_time": 467.0,
+     "V_T_minus_27d": 332.0,
+     "model_output_normalised": 0.11004124581813812
+    },
+    {
+     "timestamp": "2024-03-28 22:00:00",
+     "target_time": "2024-04-01 22:00:00",
+     "stratum": 2024,
+     "role": "reserve",
+     "input_frame_compact": true,
+     "V_obs": 464.0,
+     "V_pred_train_constants": 364.53107953071594,
+     "V_pred_validation_csv_constants": 368.85420230031013,
+     "V_at_input_time": 410.0,
+     "V_T_minus_27d": 379.0,
+     "model_output_normalised": 0.22237692773342133
+    },
+    {
+     "timestamp": "2024-04-02 01:00:00",
+     "target_time": "2024-04-06 01:00:00",
+     "stratum": 2024,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 398.0,
+     "V_pred_train_constants": 330.1480495929718,
+     "V_pred_validation_csv_constants": 338.5234580338001,
+     "V_at_input_time": 441.0,
+     "V_T_minus_27d": 439.0,
+     "model_output_normalised": 0.16097865998744965
+    },
+    {
+     "timestamp": "2024-04-28 11:00:00",
+     "target_time": "2024-05-02 11:00:00",
+     "stratum": 2024,
+     "role": "primary",
+     "input_frame_compact": true,
+     "V_obs": 358.0,
+     "V_pred_train_constants": 318.4338963031769,
+     "V_pred_validation_csv_constants": 328.18990138173103,
+     "V_at_input_time": 413.0,
+     "V_T_minus_27d": 403.0,
+     "model_output_normalised": 0.14006052911281586
+    },
+    {
+     "timestamp": "2024-08-16 15:00:00",
+     "target_time": "2024-08-20 15:00:00",
+     "stratum": 2024,
+     "role": "primary",
+     "input_frame_compact": true,
+     "V_obs": 319.0,
+     "V_pred_train_constants": 313.46004247665405,
+     "V_pred_validation_csv_constants": 323.80225175619125,
+     "V_at_input_time": 339.0,
+     "V_T_minus_27d": 348.0,
+     "model_output_normalised": 0.13117864727973938
+    },
+    {
+     "timestamp": "2024-10-15 03:00:00",
+     "target_time": "2024-10-19 03:00:00",
+     "stratum": 2024,
+     "role": "primary",
+     "input_frame_compact": true,
+     "V_obs": 410.0,
+     "V_pred_train_constants": 296.19680523872375,
+     "V_pred_validation_csv_constants": 308.57361033558846,
+     "V_at_input_time": 407.0,
+     "V_T_minus_27d": 412.0,
+     "model_output_normalised": 0.10035143792629242
+    },
+    {
+     "timestamp": "2024-12-08 19:00:00",
+     "target_time": "2024-12-12 19:00:00",
+     "stratum": 2024,
+     "role": "primary",
+     "input_frame_compact": true,
+     "V_obs": 329.0,
+     "V_pred_train_constants": 348.6616241931915,
+     "V_pred_validation_csv_constants": 354.8550756275654,
+     "V_at_input_time": 358.0,
+     "V_T_minus_27d": 394.0,
+     "model_output_normalised": 0.19403861463069916
+    }
+   ]
+  },
   "validation": {
    "notebook_anchor_check": {
     "source": "solar_wind_tutorial.ipynb cell 9 (infer.py with config_infer.yaml; CPU, autocast disabled, float32; torch 2.8.0+cu126); printed to 2 decimals",
@@ -701,7 +1682,7 @@
    "state_dict_keys": 202,
    "load_state_dict_strict": true,
    "parameter_counts_match_notebook": true,
-   "seconds_build_and_load": 4.8
+   "seconds_build_and_load": 13.6
   },
   "normalisation_constants": {
    "train": {
@@ -733,6 +1714,6 @@
     "rows": 5864
    }
   },
-  "peak_rss_gb_after_model_load": 3.9
+  "peak_rss_gb_after_model_load": 3.89
  }
 }
