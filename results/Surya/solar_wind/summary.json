@@ -64,100 +64,100 @@
  "baselines_note": "persistence_4d, recurrence_27d and climatology_train_mean are MY baselines, not in Table 6",
  "splits": {
   "test": {
-   "n_samples_scored": 40,
+   "n_samples_scored": 60,
    "n_failed_records": 0,
    "max_samples_per_block": 2,
    "failed": [],
    "roles": {
-    "primary": 30,
-    "reserve": 10
+    "reserve": 30,
+    "primary": 30
    },
    "time_range_input": [
     "2020-01-05 19:00:00",
-    "2024-12-08 19:00:00"
+    "2024-12-09 22:00:00"
    ],
-   "V_target_sample_mean": 400.7,
-   "V_target_sample_std": 85.06973609927329,
+   "V_target_sample_mean": 399.75,
+   "V_target_sample_std": 80.96370071416779,
    "metrics": {
     "model": {
      "train_constants_primary": {
-      "rmse": 109.97023143182209,
-      "mae": 80.94203707575798,
-      "mse": 12093.45180116851,
-      "bias": -71.11760796308518,
-      "r2": -0.6710910258272937,
-      "pearson_r": 0.20382154819538684,
-      "n": 40,
+      "rmse": 107.06323433279094,
+      "mae": 80.08269103368123,
+      "mse": 11462.536145798105,
+      "bias": -72.4045324921608,
+      "r2": -0.7486384213560424,
+      "pearson_r": 0.23477903429935526,
+      "n": 60,
       "ci95": {
        "rmse": [
-        81.17239343634564,
-        135.87195964382482
+        85.30528851008735,
+        127.86496809569186
        ],
        "mae": [
-        58.90727435864508,
-        104.76271942257881
+        62.47445069268346,
+        98.67595777004958
        ],
        "mse": [
-        6588.957457815315,
-        18461.189459317087
+        7276.992247984886,
+        16349.450066921458
        ],
        "bias": [
-        -97.50977773398161,
-        -45.98291210234165
+        -93.56874991387129,
+        -53.14952171102166
        ]
       }
      },
      "validation_csv_constants_infer_py_as_shipped": {
-      "rmse": 104.45139062250348,
-      "mae": 75.15240973457693,
-      "mse": 10910.093002974807,
-      "bias": -62.67553273886442,
-      "r2": -0.5075727598675124,
-      "pearson_r": 0.20382154819538661,
-      "n": 40,
+      "rmse": 101.27467232160446,
+      "mae": 73.96548475225767,
+      "mse": 10256.559253848356,
+      "bias": -63.69881973415613,
+      "r2": -0.5646636445956725,
+      "pearson_r": 0.2347790342993553,
+      "n": 60,
       "ci95": {
        "rmse": [
-        75.73359941560736,
-        130.03668941410265
+        79.87493935027437,
+        121.83488038582863
        ],
        "mae": [
-        53.6096596916765,
-        98.58657477059398
+        56.9020674946718,
+        92.03812320423
        ],
        "mse": [
-        5735.578083490665,
-        16909.54059419155
+        6380.005938893187,
+        14843.738079021236
        ],
        "bias": [
-        -88.87637373774312,
-        -37.601600726321344
+        -84.75945700505748,
+        -44.409157414523264
        ]
       }
      },
      "test_csv_constants_infer_py_on_this_split": {
-      "rmse": 88.98195429646674,
-      "mae": 62.55897790715098,
-      "mse": 7917.788190418496,
-      "bias": -24.723582093417644,
-      "r2": -0.09409166274026237,
-      "pearson_r": 0.2038215481953867,
-      "n": 40,
+      "rmse": 84.18934860239162,
+      "mae": 60.51909966468811,
+      "mse": 7087.846418095019,
+      "bias": -26.769463159143925,
+      "r2": -0.08126861400521124,
+      "pearson_r": 0.23477903429935526,
+      "n": 60,
       "ci95": {
        "rmse": [
-        63.827294943917984,
-        111.22135911904972
+        64.8964628694974,
+        101.84131739901088
        ],
        "mae": [
-        43.68675308146514,
-        82.86708967422135
+        46.20268172857042,
+        75.80730694693824
        ],
        "mse": [
-        4073.923596492908,
-        12370.190724692386
+        4211.550900090808,
+        10371.653934960188
        ],
        "bias": [
-        -51.742801470728594,
-        1.0763798794709114
+        -48.114538921924925,
+        -7.05655428189165
        ]
       }
      }
@@ -165,162 +165,167 @@
     "baselines_on_same_samples": {
      "persistence_4d_V_at_t": {
       "label": "MY BASELINE (applicant's own, not in Table 6 or the authors' code)",
-      "rmse": 85.20594246635001,
-      "mae": 68.47368421052632,
-      "mse": 7260.0526315789475,
-      "bias": 27.210526315789473,
-      "r2": 0.041926252149345644,
-      "pearson_r": 0.5452642096216239,
-      "n": 38,
+      "rmse": 98.01917801766784,
+      "mae": 79.20370370370371,
+      "mse": 9607.75925925926,
+      "bias": 33.2037037037037,
+      "r2": -0.3755301561540141,
+      "pearson_r": 0.41596206123625157,
+      "n": 54,
       "ci95": {
        "rmse": [
-        67.46251395137227,
-        101.62487771414138
+        80.74851793062844,
+        114.58151508457159
        ],
        "mae": [
-        52.973684210526315,
-        84.76513157894733
+        64.12824074074075,
+        94.70462962962962
        ],
        "mse": [
-        4551.190789473684,
-        10327.615789473683
+        6520.323148148148,
+        13128.92361111111
        ],
        "bias": [
-        1.657236842105264,
-        53.07960526315789
+        9.110185185185186,
+        57.48240740740739
        ]
       },
       "model_minus_baseline_rmse_paired": {
-       "estimate": 27.184093556508927,
+       "estimate": 10.41205245759673,
        "ci95": [
-        -5.736187836098701,
-        59.66682763642705
+        -19.237383323541966,
+        39.33848660521565
        ],
-       "n": 38
+       "n": 54
       }
      },
      "recurrence_27d_V_at_T_minus_27d": {
       "label": "MY BASELINE (applicant's own, not in Table 6 or the authors' code)",
-      "rmse": 86.37418595853741,
-      "mae": 63.2,
-      "mse": 7460.5,
-      "bias": 3.3,
-      "r2": -0.030902905403724645,
-      "pearson_r": 0.45762284229221833,
-      "n": 40,
+      "rmse": 87.55185476463232,
+      "mae": 65.8,
+      "mse": 7665.327272727272,
+      "bias": 10.854545454545455,
+      "r2": -0.14266831180519945,
+      "pearson_r": 0.47415286696539843,
+      "n": 55,
       "ci95": {
        "rmse": [
-        63.069787533721595,
-        108.66050051678712
+        69.263551310135,
+        105.39263383704892
        ],
        "mae": [
-        45.724375,
-        82.675
+        51.018181818181816,
+        81.69090909090909
        ],
        "mse": [
-        3977.7981250000003,
-        11807.104374999999
+        4797.439545454545,
+        11107.607272727271
        ],
        "bias": [
-        -23.4,
-        30.250624999999992
+        -12.364090909090908,
+        34.163636363636364
        ]
       },
       "model_minus_baseline_rmse_paired": {
-       "estimate": 23.596045473284676,
+       "estimate": 18.112666473707193,
        "ci95": [
-        -5.849063754078316,
-        52.45867524607019
+        -6.39996199418314,
+        42.17406300872967
        ],
-       "n": 40
+       "n": 55
       }
      },
      "climatology_train_mean": {
       "label": "MY BASELINE (applicant's own, not in Table 6 or the authors' code)",
-      "rmse": 86.93176191902778,
-      "mae": 73.38844933316179,
-      "mse": 7557.131230346528,
-      "bias": 17.896123332904484,
-      "r2": -0.04425555148870197,
-      "pearson_r": -1.3363957963728443e-16,
-      "n": 40,
+      "rmse": 83.12819737016062,
+      "mae": 69.69485755535543,
+      "mse": 6910.29719801238,
+      "bias": 18.84612333290448,
+      "r2": -0.054183038529655336,
+      "pearson_r": 0.0,
+      "n": 60,
       "ci95": {
        "rmse": [
-        72.79071272538647,
-        100.15466274025997
+        71.88076965542183,
+        93.93835423285559
        ],
        "mae": [
-        59.08806464149405,
-        87.76356948732791
+        58.07817473590919,
+        81.19495381091241
        ],
        "mse": [
-        5298.487874418957,
-        10030.95647223619
+        5166.845046530041,
+        8824.414398417628
        ],
        "bias": [
-        -9.079501667095517,
-        43.346748332904475
+        -2.33721000042885,
+        38.59612333290449
        ]
       },
       "value_km_s": 418.5961233329045,
       "model_minus_baseline_rmse_paired": {
-       "estimate": 23.038469512794308,
+       "estimate": 23.93503696263032,
        "ci95": [
-        1.143383783113654,
-        41.264759455755836
+        6.90691504554606,
+        38.669354719543236
        ],
-       "n": 40
+       "n": 60
       }
      }
     },
     "compact_input_frame_sensitivity": {
      "definition": "input frame (at t) has AIA 131-335 stored in < 30 MB per channel (median); see is_compact_frame",
-     "n_compact_input_frames_scored": 8,
+     "n_compact_input_frames_scored": 13,
      "compact_input_frames": [
       "2021-06-12 19:00:00",
       "2023-03-10 01:00:00",
+      "2023-05-30 00:00:00",
       "2024-02-06 21:00:00",
       "2024-03-28 22:00:00",
       "2024-04-28 11:00:00",
+      "2024-06-17 07:00:00",
+      "2024-07-12 18:00:00",
       "2024-08-16 15:00:00",
+      "2024-10-11 02:00:00",
       "2024-10-15 03:00:00",
-      "2024-12-08 19:00:00"
+      "2024-12-08 19:00:00",
+      "2024-12-09 22:00:00"
      ],
      "model_train_constants_without_compact": {
-      "rmse": 112.19061925296126,
-      "mae": 83.02219438552856,
-      "mse": 12586.73504836292,
-      "bias": -71.97050950676203,
-      "r2": -0.7591814004729385,
-      "pearson_r": 0.10740437614543397,
-      "n": 32,
+      "rmse": 111.27916525900018,
+      "mae": 82.83963518193427,
+      "mse": 12383.052620739873,
+      "bias": -74.91131744739857,
+      "r2": -0.8005103350160363,
+      "pearson_r": 0.17282032980548354,
+      "n": 47,
       "ci95": {
        "rmse": [
-        80.01907701070898,
-        141.55418389339926
+        85.46429128286589,
+        134.9998985206385
        ],
        "mae": [
-        58.60883415210992,
-        110.2763491988182
+        62.196383551460634,
+        105.34650594807685
        ],
        "mse": [
-        6403.052691489669,
-        20037.58705718295
+        7304.1450861950825,
+        18224.972638721043
        ],
        "bias": [
-        -102.94376565394923,
-        -43.19667057376356
+        -99.57173228923311,
+        -52.10905325121069
        ]
       }
      },
      "model_train_constants_compact_only": {
-      "rmse": 100.59979529000476,
-      "mae": 72.62140783667564,
-      "mse": 10120.318812390866,
-      "bias": -67.70600178837776,
-      "r2": -0.359507001116687,
-      "pearson_r": 0.5749325511626525,
-      "n": 8
+      "rmse": 90.19154641143248,
+      "mae": 70.11527757461255,
+      "mse": 8134.51504408558,
+      "bias": -63.341540730916535,
+      "r2": -0.5800839071976891,
+      "pearson_r": 0.47126741098413427,
+      "n": 13
      }
     },
     "sample_representativeness_csv_only": {
@@ -332,8 +337,8 @@
        89.80314174341284,
        134.14943766238724
       ],
-      "drawn_sample_rmse": 85.20594246635001,
-      "drawn_sample_percentile": 0.8,
+      "drawn_sample_rmse": 98.01917801766784,
+      "drawn_sample_percentile": 12.950000000000001,
       "bootstrap95_coverage_of_full_split_rmse": 0.91
      },
      "recurrence_27d_V_at_T_minus_27d": {
@@ -343,8 +348,8 @@
        78.44790521905436,
        129.34051906770208
       ],
-      "drawn_sample_rmse": 86.37418595853741,
-      "drawn_sample_percentile": 9.75,
+      "drawn_sample_rmse": 87.55185476463232,
+      "drawn_sample_percentile": 11.899999999999999,
       "bootstrap95_coverage_of_full_split_rmse": 0.912
      },
      "climatology_train_mean": {
@@ -354,30 +359,30 @@
        71.1593449351377,
        105.5992604852872
       ],
-      "drawn_sample_rmse": 86.93176191902778,
-      "drawn_sample_percentile": 54.300000000000004,
+      "drawn_sample_rmse": 83.12819737016062,
+      "drawn_sample_percentile": 37.1,
       "bootstrap95_coverage_of_full_split_rmse": 0.892
      }
     },
     "model_regression_adjusted_full_split": {
-     "mse": 10767.075543932073,
-     "rmse": 103.76451967764353,
+     "mse": 11767.42627103928,
+     "rmse": 108.4777685566922,
      "ci95_mse": [
-      5378.6492172393355,
-      16082.827906714256
+      7565.222745691289,
+      15144.006031541952
      ],
      "ci95_rmse": [
-      73.339274725343,
-      126.81808982441841
+      86.97828893287847,
+      123.0609850096364
      ],
      "b": [
-      -0.24557942972462166,
-      1.8810982236012177
+      -0.13091509540144528,
+      1.7728127854791815
      ],
-     "n": 38,
+     "n": 54,
      "corr_with_model_sq_err": [
-      0.0035405593361559173,
-      0.7145609215360053
+      -0.07145891839955637,
+      0.7087364049104378
      ],
      "label": "MY ADJUSTMENT (not the paper's): estimate of the model's MSE/RMSE over every pair of the split that has V(t), using the squared errors of 4-day persistence and of the training-mean climatology as control variates",
      "control_variates": [
@@ -389,88 +394,88 @@
       7565.992113114114
      ],
      "sample_means_of_control_variates": [
-      7260.0526315789475,
-      7879.104340031202
+      9607.75925925926,
+      7350.137708691163
      ],
      "unadjusted_on_same_rows": {
-      "mse": 12631.520197219528,
-      "rmse": 112.39003602285894
+      "mse": 11757.331742379944,
+      "rmse": 108.43123047526457
      }
     },
     "repo_style_loss_normalised": {
-     "mean_MSELoss_output_vs_dataset_target": 0.014076067894077327,
-     "times_ptp_squared_km2_s2": 7917.788190418497,
+     "mean_MSELoss_output_vs_dataset_target": 0.012600615854391144,
+     "times_ptp_squared_km2_s2": 7087.846418095019,
      "note": "targets scaled with test.csv constants (min 256.0, range 750.0) while the network was trained on train.csv constants; for the validation split this is what finetune.evaluate_model reports as valid/loss on these samples"
     }
    },
    "comparison_with_paper_table6_surya": {
     "rmse": {
-     "ours": 109.97023143182209,
+     "ours": 107.06323433279094,
      "ci95": [
-      81.17239343634564,
-      135.87195964382482
+      85.30528851008735,
+      127.86496809569186
      ],
      "paper_surya": 75.92,
      "paper_inside_ci": false,
-     "ours_minus_paper": 34.050231431822084,
+     "ours_minus_paper": 31.14323433279094,
      "paper_resnet50": 93.76,
      "paper_alexnet": 118.6
     },
     "mae": {
-     "ours": 80.94203707575798,
+     "ours": 80.08269103368123,
      "ci95": [
-      58.90727435864508,
-      104.76271942257881
+      62.47445069268346,
+      98.67595777004958
      ],
      "paper_surya": 58.06,
      "paper_inside_ci": false,
-     "ours_minus_paper": 22.882037075757978,
+     "ours_minus_paper": 22.022691033681227,
      "paper_resnet50": 74.65,
      "paper_alexnet": 95.7
     },
     "mse": {
-     "ours": 12093.45180116851,
+     "ours": 11462.536145798105,
      "ci95": [
-      6588.957457815315,
-      18461.189459317087
+      7276.992247984886,
+      16349.450066921458
      ],
      "paper_surya": 5698.62,
      "paper_inside_ci": false,
-     "ours_minus_paper": 6394.8318011685105,
+     "ours_minus_paper": 5763.916145798105,
      "paper_resnet50": 8547.924,
      "paper_alexnet": 13839.49
     }
    },
    "per_year": {
     "2020": {
-     "n": 8,
-     "rmse": 74.07987009953413,
-     "mae": 61.5617810189724,
-     "bias": -38.995034128427505
+     "n": 12,
+     "rmse": 70.07030057210116,
+     "mae": 57.76609090963999,
+     "bias": -42.469113945961
     },
     "2021": {
-     "n": 8,
-     "rmse": 143.1983443210225,
-     "mae": 98.13045974075794,
-     "bias": -96.06311981379986
+     "n": 12,
+     "rmse": 138.83354516694908,
+     "mae": 102.39931774139404,
+     "bias": -101.02109112342198
     },
     "2022": {
-     "n": 8,
-     "rmse": 159.19747659683685,
-     "mae": 128.2006447762251,
-     "bias": -128.2006447762251
+     "n": 12,
+     "rmse": 157.04165214350462,
+     "mae": 128.34027754267058,
+     "bias": -128.34027754267058
     },
     "2023": {
-     "n": 8,
-     "rmse": 70.86333615135297,
-     "mae": 63.27392163872719,
-     "bias": -43.70126894116402
+     "n": 12,
+     "rmse": 62.70133307369875,
+     "mae": 53.40972780187925,
+     "bias": -39.03235358993212
     },
     "2024": {
-     "n": 8,
-     "rmse": 64.09537479644314,
-     "mae": 53.543378204107285,
-     "bias": -48.6279721558094
+     "n": 12,
+     "rmse": 67.3390136987632,
+     "mae": 58.49804117282232,
+     "bias": -51.159826258818306
     }
    },
    "baselines_full_split_csv_only": {
@@ -515,10 +520,10 @@
     "finetune_permute_noop_all": true
    },
    "timing": {
-    "forward_s_mean": 106.975,
+    "forward_s_mean": 105.03833333333336,
     "forward_s_max": 117.2,
-    "dataset_and_load_s_mean": 21.4925,
-    "sample_s_mean": 131.02,
+    "dataset_and_load_s_mean": 20.49833333333333,
+    "sample_s_mean": 127.50166666666664,
     "peak_rss_gb_max": 8.14
    },
    "per_sample": [
@@ -588,6 +593,19 @@
      "model_output_normalised": 0.1262841373682022
     },
     {
+     "timestamp": "2020-06-07 08:00:00",
+     "target_time": "2020-06-11 08:00:00",
+     "stratum": 2020,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 416.0,
+     "V_pred_train_constants": 315.4701519012451,
+     "V_pred_validation_csv_constants": 325.5754554271698,
+     "V_at_input_time": 306.0,
+     "V_T_minus_27d": 290.0,
+     "model_output_normalised": 0.13476812839508057
+    },
+    {
      "timestamp": "2020-08-13 04:00:00",
      "target_time": "2020-08-17 04:00:00",
      "stratum": 2020,
@@ -599,6 +617,19 @@
      "V_at_input_time": 289.0,
      "V_T_minus_27d": 346.0,
      "model_output_normalised": 0.28770652413368225
+    },
+    {
+     "timestamp": "2020-08-15 15:00:00",
+     "target_time": "2020-08-19 15:00:00",
+     "stratum": 2020,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 328.0,
+     "V_pred_train_constants": 329.5148742198944,
+     "V_pred_validation_csv_constants": 337.96490690112114,
+     "V_at_input_time": 287.0,
+     "V_T_minus_27d": 312.0,
+     "model_output_normalised": 0.15984798967838287
     },
     {
      "timestamp": "2020-09-05 04:00:00",
@@ -614,6 +645,19 @@
      "model_output_normalised": 0.13598452508449554
     },
     {
+     "timestamp": "2020-09-30 05:00:00",
+     "target_time": "2020-10-04 05:00:00",
+     "stratum": 2020,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 375.0,
+     "V_pred_train_constants": 330.1831555366516,
+     "V_pred_validation_csv_constants": 338.55442649126053,
+     "V_at_input_time": 631.0,
+     "V_T_minus_27d": 358.0,
+     "model_output_normalised": 0.16104134917259216
+    },
+    {
      "timestamp": "2020-11-04 13:00:00",
      "target_time": "2020-11-08 13:00:00",
      "stratum": 2020,
@@ -625,6 +669,19 @@
      "V_at_input_time": 297.0,
      "V_T_minus_27d": 294.0,
      "model_output_normalised": 0.15168215334415436
+    },
+    {
+     "timestamp": "2020-12-17 10:00:00",
+     "target_time": "2020-12-21 10:00:00",
+     "stratum": 2020,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 378.0,
+     "V_pred_train_constants": 324.1627240180969,
+     "V_pred_validation_csv_constants": 333.2435458302498,
+     "V_at_input_time": 279.0,
+     "V_T_minus_27d": 435.0,
+     "model_output_normalised": 0.1502905786037445
     },
     {
      "timestamp": "2021-01-07 06:00:00",
@@ -692,6 +749,19 @@
      "model_output_normalised": 0.1981734037399292
     },
     {
+     "timestamp": "2021-06-14 02:00:00",
+     "target_time": "2021-06-18 02:00:00",
+     "stratum": 2021,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 502.0,
+     "V_pred_train_constants": 346.4237892627716,
+     "V_pred_validation_csv_constants": 352.88098552823067,
+     "V_at_input_time": 425.0,
+     "V_T_minus_27d": null,
+     "model_output_normalised": 0.19004248082637787
+    },
+    {
      "timestamp": "2021-07-22 12:00:00",
      "target_time": "2021-07-26 12:00:00",
      "stratum": 2021,
@@ -703,6 +773,32 @@
      "V_at_input_time": 413.0,
      "V_T_minus_27d": 329.0,
      "model_output_normalised": 0.13337922096252441
+    },
+    {
+     "timestamp": "2021-07-28 19:00:00",
+     "target_time": "2021-08-01 19:00:00",
+     "stratum": 2021,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 387.0,
+     "V_pred_train_constants": 296.8703144788742,
+     "V_pred_validation_csv_constants": 309.1677417010069,
+     "V_at_input_time": 512.0,
+     "V_T_minus_27d": null,
+     "model_output_normalised": 0.10155413299798965
+    },
+    {
+     "timestamp": "2021-09-15 21:00:00",
+     "target_time": "2021-09-19 21:00:00",
+     "stratum": 2021,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 322.0,
+     "V_pred_train_constants": 310.48096895217896,
+     "V_pred_validation_csv_constants": 321.17428332567215,
+     "V_at_input_time": 348.0,
+     "V_T_minus_27d": 297.0,
+     "model_output_normalised": 0.125858873128891
     },
     {
      "timestamp": "2021-09-17 20:00:00",
@@ -729,6 +825,19 @@
      "V_at_input_time": 619.0,
      "V_T_minus_27d": 336.0,
      "model_output_normalised": 0.15924181044101715
+    },
+    {
+     "timestamp": "2021-11-28 04:00:00",
+     "target_time": "2021-12-02 04:00:00",
+     "stratum": 2021,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 499.0,
+     "V_pred_train_constants": 312.47679233551025,
+     "V_pred_validation_csv_constants": 322.93488466739655,
+     "V_at_input_time": null,
+     "V_T_minus_27d": null,
+     "model_output_normalised": 0.1294228434562683
     },
     {
      "timestamp": "2022-02-10 18:00:00",
@@ -796,6 +905,32 @@
      "model_output_normalised": 0.16741420328617096
     },
     {
+     "timestamp": "2022-06-14 18:00:00",
+     "target_time": "2022-06-18 18:00:00",
+     "stratum": 2022,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 583.0,
+     "V_pred_train_constants": 341.0409390926361,
+     "V_pred_validation_csv_constants": 348.1325426995754,
+     "V_at_input_time": 458.0,
+     "V_T_minus_27d": 510.0,
+     "model_output_normalised": 0.18043024837970734
+    },
+    {
+     "timestamp": "2022-07-07 06:00:00",
+     "target_time": "2022-07-11 06:00:00",
+     "stratum": 2022,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 334.0,
+     "V_pred_train_constants": 307.69169449806213,
+     "V_pred_validation_csv_constants": 318.71374478936195,
+     "V_at_input_time": null,
+     "V_T_minus_27d": 462.0,
+     "model_output_normalised": 0.12087802588939667
+    },
+    {
      "timestamp": "2022-08-14 04:00:00",
      "target_time": "2022-08-18 04:00:00",
      "stratum": 2022,
@@ -820,6 +955,32 @@
      "V_at_input_time": 578.0,
      "V_T_minus_27d": 490.0,
      "model_output_normalised": 0.13435596227645874
+    },
+    {
+     "timestamp": "2022-10-07 20:00:00",
+     "target_time": "2022-10-11 20:00:00",
+     "stratum": 2022,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 416.0,
+     "V_pred_train_constants": 335.6033730506897,
+     "V_pred_validation_csv_constants": 343.33583265542984,
+     "V_at_input_time": 521.0,
+     "V_T_minus_27d": null,
+     "model_output_normalised": 0.17072030901908875
+    },
+    {
+     "timestamp": "2022-12-23 18:00:00",
+     "target_time": "2022-12-27 18:00:00",
+     "stratum": 2022,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 506.0,
+     "V_pred_train_constants": 340.18582105636597,
+     "V_pred_validation_csv_constants": 347.3782064318657,
+     "V_at_input_time": 500.0,
+     "V_T_minus_27d": 660.0,
+     "model_output_normalised": 0.1789032518863678
     },
     {
      "timestamp": "2022-12-26 19:00:00",
@@ -900,6 +1061,32 @@
      "model_output_normalised": 0.11266657710075378
     },
     {
+     "timestamp": "2023-05-30 00:00:00",
+     "target_time": "2023-06-03 00:00:00",
+     "stratum": 2023,
+     "role": "reserve",
+     "input_frame_compact": true,
+     "V_obs": 353.0,
+     "V_pred_train_constants": 296.1021226644516,
+     "V_pred_validation_csv_constants": 308.4900867789984,
+     "V_at_input_time": 379.0,
+     "V_T_minus_27d": 505.0,
+     "model_output_normalised": 0.10018236190080643
+    },
+    {
+     "timestamp": "2023-07-08 07:00:00",
+     "target_time": "2023-07-12 07:00:00",
+     "stratum": 2023,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 312.0,
+     "V_pred_train_constants": 319.97363448143005,
+     "V_pred_validation_csv_constants": 329.5481704175472,
+     "V_at_input_time": 436.0,
+     "V_T_minus_27d": 312.0,
+     "model_output_normalised": 0.14281006157398224
+    },
+    {
      "timestamp": "2023-08-02 01:00:00",
      "target_time": "2023-08-06 01:00:00",
      "stratum": 2023,
@@ -924,6 +1111,32 @@
      "V_at_input_time": 425.0,
      "V_T_minus_27d": 379.0,
      "model_output_normalised": 0.1350700408220291
+    },
+    {
+     "timestamp": "2023-10-14 10:00:00",
+     "target_time": "2023-10-18 10:00:00",
+     "stratum": 2023,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 343.0,
+     "V_pred_train_constants": 333.21128726005554,
+     "V_pred_validation_csv_constants": 341.225671261549,
+     "V_at_input_time": 498.0,
+     "V_T_minus_27d": null,
+     "model_output_normalised": 0.16644872725009918
+    },
+    {
+     "timestamp": "2023-11-11 01:00:00",
+     "target_time": "2023-11-15 01:00:00",
+     "stratum": 2023,
+     "role": "reserve",
+     "input_frame_compact": false,
+     "V_obs": 365.0,
+     "V_pred_train_constants": 304.93486404418945,
+     "V_pred_validation_csv_constants": 316.28182649612427,
+     "V_at_input_time": 554.0,
+     "V_T_minus_27d": 381.0,
+     "model_output_normalised": 0.11595511436462402
     },
     {
      "timestamp": "2023-12-10 23:00:00",
@@ -1004,6 +1217,32 @@
      "model_output_normalised": 0.14006052911281586
     },
     {
+     "timestamp": "2024-06-17 07:00:00",
+     "target_time": "2024-06-21 07:00:00",
+     "stratum": 2024,
+     "role": "reserve",
+     "input_frame_compact": true,
+     "V_obs": 418.0,
+     "V_pred_train_constants": 332.43086218833923,
+     "V_pred_validation_csv_constants": 340.53722485899925,
+     "V_at_input_time": 465.0,
+     "V_T_minus_27d": 362.0,
+     "model_output_normalised": 0.16505511105060577
+    },
+    {
+     "timestamp": "2024-07-12 18:00:00",
+     "target_time": "2024-07-16 18:00:00",
+     "stratum": 2024,
+     "role": "reserve",
+     "input_frame_compact": true,
+     "V_obs": 384.0,
+     "V_pred_train_constants": 312.99967646598816,
+     "V_pred_validation_csv_constants": 323.396143168211,
+     "V_at_input_time": null,
+     "V_T_minus_27d": 540.0,
+     "model_output_normalised": 0.130356565117836
+    },
+    {
      "timestamp": "2024-08-16 15:00:00",
      "target_time": "2024-08-20 15:00:00",
      "stratum": 2024,
@@ -1015,6 +1254,19 @@
      "V_at_input_time": 339.0,
      "V_T_minus_27d": 348.0,
      "model_output_normalised": 0.13117864727973938
+    },
+    {
+     "timestamp": "2024-10-11 02:00:00",
+     "target_time": "2024-10-15 02:00:00",
+     "stratum": 2024,
+     "role": "reserve",
+     "input_frame_compact": true,
+     "V_obs": 415.0,
+     "V_pred_train_constants": 322.3076581954956,
+     "V_pred_validation_csv_constants": 331.6071127653122,
+     "V_at_input_time": null,
+     "V_T_minus_27d": 471.0,
+     "model_output_normalised": 0.146977961063385
     },
     {
      "timestamp": "2024-10-15 03:00:00",
@@ -1041,6 +1293,19 @@
      "V_at_input_time": 358.0,
      "V_T_minus_27d": 394.0,
      "model_output_normalised": 0.19403861463069916
+    },
+    {
+     "timestamp": "2024-12-09 22:00:00",
+     "target_time": "2024-12-13 22:00:00",
+     "stratum": 2024,
+     "role": "reserve",
+     "input_frame_compact": true,
+     "V_obs": 321.0,
+     "V_pred_train_constants": 345.3676652908325,
+     "V_pred_validation_csv_constants": 351.94933331012726,
+     "V_at_input_time": 485.0,
+     "V_T_minus_27d": 380.0,
+     "model_output_normalised": 0.18815654516220093
     }
    ]
   },
@@ -1682,7 +1947,7 @@
    "state_dict_keys": 202,
    "load_state_dict_strict": true,
    "parameter_counts_match_notebook": true,
-   "seconds_build_and_load": 13.6
+   "seconds_build_and_load": 5.0
   },
   "normalisation_constants": {
    "train": {
