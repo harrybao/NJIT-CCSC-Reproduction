@@ -1,0 +1,738 @@
+{
+ "label": "PARTIAL REPRODUCTION: released fine-tuned weights scored on a small seeded sample of the SuryaBench solar-wind split named below, on CPU in float32. Not the paper's (unstated) evaluation set.",
+ "paper_reference": {
+  "source": "arXiv 2508.14112 v2, Sec. 2.6.5, Table 6",
+  "values": {
+   "AlexNet": {
+    "rmse_km_s": 118.6,
+    "mae_km_s": 95.7,
+    "validation_mse_km2_s2": 13839.49
+   },
+   "ResNet50": {
+    "rmse_km_s": 93.76,
+    "mae_km_s": 74.65,
+    "validation_mse_km2_s2": 8547.924
+   },
+   "Surya": {
+    "rmse_km_s": 75.92,
+    "mae_km_s": 58.06,
+    "validation_mse_km2_s2": 5698.62
+   }
+  },
+  "table7_27day_persistence_rmse_km_s": 89,
+  "split_in_paper": "not stated",
+  "metric_definition_in_paper": "not stated (task equation y_{t+dt} = f(x_t), dt = 4 days, Sec. 2.6.5)",
+  "note": "sqrt(5698.62) = 75.49 != 75.92: RMSE and Validation MSE are not from the same set/aggregation"
+ },
+ "primary_prediction": "model output * ptp(train.csv V) + min(train.csv V) = y * 560 + 240 km/s",
+ "normalisation_constants": {
+  "train": {
+   "min": 240.0,
+   "ptp": 560.0,
+   "max": 800.0,
+   "mean": 418.5961233329045,
+   "rows": 69957
+  },
+  "validation": {
+   "min": 259.0,
+   "ptp": 494.0,
+   "max": 753.0,
+   "mean": 397.1122776319627,
+   "rows": 3429
+  },
+  "test": {
+   "min": 256.0,
+   "ptp": 750.0,
+   "max": 1006.0,
+   "mean": 410.8015009380863,
+   "rows": 39975
+  },
+  "leaky_validation": {
+   "min": 266.0,
+   "ptp": 612.0,
+   "max": 878.0,
+   "mean": 426.7680763983629,
+   "rows": 5864
+  }
+ },
+ "metrics": "RMSE = sqrt(mean((pred-obs)^2)), MAE = mean|pred-obs|, MSE = mean((pred-obs)^2) in km/s over samples (as infer.py; finetune.evaluate_model computes the same in normalised units)",
+ "bootstrap": {
+  "resamples": 10000,
+  "seed": 0,
+  "interval": "percentile 95%, resampling samples"
+ },
+ "baselines_note": "persistence_4d, recurrence_27d and climatology_train_mean are MY baselines, not in Table 6",
+ "splits": {
+  "validation": {
+   "notebook_anchor_check": {
+    "source": "solar_wind_tutorial.ipynb cell 9 (infer.py with config_infer.yaml; CPU, autocast disabled, float32; torch 2.8.0+cu126); printed to 2 decimals",
+    "tolerance_km_s": 0.5,
+    "n_run": 3,
+    "all_within_tolerance": true,
+    "max_abs_diff_km_s": 0.007473833560936782,
+    "samples": [
+     {
+      "timestamp": "2011-01-20 01:00:00",
+      "status": "ok",
+      "notebook_pred_km_s": 393.63,
+      "ours_km_s_validation_csv_constants": 393.63046258687973,
+      "diff_km_s": 0.0004625868797347721,
+      "within_tolerance": true,
+      "ours_normalised": 0.27253130078315735,
+      "notebook_normalised": 0.27253036437246964,
+      "ours_km_s_train_constants": 392.6175284385681,
+      "ground_truth_notebook_km_s": 344.0,
+      "ground_truth_ours_km_s": 344.0,
+      "ground_truth_equal": true,
+      "forward_s": 107.6
+     },
+     {
+      "timestamp": "2019-01-23 02:00:00",
+      "status": "ok",
+      "notebook_pred_km_s": 391.95,
+      "ours_km_s_validation_csv_constants": 391.9436054825783,
+      "diff_km_s": -0.006394517421711043,
+      "within_tolerance": true,
+      "ours_normalised": 0.26911661028862,
+      "notebook_normalised": 0.2691295546558704,
+      "ours_km_s_train_constants": 390.7053017616272,
+      "ground_truth_notebook_km_s": 433.0,
+      "ground_truth_ours_km_s": 433.0,
+      "ground_truth_equal": true,
+      "forward_s": 107.6
+     },
+     {
+      "timestamp": "2011-01-20 02:00:00",
+      "status": "ok",
+      "notebook_pred_km_s": 383.07,
+      "ours_km_s_validation_csv_constants": 383.06252616643906,
+      "diff_km_s": -0.007473833560936782,
+      "within_tolerance": true,
+      "ours_normalised": 0.25113871693611145,
+      "notebook_normalised": 0.2511538461538461,
+      "ours_km_s_train_constants": 380.6376814842224,
+      "ground_truth_notebook_km_s": 351.0,
+      "ground_truth_ours_km_s": 351.0,
+      "ground_truth_equal": true,
+      "forward_s": 102.3
+     }
+    ]
+   },
+   "n_samples_scored": 10,
+   "n_failed_records": 0,
+   "max_samples_per_block": 1,
+   "failed": [],
+   "roles": {
+    "primary": 10
+   },
+   "time_range_input": [
+    "2011-01-18 05:00:00",
+    "2019-01-21 07:00:00"
+   ],
+   "V_target_sample_mean": 414.3,
+   "V_target_sample_std": 76.64730915041963,
+   "metrics": {
+    "model": {
+     "train_constants_primary": {
+      "rmse": 61.732083866496836,
+      "mae": 45.52776724100113,
+      "mse": 3810.8501785001986,
+      "bias": -33.69114218950271,
+      "r2": 0.3513236719995714,
+      "pearson_r": 0.7473498792057177,
+      "n": 10,
+      "ci95": {
+       "rmse": [
+        29.45434962175228,
+        89.09644324585705
+       ],
+       "mae": [
+        22.602881343364714,
+        73.13415859699248
+       ],
+       "mse": [
+        867.5587118253983,
+        7938.176249840173
+       ],
+       "bias": [
+        -67.07567964583636,
+        -3.825334721803675
+       ]
+      }
+     },
+     "validation_csv_constants_infer_py_as_shipped": {
+      "rmse": 61.55051783021961,
+      "mae": 43.69949467331171,
+      "mse": 3788.4662451681825,
+      "bias": -31.26290043145418,
+      "r2": 0.3551338264270364,
+      "pearson_r": 0.7473498792057177,
+      "n": 10,
+      "ci95": {
+       "rmse": [
+        26.41141840606898,
+        91.19711647900996
+       ],
+       "mae": [
+        20.285204972848295,
+        72.73642610970884
+       ],
+       "mse": [
+        697.5630231847026,
+        8316.914205107372
+       ],
+       "bias": [
+        -65.61726253390312,
+        -0.6558315148577115
+       ]
+      }
+     },
+     "validation_csv_constants_infer_py_on_this_split": {
+      "rmse": 61.55051783021961,
+      "mae": 43.69949467331171,
+      "mse": 3788.4662451681825,
+      "bias": -31.26290043145418,
+      "r2": 0.3551338264270364,
+      "pearson_r": 0.7473498792057177,
+      "n": 10,
+      "ci95": {
+       "rmse": [
+        26.41141840606898,
+        91.19711647900996
+       ],
+       "mae": [
+        20.285204972848295,
+        72.73642610970884
+       ],
+       "mse": [
+        697.5630231847026,
+        8316.914205107372
+       ],
+       "bias": [
+        -65.61726253390312,
+        -0.6558315148577115
+       ]
+      }
+     }
+    },
+    "baselines_on_same_samples": {
+     "persistence_4d_V_at_t": {
+      "label": "MY BASELINE (applicant's own, not in Table 6 or the authors' code)",
+      "rmse": 108.94356337113267,
+      "mae": 82.5,
+      "mse": 11868.7,
+      "bias": -13.9,
+      "r2": -1.0202695916974336,
+      "pearson_r": -0.06878772697383231,
+      "n": 10,
+      "ci95": {
+       "rmse": [
+        54.289317400231646,
+        162.4933690852265
+       ],
+       "mae": [
+        45.0,
+        132.20249999999996
+       ],
+       "mse": [
+        2947.33,
+        26404.094999999998
+       ],
+       "bias": [
+        -87.0025,
+        47.0
+       ]
+      },
+      "model_minus_baseline_rmse_paired": {
+       "estimate": -47.21147950463583,
+       "ci95": [
+        -78.70815813640323,
+        -4.129528042094443
+       ],
+       "n": 10
+      }
+     },
+     "recurrence_27d_V_at_T_minus_27d": {
+      "label": "MY BASELINE (applicant's own, not in Table 6 or the authors' code)",
+      "rmse": 84.25200294355025,
+      "mae": 65.6,
+      "mse": 7098.4,
+      "bias": 18.2,
+      "r2": -0.2082773740767785,
+      "pearson_r": 0.3526305342114506,
+      "n": 10,
+      "ci95": {
+       "rmse": [
+        44.22894979535462,
+        116.3092859499975
+       ],
+       "mae": [
+        35.4975,
+        100.20249999999997
+       ],
+       "mse": [
+        1956.2,
+        13527.849999999999
+       ],
+       "bias": [
+        -29.0,
+        71.5
+       ]
+      },
+      "model_minus_baseline_rmse_paired": {
+       "estimate": -22.519919077053416,
+       "ci95": [
+        -69.0242230829094,
+        25.441219974033213
+       ],
+       "n": 10
+      }
+     },
+     "climatology_train_mean": {
+      "label": "MY BASELINE (applicant's own, not in Table 6 or the authors' code)",
+      "rmse": 76.76761475838315,
+      "mae": 55.6192246665809,
+      "mse": 5893.266675691526,
+      "bias": 4.296123332904483,
+      "r2": -0.0031416634225660545,
+      "pearson_r": 1.483246300251802e-16,
+      "n": 10,
+      "ci95": {
+       "rmse": [
+        29.851631209463577,
+        114.98278884920734
+       ],
+       "mae": [
+        26.618744049916376,
+        91.83998809983272
+       ],
+       "mse": [
+        891.1199662485831,
+        13221.041732083313
+       ],
+       "bias": [
+        -46.90387666709552,
+        47.796123332904486
+       ]
+      },
+      "value_km_s": 418.5961233329045,
+      "model_minus_baseline_rmse_paired": {
+       "estimate": -15.03553089188631,
+       "ci95": [
+        -37.601435978759994,
+        17.43060756451973
+       ],
+       "n": 10
+      }
+     }
+    },
+    "compact_input_frame_sensitivity": {
+     "definition": "input frame (at t) has AIA 131-335 stored in < 30 MB per channel (median); see is_compact_frame",
+     "n_compact_input_frames_scored": 0,
+     "compact_input_frames": []
+    },
+    "sample_representativeness_csv_only": {
+     "design": "10 blocks x 1 pair(s), 2000 draws (coverage: 500 draws x 2000 bootstrap resamples)",
+     "persistence_4d_V_at_t": {
+      "full_split_rmse": 123.71506008548039,
+      "design_rmse_median": 118.53480454615004,
+      "design_rmse_2.5_97.5": [
+       74.90704175151026,
+       159.95868169079753
+      ],
+      "drawn_sample_rmse": 108.94356337113267,
+      "drawn_sample_percentile": 32.85,
+      "bootstrap95_coverage_of_full_split_rmse": 0.842
+     },
+     "recurrence_27d_V_at_T_minus_27d": {
+      "full_split_rmse": 97.9059802294304,
+      "design_rmse_median": 90.47067272342585,
+      "design_rmse_2.5_97.5": [
+       45.07959973069278,
+       141.93256141473992
+      ],
+      "drawn_sample_rmse": 84.25200294355025,
+      "drawn_sample_percentile": 40.5,
+      "bootstrap95_coverage_of_full_split_rmse": 0.808
+     },
+     "climatology_train_mean": {
+      "full_split_rmse": 86.57151420089869,
+      "design_rmse_median": 82.00452412189682,
+      "design_rmse_2.5_97.5": [
+       54.81769132410177,
+       118.2517456996063
+      ],
+      "drawn_sample_rmse": 76.76761475838315,
+      "drawn_sample_percentile": 35.85,
+      "bootstrap95_coverage_of_full_split_rmse": 0.86
+     }
+    },
+    "model_regression_adjusted_full_split": {
+     "mse": 4660.042575679969,
+     "rmse": 68.26450450768664,
+     "ci95_mse": [
+      -116.44105962430143,
+      17373.065769659028
+     ],
+     "ci95_rmse": [
+      0.0,
+      131.80692610655566
+     ],
+     "b": [
+      0.19902951221328902,
+      0.11433838370162029
+     ],
+     "n": 10,
+     "corr_with_model_sq_err": [
+      0.8579188981306397,
+      0.801097328413836
+     ],
+     "label": "MY ADJUSTMENT (not the paper's): estimate of the model's MSE/RMSE over every pair of the split that has V(t), using the squared errors of 4-day persistence and of the training-mean climatology as control variates",
+     "control_variates": [
+      "persistence_4d sq. error",
+      "climatology_train_mean sq. error"
+     ],
+     "full_split_means_of_control_variates": [
+      15305.416091954023,
+      7337.964986397659
+     ],
+     "sample_means_of_control_variates": [
+      11868.7,
+      5893.266675691526
+     ],
+     "unadjusted_on_same_rows": {
+      "mse": 3810.8501785001986,
+      "rmse": 61.732083866496836
+     }
+    },
+    "repo_style_loss_normalised": {
+     "mean_MSELoss_output_vs_dataset_target": 0.015524210547493736,
+     "times_ptp_squared_km2_s2": 3788.4662451681816,
+     "note": "targets scaled with validation.csv constants (min 259.0, range 494.0) while the network was trained on train.csv constants; for the validation split this is what finetune.evaluate_model reports as valid/loss on these samples"
+    }
+   },
+   "comparison_with_paper_table6_surya": {
+    "rmse": {
+     "ours": 61.732083866496836,
+     "ci95": [
+      29.45434962175228,
+      89.09644324585705
+     ],
+     "paper_surya": 75.92,
+     "paper_inside_ci": true,
+     "ours_minus_paper": -14.187916133503165,
+     "paper_resnet50": 93.76,
+     "paper_alexnet": 118.6
+    },
+    "mae": {
+     "ours": 45.52776724100113,
+     "ci95": [
+      22.602881343364714,
+      73.13415859699248
+     ],
+     "paper_surya": 58.06,
+     "paper_inside_ci": true,
+     "ours_minus_paper": -12.532232758998873,
+     "paper_resnet50": 74.65,
+     "paper_alexnet": 95.7
+    },
+    "mse": {
+     "ours": 3810.8501785001986,
+     "ci95": [
+      867.5587118253983,
+      7938.176249840173
+     ],
+     "paper_surya": 5698.62,
+     "paper_inside_ci": true,
+     "ours_minus_paper": -1887.7698214998013,
+     "paper_resnet50": 8547.924,
+     "paper_alexnet": 13839.49
+    }
+   },
+   "per_year": {
+    "2011": {
+     "n": 1,
+     "rmse": 37.51832866668701,
+     "mae": 37.51832866668701,
+     "bias": -37.51832866668701
+    },
+    "2012": {
+     "n": 1,
+     "rmse": 17.57178783416748,
+     "mae": 17.57178783416748,
+     "bias": -17.57178783416748
+    },
+    "2013": {
+     "n": 1,
+     "rmse": 48.88683867454529,
+     "mae": 48.88683867454529,
+     "bias": -48.88683867454529
+    },
+    "2014": {
+     "n": 1,
+     "rmse": 45.63383615016937,
+     "mae": 45.63383615016937,
+     "bias": -45.63383615016937
+    },
+    "2015": {
+     "n": 1,
+     "rmse": 6.771396636962891,
+     "mae": 6.771396636962891,
+     "bias": -6.771396636962891
+    },
+    "2016": {
+     "n": 1,
+     "rmse": 47.27836537361145,
+     "mae": 47.27836537361145,
+     "bias": 47.27836537361145
+    },
+    "2017": {
+     "n": 1,
+     "rmse": 9.978595733642578,
+     "mae": 9.978595733642578,
+     "bias": 9.978595733642578
+    },
+    "2018": {
+     "n": 2,
+     "rmse": 70.58369722410093,
+     "mae": 50.86400020122528,
+     "bias": -48.937836050987244
+    },
+    "2019": {
+     "n": 1,
+     "rmse": 139.91052293777466,
+     "mae": 139.91052293777466,
+     "bias": -139.91052293777466
+    }
+   },
+   "baselines_full_split_csv_only": {
+    "label": "MY BASELINES (applicant's own, not in Table 6 or the authors' code)",
+    "pairs": 2393,
+    "definition": "all (t, T = t + 4 d) pairs of the split as in the sampling frame (test: t >= 2020-01-01; validation: t, t+60 in core-sdo valid index), S3 not checked",
+    "V_target_mean": 397.2277475971584,
+    "V_target_std": 83.89290547747397,
+    "persistence_4d_V_at_t": {
+     "rmse": 123.71506008548039,
+     "mae": 102.74390804597701,
+     "mse": 15305.416091954023,
+     "bias": 6.905747126436782,
+     "r2": -1.2167517915734702,
+     "pearson_r": -0.1359345619976968,
+     "n": 2175
+    },
+    "recurrence_27d_V_at_T_minus_27d": {
+     "rmse": 97.9059802294304,
+     "mae": 71.76614987080103,
+     "mse": 9585.580964685616,
+     "bias": 6.042635658914729,
+     "r2": -0.33760370908206805,
+     "pearson_r": 0.43034069398588315,
+     "n": 2322
+    },
+    "climatology_train_mean": {
+     "rmse": 86.57151420089869,
+     "mae": 72.45139549367144,
+     "mse": 7494.627071036403,
+     "bias": 21.368375735746096,
+     "r2": -0.06487726778543235,
+     "pearson_r": NaN,
+     "n": 2393,
+     "value_km_s": 418.5961233329045
+    }
+   },
+   "checks": {
+    "all_inputs_finite": true,
+    "all_outputs_finite": true,
+    "dataset_target_equals_csv_V": true,
+    "finetune_permute_noop_all": true
+   },
+   "timing": {
+    "forward_s_mean": 104.9,
+    "forward_s_max": 111.7,
+    "dataset_and_load_s_mean": 20.36,
+    "sample_s_mean": 125.25999999999999,
+    "peak_rss_gb_max": 7.91
+   },
+   "per_sample": [
+    {
+     "timestamp": "2011-01-18 05:00:00",
+     "target_time": "2011-01-22 05:00:00",
+     "stratum": 2011,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 394.0,
+     "V_pred_train_constants": 356.481671333313,
+     "V_pred_validation_csv_constants": 361.75347435474396,
+     "V_at_input_time": 426.0,
+     "V_T_minus_27d": 406.0,
+     "model_output_normalised": 0.2080029845237732
+    },
+    {
+     "timestamp": "2012-01-25 23:00:00",
+     "target_time": "2012-01-29 23:00:00",
+     "stratum": 2012,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 395.0,
+     "V_pred_train_constants": 377.4282121658325,
+     "V_pred_validation_csv_constants": 380.23131573200226,
+     "V_at_input_time": 491.0,
+     "V_T_minus_27d": 361.0,
+     "model_output_normalised": 0.24540752172470093
+    },
+    {
+     "timestamp": "2013-01-24 08:00:00",
+     "target_time": "2013-01-28 08:00:00",
+     "stratum": 2013,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 402.0,
+     "V_pred_train_constants": 353.1131613254547,
+     "V_pred_validation_csv_constants": 358.78196731209755,
+     "V_at_input_time": 275.0,
+     "V_T_minus_27d": 339.0,
+     "model_output_normalised": 0.20198778808116913
+    },
+    {
+     "timestamp": "2014-01-27 09:00:00",
+     "target_time": "2014-01-31 09:00:00",
+     "stratum": 2014,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 346.0,
+     "V_pred_train_constants": 300.3661638498306,
+     "V_pred_validation_csv_constants": 312.25158025324345,
+     "V_at_input_time": 325.0,
+     "V_T_minus_27d": 508.0,
+     "model_output_normalised": 0.10779672116041183
+    },
+    {
+     "timestamp": "2015-01-27 06:00:00",
+     "target_time": "2015-01-31 06:00:00",
+     "stratum": 2015,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 429.0,
+     "V_pred_train_constants": 422.2286033630371,
+     "V_pred_validation_csv_constants": 419.751660823822,
+     "V_at_input_time": 421.0,
+     "V_T_minus_27d": 428.0,
+     "model_output_normalised": 0.3254082202911377
+    },
+    {
+     "timestamp": "2016-01-25 22:00:00",
+     "target_time": "2016-01-29 22:00:00",
+     "stratum": 2016,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 292.0,
+     "V_pred_train_constants": 339.27836537361145,
+     "V_pred_validation_csv_constants": 346.5777008831501,
+     "V_at_input_time": 392.0,
+     "V_T_minus_27d": 447.0,
+     "model_output_normalised": 0.17728279531002045
+    },
+    {
+     "timestamp": "2017-01-26 14:00:00",
+     "target_time": "2017-01-30 14:00:00",
+     "stratum": 2017,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 444.0,
+     "V_pred_train_constants": 453.9785957336426,
+     "V_pred_validation_csv_constants": 447.75968980789185,
+     "V_at_input_time": 386.0,
+     "V_T_minus_27d": 508.0,
+     "model_output_normalised": 0.38210463523864746
+    },
+    {
+     "timestamp": "2018-01-16 07:00:00",
+     "target_time": "2018-01-20 07:00:00",
+     "stratum": 2018,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 383.0,
+     "V_pred_train_constants": 384.92616415023804,
+     "V_pred_validation_csv_constants": 386.8455805182457,
+     "V_at_input_time": 443.0,
+     "V_T_minus_27d": 409.0,
+     "model_output_normalised": 0.25879672169685364
+    },
+    {
+     "timestamp": "2018-01-22 07:00:00",
+     "target_time": "2018-01-26 07:00:00",
+     "stratum": 2018,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 459.0,
+     "V_pred_train_constants": 359.1981637477875,
+     "V_pred_validation_csv_constants": 364.1498087346554,
+     "V_at_input_time": 514.0,
+     "V_T_minus_27d": 367.0,
+     "model_output_normalised": 0.21285386383533478
+    },
+    {
+     "timestamp": "2019-01-21 07:00:00",
+     "target_time": "2019-01-25 07:00:00",
+     "stratum": 2019,
+     "role": "primary",
+     "input_frame_compact": false,
+     "V_obs": 599.0,
+     "V_pred_train_constants": 459.08947706222534,
+     "V_pred_validation_csv_constants": 452.2682172656059,
+     "V_at_input_time": 331.0,
+     "V_T_minus_27d": 552.0,
+     "model_output_normalised": 0.3912312090396881
+    }
+   ]
+  }
+ },
+ "environment": {
+  "torch": "2.10.0+cpu",
+  "threads": 4,
+  "precision": "float32, no autocast",
+  "upstream_head": "78b827e",
+  "checkpoint": "nasa-ibm-ai4science/solar_wind_surya@6ac4aa79a96f8785a1ab300842d13727e52b58a5/solar_wind_weights.pth",
+  "checkpoint_sha256": "7ff8c19024fc8a8c4cb5c73278081ba242ba7e871b832e1caab11be8e3166a17",
+  "labels": "nasa-ibm-ai4science/Surya-bench-solarwind@20547a25cbd3aaa359e9cda18be913b94c225e7b",
+  "model": {
+   "n_parameters": 367501313,
+   "n_trainable_after_peft": 8192000,
+   "state_dict_keys": 202,
+   "load_state_dict_strict": true,
+   "parameter_counts_match_notebook": true,
+   "seconds_build_and_load": 4.8
+  },
+  "normalisation_constants": {
+   "train": {
+    "min": 240.0,
+    "ptp": 560.0,
+    "max": 800.0,
+    "mean": 418.5961233329045,
+    "rows": 69957
+   },
+   "validation": {
+    "min": 259.0,
+    "ptp": 494.0,
+    "max": 753.0,
+    "mean": 397.1122776319627,
+    "rows": 3429
+   },
+   "test": {
+    "min": 256.0,
+    "ptp": 750.0,
+    "max": 1006.0,
+    "mean": 410.8015009380863,
+    "rows": 39975
+   },
+   "leaky_validation": {
+    "min": 266.0,
+    "ptp": 612.0,
+    "max": 878.0,
+    "mean": 426.7680763983629,
+    "rows": 5864
+   }
+  },
+  "peak_rss_gb_after_model_load": 3.9
+ }
+}
