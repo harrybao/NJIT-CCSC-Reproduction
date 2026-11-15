@@ -127,10 +127,14 @@
     "n_reserve": 30,
     "n_skipped": 0
    },
+   "n_records_ignored_not_in_current_sample": 0,
    "n_records": 0,
    "n_failed": 0,
    "failed": [],
+   "n_blocks_in_design": 30,
+   "n_reserves_used": 0,
    "n_samples_scored": 0,
+   "n_samples_with_nonfinite_prediction": 0,
    "status": "no samples scored yet"
   },
   "validation": {
@@ -205,10 +209,14 @@
     "n_reserve": 20,
     "n_skipped": 0
    },
+   "n_records_ignored_not_in_current_sample": 0,
    "n_records": 0,
    "n_failed": 0,
    "failed": [],
+   "n_blocks_in_design": 20,
+   "n_reserves_used": 0,
    "n_samples_scored": 0,
+   "n_samples_with_nonfinite_prediction": 0,
    "status": "no samples scored yet"
   }
  }

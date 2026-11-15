@@ -68,6 +68,7 @@ A rerun skips time stamps already in per_sample_<split>.jsonl, so an interrupted
 one invocation to K forward passes (the dry run prints the K that fits in about 90 minutes).
 """
 import argparse
+import collections
 import concurrent.futures as cf
 import contextlib
 import functools
@@ -77,7 +78,9 @@ import io
 import json
 import multiprocessing as mp
 import os
+import pickle
 import re
+import shutil
 import sys
 import tempfile
 import time
@@ -86,8 +89,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 sys.path.insert(0, HERE)
 import surya_common as C  # noqa: E402  (sets HF_HUB_DISABLE_XET=1 before huggingface_hub is imported)
-# our own helpers from the sibling AR script (HTTP range reader for netCDF headers, small-file fetch, sha256, HEAD retry)
-from ar_segmentation_subset_eval import fetch_small, remote_nc_channels, s3_exists_retry, sha256_file  # noqa: E402
+# The small HTTP helpers (range reader for netCDF headers, small-file fetch, sha256, HEAD retry) used to be imported
+# from the sibling AR script; they are defined below instead, so that edits to that script cannot break this one.
 
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
@@ -117,6 +120,16 @@ CKPT_REPO, CKPT_REV = "nasa-ibm-ai4science/solar_wind_surya", "6ac4aa79a96f8785a
 CKPT_NAME, CKPT_SIZE = "solar_wind_weights.pth", 1805655558
 CKPT_SHA256 = "7ff8c19024fc8a8c4cb5c73278081ba242ba7e871b832e1caab11be8e3166a17"  # HF LFS oid
 CORE_SDO_REPO, CORE_SDO_REV = "nasa-ibm-ai4science/core-sdo", "9c10abe52c1f206d1b66715745229e29ef543cc6"
+CORE_SDO_BLOBS = {  # git blob ids from the HF paths-info API at CORE_SDO_REV; scalers.yaml is config.yaml's
+    "valid_index_surya_1_0.csv": "af09bd78d394c975876e051bbb4fb24f225f68a8",  # scalers_path (download_data.sh)
+    "scalers.yaml": "0b9b6e315277e1736326515e5d098dd13cd66ada",  # byte-identical to Surya-1.0's (sha256 a944e8f1...)
+}
+# The notebook's printout of apply_peft_lora for this checkpoint (cell 9): "trainable params: 8,192,000 || all params:
+# 367,501,313". The dry run checks the checkpoint's tensor list against these and against config_infer.yaml.
+NOTEBOOK_PARAMS_ALL, NOTEBOOK_PARAMS_LORA = 367501313, 8192000
+# Compact frames (see is_compact_frame): AIA 131-335 stored in well under half the usual ~60 MB each.
+COMPACT_CHANNELS = ["aia131", "aia171", "aia193", "aia211", "aia304", "aia335"]
+MIN_RAM_GB = 12.0  # MemAvailable needed to start the real run (one fp32 forward pass peaks at about 10-13 GB RSS)
 
 PAPER_TABLE6 = {  # arXiv 2508.14112 v2, Sec. 2.6.5, Table 6 (copied exactly; "95.7 km" has a stray unit in the source)
     "AlexNet": {"rmse_km_s": 118.6, "mae_km_s": 95.7, "validation_mse_km2_s2": 13839.49},
@@ -166,6 +179,150 @@ def stamp(t):
 def jnum(x):
     """float for JSON, None for NaN."""
     return None if x is None or not np.isfinite(x) else float(x)
+
+
+def fetch_small(url, dest, max_bytes=50 * 2 ** 20):
+    """Download a small file (labels, index, config) once; refuse anything above max_bytes."""
+    if os.path.exists(dest) and os.path.getsize(dest) > 0:
+        return dest
+    os.makedirs(os.path.dirname(dest), exist_ok=True)
+    with requests.get(url, stream=True, timeout=120) as r:
+        r.raise_for_status()
+        n = int(r.headers.get("Content-Length", 0))
+        if n > max_bytes:
+            raise IOError(f"{url} is {n} bytes, above the {max_bytes} limit for small files")
+        tmp = dest + ".part"
+        with open(tmp, "wb") as fp:
+            for chunk in r.iter_content(1 << 20):
+                fp.write(chunk)
+    os.replace(tmp, dest)
+    return dest
+
+
+def sha256_file(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as fp:
+        for chunk in iter(lambda: fp.read(1 << 24), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def s3_exists_retry(t, tries=4):
+    for i in range(tries):
+        try:
+            return C.s3_exists(t)
+        except requests.RequestException:
+            if i == tries - 1:
+                raise
+            time.sleep(2 ** (i + 1))
+
+
+def available_ram_gb():
+    """MemAvailable from /proc/meminfo (what the kernel can hand out without swapping; there is no swap here)."""
+    with open("/proc/meminfo") as fp:
+        for line in fp:
+            if line.startswith("MemAvailable:"):
+                return int(line.split()[1]) / 2 ** 20
+    return float("nan")
+
+
+class RangeFile(io.RawIOBase):
+    """Read-only file object over HTTP range requests, with a block cache; enough for h5py to read a header or for
+    zipfile to read one small member. Redirects (Hugging Face resolve URLs) are followed once to the final URL."""
+
+    def __init__(self, url, block=1 << 16):
+        self.block, self.pos, self.cache, self.nbytes = block, 0, {}, 0
+        r = requests.get(url, headers={"Range": "bytes=0-0"}, timeout=60, allow_redirects=True)
+        r.raise_for_status()
+        self.url = r.url
+        self.size = int(r.headers["Content-Range"].rsplit("/", 1)[1])
+
+    def readable(self):
+        return True
+
+    def seekable(self):
+        return True
+
+    def tell(self):
+        return self.pos
+
+    def seek(self, off, whence=0):
+        self.pos = off if whence == 0 else (self.pos + off if whence == 1 else self.size + off)
+        return self.pos
+
+    def _blk(self, i):
+        if i not in self.cache:
+            a = i * self.block
+            b = min(self.size, a + self.block) - 1
+            for k in range(4):
+                try:
+                    r = requests.get(self.url, headers={"Range": f"bytes={a}-{b}"}, timeout=60)
+                    r.raise_for_status()
+                    if r.status_code != 206 or len(r.content) != b - a + 1:
+                        raise requests.RequestException(f"range {a}-{b}: HTTP {r.status_code}, {len(r.content)} B")
+                    break
+                except requests.RequestException:
+                    if k == 3:
+                        raise
+                    time.sleep(2 ** (k + 1))
+            self.cache[i] = r.content
+            self.nbytes += len(r.content)
+        return self.cache[i]
+
+    def readinto(self, buf):
+        n = min(len(buf), self.size - self.pos)
+        if n <= 0:
+            return 0
+        out = bytearray()
+        p = self.pos
+        while len(out) < n:
+            i = p // self.block
+            d = self._blk(i)
+            take = d[p - i * self.block: p - i * self.block + n - len(out)]
+            out += take
+            p += len(take)
+        buf[:n] = out
+        self.pos += n
+        return n
+
+
+def remote_nc_channels(key):
+    """(worker) Shapes and stored (compressed) chunk sizes of the data variables of one S3 netCDF frame, read from
+    its HDF5 header only (about 1-2 MB of range requests per frame)."""
+    import h5py
+    rf = RangeFile(f"{C.S3}/{key}")
+    with h5py.File(io.BufferedReader(rf, 1 << 16), "r") as f:
+        shapes = {k: tuple(f[k].shape) for k in f.keys() if isinstance(f[k], h5py.Dataset)}
+        stored = {}
+        for k in C.CHANNELS:
+            try:
+                stored[k] = int(sum(f[k].id.get_chunk_info(i).size for i in range(f[k].id.get_num_chunks())))
+            except Exception:
+                stored[k] = None
+    return shapes, rf.nbytes, stored
+
+
+def stored_mb_json(stored):
+    return json.dumps({c: (round(v / 1e6, 1) if v is not None else None) for c, v in stored.items()})
+
+
+def is_compact_frame(stored_mb, frame_bytes=None):
+    """Frames whose AIA 131-335 channels are stored in well under half the usual ~60 MB each (whole file ~0.32 GB
+    instead of ~0.58 GB). They occur in 2020-2024 (7 of the 30 seed-0 test primaries have one as INPUT frame, five of
+    them in 2024); the AR evaluation found their AIA values quantised (e.g. 2020-01-17 02:00 aia131 takes ~10
+    distinct values in its top rows) and produced later than the normal frames. The training years have none in
+    these samples. Reported as a sensitivity check, never excluded from the primary metric. Falls back on the file
+    size when no per-channel sizes are recorded."""
+    try:
+        d = json.loads(stored_mb) if isinstance(stored_mb, str) else dict(stored_mb or {})
+        v = [d[c] for c in COMPACT_CHANNELS if d.get(c) is not None]
+        if v:
+            return bool(float(np.median(v)) < 30.0)
+    except Exception:
+        pass
+    if frame_bytes is not None and np.isfinite(float(frame_bytes)):
+        return bool(float(frame_bytes) < 0.45e9)
+    return None
 
 
 # --------------------------------------------------------------------------------------------------- metrics
@@ -348,13 +505,14 @@ def ensure_small_inputs():
         if got != blob:
             raise IOError(f"{p}: git blob {got}, expected {blob}")
         out[name] = {"bytes": os.path.getsize(p), "git_blob_sha1": got}
-    sc_dst = os.path.join(ASSETS, "scalers.yaml")
-    if not os.path.exists(sc_dst):
-        # core-sdo's scalers.yaml (config.yaml scalers_path) and Surya-1.0's are byte-identical (sha256 a944e8f1...)
-        with open(os.path.join(FM_DIR, "scalers.yaml"), "rb") as a, open(sc_dst, "wb") as b:
-            b.write(a.read())
-    fetch_small(hf_url(CORE_SDO_REPO, CORE_SDO_REV, "valid_index_surya_1_0.csv"),
-                os.path.join(ASSETS, "valid_index_surya_1_0.csv"))
+    # core-sdo's scalers.yaml is what download_data.sh puts at config.yaml's scalers_path (byte-identical to
+    # Surya-1.0's); core-sdo's valid index is finetune.py's validation SDO index. Both pinned and blob-checked.
+    for name, blob in CORE_SDO_BLOBS.items():
+        p = fetch_small(hf_url(CORE_SDO_REPO, CORE_SDO_REV, name), os.path.join(ASSETS, name))
+        got = git_blob_sha1(p)
+        if got != blob:
+            raise IOError(f"{p}: git blob {got}, expected {blob}")
+        out[f"core-sdo/{name}"] = {"bytes": os.path.getsize(p), "git_blob_sha1": got}
     return out
 
 
@@ -516,11 +674,12 @@ def frame_check(t, check_channels=True):
         nread = 0
         for which, ts in (("t", t), ("t+60", t + pd.Timedelta(minutes=60))):
             try:
-                shapes, nb, _ = remote_nc_channels(C.s3_key(ts))
+                shapes, nb, stored = remote_nc_channels(C.s3_key(ts))
             except Exception as e:
                 ok, why = False, f"could not read the netCDF header of the frame at {which}: {e!r}"
                 break
             nread += nb
+            extra["stored_mb_per_channel" if which == "t" else "stored_mb_per_channel_t60"] = stored_mb_json(stored)
             bad = [c for c in C.CHANNELS if shapes.get(c) != (4096, 4096)]
             if bad:
                 ok, why = False, f"frame at {which} lacks channels {bad}"
@@ -553,6 +712,10 @@ def select_anchors(split, check_channels=True):
                      "frame_bytes": extra["frame_bytes"], "frame_t60_key": C.s3_key(t + pd.Timedelta(minutes=60)),
                      "frame_t60_bytes": extra["frame_t60_bytes"], "channels_checked": bool(check_channels),
                      "header_bytes_read": extra.get("header_bytes_read", 0),
+                     "stored_mb_per_channel": extra.get("stored_mb_per_channel", ""),
+                     "stored_mb_per_channel_t60": extra.get("stored_mb_per_channel_t60", ""),
+                     "input_frame_compact": is_compact_frame(extra.get("stored_mb_per_channel"),
+                                                             extra["frame_bytes"]),
                      "notebook_pred_km_s": pred_nb, "notebook_ground_truth_km_s": gt_nb,
                      "notebook_ground_truth_equals_csv": bool(abs(rec["V_T"] - gt_nb) < 1e-9)})
     return pd.DataFrame(rows), skipped
@@ -604,8 +767,10 @@ def select_sample(split, n, seed, check_channels=True, want_per_block=2, max_tri
                         if isinstance(r, Exception):
                             ok, why = False, f"could not read the netCDF header of the frame at {which}: {r!r}"
                             break
-                        shapes, nb, _ = r
+                        shapes, nb, stored = r
                         nread += nb
+                        extra["stored_mb_per_channel" if which == "t" else "stored_mb_per_channel_t60"] = \
+                            stored_mb_json(stored)
                         bad = [c for c in C.CHANNELS if shapes.get(c) != (4096, 4096)]
                         if bad:
                             ok, why = False, f"frame at {which} lacks channels {bad}"
@@ -628,14 +793,20 @@ def select_sample(split, n, seed, check_channels=True, want_per_block=2, max_tri
                          "frame_key": C.s3_key(t), "frame_bytes": f["frame_bytes"],
                          "frame_t60_key": C.s3_key(t + pd.Timedelta(minutes=60)),
                          "frame_t60_bytes": f["frame_t60_bytes"], "channels_checked": bool(check_channels),
-                         "header_bytes_read": f.get("header_bytes_read", 0)})
+                         "header_bytes_read": f.get("header_bytes_read", 0),
+                         "stored_mb_per_channel": f.get("stored_mb_per_channel", ""),
+                         "stored_mb_per_channel_t60": f.get("stored_mb_per_channel_t60", ""),
+                         "input_frame_compact": is_compact_frame(f.get("stored_mb_per_channel"), f["frame_bytes"])})
     df = pd.DataFrame(rows)
     meta = {"split": split, "n": n, "seed": seed, "check_channels": bool(check_channels),
             "allocation_per_year": {int(k): int(v) for k, v in alloc.items()}, "candidate_info": info,
             "n_blocks": len(blocks), "blocks_without_primary": [
                 {"stratum": b["stratum"], "block": b["block"]} for b, s in zip(blocks, state) if not s["found"]],
             "blocks_without_reserve": int(sum(len(s["found"]) < 2 for s in state)),
-            "skipped": skipped, "selection_rounds": rounds}
+            "skipped": skipped, "selection_rounds": rounds,
+            "compact_input_frames": {role: sorted(df.loc[(df.role == role) & (df.input_frame_compact == True),  # noqa
+                                                         "timestamp"].tolist()) if len(df) else []
+                                     for role in ("primary", "reserve")}}
     return df, meta
 
 
@@ -745,6 +916,90 @@ def ensure_pretrained_link(cfg_inf):
     return dst
 
 
+class _ShapeUnpickler(pickle.Unpickler):
+    """Reads a torch zip checkpoint's data.pkl without creating any tensor (each becomes (shape, storage type));
+    refuses every class a plain state dict does not need."""
+
+    def find_class(self, mod, name):
+        if (mod, name) == ("collections", "OrderedDict"):
+            return collections.OrderedDict
+        if (mod, name) == ("torch._utils", "_rebuild_tensor_v2"):
+            return lambda storage, offset, size, stride, *a: (tuple(size), storage[1])
+        if (mod, name) == ("torch._utils", "_rebuild_parameter"):
+            return lambda t, requires_grad, hooks: t
+        if (mod, name) == ("torch._tensor", "_rebuild_from_type_v2"):
+            return lambda func, typ, args, state: func(*args)
+        if (mod == "torch" and (name.endswith("Storage") or name == "Tensor")) or \
+                (mod, name) == ("torch.nn.parameter", "Parameter"):
+            return name
+        raise pickle.UnpicklingError(f"unexpected class {mod}.{name} in the checkpoint")
+
+    def persistent_load(self, pid):  # ('storage', storage type, key, location, numel)
+        return ("storage", pid[1])
+
+
+def state_dict_shapes(src):
+    """(container type, {key: shape}, bytes fetched) of a torch zip checkpoint from its data.pkl alone; src is a local
+    path or a URL (read with HTTP range requests, so only the zip directory and data.pkl are fetched)."""
+    import zipfile
+    remote = src.startswith("http")
+    raw = RangeFile(src) if remote else open(src, "rb")
+    try:
+        z = zipfile.ZipFile(io.BufferedReader(raw, 1 << 16) if remote else raw)
+        pk = [n for n in z.namelist() if n.endswith("data.pkl")]
+        sd = _ShapeUnpickler(io.BytesIO(z.read(pk[0]))).load()
+    finally:
+        raw.close()
+    return type(sd).__name__, {k: tuple(v[0]) for k, v in sd.items()}, (raw.nbytes if remote else None)
+
+
+def checkpoint_structure_check(cfg_inf):
+    """Dry-run stand-in for load_state_dict(strict=True), without building the model or downloading the weights. The
+    tensor list of solar_wind_weights.pth (its data.pkl, read by range requests) must equal the keys and shapes of the
+    model that get_model + apply_peft_lora build from config_infer.yaml: the foundation checkpoint's own tensor list
+    (what get_model loads; its decoder 'unembed.unembed.0' is dropped by finetune=True), renamed the way PEFT LoRA
+    wraps the target Linear layers (base_layer + lora_A/lora_B of rank r), the patch embedding resized to
+    in_channels x time_dim input planes, plus the 1-D head (cls_token, penultimate linear, unembed to one output).
+    The parameter counts must match the notebook's printout of the same checkpoint."""
+    m, lc = cfg_inf["model"], cfg_inf["model"]["lora_config"]
+    kind, ft, nread = state_dict_shapes(hf_url(CKPT_REPO, CKPT_REV, CKPT_NAME, kind="models"))
+    _, fm, _ = state_dict_shapes(os.path.join(FM_DIR, "surya.366m.v1.pt"))
+    P, targets, wrapped, exp = "base_model.model.", set(lc["target_modules"]), set(), {}
+    for k, shp in fm.items():
+        mod, _, leaf = k.rpartition(".")
+        if k.startswith("unembed."):
+            continue
+        if mod.rsplit(".", 1)[-1] in targets and leaf in ("weight", "bias") and len(fm.get(mod + ".weight", ())) == 2:
+            exp[f"{P}{mod}.base_layer.{leaf}"] = shp
+            if leaf == "weight":
+                exp[f"{P}{mod}.lora_A.default.weight"] = (lc["r"], shp[1])
+                exp[f"{P}{mod}.lora_B.default.weight"] = (shp[0], lc["r"])
+                wrapped.add(mod.rsplit(".", 1)[-1])
+        else:
+            exp[P + k] = shp
+    D, ps = m["embed_dim"], m["patch_size"]
+    exp[P + "embedding.patch_embed.proj.weight"] = (D, m["in_channels"] * m["time_embedding"]["time_dim"], ps, ps)
+    if m["global_class_token"]:
+        exp[P + "cls_token"] = (1, 1, D)
+    if m["penultimate_linear_layer"]:
+        exp[P + "linear.weight"], exp[P + "linear.bias"] = (D, D), (D,)
+    exp[P + "unembed.weight"], exp[P + "unembed.bias"] = (1, D), (1,)
+    missing, unexpected = sorted(set(exp) - set(ft)), sorted(set(ft) - set(exp))
+    mismatch = {k: [list(exp[k]), list(ft[k])] for k in sorted(set(exp) & set(ft)) if tuple(exp[k]) != tuple(ft[k])}
+    n_all = int(sum(np.prod(s) for k, s in ft.items() if not k.endswith("pos_embed")))  # pos_embed is a buffer
+    n_lora = int(sum(np.prod(s) for k, s in ft.items() if ".lora_" in k))
+    return {"ok": bool(kind == "OrderedDict" and not missing and not unexpected and not mismatch
+                       and n_all == NOTEBOOK_PARAMS_ALL and n_lora == NOTEBOOK_PARAMS_LORA),
+            "container": kind, "n_tensors": len(ft), "missing_in_checkpoint": missing[:20],
+            "unexpected_in_checkpoint": unexpected[:20], "shape_mismatch": mismatch,
+            "parameters_excluding_pos_embed_buffer": n_all, "lora_parameters": n_lora,
+            "notebook_printout": {"all": NOTEBOOK_PARAMS_ALL, "trainable_lora": NOTEBOOK_PARAMS_LORA},
+            "lora_targets_present": sorted(wrapped), "lora_targets_absent": sorted(targets - wrapped),
+            "patch_embed_weight": list(ft.get(P + "embedding.patch_embed.proj.weight", ())),
+            "bytes_fetched": nread,
+            "note": "LoRA alpha (scaling alpha/r) is not stored in the weights; the notebook anchors test it"}
+
+
 def load_model(cfg_inf, ckpt_path):
     """infer.load_model, step by step, with a safe unpickler and memory-mapped weights."""
     import torch
@@ -774,7 +1029,9 @@ def load_model(cfg_inf, ckpt_path):
     model.eval()
     model.requires_grad_(False)
     return model, {"n_parameters": int(n_total), "n_trainable_after_peft": int(n_trainable),
-                   "state_dict_keys": int(n_keys), "load_state_dict_strict": True}
+                   "state_dict_keys": int(n_keys), "load_state_dict_strict": True,
+                   "parameter_counts_match_notebook": bool(n_total == NOTEBOOK_PARAMS_ALL
+                                                           and n_trainable == NOTEBOOK_PARAMS_LORA)}
 
 
 def verify_frames(paths, channels):
@@ -804,11 +1061,25 @@ def read_records(path):
     return recs
 
 
+def sample_key(r):
+    return (str(r["timestamp"]), int(r["stratum"]), int(r["block"]), str(r["role"]))
+
+
+def records_in_sample(recs, sample):
+    """Only the records whose (time, year, block, role) is a row of the current sample file. A jsonl left over from a
+    sample drawn with another --n/--seed (or redrawn after S3 changed) must neither mark blocks as done nor enter the
+    summary."""
+    keys = {sample_key(r) for r in sample.to_dict("records")}
+    kept = {t: r for t, r in recs.items() if sample_key(r) in keys}
+    return kept, len(recs) - len(kept)
+
+
 def csv_baselines(split, consts, seed=0):
     """My baselines on every candidate pair of the split (CSV only, no model, no S3 check)."""
     cands, info = candidates(split)
     clim = consts["train"]["mean"]
-    out = {"pairs": info["candidates"], "definition": "all (t, T = t + 4 d) pairs of the split as in the sampling "
+    out = {"label": "MY BASELINES (applicant's own, not in Table 6 or the authors' code)",
+           "pairs": info["candidates"], "definition": "all (t, T = t + 4 d) pairs of the split as in the sampling "
            "frame (test: t >= 2020-01-01; validation: t, t+60 in core-sdo valid index), S3 not checked",
            "V_target_mean": float(cands["V_T"].mean()), "V_target_std": float(cands["V_T"].std(ddof=0))}
     m = cands["V_t"].notna()
@@ -874,12 +1145,29 @@ def summarize(out_dir, seed=0):
         "splits": {}}
     for split in ("test", "validation"):
         allrec = read_records(per_sample_path(out_dir, split))
+        sample_csv = os.path.join(out_dir, f"sample_{split}.csv")
+        n_foreign = 0
+        if os.path.exists(sample_csv):  # records of another sample (other --n/--seed) never enter the summary
+            sample_df = pd.read_csv(sample_csv)
+            allrec, n_foreign = records_in_sample(allrec, sample_df)
+            compact_by_ts = {str(r["timestamp"]): is_compact_frame(r.get("stored_mb_per_channel"), r.get("frame_bytes"))
+                             for r in sample_df.to_dict("records")}
+        else:
+            compact_by_ts = {}
         anchors = anchor_check(allrec, consts) if split == "validation" else None
         recs = [r for r in allrec.values() if r.get("status") == "ok" and r.get("role") in ("primary", "reserve")]
         failed = [r for r in allrec.values() if r.get("status") != "ok"]
         if anchors and anchors["n_run"]:
             summary["splits"].setdefault(split, {})["notebook_anchor_check"] = anchors
+        if n_foreign:
+            summary["splits"].setdefault(split, {})["records_ignored_not_in_current_sample"] = int(n_foreign)
         if not recs:
+            continue
+        if len(recs) < 2:  # intervals need two samples; report the record and wait for more
+            summary["splits"].setdefault(split, {}).update({
+                "n_samples_scored": len(recs), "note": "fewer than 2 samples scored; no metrics yet",
+                "per_sample": [{"timestamp": r["timestamp"], "V_obs": r["V_target_km_s"],
+                                "model_output_normalised": r["model_output_normalised"]} for r in recs]})
             continue
         # every scored primary/reserve: a reserve is run only in place of a failed primary, or for all blocks with
         # --include-reserves (then two random pairs per block)
@@ -905,17 +1193,29 @@ def summarize(out_dir, seed=0):
         vt = np.array([np.nan if r.get("V_at_input_time_km_s") is None else r["V_at_input_time_km_s"] for r in recs])
         v27 = np.array([np.nan if r.get("V_target_minus_27d_km_s") is None else r["V_target_minus_27d_km_s"]
                         for r in recs])
+        own = "MY BASELINE (applicant's own, not in Table 6 or the authors' code)"
         for name, bp in (("persistence_4d_V_at_t", vt), ("recurrence_27d_V_at_T_minus_27d", v27)):
             m = np.isfinite(bp)
             if m.sum() >= 2:
-                base[name] = {**scored(bp[m], obs[m], seed=seed),
+                base[name] = {"label": own, **scored(bp[m], obs[m], seed=seed),
                               "model_minus_baseline_rmse_paired": paired_rmse_diff(p_main[m], bp[m], obs[m],
                                                                                    seed=seed)}
         clim = np.full(len(obs), tr["mean"])
-        base["climatology_train_mean"] = {**scored(clim, obs, seed=seed), "value_km_s": tr["mean"],
+        base["climatology_train_mean"] = {"label": own, **scored(clim, obs, seed=seed), "value_km_s": tr["mean"],
                                           "model_minus_baseline_rmse_paired": paired_rmse_diff(p_main, clim, obs,
                                                                                                seed=seed)}
         res["baselines_on_same_samples"] = base
+        # sensitivity (not a replacement): the same metrics without the samples whose INPUT frame is compact
+        compact = np.array([bool(compact_by_ts.get(r["timestamp"])) for r in recs])
+        sens = {"definition": "input frame (at t) has AIA 131-335 stored in < 30 MB per channel (median); see "
+                              "is_compact_frame", "n_compact_input_frames_scored": int(compact.sum()),
+                "compact_input_frames": [r["timestamp"] for r, c in zip(recs, compact) if c]}
+        if compact.any() and (~compact).sum() >= 2:
+            k = ~compact
+            sens["model_train_constants_without_compact"] = scored(p_main[k], obs[k], seed=seed)
+            sens["model_train_constants_compact_only"] = errors_metrics(p_main[compact], obs[compact]) \
+                if compact.sum() >= 1 else None
+        res["compact_input_frame_sensitivity"] = sens
         # how typical the scored samples are (CSV only) and a control-variate estimate of the full-split MSE
         meta_json = os.path.join(out_dir, f"sampling_{split}.json")
         if os.path.exists(meta_json):
@@ -972,6 +1272,7 @@ def summarize(out_dir, seed=0):
                        "sample_s_mean": float(np.mean([r["seconds"]["total"] for r in recs])),
                        "peak_rss_gb_max": float(np.max([r["peak_rss_gb"] for r in recs]))},
             "per_sample": [{"timestamp": r["timestamp"], "target_time": r["target_time"], "stratum": r["stratum"],
+                            "role": r["role"], "input_frame_compact": bool(compact[i]),
                             "V_obs": float(obs[i]), "V_pred_train_constants": float(p_main[i]),
                             "V_pred_validation_csv_constants": float(
                                 preds["validation_csv_constants_infer_py_as_shipped"][i]),
@@ -1156,7 +1457,9 @@ def run(args, out_dir):
     consts = norm_constants()
 
     recs_path = per_sample_path(out_dir, args.split)
-    previous = read_records(recs_path)
+    previous, n_foreign = records_in_sample(read_records(recs_path), sample)
+    if n_foreign:
+        log(f"ignoring {n_foreign} records in {recs_path} that are not rows of the current sample file")
     done = {t for t, r in previous.items() if r.get("status") == "ok"}
     blocks, anchors = {}, []
     for r in sample.to_dict("records"):
@@ -1193,16 +1496,30 @@ def run(args, out_dir):
         summarize(out_dir, args.seed)
         return
 
+    # frames left behind by an interrupted run are not known to the new FrameCache objects and would never be
+    # deleted, so the two cache folders are emptied first (this keeps the bound of two samples' frames on disk)
+    for sub in ("a", "b"):
+        shutil.rmtree(os.path.join(WORK, "frames", sub), ignore_errors=True)
     # disk pre-flight: checkpoint (if absent) + frames of one sample (--no-prefetch) or two, plus 0.5 GB margin
-    import shutil
     ck_local = os.path.join(WORK, CKPT_NAME)
     need_ck = 0 if (os.path.exists(ck_local) and os.path.getsize(ck_local) == CKPT_SIZE) else CKPT_SIZE
     fr = sorted((float(r["frame_bytes"]) + float(r["frame_t60_bytes"]) for r in pending), reverse=True)
     need = need_ck + sum(fr[: 1 if args.no_prefetch else 2]) + 0.5e9
     free = shutil.disk_usage(WORK).free
+    ram = available_ram_gb()
+    log(f"pre-flight: {free / 1e9:.1f} GB disk free (need ~{need / 1e9:.1f}), {ram:.1f} GB RAM available "
+        f"(need ~{args.min_ram_gb:.0f})")
     if free < need:
         raise RuntimeError(f"{free / 1e9:.1f} GB free in {WORK}, need ~{need / 1e9:.1f} GB"
                            + ("" if args.no_prefetch else "; --no-prefetch keeps only one sample's frames"))
+    if ram < args.min_ram_gb:
+        raise RuntimeError(f"only {ram:.1f} GB RAM available; one float32 forward pass peaks at about 10-13 GB. Wait "
+                           f"for the other jobs to finish, or lower --min-ram-gb at the risk of the OOM killer")
+    try:  # if memory runs out anyway, the kernel should kill this run, not another job on the machine
+        with open("/proc/self/oom_score_adj", "w") as fp:
+            fp.write("1000")
+    except OSError:
+        pass
     ckpt = ensure_checkpoint()
     ensure_pretrained_link(cfg_inf)
     t0 = time.time()
@@ -1214,7 +1531,9 @@ def run(args, out_dir):
            "labels": f"{LABEL_REPO}@{LABEL_REV}", "model": minfo, "normalisation_constants": consts,
            "peak_rss_gb_after_model_load": C.peak_rss_gb()}
     json.dump(env, open(os.path.join(out_dir, "environment.json"), "w"), indent=1, default=str)
-    log(f"model ready in {minfo['seconds_build_and_load']} s, peak RSS {C.peak_rss_gb()} GB")
+    log(f"model ready in {minfo['seconds_build_and_load']} s, peak RSS {C.peak_rss_gb()} GB; parameters "
+        f"{minfo['n_parameters']:,} (LoRA {minfo['n_trainable_after_peft']:,}), notebook printout matched: "
+        f"{minfo['parameter_counts_match_notebook']}")
 
     tr, va, sc = consts["train"], consts["validation"], consts[args.split]
     caches = [C.FrameCache(os.path.join(WORK, "frames", "a")), C.FrameCache(os.path.join(WORK, "frames", "b"))]
@@ -1260,6 +1579,12 @@ def run(args, out_dir):
             loader = DataLoader(ds, batch_size=1, num_workers=0, shuffle=False, collate_fn=custom_collate_fn)
             batch, metadata = next(iter(loader))
             t2 = time.time()
+            # HelioNetCDFDataset.__getitem__ moves on to the next index when loading fails; with this one-sample
+            # dataset that is the same index again, but check the time stamps the batch actually holds
+            ts_in = [pd.Timestamp(v) for v in np.ravel(np.asarray(metadata["timestamps_input"]))]
+            ts_tg = [pd.Timestamp(v) for v in np.ravel(np.asarray(metadata["timestamps_targets"]))]
+            assert ts_in == [t] and ts_tg == [t + pd.Timedelta(minutes=cfg["data"]["time_delta_target_minutes"])], \
+                f"batch holds input {ts_in} / SDO target {ts_tg}, expected {t}"
             fc = batch.pop("forecast")  # the t+60 frame; HelioSpectformer1D never reads it
             rec["forecast_frame"] = {"shape": list(fc.shape), "nonfinite": int((~torch.isfinite(fc)).sum())}
             del fc
@@ -1303,6 +1628,12 @@ def run(args, out_dir):
             p = rec["V_pred_km_s"]["train_constants_primary"]
             log(f"[{j + 1}/{len(pending)}] {row['timestamp']} -> {row['target_time']}: V pred {p:.1f} obs "
                 f"{row['V_target_km_s']:.1f} km/s, forward {rec['seconds']['forward']} s")
+            nb = {str(pd.Timestamp(a[0])): a[1] for a in NOTEBOOK_ANCHORS}.get(str(t))
+            if nb is not None:  # an early end-to-end check against the authors' own CPU run
+                ours = rec["V_pred_km_s"]["validation_csv_constants_infer_py_as_shipped"]
+                log(f"  notebook anchor: ours {ours:.2f} km/s (validation.csv constants, as infer.py), notebook "
+                    f"{nb:.2f}, diff {ours - nb:+.3f}" + ("" if abs(ours - nb) <= ANCHOR_TOL_KM_S else
+                                                         f"  WARNING: outside the {ANCHOR_TOL_KM_S} km/s tolerance"))
         except Exception as e:  # record, substitute the block's reserve once, carry on
             rec["status"] = "failed"
             rec["error"] = repr(e)[:2000]

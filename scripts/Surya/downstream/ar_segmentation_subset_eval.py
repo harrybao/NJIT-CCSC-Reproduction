@@ -979,10 +979,19 @@ def summarize(out_dir, seed=0):
                 "estimate": float(dice[k].mean()), "ci95": bootstrap(lambda i: dice[k][i].mean(1), len(k), N_BOOT, seed),
                 "n_images": int(len(k))}
         scored_blocks = {(int(r["stratum"]), int(r["block"])) for r in recs}
+        meta_json = os.path.join(out_dir, f"sampling_{split}.json")
+        no_candidate = json.load(open(meta_json)).get("blocks_without_primary", []) if os.path.exists(meta_json) else []
+        checks = {  # data problems that would bias the score without crashing the run
+            "images_with_nonfinite_input": [r["timestamp"] for r in recs if r["input"]["nonfinite"]],
+            "images_with_nonfinite_logits": [r["timestamp"] for r in recs if r["output"]["nonfinite"]],
+            "images_with_target_values_other_than_0_and_1": [
+                r["timestamp"] for r in recs if set(r["target_values"]) - {0.0, 1.0}]}
         summary["splits"][split] = {
             "n_images_scored": len(recs), "n_failed_records": len(failed),
-            "n_blocks_planned": len(planned), "n_blocks_scored": len(scored_blocks),
-            "blocks_not_scored": [list(b) for b in planned if b not in scored_blocks],
+            "n_blocks_planned": len(planned) + len(no_candidate), "n_blocks_scored": len(scored_blocks),
+            "blocks_not_scored": [list(b) for b in planned if b not in scored_blocks]
+                                 + [[b["stratum"], b["block"]] for b in no_candidate],
+            "data_checks": checks,
             "records_ignored_not_in_current_sample": int(n_foreign),
             "failed_records": [{"timestamp": r["timestamp"], "role": r["role"], "error": r.get("error", "")[:300]}
                                for r in failed],
@@ -1047,29 +1056,40 @@ def dry_run(args, out_dir):
     log(f"metric self-test passed (max abs diff {check['max_abs_diff_overall']:.2e})")
     sample, meta = get_sample(args, out_dir, cfg, scalers, force=True)
     prim = sample[sample.role == "primary"]
+    ck_header = check_checkpoint_header(cfg_inf)
+    log(f"checkpoint header ({ck_header['bytes_read'] / 1e6:.1f} MB of range requests): {ck_header['n_keys']} keys, "
+        f"{ck_header['n_lora_tensors']} LoRA tensors on {ck_header['lora_target_modules_present']}, ranks "
+        f"{ck_header['lora_ranks']}, ok: {ck_header['ok']}")
     bw = bandwidth_probe(sample)
     ck = requests.head(hf_url(CKPT_REPO, CKPT_REV, CKPT_NAME, kind="models"), allow_redirects=False, timeout=60)
     s3_bw = bw["s3_frame"]["MB_per_s"] * 1e6
     hf_bw = bw["hf_tar"]["MB_per_s"] * 1e6
     fb = prim["frame_bytes"].to_numpy(float)
     one_off = TAR_SIZE / hf_bw + CKPT_SIZE / hf_bw + SEC_MODEL
+    dl = fb / s3_bw  # seconds to download each frame (one stream; fetch_s3 uses 8); j+1 downloads while j is scored
+
+    def total_s(sec_forward):
+        per = SEC_LOAD + sec_forward + SEC_SCORE
+        return one_off + (dl[0] if len(dl) else 0.0) + len(dl) * per + float(np.maximum(0, dl[1:] - per).sum())
+
     per_sample = SEC_LOAD + SEC_FORWARD + SEC_SCORE
-    dl = fb / s3_bw  # seconds to download each frame; frame j+1 downloads while image j is scored
-    total_s = one_off + (dl[0] if len(dl) else 0.0) + len(dl) * per_sample + float(np.maximum(0, dl[1:] - per_sample).sum())
-    est = {"assumptions_s": {"forward": SEC_FORWARD, "frame_read_and_normalise": SEC_LOAD, "scoring": SEC_SCORE,
+    est = {"assumptions_s": {"forward": SEC_FORWARD, "forward_slow_case": SEC_FORWARD_SLOW,
+                             "frame_read_and_normalise": SEC_LOAD, "scoring": SEC_SCORE,
                              "model_build_and_load": SEC_MODEL},
            "measured_bandwidth": bw,
            "one_off_minutes_tar_checkpoint_model": round(one_off / 60, 1),
            "per_sample_minutes": round(per_sample / 60, 2),
            "frame_download_minutes_each_mean": round(float(dl.mean()) / 60, 2) if len(dl) else 0,
            "frame_download_hidden_by_prefetch": bool(dl.max() < per_sample) if len(dl) else True,
-           "total_minutes": round(total_s / 60, 1)}
+           "total_minutes": round(total_s(SEC_FORWARD) / 60, 1),
+           "total_minutes_slow_case": round(total_s(SEC_FORWARD_SLOW) / 60, 1)}
     disk = {"frames_total_bytes_downloaded_over_run": int(fb.sum()),
             "frames_max_on_disk_bytes": int(max([fb[i] + fb[i + 1] for i in range(len(fb) - 1)] or [fb.max()])),
             "checkpoint_bytes": CKPT_SIZE, "checkpoint_head_x_linked_size": ck.headers.get("x-linked-size"),
             "masks_bytes_approx": int(len(sample) * 45000), "tar_streamed_not_stored_bytes": TAR_SIZE}
     disk["peak_disk_gb"] = round((disk["frames_max_on_disk_bytes"] + CKPT_SIZE + disk["masks_bytes_approx"]) / 1e9, 2)
     meta.update({"dry_run": True, "estimate": est, "disk": disk, "config_model_diff_config_vs_config_infer": cfg_diff,
+                 "checkpoint_header_check": ck_header, "ram_available_gb_now": round(available_ram_gb(), 1),
                  "forward_passes_planned": int(len(prim)), "checkpoint": f"{CKPT_REPO}@{CKPT_REV}/{CKPT_NAME}",
                  "labels": f"{LABEL_REPO}@{LABEL_REV}", "upstream_dir": UPSTREAM})
     json.dump(meta, open(os.path.join(out_dir, f"sampling_{args.split}.json"), "w"), indent=1, default=str)
@@ -1078,7 +1098,12 @@ def dry_run(args, out_dir):
         f"join check ok: {meta['dataset_join_all_ok']}")
     log(f"frames to download over the run: {fb.sum() / 1e9:.2f} GB (at most {disk['frames_max_on_disk_bytes'] / 1e9:.2f}"
         f" GB on disk at once); checkpoint {CKPT_SIZE / 1e9:.2f} GB; tar streamed {TAR_SIZE / 1e9:.2f} GB")
-    log(f"estimated {est['total_minutes']} min ({len(prim)} forward passes); peak disk ~{disk['peak_disk_gb']} GB")
+    log(f"estimated {est['total_minutes']} min ({est['total_minutes_slow_case']} min at {SEC_FORWARD_SLOW} s per forward "
+        f"pass; {len(prim)} passes); peak disk ~{disk['peak_disk_gb']} GB; RAM available now "
+        f"{meta['ram_available_gb_now']} GB (the run needs ~{args.min_ram_gb:.0f})")
+    if not (ck_header["ok"] and meta["dataset_join_all_ok"]):
+        raise RuntimeError("dry run found a problem: see checkpoint_header_check / dataset_join_check in "
+                           f"sampling_{args.split}.json")
     print(sample[["role", "stratum", "block", "timestamp", "frame_bytes"]].to_string(index=False))
 
 
@@ -1192,10 +1217,18 @@ def run(args, out_dir):
             t1 = time.time()
             ds = build_ar_dataset(cfg, scalers, args.split, t, cache.root, ArDSDataset)
             assert len(ds) == 1 and pd.Timestamp(ds.valid_indices[0]) == t, "dataset did not select the time stamp"
+            mask_fp = ds.ar_valid_indices.iloc[0]["file_path"]
+            assert mask_fp == row["mask_file_path"], f"dataset joined mask {mask_fp}, sample says {row['mask_file_path']}"
             loader = DataLoader(ds, batch_size=1, num_workers=0, shuffle=False, collate_fn=custom_collate_fn)
             batch, metadata = next(iter(loader))
             t2 = time.time()
+            # the loaded sample must be this time stamp (HelioNetCDFDataset's retry loop would move on to the next
+            # index after a load failure; ArDSDataset overrides __getitem__ without it, but check what came back)
+            got = [pd.Timestamp(v) for v in np.ravel(metadata["timestamps_input"])]
+            assert got == [t], f"dataset returned input time(s) {got}, expected {t}"
             x = batch["ts"]
+            n_ch = len(cfg["data"]["channels"])
+            assert tuple(x.shape) == (1, n_ch, 1, cfg["model"]["img_size"], cfg["model"]["img_size"]), x.shape
             rec["input"] = {"shape": list(x.shape), "dtype": str(x.dtype), "nonfinite": int((~torch.isfinite(x)).sum()),
                             "per_channel_normalised": {}}
             for ci, ch in enumerate(cfg["data"]["channels"]):  # mean / std / non-finite count after the scalers
@@ -1210,6 +1243,7 @@ def run(args, out_dir):
                     logits = logits[:, 0]
             t3 = time.time()
             target = batch["forecast"].unsqueeze(1)  # as finetune.py: mask / 255, shape (1, 1, H, W)
+            assert logits.shape == target.shape, f"output {tuple(logits.shape)} vs target {tuple(target.shape)}"
             rec["target_values"] = sorted(float(v) for v in torch.unique(target))
             rec["output"] = {"shape": list(logits.shape), "dtype": str(logits.dtype),
                              "nonfinite": int((~torch.isfinite(logits)).sum()),
@@ -1244,6 +1278,7 @@ def run(args, out_dir):
             rec["status"] = "failed"
             rec["error"] = repr(e)[:2000]
             log(f"[{j + 1}/{len(pending)}] {row['timestamp']} FAILED: {e!r}")
+            purge_partials(cache.root)  # this cache's download is over; the other one may be writing right now
             res = blocks[(int(row["stratum"]), int(row["block"]))].get("reserve")
             if (row["role"] == "primary" and res is not None and have_mask.get(res["mask_file_path"])
                     and res["timestamp"] not in done and all(p["timestamp"] != res["timestamp"] for p in pending)):
@@ -1251,7 +1286,7 @@ def run(args, out_dir):
                 if j + 1 == len(pending) - 1:  # nothing was prefetched for it yet
                     fut = pool.submit(caches[(j + 1) % 2].ensure, [pd.Timestamp(res["timestamp"])])
         finally:
-            ds = loader = batch = x = logits = target = None  # release the 0.9 GB input and the outputs
+            ds = loader = batch = x = logits = target = err = None  # release the 0.9 GB input and the outputs
         rec["peak_rss_gb"] = C.peak_rss_gb()
         with open(recs_path, "a") as fp:
             fp.write(json.dumps(rec, default=str) + "\n")
@@ -1281,6 +1316,8 @@ def main():
     ap.add_argument("--max-forward", type=int, default=40, help="forward passes allowed in this run")
     ap.add_argument("--no-channel-check", action="store_true", help="skip the netCDF header check of each frame")
     ap.add_argument("--delete-checkpoint", action="store_true", help="remove the 1.8 GB checkpoint at the end")
+    ap.add_argument("--min-ram-gb", type=float, default=MIN_AVAILABLE_RAM_GB,
+                    help="refuse to start the real run with less RAM available (MemAvailable)")
     ap.add_argument("--summarize-only", action="store_true", help="recompute summary.json from the jsonl files")
     args = ap.parse_args()
     args.n = args.n or DEFAULT_N[args.split]

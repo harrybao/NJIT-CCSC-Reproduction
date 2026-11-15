@@ -50,10 +50,17 @@ __main__, so the check sets finetune.config before calling it) and infer.infer_s
 correlation), both called on synthetic inputs (metric_check.json).
 
 Differences from infer.py (none changes the network or its weights): torch.load with weights_only=True and mmap=True
-(infer.py: weights_only=False; --allow-full-unpickle restores that if the pickle needs it); float32 without autocast
-(infer.py's autocast(cpu, float32) disables itself; CPU bfloat16 breaks Surya, results/Surya/bf16_diagnosis);
-DataLoader with num_workers=0 and a one-sample dataset per time stamp; batch["forecast"] (the t+60 frame, which
-HelioSpectformer1D never reads) is dropped before the forward pass to save 0.87 GB of RAM.
+(infer.py: weights_only=False; --allow-full-unpickle restores that if the pickle needs it); load_state_dict(strict=True)
+with no strict=False fallback (infer.load_model falls back and carries on); float32 without autocast (infer.py's
+autocast(cpu, float32) disables itself; CPU bfloat16 breaks Surya, results/Surya/bf16_diagnosis); DataLoader with
+num_workers=0 and a one-sample dataset per time stamp; batch["forecast"] (the t+60 frame, which HelioSpectformer1D never
+reads) is dropped before the forward pass to save 0.87 GB of RAM. The first exception inside the dataset's
+_get_index_data ends that sample at once (HelioNetCDFDataset.__getitem__ would retry 100 times, re-reading the same two
+frames), and the time stamps the dataset reports for the frames it loaded must be t and t+60.
+
+Safety in the real run: it refuses to start unless --min-free-ram-gb (12) of RAM is available, and stops cleanly
+(resumable) before any forward pass that MemAvailable cannot cover (--peak-rss-gb 13); frames left by an interrupted
+run are reused or deleted; only records of the current sample design (sample_<split>.csv) are resumed or scored.
 
 Pipeline anchors. The saved output of euv_spectra_tutorial.ipynb (committed 2025-09-26, after the current checkpoint
 was uploaded on 2025-08-26) is a float32 CPU run of infer.run_inference on two val_time pairs (SDO 2012-01-15 00:48 and
@@ -155,6 +162,9 @@ NOTEBOOK_SUMMARY = {"mae": 0.003811, "rmse": 0.013978, "r2": 0.966645, "avg_corr
 # predictions may differ by float32 kernel differences across CPUs and torch 2.8 vs 2.10 (sigmoid outputs, so ~1e-5)
 # plus print rounding (5e-5 at 4 decimals, 5e-7 at 6 decimals).
 ANCHOR_TOL = {"gt_range": 5e-5 + 1e-9, "pred_range": 2e-4, "mae": 2e-5, "rmse": 2e-5, "r2": 2e-4, "avg_corr": 2e-4}
+# Far outside any numerical difference: a deviation this large means the pipeline (weights, inputs, preprocessing) is
+# wrong, so the run stops after the anchors instead of spending hours on the sample (--ignore-anchor-failure overrides).
+ANCHOR_GROSS = {"pred_range": 5e-3, "mae": 1e-3}
 SPLIT_TIME = {"test": "test_time", "validation": "val_time"}
 SPLIT_SPECTRA = {"test": "test_spectra", "validation": "val_spectra"}
 STRATA_YEARS = {"test": [2011, 2014], "validation": [2012, 2013]}
@@ -167,6 +177,7 @@ N_BOOT = 10000
 # normalising one 13-channel frame is taken as 30 s (two frames per sample: t and t+60); scoring 2 s; building the
 # model, loading the foundation weights (get_model needs them) and then the fine-tuned checkpoint 150 s.
 SEC_FORWARD, SEC_LOAD_FRAME, SEC_SCORE, SEC_MODEL = 136, 30, 2, 150
+SEC_FORWARD_HIGH = 300  # upper end of the 2-5 min per float32 pass seen on this machine under load
 DISK_MARGIN_GB = 1.0  # free space kept on / at all times during a run
 FRAME_BUDGET_GB = 3.0  # frames on disk at once (task budget)
 
@@ -208,6 +219,10 @@ def current_rss_gb():
             if line.startswith("VmRSS:"):
                 return int(line.split()[1]) / 2 ** 20
     return float("nan")
+
+
+class LowMemory(Exception):
+    """Not enough free RAM for the next forward pass (another process holds it)."""
 
 
 class FailFast(BaseException):
@@ -1191,7 +1206,7 @@ def summarize(out_dir, seed=0):
         sp["seconds"] = {k: [float(np.median([r["seconds"][k] for r in use])), float(max(r["seconds"][k] for r in use))]
                          for k in ("dataset_and_load", "forward", "total")}
         sp["seconds_note"] = "[median, max] per sample"
-        sp["peak_rss_gb"] = max(r.get("peak_rss_gb", 0) for r in use)
+        sp["peak_rss_gb"] = max(r.get("peak_rss_gb_process_so_far", r.get("peak_rss_gb", 0)) for r in use)
         sp["target_checks_all_ok"] = all(r.get("target_checks", {}).get("ok", False) for r in use)
         if wl is not None:  # per-wavelength profile over the scored samples
             E = P.astype(np.float64) - Y.astype(np.float64)
@@ -1283,6 +1298,8 @@ def dry_run(args, out_dir, run_mode=False):
     per_sample_s = max(SEC_FORWARD + 2 * SEC_LOAD_FRAME + SEC_SCORE, dl_s or 0)  # downloads overlap (prefetch)
     est_s_bw = SEC_MODEL + (dl_s or 0) + n_pass * per_sample_s
     est_s_noprefetch = SEC_MODEL + n_pass * (SEC_FORWARD + 2 * SEC_LOAD_FRAME + SEC_SCORE + (dl_s or 0))
+    per_sample_s_high = max(SEC_FORWARD_HIGH + 2 * SEC_LOAD_FRAME + SEC_SCORE, dl_s or 0)
+    est_s_bw_high = SEC_MODEL + (dl_s or 0) + n_pass * per_sample_s_high
     ckpt_s = CKPT_SIZE / 1e6 / mbps if mbps and not os.path.exists(os.path.join(WORK, CKPT_NAME)) else None
     ckpt_present = os.path.exists(os.path.join(WORK, CKPT_NAME))
     free = free_gb()
@@ -1334,12 +1351,17 @@ def dry_run(args, out_dir, run_mode=False):
                  "peak_disk_gb_new": round(need_ckpt + (2 if prefetch_ok else 1) * per_sample_bytes / 1e9, 2),
                  "bandwidth_probe": bw, "est_minutes_compute_only": round(est_s / 60, 1),
                  "est_minutes_with_bandwidth": round((est_s_bw + (ckpt_s or 0)) / 60, 1),
+                 "est_minutes_with_bandwidth_slow_forward": round((est_s_bw_high + (ckpt_s or 0)) / 60, 1),
+                 "mem_available_gb_now": round(mem_available_gb(), 2),
+                 "peak_disk_gb_new_note": "checkpoint (if absent) + frames of one sample (two with prefetch); the "
+                                          "0.93 GB EVE file and the foundation weights are already on disk",
                  "est_minutes_with_bandwidth_no_prefetch": round((est_s_noprefetch + (ckpt_s or 0)) / 60, 1),
                  "bandwidth_note": "the 8 MB probe under-states sustained throughput and shares the link with any "
                                    "other job downloading at the same time",
                  "est_checkpoint_download_minutes": round(ckpt_s / 60, 1) if ckpt_s else None,
                  "max_forward_that_fits_90_min": fit90,
-                 "timing_assumptions_s": {"forward": SEC_FORWARD, "load_frame": SEC_LOAD_FRAME, "score": SEC_SCORE,
+                 "timing_assumptions_s": {"forward": SEC_FORWARD, "forward_slow": SEC_FORWARD_HIGH,
+                                          "load_frame": SEC_LOAD_FRAME, "score": SEC_SCORE,
                                           "model_build_and_load": SEC_MODEL}},
         "dry_run_seconds": round(time.time() - t_start, 1),
     }
@@ -1353,8 +1375,12 @@ def dry_run(args, out_dir, run_mode=False):
         f"MAPE {base_all['mape_pct']:.2f}%")
     log(f"plan: {n_pass} forward passes, {frames_bytes / 1e9:.1f} GB of frames in total, "
         f"{2 * per_sample_bytes / 1e9:.2f} GB on disk at once with prefetch; free disk {free:.1f} GB; "
-        f"estimate {meta['plan']['est_minutes_with_bandwidth']} min (compute only "
+        f"estimate {meta['plan']['est_minutes_with_bandwidth']}-{meta['plan']['est_minutes_with_bandwidth_slow_forward']} "
+        f"min (compute only "
         f"{meta['plan']['est_minutes_compute_only']} min); {fit90} passes fit in 90 min")
+    if meta["n_primary"] < args.n or meta["n_reserve"] < meta["n_primary"]:
+        log(f"WARNING: {meta['n_primary']} primaries and {meta['n_reserve']} reserves for n={args.n}: some blocks had "
+            f"no usable candidate within {30} tries (see blocks / skipped_{args.split}.csv)")
     if not meta["dataset_join_all_ok"]:
         raise RuntimeError("dataset join check failed; see sampling json")
     if run_mode:
@@ -1492,6 +1518,7 @@ def run(args, out_dir):
                                        "frame_t60_bytes")}
         t_start = time.time()
         ds = loader = batch = x = out = None
+        stop = False
         try:
             dl_s, err = fut.result(), None
         except Exception as e:
@@ -1506,13 +1533,19 @@ def run(args, out_dir):
             verify_frames([os.path.join(cache.root, C.s3_key(ts)) for ts in frames_of(row)], cfg["data"]["channels"])
             F = full_split(cfg, scalers, split)
             i_full = int(np.flatnonzero(F["cand"]["t"].values == np.datetime64(t))[0])
-            ds = one_sample_dataset(cfg, scalers, split, t, cache.root)
+            ds = fail_fast(one_sample_dataset(cfg, scalers, split, t, cache.root))
             assert len(ds) == 1 and pd.Timestamp(ds.valid_indices[0]) == t, "dataset did not select the time stamp"
             eve_t = pd.Timestamp(ds.df_valid_indices.iloc[0]["ds_index"])
             assert eve_t == pd.Timestamp(row["eve_time"]), f"dataset EVE time {eve_t} != {row['eve_time']}"
             loader = DataLoader(ds, batch_size=1, num_workers=0, shuffle=False, collate_fn=custom_collate_fn)
             batch, metadata = next(iter(loader))
             t2 = time.time()
+            # the frames actually loaded must be t (input) and t+60 (forecast): HelioNetCDFDataset's retry loop moves
+            # to idx + 1 after a failure, and EVEDSDataset would still attach the label of the original idx
+            got_in = [pd.Timestamp(v) for v in np.ravel(metadata["timestamps_input"])]
+            got_tg = [pd.Timestamp(v) for v in np.ravel(metadata["timestamps_targets"])]
+            want_tg = t + pd.Timedelta(minutes=cfg["data"]["time_delta_target_minutes"])
+            assert got_in == [t] and got_tg == [want_tg], f"dataset returned frames {got_in} / {got_tg}, not {t}"
             fc = batch.pop("forecast")  # the t+60 frame; HelioSpectformer1D never reads it
             rec["forecast_frame"] = {"shape": list(fc.shape), "nonfinite": int((~torch.isfinite(fc)).sum())}
             del fc
@@ -1535,7 +1568,13 @@ def run(args, out_dir):
             rec["target_checks"]["ok"] = bool(rec["target_checks"]["label_equals_target"]
                                               and rec["target_checks"]["bit_identical_to_full_split_dataset"]
                                               and rec["target_checks"]["denorm_vs_raw_eve_max_rel_diff"] < 1e-5)
-            with torch.no_grad():
+            assert rec["target_checks"]["ok"], f"target checks failed: {rec['target_checks']}"  # before the forward
+            need = args.peak_rss_gb - current_rss_gb()
+            rec["mem_available_gb_before_forward"] = round(mem_available_gb(), 2)
+            if rec["mem_available_gb_before_forward"] < need:
+                raise LowMemory(f"{rec['mem_available_gb_before_forward']} GB available, the forward pass needs "
+                                f"about {need:.1f} GB more")
+            with torch.no_grad():  # float32, no autocast (CPU bfloat16 autocast breaks Surya's patch embedding)
                 out = model(batch)
             t3 = time.time()
             pred = out.reshape(-1).numpy().astype(np.float32)
@@ -1560,10 +1599,18 @@ def run(args, out_dir):
             log(f"[{j + 1}/{len(pending)}] {row['role']} {row['timestamp']} (EVE {row['eve_time']}): MSE "
                 f"{st['mse']:.3e} MAE {st['mae']:.4f} MAPE {st['mape_pct']:.2f}% r {st['corr']:.4f}, "
                 f"forward {rec['seconds']['forward']} s")
-        except Exception as e:  # record, substitute the block's reserve once, carry on
+        except LowMemory as e:  # not the sample's fault: write nothing, stop, a rerun resumes here
+            log(f"[{j + 1}/{len(pending)}] {row['timestamp']}: stopping before the forward pass: {e}")
+            stop = True
+        except (Exception, FailFast) as e:  # record, substitute the block's reserve once, carry on
             rec["status"] = "failed"
             rec["error"] = repr(e)[:2000]
             log(f"[{j + 1}/{len(pending)}] {row['timestamp']} FAILED: {e!r}")
+            for c in caches:  # a failed download leaves a .part file that FrameCache does not track
+                for d, _, files in os.walk(c.root):
+                    for f in files:
+                        if f.endswith(".part"):
+                            os.remove(os.path.join(d, f))
             res = blocks.get((int(row["stratum"]), int(row["block"])), {}).get("reserve") \
                 if row["role"] == "primary" else None
             if res is not None and res["timestamp"] not in done and all(p["timestamp"] != res["timestamp"]
@@ -1573,13 +1620,28 @@ def run(args, out_dir):
                     fut = pool.submit(caches[(j + 1) % 2].ensure, frames_of(res))
         finally:
             ds = loader = batch = x = out = None  # release the input tensors before the next sample
-        rec["peak_rss_gb"] = C.peak_rss_gb()
+        if stop:
+            break
+        rec["peak_rss_gb_process_so_far"] = C.peak_rss_gb()
         with open(dest(row), "a") as fp:
             fp.write(json.dumps(rec, default=float) + "\n")
         for other in row["also"]:  # same time stamp in another role (anchor and validation sample): no second pass
             copy_record(rec, other)
         gc.collect()
         j += 1
+        if row["role"] == "anchor" and rec.get("status") == "ok" and not any(p["role"] == "anchor"
+                                                                             for p in pending[j:]):
+            ac = anchor_check(read_records(anc_path))  # end-to-end check against the notebook, before the sample
+            gross = [p["timestamp"] for p in ac["per_sample"] if p["pred_range_max_abs_diff"] > ANCHOR_GROSS["pred_range"]]
+            if ac.get("summary_abs_diff", {}).get("mae", 0) > ANCHOR_GROSS["mae"]:
+                gross.append("summary MAE")
+            log(f"notebook anchors: within the fixed tolerances: {ac['all_within_tolerance']}; "
+                f"per-sample prediction-range differences {[round(p['pred_range_max_abs_diff'], 6) for p in ac['per_sample']]}"
+                f"; summary differences {ac.get('summary_abs_diff')}")
+            if gross and not args.ignore_anchor_failure:
+                log(f"STOP: anchors {gross} deviate from the notebook by more than {ANCHOR_GROSS}; the pipeline does not "
+                    "reproduce infer.py. Inspect anchors.jsonl (or rerun with --ignore-anchor-failure).")
+                break
         if not prefetch and j < len(pending):
             cache.clear()
             fut = pool.submit(caches[0].ensure, frames_of(pending[j]))
@@ -1617,10 +1679,17 @@ def main():
     ap.add_argument("--no-channel-check", action="store_true", help="skip the netCDF header check of each frame")
     ap.add_argument("--header-workers", type=int, default=4, help="threads reading netCDF headers during selection")
     ap.add_argument("--no-anchors", action="store_true", help="leave out the two notebook anchor samples")
+    ap.add_argument("--ignore-anchor-failure", action="store_true",
+                    help="carry on with the sample even if the anchors deviate grossly from the notebook printout")
     ap.add_argument("--no-prefetch", action="store_true", help="keep only one sample's frames on disk (~1.2 GB)")
     ap.add_argument("--delete-checkpoint", action="store_true", help="remove the 1.8 GB checkpoint at the end")
     ap.add_argument("--allow-full-unpickle", action="store_true",
                     help="if weights_only loading fails, load the checkpoint with weights_only=False as infer.py does")
+    ap.add_argument("--min-free-ram-gb", type=float, default=12.0,
+                    help="refuse to start the real run unless this much RAM is available (MemAvailable)")
+    ap.add_argument("--peak-rss-gb", type=float, default=13.0,
+                    help="expected peak RSS of one forward pass; a pass is not started unless MemAvailable covers the "
+                         "difference to the current RSS (the run then stops cleanly and can be resumed)")
     ap.add_argument("--summarize-only", action="store_true", help="recompute summary.json from the jsonl files")
     args = ap.parse_args()
     args.n = args.n or DEFAULT_N[args.split]

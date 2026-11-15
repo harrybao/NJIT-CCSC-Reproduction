@@ -1129,35 +1129,50 @@ def pipeline_self_test(sample, meta, split, seed):
     capped = plan_work(sample, {}, seed, 7)[1]
     assert [r["timestamp"] for r in capped] == [r["timestamp"] for r in pend[:7]]
     rep["planner_fresh"] = {"pending": len(pend), "first_classes": cls[:6], "cap_respected": True}
-    # resume: five scored, the sixth failed -> those five are skipped, the sixth block falls back to its reserve
-    prev = {r["timestamp"]: {**r, "status": "ok"} for r in pend[:5]}
-    prev[pend[5]["timestamp"]] = {**pend[5], "status": "failed"}
+    # resume: q scored, the next one failed -> those q are skipped, the failed block falls back to its reserve; a
+    # block whose primary and reserve both failed is not planned again
+    q = min(5, len(pend) - 1)
+    prev = {r["timestamp"]: {**r, "status": "ok"} for r in pend[:q]}
+    prev[pend[q]["timestamp"]] = {**pend[q], "status": "failed"}
     _, pend2, complete2 = plan_work(sample, prev, seed, 10 ** 6)
-    b5 = blocks[(pend[5]["stratum"], int(pend[5]["block"]))]
-    assert complete2 == 5 and len(pend2) == len(pend) - 5
-    assert not {r["timestamp"] for r in pend[:5]} & {r["timestamp"] for r in pend2}
+    b5 = blocks[(pend[q]["stratum"], int(pend[q]["block"]))]
+    assert complete2 == q and len(pend2) == len(pend) - q - (b5.get("reserve") is None)
+    assert not {r["timestamp"] for r in pend[:q]} & {r["timestamp"] for r in pend2}
     assert b5.get("reserve") is None or any(r["timestamp"] == b5["reserve"]["timestamp"] for r in pend2)
+    if b5.get("reserve") is not None:
+        prev[b5["reserve"]["timestamp"]] = {**b5["reserve"], "status": "failed"}
+        pend3 = plan_work(sample, prev, seed, 10 ** 6)[1]
+        assert not {pend[q]["timestamp"], b5["reserve"]["timestamp"]} & {r["timestamp"] for r in pend3}
+        assert len(pend3) == len(pend2) - 1
     rep["planner_resume"] = {"complete": complete2, "pending": len(pend2), "failed_primary_replaced_by_reserve":
-                             b5.get("reserve") is not None}
-    # summarize() on synthetic records: every primary scored, plus one extra reserve record that must be ignored
+                             b5.get("reserve") is not None, "block_with_both_failed_not_retried": True}
+    # summarize() on synthetic records: every primary scored, plus one extra reserve record and one record of a time
+    # stamp that is not in the sample file, both of which must be ignored
     rng = np.random.default_rng(seed + 99)
     with tempfile.TemporaryDirectory() as tmp:
         json.dump(meta, open(os.path.join(tmp, f"sampling_{split}.json"), "w"), default=str)
+        sample.to_csv(os.path.join(tmp, f"sample_{split}.csv"), index=False)
         recs = []
         for r in pend:
             z = float(rng.normal(0.8 if r["label_max"] else -0.8, 1.2))
-            recs.append({**{q: r[q] for q in ("split", "role", "class", "year", "stratum", "block", "timestamp",
-                                               "label_max", "max_goes_class")},
+            recs.append({**{q_: r[q_] for q_ in ("split", "role", "class", "year", "stratum", "block", "timestamp",
+                                                  "label_max", "max_goes_class")},
                          "label_from_dataset": int(r["label_max"]), "logit": z, "prob": float(sigmoid(z)),
                          "seconds": {"forward": 136.0, "dataset_and_load": 36.0, "total": 180.0},
                          "peak_rss_gb": 13.0, "status": "ok"})
+        extra = []
         if b5.get("reserve") is not None:
-            recs.append({**recs[5], "role": "reserve", "timestamp": b5["reserve"]["timestamp"], "logit": 9.0})
+            extra.append({**recs[q], "role": "reserve", "timestamp": b5["reserve"]["timestamp"], "logit": 9.0})
+        extra.append({**recs[0], "timestamp": "1999-01-01 00:00:00", "logit": -9.0 if recs[0]["label_max"] else 9.0})
         with open(per_sample_path(tmp, split), "w") as fp:
-            fp.writelines(json.dumps(x, default=str) + "\n" for x in recs)
+            fp.writelines(json.dumps(x, default=str) + "\n" for x in recs + extra)
         s = summarize(tmp, seed, n_boot=2000)["splits"][split]
-    y = np.array([x["label_max"] for x in recs[:len(pend)]])
-    z = np.array([x["logit"] for x in recs[:len(pend)]])
+        # the same with the last block's record missing: it must be listed, not silently dropped
+        with open(per_sample_path(tmp, split), "w") as fp:
+            fp.writelines(json.dumps(x, default=str) + "\n" for x in recs[:-1])
+        s_missing = summarize(tmp, seed, n_boot=200)["splits"][split]
+    y = np.array([x["label_max"] for x in recs])
+    z = np.array([x["logit"] for x in recs])
     pr = (z > 0).astype(int)
     tpr, fpr = pr[y == 1].mean(), pr[y == 0].mean()
     m = s["metrics"]["rules"][PRIMARY_RULE]
@@ -1166,15 +1181,19 @@ def pipeline_self_test(sample, meta, split, seed):
     cf_ = reweighted_closed_form(tpr, fpr, pi)
     d = max(abs(m["tss"]["estimate"] - (tpr - fpr)), abs(rw["hss"]["estimate"] - cf_["hss"]),
             abs(rw["f1"]["estimate"] - cf_["f1"]),
-            *(abs(rw["repo_formulas_on_expected_counts"][q] - cf_[q]) for q in ("tss", "hss", "f1")),
+            *(abs(rw["repo_formulas_on_expected_counts"][q_] - cf_[q_]) for q_ in ("tss", "hss", "f1")),
             m["raw_sample"]["repo_DistributedClassificationMetrics"]["max_abs_diff_vs_ours"])
     assert s["n_scored"] == len(pend), "summarize did not keep exactly one record per block"
+    assert s["n_stale_records_ignored"] == 1 and s["blocks_without_ok_record"] == []
     assert d < 1e-6, f"summarize disagrees with the direct computation by {d}"
+    last = f"{pend[-1]['stratum']}#{int(pend[-1]['block'])}"
+    assert s_missing["n_scored"] == len(pend) - 1 and s_missing["blocks_without_ok_record"] == [last]
     lo, hi = m["tss"]["ci95"]
     assert lo <= m["tss"]["estimate"] <= hi
     rep["summarize_synthetic"] = {"n_scored": s["n_scored"], "tss": m["tss"]["estimate"], "tss_ci95": [lo, hi],
                                   "hss_reweighted": rw["hss"]["estimate"], "f1_reweighted": rw["f1"]["estimate"],
-                                  "max_abs_diff_vs_direct_and_repo": d, "extra_reserve_record_ignored": True}
+                                  "max_abs_diff_vs_direct_and_repo": d, "extra_reserve_record_ignored": True,
+                                  "record_not_in_sample_ignored": True, "missing_block_listed": True}
     rep["passed"] = True
     return rep
 
@@ -1211,6 +1230,11 @@ def summarize(out_dir, seed=0, n_boot=N_BOOT):
         "splits": {}}
     for split in ("test", "validation"):
         allrec = read_records(per_sample_path(out_dir, split))
+        sample_csv = os.path.join(out_dir, f"sample_{split}.csv")
+        sample = pd.read_csv(sample_csv) if os.path.exists(sample_csv) else None
+        stale = []
+        if sample is not None:
+            allrec, stale = drop_stale(allrec, sample)
         recs = [r for r in allrec.values() if r.get("status") == "ok"]
         failed = [r for r in allrec.values() if r.get("status") != "ok"]
         if not recs:
@@ -1225,7 +1249,12 @@ def summarize(out_dir, seed=0, n_boot=N_BOOT):
         z = np.array([float(r["logit"]) for r in recs])
         assert all(int(r["label_from_dataset"]) == int(r["label_max"]) for r in recs)
         prev, meta = split_prevalences(split, out_dir)
+        all_blocks = set() if sample is None else {(str(s_), int(b_)) for s_, b_ in zip(sample["stratum"], sample["block"])}
         sp = {"n_scored": len(recs), "n_failed_records": len(failed),
+              "failed_records": [{k: r.get(k) for k in ("timestamp", "role", "stratum", "block", "error")} for r in failed],
+              "n_blocks_in_sample": len(all_blocks) if sample is not None else None,
+              "blocks_without_ok_record": sorted(f"{s_}#{b_}" for s_, b_ in all_blocks - set(by_block)),
+              "n_stale_records_ignored": len(stale), "stale_records_ignored": stale,
               "roles": dict(collections.Counter(r["role"] for r in recs)),
               "time_range": [recs[0]["timestamp"], recs[-1]["timestamp"]],
               "prevalences_used_for_reweighting": prev,
@@ -1275,6 +1304,18 @@ def get_sample(args, out_dir, cfg, scalers, force=False):
     t0 = time.time()
     sample, meta = select_sample(args.split, args.n, args.seed, use_listing=not args.no_listing,
                                  header_check=args.header_check)
+    meta["identical_to_previous_sample_file"] = None
+    if os.path.exists(sample_csv):  # a redraw must not silently replace a sample that already has scored records
+        cols = ["role", "stratum", "block", "timestamp", "label_max"]
+        old = pd.read_csv(sample_csv)
+        same = (len(old) == len(sample) and set(cols) <= set(old.columns)
+                and old[cols].astype(str).reset_index(drop=True).equals(sample[cols].astype(str).reset_index(drop=True)))
+        meta["identical_to_previous_sample_file"] = bool(same)
+        recs = read_records(per_sample_path(out_dir, args.split))
+        if not same and recs:
+            raise RuntimeError(f"the redrawn sample differs from {sample_csv}, which already has {len(recs)} records in "
+                               f"{per_sample_path(out_dir, args.split)}; move both away before drawing a new sample")
+        log(f"redrawn sample is {'identical to' if same else 'DIFFERENT from'} the previous {sample_csv}")
     excl = meta["candidate_info"].pop("_excluded")
     excl.to_csv(os.path.join(out_dir, f"excluded_{args.split}.csv"), index=False)
     meta["candidate_info"]["excluded_file"] = f"excluded_{args.split}.csv"
@@ -1346,6 +1387,12 @@ def dry_run(args, out_dir):
     ck = retry(lambda: requests.head(hf_url(CKPT_REPO, CKPT_REV, CKPT_NAME, kind="models"), allow_redirects=False,
                                      timeout=60))
     pk = checkpoint_pickle_check()
+    structure = state_dict_structure_check(pk.pop("_shapes"), cfg)
+    imports = import_check()
+    log(f"authors' modules import cleanly (torch {imports['torch']}, peft {imports['peft']}); checkpoint keys vs "
+        f"foundation model + config_infer.yaml: {structure['n_checkpoint_keys']} keys, ok {structure['ok']} "
+        f"(LoRA on {structure['lora_wrapped_linears']} Linears {structure['lora_target_suffixes_present']}; targets "
+        f"absent from the model: {structure['lora_targets_absent_from_model']})")
     est = {"assumptions_s": {"forward": SEC_FORWARD, "read_and_normalise_per_frame": SEC_LOAD_FRAME,
                              "input_statistics": SEC_STATS, "model_build_and_load": SEC_MODEL},
            "measured_bandwidth": bw, **estimates(sample, bw, args.max_minutes)}
@@ -1355,6 +1402,7 @@ def dry_run(args, out_dir):
             "peak_disk_gb_new_files": round((CKPT_SIZE + est["frames_max_on_disk_bytes"]) / 1e9, 2),
             "foundation_model_file_already_on_disk_bytes": os.path.getsize(FM_CKPT)}
     meta.update({"dry_run": True, "estimate": est, "disk": disk, "checkpoint_pickle": pk, "config": cfg_info,
+                 "checkpoint_structure_vs_config": structure, "import_check": imports,
                  "paper_implied": imp, "pipeline_self_test": pst,
                  "forward_passes_planned": int(len(prim)), "checkpoint": f"{CKPT_REPO}@{CKPT_REV}/{CKPT_NAME}",
                  "labels": f"{LABEL_REPO}@{LABEL_REV}", "upstream_dir": UPSTREAM,
@@ -1377,6 +1425,9 @@ def dry_run(args, out_dir):
             f"for {est['forward_passes']} forward passes; {e['forward_passes_within_budget']} fit in "
             f"{args.max_minutes} min, so {e['runs_needed_at_budget']} run(s)")
     print(sample[["role", "stratum", "block", "timestamp", "label_max", "max_goes_class"]].to_string(index=False))
+    if not (structure["ok"] and meta["dataset_join_all_ok"]):
+        raise AssertionError("dry run found a problem: checkpoint structure ok "
+                             f"{structure['ok']}, dataset join ok {meta['dataset_join_all_ok']} (see {args.split} JSON)")
 
 
 def local_channel_check(paths):
@@ -1400,13 +1451,44 @@ def input_stats(x, channels):
                                      for i, ch in enumerate(channels)}}
 
 
+def preflight(args):
+    """Refuse to start a real run that would not fit: the fp32 forward pass peaks near 13 GB of this machine's 15 GB
+    (another job holding several GB gets this process, or that job, OOM-killed), and the checkpoint plus one sample's
+    frames need about 3.6 GB of disk."""
+    mem = {}
+    for line in open("/proc/meminfo"):
+        k, v = line.split(":")
+        mem[k] = int(v.split()[0]) * 1024
+    avail = mem.get("MemAvailable", 0) / 2 ** 30
+    ck = os.path.join(WORK, CKPT_NAME)
+    need_disk = (0 if os.path.exists(ck) and os.path.getsize(ck) == CKPT_SIZE else CKPT_SIZE) + 3e9
+    free = shutil.disk_usage(WORK).free
+    log(f"preflight: {avail:.1f} GiB RAM available (need {args.min_free_gb}), {free / 1e9:.1f} GB disk free "
+        f"(need {need_disk / 1e9:.1f})")
+    if avail < args.min_free_gb:
+        raise SystemExit(f"only {avail:.1f} GiB of RAM available; the forward pass needs about 13 GB. Stop the other "
+                         "job first (or lower --min-free-gb at your own risk).")
+    if free < need_disk:
+        raise SystemExit(f"only {free / 1e9:.1f} GB of disk free under {WORK}; need {need_disk / 1e9:.1f} GB")
+
+
+def sweep_frames(root):
+    """Delete every file under this script's own frame folder (frames or partial downloads of an interrupted run,
+    which FrameCache does not track); returns how many."""
+    n = 0
+    for d, _, files in os.walk(root):
+        for f in files:
+            os.remove(os.path.join(d, f))
+            n += 1
+    return n
+
+
 def run(args, out_dir):
     import torch
     from torch.utils.data import DataLoader
     from surya.utils.data import build_scalers
-    add_task_dir()
-    from dataset import SolarFlareDataset
-    from finetune import custom_collate_fn
+    SolarFlareDataset = import_task_module("dataset").SolarFlareDataset
+    custom_collate_fn = import_task_module("finetune").custom_collate_fn
 
     run_t0 = time.time()
     sample_s = []  # wall-clock seconds of each sample scored in this run
@@ -1426,7 +1508,9 @@ def run(args, out_dir):
         raise RuntimeError("dataset join check failed in the sample file; rerun --dry-run")
 
     recs_path = per_sample_path(out_dir, args.split)
-    previous = read_records(recs_path)
+    previous, stale = drop_stale(read_records(recs_path), sample)
+    if stale:
+        log(f"ignoring {len(stale)} record(s) in {recs_path} whose time stamp is not in this sample file: {stale[:5]}")
     done = {t for t, r in previous.items() if r.get("status") == "ok"}
     blocks, pending, complete = plan_work(sample, previous, args.seed, args.max_forward)
     log(f"{len(blocks)} blocks in the sample, {complete} already scored, {len(pending)} samples to run now "
@@ -1435,7 +1519,12 @@ def run(args, out_dir):
         summarize(out_dir, args.seed)
         return
 
-    cache = C.FrameCache(os.path.join(WORK, "frames"))
+    preflight(args)
+    frames_root = os.path.join(WORK, "frames")
+    n_old = sweep_frames(frames_root)
+    if n_old:
+        log(f"removed {n_old} file(s) left in {frames_root} by an earlier run")
+    cache = C.FrameCache(frames_root)
     pool = cf.ThreadPoolExecutor(1)
 
     def frames_for(row):
@@ -1457,6 +1546,9 @@ def run(args, out_dir):
 
     j = 0
     while j < len(pending):
+        if j >= args.max_forward:  # reserves appended after failures do not raise the cap
+            log(f"forward-pass cap {args.max_forward} reached; {len(pending) - j} sample(s) left for the next run")
+            break
         if not fits():
             log(f"time budget: {(time.time() - run_t0) / 60:.1f} of {args.max_minutes} min used; stopping with "
                 f"{len(pending) - j} sample(s) left for the next run (it resumes from {os.path.basename(recs_path)})")
@@ -1479,6 +1571,8 @@ def run(args, out_dir):
             assert len(ds) == 1 and pd.Timestamp(ds.valid_indices[0]) == t, "dataset did not select the time stamp"
             loader = DataLoader(ds, batch_size=1, num_workers=0, shuffle=False, collate_fn=custom_collate_fn)
             batch, metadata = next(iter(loader))
+            got = [pd.Timestamp(v) for k in ("timestamps_input", "timestamps_targets") for v in np.ravel(metadata[k])]
+            assert got == frame_times(t), f"dataset returned frames {got}, not {frame_times(t)}"
             t2 = time.time()
             if j + 1 < len(pending) and fits(SEC_STATS + SEC_FORWARD):  # frames in memory: fetch the next ones
                 fut, fut_for = pool.submit(cache.ensure, frames_for(pending[j + 1])), j + 1
@@ -1501,6 +1595,8 @@ def run(args, out_dir):
             rec["prob"] = float(torch.sigmoid(out.reshape(-1)[0]))
             rec["pred_infer_py"] = int(torch.sigmoid(out).item() > 0.5)  # infer.py's expression
             rec["pred_finetune_eval"] = int(logit > THRESHOLD)
+            if not np.isfinite(logit):  # sigmoid(nan) > 0.5 is False: would silently count as a "no flare" forecast
+                raise FloatingPointError(f"non-finite logit {logit}; non-finite input values: {rec['input']['nonfinite']}")
             rec["seconds"] = {"frame_download_wait": round(t1 - t_start, 1), "frame_download_call": round(dl_s, 1),
                               "dataset_and_load": round(t2 - t1, 1), "input_stats": round(t3 - t2, 1),
                               "forward": round(t4 - t3, 1), "total": round(time.time() - t_start, 1)}
@@ -1518,7 +1614,8 @@ def run(args, out_dir):
             ds = loader = batch = metadata = x = out = None  # release the 1.7 GB input
         if retry_with_reserve:
             res = blocks[(row["stratum"], int(row["block"]))].get("reserve")
-            if res is not None and res["timestamp"] not in done and all(p["timestamp"] != res["timestamp"] for p in pending):
+            if (res is not None and res["timestamp"] not in done and previous.get(res["timestamp"], {}).get("status")
+                    != "failed" and all(p["timestamp"] != res["timestamp"] for p in pending)):
                 pending.append(res)
         rec["peak_rss_gb"] = C.peak_rss_gb()
         with open(recs_path, "a") as fp:
@@ -1527,16 +1624,21 @@ def run(args, out_dir):
         j += 1
     pool.shutdown(wait=True)
     cache.clear()
+    sweep_frames(frames_root)
     if args.delete_checkpoint:
         os.remove(ckpt)
     s = summarize(out_dir, args.seed)
     sp = s["splits"].get(args.split, {})
+    if sp.get("blocks_without_ok_record"):
+        log(f"{args.split}: {len(sp['blocks_without_ok_record'])} block(s) not scored yet or failed: "
+            f"{sp['blocks_without_ok_record']}")
     if "metrics" in sp:
-        r = sp["metrics"]["rules"][PRIMARY_RULE]
-        rw = r["reweighted"]["candidate_set_of_split (primary)"]
-        log(f"{args.split}: {sp['metrics']['n_pos']} pos + {sp['metrics']['n_neg']} neg; TSS {r['tss']['estimate']:.3f} "
-            f"{r['tss']['ci95']}; HSS(rw) {rw['hss']['estimate']:.3f} {rw['hss']['ci95']}; F1(rw) "
-            f"{rw['f1']['estimate']:.3f} {rw['f1']['ci95']} (paper 0.436 / 0.522 / 0.561)")
+        for name in RULES:
+            r = sp["metrics"]["rules"][name]
+            rw = r["reweighted"]["candidate_set_of_split (primary)"]
+            log(f"{args.split} [{name}]: {sp['metrics']['n_pos']} pos + {sp['metrics']['n_neg']} neg; TSS "
+                f"{r['tss']['estimate']:.3f} {r['tss']['ci95']}; HSS(rw) {rw['hss']['estimate']:.3f} {rw['hss']['ci95']}; "
+                f"F1(rw) {rw['f1']['estimate']:.3f} {rw['f1']['ci95']} (paper 0.436 / 0.522 / 0.561)")
 
 
 def main():
@@ -1554,6 +1656,8 @@ def main():
     ap.add_argument("--header-check", action="store_true",
                     help="also read the netCDF header of every drawn frame over HTTP (slow: ~16 s per frame)")
     ap.add_argument("--delete-checkpoint", action="store_true", help="remove the 1.8 GB checkpoint at the end")
+    ap.add_argument("--min-free-gb", type=float, default=12.0,
+                    help="real run: refuse to start with less RAM available (GiB, MemAvailable)")
     ap.add_argument("--summarize-only", action="store_true", help="recompute summary.json from the jsonl files")
     args = ap.parse_args()
     args.n = args.n or DEFAULT_N[args.split]

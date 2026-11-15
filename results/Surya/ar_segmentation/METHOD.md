@@ -6,7 +6,7 @@ This is a partial reproduction. The released fine-tuned Surya segmentation model
 
 The model is the released checkpoint `nasa-ibm-ai4science/ar_segmentation_surya`, file `ar_segmentation_weights.pth`, revision `73a6de53`, 1,784,013,352 bytes, SHA-256 `ad391831…56ad`. It is the Surya-1.0 backbone with PEFT LoRA adapters (rank 32, alpha 64, on q/k/v/out_proj, fc1 and fc2) and a linear unembedding head with one output channel. The checkpoint's pickle header holds 40 LoRA tensors with 4,096,000 parameters, which matches the "4.1 M" trainable parameters in the paper.
 
-For each time t the model sees the 13-channel SDO frame at t, normalised with the released scalers, and produces a 4096×4096 map of logits. The target is the `union_with_intersect` mask of the SuryaBench ARPIL dataset (`nasa-ibm-ai4science/surya-bench-ar-segmentation`, revision `615a7df4`) divided by 255. That mask marks active regions that contain a polarity inversion line, built from HMI line-of-sight magnetograms.
+For each time t the model sees the 13-channel SDO frame at t, normalised with core-sdo's `scalers.yaml` (the file `download_data.sh` fetches; pinned revision, SHA-256 checked, byte-identical to Surya-1.0's copy), and produces a 4096×4096 map of logits. The target is the `union_with_intersect` mask of the SuryaBench ARPIL dataset (`nasa-ibm-ai4science/surya-bench-ar-segmentation`, revision `615a7df4`) divided by 255. That mask marks active regions that contain a polarity inversion line, built from HMI line-of-sight magnetograms.
 
 The code that touches the numbers is the authors' code, imported unchanged from the clone at commit 78b827e:
 
@@ -14,6 +14,8 @@ The code that touches the numbers is the authors' code, imported unchanged from 
 - `custom_collate_fn`, `IoULoss` and `DiceLoss` from `finetune.py`;
 - `get_model` and `apply_peft_lora` from `infer.py`, using `config_infer.yaml`;
 - the checkpoint-loading steps of `infer.load_model`, ending in `load_state_dict(strict=True)`.
+
+At run time each image is checked before it is scored: the dataset built for t must contain t alone and join the sample's mask file, the time stamp the DataLoader returns must be t (so no retry loop can substitute another time), the input must be 1×13×1×4096×4096 and the output must have the mask's shape. `summary.json` lists images with non-finite inputs or logits and masks whose values are not 0 and 255.
 
 ## Reference numbers
 
@@ -37,7 +39,7 @@ The test split (all of 2020–2024) is the primary sample, because it was used n
 
 **Checks and reserves.** A candidate is accepted only if it passes three checks. The frame at t must exist on S3, and so must the frame at t+60 min. The second check exists because the authors' dataset accepts t only when t+60 is in its SDO index, although it never reads that frame. Third, the HDF5 header of the frame at t, read with HTTP range requests, must list all 13 channels at 4096×4096. Each block also gets a reserve, chosen in the same way. The reserve is used only if the primary's mask is missing from the archive, or the primary fails at run time.
 
-**Dry-run outcome (seed 0).** No candidate was skipped in either split. All 80 sampled times (primaries and reserves) passed the join check: the authors' dataset, built for that time alone, returned exactly that time and the expected mask path.
+**Dry-run outcome (seed 0).** No candidate was skipped in either split. All 80 sampled times (primaries and reserves) passed the join check: the authors' dataset, built for that time alone, returned exactly that time and the expected mask path. The dry run also reads the checkpoint's zip directory and pickle header with range requests (about 1 MB, nothing is built from it) and checks it against `config_infer.yaml` and PEFT's naming: 199 float32 tensors, all under `base_model.model.`, LoRA-wrapped layers stored as `…base_layer.weight` (the PEFT ≥ 0.7 layout that the installed PEFT 0.17 produces), 40 LoRA tensors of rank 32 on `fc1` and `fc2` only (the `q_proj`/`k_proj`/`v_proj`/`out_proj` names in the config match nothing in Surya, whose attention uses `qkv` and `proj`), 4,096,000 LoRA parameters, and a 256-channel 1×1 unembedding convolution (16×16 patch, one output channel). A mismatch stops the dry run.
 
 **Compact frames.** Three of the 30 test primaries (2024-05-18 19:00, 2024-10-20 19:00, 2024-12-07 20:00) are about 0.32 GB on S3 instead of about 0.58 GB. In these files the six AIA channels from 131 to 335 Å are stored in 8–24 MB each instead of about 60 MB, while AIA 94 Å, AIA 1600 Å and the HMI channels are about the same size as usual; six of the 30 test reserves are the same. The headers show all 13 channels, and I do not know why these frames compress better. The run records each channel's normalised mean, standard deviation and count of non-finite values for every image, so these frames can be checked.
 

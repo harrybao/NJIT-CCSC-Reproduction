@@ -45,8 +45,8 @@
   "s3_listing": {
    "months": 9,
    "on_the_hour_frames": 6368,
-   "listing_bytes_transferred_this_call": 0,
-   "seconds": 0.2
+   "listing_bytes_transferred_this_call": 10616002,
+   "seconds": 4.8
   },
   "excluded_rows": 429,
   "excluded_by_reason_and_label": {
@@ -117,7 +117,8 @@
  "n_skipped": 0,
  "selection_rounds": 1,
  "header_bytes_read": 0,
- "selection_seconds": 9.0,
+ "identical_to_previous_sample_file": true,
+ "selection_seconds": 11.5,
  "dataset_join_check": [
   {
    "timestamp": "2012-01-16 16:00:00",
@@ -692,13 +693,13 @@
   "measured_bandwidth": {
    "s3_frame": {
     "bytes": 16777216,
-    "seconds": 1.15,
-    "MB_per_s": 14.6
+    "seconds": 1.39,
+    "MB_per_s": 12.1
    },
    "hf_cdn_csv": {
     "bytes": 16777216,
-    "seconds": 0.84,
-    "MB_per_s": 19.9
+    "seconds": 0.99,
+    "MB_per_s": 16.9
    }
   },
   "forward_passes": 20,
@@ -708,11 +709,11 @@
   "per_sample_compute_minutes": 2.95,
   "budget_minutes_per_run": 90,
   "at_measured_bandwidth": {
-   "s3_MB_per_s": 14.6,
-   "hf_MB_per_s": 19.9,
-   "total_minutes": 63.0,
-   "per_sample_download_minutes_mean": 2.02,
-   "download_hidden_behind_forward": true,
+   "s3_MB_per_s": 12.1,
+   "hf_MB_per_s": 16.9,
+   "total_minutes": 65.0,
+   "per_sample_download_minutes_mean": 2.44,
+   "download_hidden_behind_forward": false,
    "forward_passes_within_budget": 20,
    "runs_needed_at_budget": 1
   },
@@ -773,6 +774,48 @@
    ]
   }
  },
+ "checkpoint_structure_vs_config": {
+  "n_checkpoint_keys": 202,
+  "n_expected_keys": 202,
+  "missing_in_checkpoint": [],
+  "unexpected_in_checkpoint": [],
+  "shape_mismatches": {},
+  "lora_wrapped_linears": 20,
+  "lora_target_suffixes_present": [
+   "fc1",
+   "fc2"
+  ],
+  "lora_targets_absent_from_model": [
+   "k_proj",
+   "out_proj",
+   "q_proj",
+   "v_proj"
+  ],
+  "patch_embed_shape": [
+   1280,
+   26,
+   16,
+   16
+  ],
+  "patch_embed_expected_13ch_x_time_dim": [
+   1280,
+   26,
+   16,
+   16
+  ],
+  "ok": true
+ },
+ "import_check": {
+  "modules": {
+   "dataset": "/home/user/upstream/surya/Surya/downstream_examples/solar_flare_forcasting/dataset.py",
+   "metrics": "/home/user/upstream/surya/Surya/downstream_examples/solar_flare_forcasting/metrics.py",
+   "models": "/home/user/upstream/surya/Surya/downstream_examples/solar_flare_forcasting/models.py",
+   "finetune": "/home/user/upstream/surya/Surya/downstream_examples/solar_flare_forcasting/finetune.py",
+   "infer": "/home/user/upstream/surya/Surya/downstream_examples/solar_flare_forcasting/infer.py"
+  },
+  "torch": "2.10.0+cpu",
+  "peft": "0.17.0"
+ },
  "paper_implied": {
   "solutions": [
    {
@@ -814,7 +857,8 @@
   "planner_resume": {
    "complete": 5,
    "pending": 15,
-   "failed_primary_replaced_by_reserve": true
+   "failed_primary_replaced_by_reserve": true,
+   "block_with_both_failed_not_retried": true
   },
   "summarize_synthetic": {
    "n_scored": 20,
@@ -826,7 +870,9 @@
    "hss_reweighted": 0.07449966518192794,
    "f1_reweighted": 0.24001959343619886,
    "max_abs_diff_vs_direct_and_repo": 1.1920928910669204e-08,
-   "extra_reserve_record_ignored": true
+   "extra_reserve_record_ignored": true,
+   "record_not_in_sample_ignored": true,
+   "missing_block_listed": true
   },
   "passed": true
  },
