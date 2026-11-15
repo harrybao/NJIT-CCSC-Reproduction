@@ -1129,6 +1129,864 @@
      "pred_finetune_eval_logit_gt_0.5": 1
     }
    ]
+  },
+  "validation": {
+   "n_scored": 20,
+   "n_failed_records": 0,
+   "failed_records": [],
+   "n_blocks_in_sample": 20,
+   "blocks_without_ok_record": [],
+   "n_stale_records_ignored": 0,
+   "stale_records_ignored": [],
+   "roles": {
+    "primary": 20
+   },
+   "time_range": [
+    "2011-01-21 08:00:00",
+    "2019-01-19 23:00:00"
+   ],
+   "prevalences_used_for_reweighting": {
+    "candidate_set_of_split (primary)": 0.10792476102374345,
+    "whole_split_csv": 0.10893246187363835,
+    "paper_table4_implied": 0.10594130555746348
+   },
+   "sample_design": {
+    "n": 20,
+    "seed": 0,
+    "design": "class-stratified (n//2 positives), year-proportional within class, one draw per time block",
+    "allocation_per_class_and_year": {
+     "pos": {
+      "2011": 0,
+      "2012": 3,
+      "2014": 4,
+      "2015": 3
+     },
+     "neg": {
+      "2011": 2,
+      "2012": 1,
+      "2013": 1,
+      "2014": 1,
+      "2015": 1,
+      "2016": 1,
+      "2017": 1,
+      "2018": 1,
+      "2019": 1
+     }
+    },
+    "use_listing": true,
+    "header_check": false
+   },
+   "metrics": {
+    "n_pos": 10,
+    "n_neg": 10,
+    "rules": {
+     "infer_py_sigmoid_gt_0.5": {
+      "description": "infer.py: int(sigmoid(logit) > 0.5), i.e. logit > 0 (primary)",
+      "sample_counts": {
+       "tp": 5,
+       "fn": 5,
+       "fp": 0,
+       "tn": 10
+      },
+      "tpr": {
+       "estimate": 0.5,
+       "ci95": [
+        0.2,
+        0.8
+       ],
+       "bootstrap_se": 0.15865212731003642,
+       "ci95_wilson": [
+        0.23659308901147935,
+        0.7634069109885206
+       ]
+      },
+      "fpr": {
+       "estimate": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ],
+       "bootstrap_se": 0.0,
+       "ci95_wilson": [
+        0.0,
+        0.2775328030260577
+       ]
+      },
+      "tss": {
+       "estimate": 0.5,
+       "ci95": [
+        0.2,
+        0.8
+       ],
+       "bootstrap_se": 0.15865212731003642,
+       "paper_surya": 0.436,
+       "paper_inside_ci": true,
+       "estimate_minus_paper": 0.064
+      },
+      "reweighted": {
+       "candidate_set_of_split (primary)": {
+        "prevalence": 0.10792476102374345,
+        "hss": {
+         "estimate": 0.6408240115184405,
+         "ci95": [
+          0.3084550591747521,
+          0.8770985712661539
+         ],
+         "bootstrap_se": 0.15038958196449403,
+         "paper_surya": 0.522,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": 0.11882401151844046
+        },
+        "f1": {
+         "estimate": 0.6666666666666666,
+         "ci95": [
+          0.33333333333333337,
+          0.888888888888889
+         ],
+         "bootstrap_se": 0.1470112197174289,
+         "paper_surya": 0.561,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": 0.10566666666666658
+        },
+        "precision": {
+         "estimate": 1.0,
+         "ci95": [
+          1.0,
+          1.0
+         ],
+         "bootstrap_se": 0.0
+        },
+        "expected_counts_per_unit": {
+         "tp": 0.05396238051187172,
+         "tn": 0.8920752389762565,
+         "fp": 0.0,
+         "fn": 0.05396238051187172
+        },
+        "repo_formulas_on_expected_counts": {
+         "precision": 1.0,
+         "recall": 0.5,
+         "f1": 0.6666666666666666,
+         "tss": 0.5,
+         "hss": 0.6408240115184405
+        }
+       },
+       "whole_split_csv": {
+        "prevalence": 0.10893246187363835,
+        "hss": {
+         "estimate": 0.6405638214565388,
+         "ci95": [
+          0.3082140165787491,
+          0.8769766818547307
+         ],
+         "bootstrap_se": 0.15042046637878523,
+         "paper_surya": 0.522,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": 0.11856382145653876
+        },
+        "f1": {
+         "estimate": 0.6666666666666667,
+         "ci95": [
+          0.3333333333333333,
+          0.888888888888889
+         ],
+         "bootstrap_se": 0.14701121971742895,
+         "paper_surya": 0.561,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": 0.10566666666666669
+        },
+        "precision": {
+         "estimate": 1.0,
+         "ci95": [
+          1.0,
+          1.0
+         ],
+         "bootstrap_se": 0.0
+        },
+        "expected_counts_per_unit": {
+         "tp": 0.054466230936819175,
+         "tn": 0.8910675381263616,
+         "fp": 0.0,
+         "fn": 0.054466230936819175
+        },
+        "repo_formulas_on_expected_counts": {
+         "precision": 1.0,
+         "recall": 0.5,
+         "f1": 0.6666666666666667,
+         "tss": 0.5,
+         "hss": 0.6405638214565388
+        }
+       },
+       "paper_table4_implied": {
+        "prevalence": 0.10594130555746348,
+        "hss": {
+         "estimate": 0.6413350442178171,
+         "ci95": [
+          0.3089290124486412,
+          0.8773377817375085
+         ],
+         "bootstrap_se": 0.15032874386458386,
+         "paper_surya": 0.522,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": 0.11933504421781704
+        },
+        "f1": {
+         "estimate": 0.6666666666666667,
+         "ci95": [
+          0.3333333333333333,
+          0.888888888888889
+         ],
+         "bootstrap_se": 0.14701121971742892,
+         "paper_surya": 0.561,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": 0.10566666666666669
+        },
+        "precision": {
+         "estimate": 1.0,
+         "ci95": [
+          1.0,
+          1.0
+         ],
+         "bootstrap_se": 0.0
+        },
+        "expected_counts_per_unit": {
+         "tp": 0.05297065277873174,
+         "tn": 0.8940586944425365,
+         "fp": 0.0,
+         "fn": 0.05297065277873174
+        },
+        "repo_formulas_on_expected_counts": {
+         "precision": 1.0,
+         "recall": 0.5,
+         "f1": 0.6666666666666667,
+         "tss": 0.5,
+         "hss": 0.6413350442178171
+        }
+       }
+      },
+      "raw_sample": {
+       "note": "as drawn: prevalence 0.500; HSS and F1 here are NOT comparable with the paper",
+       "tss": {
+        "estimate": 0.5,
+        "ci95": [
+         0.2,
+         0.8
+        ],
+        "bootstrap_se": 0.15865212731003642
+       },
+       "hss": {
+        "estimate": 0.5,
+        "ci95": [
+         0.2,
+         0.8
+        ],
+        "bootstrap_se": 0.15865212731003642
+       },
+       "f1": {
+        "estimate": 0.6666666666666666,
+        "ci95": [
+         0.3333333333333333,
+         0.8888888888888888
+        ],
+        "bootstrap_se": 0.1470112197174289
+       },
+       "precision": {
+        "estimate": 1.0,
+        "ci95": [
+         1.0,
+         1.0
+        ],
+        "bootstrap_se": 0.0
+       },
+       "recall": {
+        "estimate": 0.5,
+        "ci95": [
+         0.2,
+         0.8
+        ],
+        "bootstrap_se": 0.15865212731003642
+       },
+       "accuracy": {
+        "estimate": 0.75,
+        "ci95": [
+         0.6,
+         0.9
+        ],
+        "bootstrap_se": 0.07932606365501821
+       },
+       "repo_DistributedClassificationMetrics": {
+        "fed": "sigmoid probabilities",
+        "tss": 0.5,
+        "hss": 0.5,
+        "f1": 0.6666666865348816,
+        "tp": 5.0,
+        "tn": 10.0,
+        "fp": 0.0,
+        "fn": 5.0,
+        "max_abs_diff_vs_ours": 1.9868214962137642e-08
+       }
+      }
+     },
+     "finetune_eval_logit_gt_0.5": {
+      "description": "finetune.evaluate_model: DistributedClassificationMetrics(threshold=0.5) fed raw logits, i.e. logit > 0.5 (probability > 0.6225)",
+      "sample_counts": {
+       "tp": 4,
+       "fn": 6,
+       "fp": 0,
+       "tn": 10
+      },
+      "tpr": {
+       "estimate": 0.4,
+       "ci95": [
+        0.1,
+        0.7
+       ],
+       "bootstrap_se": 0.1549420227052687,
+       "ci95_wilson": [
+        0.1681803285264069,
+        0.6873262320788047
+       ]
+      },
+      "fpr": {
+       "estimate": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ],
+       "bootstrap_se": 0.0,
+       "ci95_wilson": [
+        0.0,
+        0.2775328030260577
+       ]
+      },
+      "tss": {
+       "estimate": 0.4,
+       "ci95": [
+        0.1,
+        0.7
+       ],
+       "bootstrap_se": 0.1549420227052687,
+       "paper_surya": 0.436,
+       "paper_inside_ci": true,
+       "estimate_minus_paper": -0.035999999999999976
+      },
+      "reweighted": {
+       "candidate_set_of_split (primary)": {
+        "prevalence": 0.10792476102374345,
+        "hss": {
+         "estimate": 0.5432608797709028,
+         "ci95": [
+          0.16544191233237068,
+          0.8063148255061616
+         ],
+         "bootstrap_se": 0.16281419853089665,
+         "paper_surya": 0.522,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": 0.02126087977090274
+        },
+        "f1": {
+         "estimate": 0.5714285714285714,
+         "ci95": [
+          0.18181818181818182,
+          0.8235294117647058
+         ],
+         "bootstrap_se": 0.16246395844124384,
+         "paper_surya": 0.561,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": 0.010428571428571343
+        },
+        "precision": {
+         "estimate": 1.0,
+         "ci95": [
+          1.0,
+          1.0
+         ],
+         "bootstrap_se": 0.0
+        },
+        "expected_counts_per_unit": {
+         "tp": 0.04316990440949738,
+         "tn": 0.8920752389762565,
+         "fp": 0.0,
+         "fn": 0.06475485661424607
+        },
+        "repo_formulas_on_expected_counts": {
+         "precision": 1.0,
+         "recall": 0.39999999999999997,
+         "f1": 0.5714285714285714,
+         "tss": 0.39999999999999997,
+         "hss": 0.5432608797709028
+        }
+       },
+       "whole_split_csv": {
+        "prevalence": 0.10893246187363835,
+        "hss": {
+         "estimate": 0.5429804181878526,
+         "ci95": [
+          0.1652859163467367,
+          0.8061382514430522
+         ],
+         "bootstrap_se": 0.16281453726477002,
+         "paper_surya": 0.522,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": 0.020980418187852568
+        },
+        "f1": {
+         "estimate": 0.5714285714285715,
+         "ci95": [
+          0.1818181818181818,
+          0.823529411764706
+         ],
+         "bootstrap_se": 0.1624639584412439,
+         "paper_surya": 0.561,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": 0.010428571428571454
+        },
+        "precision": {
+         "estimate": 1.0,
+         "ci95": [
+          1.0,
+          1.0
+         ],
+         "bootstrap_se": 0.0
+        },
+        "expected_counts_per_unit": {
+         "tp": 0.04357298474945534,
+         "tn": 0.8910675381263616,
+         "fp": 0.0,
+         "fn": 0.06535947712418301
+        },
+        "repo_formulas_on_expected_counts": {
+         "precision": 1.0,
+         "recall": 0.4,
+         "f1": 0.5714285714285715,
+         "tss": 0.4,
+         "hss": 0.5429804181878526
+        }
+       },
+       "paper_table4_implied": {
+        "prevalence": 0.10594130555746348,
+        "hss": {
+         "estimate": 0.5438119073636187,
+         "ci95": [
+          0.16574878863733528,
+          0.8066614379084635
+         ],
+         "bootstrap_se": 0.16281335305768543,
+         "paper_surya": 0.522,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": 0.02181190736361871
+        },
+        "f1": {
+         "estimate": 0.5714285714285714,
+         "ci95": [
+          0.18181818181818182,
+          0.823529411764706
+         ],
+         "bootstrap_se": 0.16246395844124387,
+         "paper_surya": 0.561,
+         "paper_inside_ci": true,
+         "estimate_minus_paper": 0.010428571428571343
+        },
+        "precision": {
+         "estimate": 1.0,
+         "ci95": [
+          1.0,
+          1.0
+         ],
+         "bootstrap_se": 0.0
+        },
+        "expected_counts_per_unit": {
+         "tp": 0.042376522222985394,
+         "tn": 0.8940586944425365,
+         "fp": 0.0,
+         "fn": 0.06356478333447808
+        },
+        "repo_formulas_on_expected_counts": {
+         "precision": 1.0,
+         "recall": 0.4,
+         "f1": 0.5714285714285714,
+         "tss": 0.4,
+         "hss": 0.5438119073636187
+        }
+       }
+      },
+      "raw_sample": {
+       "note": "as drawn: prevalence 0.500; HSS and F1 here are NOT comparable with the paper",
+       "tss": {
+        "estimate": 0.4,
+        "ci95": [
+         0.1,
+         0.7
+        ],
+        "bootstrap_se": 0.1549420227052687
+       },
+       "hss": {
+        "estimate": 0.4,
+        "ci95": [
+         0.1,
+         0.7
+        ],
+        "bootstrap_se": 0.1549420227052687
+       },
+       "f1": {
+        "estimate": 0.5714285714285714,
+        "ci95": [
+         0.18181818181818182,
+         0.8235294117647058
+        ],
+        "bootstrap_se": 0.16246395844124387
+       },
+       "precision": {
+        "estimate": 1.0,
+        "ci95": [
+         1.0,
+         1.0
+        ],
+        "bootstrap_se": 0.0
+       },
+       "recall": {
+        "estimate": 0.4,
+        "ci95": [
+         0.1,
+         0.7
+        ],
+        "bootstrap_se": 0.1549420227052687
+       },
+       "accuracy": {
+        "estimate": 0.7,
+        "ci95": [
+         0.55,
+         0.85
+        ],
+        "bootstrap_se": 0.07747101135263434
+       },
+       "repo_DistributedClassificationMetrics": {
+        "fed": "raw logits",
+        "tss": 0.4000000059604645,
+        "hss": 0.4000000059604645,
+        "f1": 0.5714285969734192,
+        "tp": 4.0,
+        "tn": 10.0,
+        "fp": 0.0,
+        "fn": 6.0,
+        "max_abs_diff_vs_ours": 2.5544847792602354e-08
+       }
+      }
+     }
+    },
+    "roc_auc_context_not_in_paper": {
+     "estimate": 0.94,
+     "ci95": [
+      0.82,
+      1.0
+     ],
+     "bootstrap_se": 0.050066671988459543
+    }
+   },
+   "per_year": {
+    "2011": {
+     "n_pos": 0,
+     "n_neg": 2,
+     "hits_pos": 0,
+     "false_alarms_neg": 0
+    },
+    "2012": {
+     "n_pos": 3,
+     "n_neg": 1,
+     "hits_pos": 0,
+     "false_alarms_neg": 0
+    },
+    "2013": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "hits_pos": 0,
+     "false_alarms_neg": 0
+    },
+    "2014": {
+     "n_pos": 4,
+     "n_neg": 1,
+     "hits_pos": 4,
+     "false_alarms_neg": 0
+    },
+    "2015": {
+     "n_pos": 3,
+     "n_neg": 1,
+     "hits_pos": 1,
+     "false_alarms_neg": 0
+    },
+    "2016": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "hits_pos": 0,
+     "false_alarms_neg": 0
+    },
+    "2017": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "hits_pos": 0,
+     "false_alarms_neg": 0
+    },
+    "2018": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "hits_pos": 0,
+     "false_alarms_neg": 0
+    },
+    "2019": {
+     "n_pos": 0,
+     "n_neg": 1,
+     "hits_pos": 0,
+     "false_alarms_neg": 0
+    }
+   },
+   "timing": {
+    "forward_s_mean": 112.64000000000001,
+    "forward_s_max": 118.9,
+    "load_s_mean": 31.909999999999997,
+    "sample_s_mean": 148.40000000000003,
+    "peak_rss_gb_max": 8.74
+   },
+   "per_sample": [
+    {
+     "timestamp": "2011-01-21 08:00:00",
+     "year": 2011,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "C2.2",
+     "logit": -5.691072940826416,
+     "prob": 0.003364610020071268,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2011-01-28 16:00:00",
+     "year": 2011,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "B7.3",
+     "logit": -6.529767036437988,
+     "prob": 0.001457219128496945,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2012-01-16 16:00:00",
+     "year": 2012,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M1.0",
+     "logit": -0.06827796250581741,
+     "prob": 0.48293712735176086,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2012-01-22 10:00:00",
+     "year": 2012,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M8.7",
+     "logit": -4.051936626434326,
+     "prob": 0.01709146983921528,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2012-01-25 15:00:00",
+     "year": 2012,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "C7.9",
+     "logit": -2.8396804332733154,
+     "prob": 0.055217206478118896,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2012-01-27 14:00:00",
+     "year": 2012,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "X1.7",
+     "logit": -3.545264720916748,
+     "prob": 0.028051389381289482,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2013-01-26 23:00:00",
+     "year": 2013,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "FQ",
+     "logit": -5.924192905426025,
+     "prob": 0.002666834043338895,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2014-01-19 20:00:00",
+     "year": 2014,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "C3.4",
+     "logit": -3.1082417964935303,
+     "prob": 0.04276856407523155,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2014-01-26 12:00:00",
+     "year": 2014,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M1.1",
+     "logit": 1.3183964490890503,
+     "prob": 0.7889147400856018,
+     "pred_infer_py_sigmoid_gt_0.5": 1,
+     "pred_finetune_eval_logit_gt_0.5": 1
+    },
+    {
+     "timestamp": "2014-01-27 22:00:00",
+     "year": 2014,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M4.9",
+     "logit": 1.6761175394058228,
+     "prob": 0.8423897624015808,
+     "pred_infer_py_sigmoid_gt_0.5": 1,
+     "pred_finetune_eval_logit_gt_0.5": 1
+    },
+    {
+     "timestamp": "2014-01-29 08:00:00",
+     "year": 2014,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M2.1",
+     "logit": 0.03377639502286911,
+     "prob": 0.508443295955658,
+     "pred_infer_py_sigmoid_gt_0.5": 1,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2014-01-31 07:00:00",
+     "year": 2014,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M1.1",
+     "logit": 1.9138603210449219,
+     "prob": 0.871452271938324,
+     "pred_infer_py_sigmoid_gt_0.5": 1,
+     "pred_finetune_eval_logit_gt_0.5": 1
+    },
+    {
+     "timestamp": "2015-01-19 18:00:00",
+     "year": 2015,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "C3.3",
+     "logit": -1.4268457889556885,
+     "prob": 0.19359062612056732,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2015-01-21 17:00:00",
+     "year": 2015,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M1.4",
+     "logit": -0.90434330701828,
+     "prob": 0.28815874457359314,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2015-01-28 10:00:00",
+     "year": 2015,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M1.0",
+     "logit": 0.9489951729774475,
+     "prob": 0.7209130525588989,
+     "pred_infer_py_sigmoid_gt_0.5": 1,
+     "pred_finetune_eval_logit_gt_0.5": 1
+    },
+    {
+     "timestamp": "2015-01-28 15:00:00",
+     "year": 2015,
+     "class": "pos",
+     "role": "primary",
+     "label_max": 1,
+     "max_goes_class": "M2.1",
+     "logit": -0.48444414138793945,
+     "prob": 0.3812032639980316,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2016-01-22 06:00:00",
+     "year": 2016,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "B7.1",
+     "logit": -6.23789119720459,
+     "prob": 0.001950161182321608,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2017-01-28 17:00:00",
+     "year": 2017,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "C2.8",
+     "logit": -7.446624279022217,
+     "prob": 0.0005830675363540649,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2018-01-25 00:00:00",
+     "year": 2018,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "FQ",
+     "logit": -7.635705947875977,
+     "prob": 0.00048266450176015496,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    },
+    {
+     "timestamp": "2019-01-19 23:00:00",
+     "year": 2019,
+     "class": "neg",
+     "role": "primary",
+     "label_max": 0,
+     "max_goes_class": "FQ",
+     "logit": -7.29223108291626,
+     "prob": 0.0006803442374803126,
+     "pred_infer_py_sigmoid_gt_0.5": 0,
+     "pred_finetune_eval_logit_gt_0.5": 0
+    }
+   ]
   }
  },
  "environment": {
@@ -1163,8 +2021,8 @@
    "load_state_dict_strict": true,
    "model_class": "PeftModel",
    "training_flag": false,
-   "seconds_build_and_load": 5.5
+   "seconds_build_and_load": 6.2
   },
-  "peak_rss_gb_after_model_load": 4.01
+  "peak_rss_gb_after_model_load": 4.02
  }
 }
