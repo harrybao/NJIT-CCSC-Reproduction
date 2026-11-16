@@ -13,13 +13,9 @@ Subject: Re: (same thread as Prof. Wang's email)
 
 Dear Professor Wang,
 
-I am sorry it has taken me so long to get back to you. The past few weeks have been very busy for me. I have now finished working through the Surya blog post, and I have attached my report as a PDF.
+I am sorry it has taken me so long to get back to you; the past few weeks have been very busy. I have now finished the Surya work, and my report is attached.
 
-The blog post itself has no Citation button, so I opened every tool and paper it links to and recorded the citation each one asks for. The tools are the Surya code, the Surya-1.0 model and four fine-tuned models on Hugging Face, the SuryaBench datasets, and IBM's TerraTorch library. I downloaded all of them.
-
-Pretraining and fine-tuning need many GPUs, so I could not repeat any training on my CPU machine. Instead I ran the released weights on everything that only needs them. The repository's validation test passes on CPU (mean loss 0.316689 against the reference 0.316647). Zero-shot forecasting on 20 times from the paper's validation period gives a 1-hour MSE of 0.195, close to the 0.202 in Table 9. For the four downstream tasks I could only afford small samples, 40 to 70 cases each. On these the paper's numbers for active-region segmentation and flare forecasting fall inside my 95% intervals. The solar wind model agrees with the paper on the validation period but not on 2020 to 2024, where it underestimates the speed and does worse than simply predicting the average speed of the training years. For the EUV spectra the paper's numbers fall between my two samples. The paper does not say which split it used, and the flare numbers suggest it was the validation period.
-
-A few things surprised me. Surya gives wrong results on CPU in bfloat16, which I traced to a PyTorch convolution bug that hits exactly its first layer. When it is loaded through TerraTorch with default settings, the base model runs with a different number of attention heads than the released config, and the fine-tuned models do not load the weights learned for their tasks, in both cases without any warning. And the first layer of the released EUV model was never trained; it is still the random initialisation. The report lists a few other places where the released code seems to differ from the paper. I may well be missing something there, so I would be grateful for any comments.
+The blog has no Citation button, so I recorded the citation that each linked tool asks for. I could not repeat any training without GPUs, but I ran all the released models on CPU. The repository's test passes, and the zero-shot forecasts match Table 9. On small samples, the downstream results agree with the paper for active-region segmentation and flare forecasting. The solar wind model does not hold up on 2020 to 2024 data. I also found a few problems in the released code and in the TerraTorch version, which are listed in the report.
 
 Thank you again for your guidance.
 
