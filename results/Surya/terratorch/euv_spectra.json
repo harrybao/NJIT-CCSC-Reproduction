@@ -1,0 +1,31 @@
+{
+ "registry_name": "terratorch_heliofm_backbone_surya_euv_spectra_prediction",
+ "terratorch": "1.2.13",
+ "terratorch_surya": "0.1.0",
+ "torch": "2.10.0+cpu",
+ "checkpoint_requested_from_hf": [
+  {
+   "repo_id": "nasa-ibm-ai4science/euv_spectra_surya",
+   "filename": "euv_spectra_weights.pth"
+  }
+ ],
+ "local_checkpoint": "/home/user/work/surya_ft/euv_spectra/euv_spectra_weights.pth",
+ "model_class": "HelioSpectformer2D",
+ "n_model_tensors": 159,
+ "n_model_tensors_changed_by_loading": 157,
+ "n_checkpoint_tensors": 162,
+ "strict": false,
+ "n_missing_keys": 2,
+ "n_unexpected_keys": 5,
+ "missing_keys_first10": [
+  "unembed.unembed.0.weight",
+  "unembed.unembed.0.bias"
+ ],
+ "unexpected_keys_first10": [
+  "cls_token",
+  "linear.weight",
+  "linear.bias",
+  "unembed.weight",
+  "unembed.bias"
+ ]
+}

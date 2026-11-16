@@ -7,6 +7,8 @@ It was prepared by Xiangsheng (Harry) Bao in October 2026 in response to Prof. W
 
 > "For each tool, click the Citation button, download the tool to reproduce all results and let me know how the tool works."
 
+A second study, of the Surya heliophysics foundation model from NASA and IBM (November 2026), is described in [the Surya section](#surya-ibm-research-blog-november-2026) below.
+
 ## Start here
 
 | File | What it is |
@@ -50,6 +52,31 @@ Each tool was run at the version its Citation button cites (§3.5 of the report)
 These findings concern the **released code, data and weights at the cited versions**, compared with the papers
 where their evaluation data are shipped. They are not claims about the original experiments.
 
+## Surya (IBM Research blog, November 2026)
+
+The second request from Prof. Wang was: "go to https://research.ibm.com/blog/surya-heliophysics-ai-model-sun. For each tool, click the Citation button, download the tool, reproduce all results and let me know how it goes." The blog has no Citation button, so the citation each linked resource asks for is recorded in `papers/surya_citations/`. Training cannot be repeated on this CPU machine; everything that only needs the released weights was run.
+
+| File | What it is |
+|---|---|
+| [`reports/Surya_Reproduction_Report.md`](reports/Surya_Reproduction_Report.md) | English report (PDF in `reports/pdf/`) |
+| [`reports/Surya_Chinese_Notes.md`](reports/Surya_Chinese_Notes.md) | 中文说明 |
+| [`reports/Surya_Email_Draft.md`](reports/Surya_Email_Draft.md) | Draft reply to Prof. Wang (not sent) |
+| [`papers/surya_citations/`](papers/surya_citations/README.md) | Citations of every tool linked from the blog, copied verbatim with their sources |
+| [`papers/surya_notes/`](papers/surya_notes/) | The papers' result tables, the runnable paths in the repository, the Hugging Face inventory |
+| `scripts/Surya/`, `results/Surya/` | Every script and every output reported |
+
+| What | Result |
+|---|---|
+| Repository validation test | Passes on CPU in float32: mean loss 0.316689 vs reference 0.316647 (tolerance 1e-4) |
+| Zero-shot forecasting (Table 9) | 20 validation-period times: 1 h MSE 0.195 (paper 0.2017), 2 h 0.214 (paper 0.2235) |
+| AR segmentation (Table 3) | Paper's IoU 0.768 / Dice 0.853 inside the 95% intervals (30 test + 10 validation images) |
+| Flare forecasting (Table 4) | Paper's TSS 0.436 inside the intervals; no false alarms in 30 quiet cases (40 test + 20 validation) |
+| Solar wind (Table 6) | Validation period consistent (RMSE 61.7, paper 75.92); 2020–2024 test period not (RMSE 107.1, under-predicts) |
+| EUV spectra (Table 5) | Paper's numbers fall between my test sample (worse) and validation sample (better); the released model's patch embedding is still the random initialisation |
+| CPU bfloat16 | Wrong results, traced to a PyTorch oneDNN bf16 convolution bug that hits Surya's patch embedding; fp32 for that layer fixes it |
+| TerraTorch 1.2.13 | Base model loads but defaults to 8 heads instead of 16 (MSE 0.264 vs 0.231); the fine-tuned entries load none of the weights learned for their tasks |
+| Not reproducible here | Pretraining, rollout tuning, fine-tuning, ablations and baselines (need GPUs; no training scripts or baseline weights released) |
+
 ## Repository layout
 
 ```
@@ -62,7 +89,10 @@ datasets/README.md         where the data and model files come from and how to r
 scripts/                   every analysis script (one folder per tool; common_metrics.py; nb_dump.py; citations/)
 results/<tool>/            logs and JSON/CSV outputs of every run reported
 results/cited_versions/    runs and diffs at the Citation-button versions
-reports/                   English report, CCDC analysis, Chinese notes, e-mail drafts
+papers/surya_citations/    Surya: citations of every tool linked from the IBM blog
+papers/surya_notes/        Surya: result tables of the papers, runnable paths, HF inventory
+scripts/Surya/, results/Surya/   Surya scripts and outputs
+reports/                   English reports, CCDC analysis, Chinese notes, e-mail drafts (CCSC and Surya)
 ```
 
 ## Environment and access notes
