@@ -13,7 +13,7 @@ Subject: Re: (same thread as Prof. Wang's email)
 
 Dear Professor Wang,
 
-Thank you for the next task. I have finished working through the Surya blog post, and I have attached my report as a PDF.
+I am sorry it has taken me so long to get back to you. The past few weeks have been very busy for me. I have now finished working through the Surya blog post, and I have attached my report as a PDF.
 
 The blog post itself has no Citation button, so I opened every tool and paper it links to and recorded the citation each one asks for. The tools are the Surya code, the Surya-1.0 model and four fine-tuned models on Hugging Face, the SuryaBench datasets, and IBM's TerraTorch library. I downloaded all of them.
 
